@@ -1,0 +1,383 @@
+<?php
+use Wallee\Sdk\Http\HttpClientFactory;
+
+if (!defined('ABSPATH')) {
+	exit();
+}
+
+/**
+ * This class handles the database setup and migration.
+ */
+class WC_Wallee_Migration {
+	private static $db_migrations = array(
+		'1.0.0' => 'wc_wallee_update_1_0_0_initialize' 
+	);
+
+	/**
+	 * Hook in tabs.
+	 */
+	public static function init(){
+		add_action('init', array(
+			__CLASS__,
+			'check_version' 
+		), 5);
+		add_action('wpmu_new_blog', array(
+			__CLASS__,
+			'wpmu_new_blog' 
+		));
+		add_filter('wpmu_drop_tables', array(
+			__CLASS__,
+			'wpmu_drop_tables' 
+		));
+		add_action('in_plugin_update_message-woocommerce-wallee/woocommerce-wallee.php', array(
+			__CLASS__,
+			'in_plugin_update_message' 
+		));
+	}
+
+	public static function install_wallee_db($networkwide){
+		global $wpdb;
+		if (!is_blog_installed()) {
+			return;
+		}
+		if (!defined('WC_WALLEE_INSTALLING')) {
+			define('WC_WALLEE_INSTALLING', true);
+		}
+		
+		self::check_requirements();
+		
+		
+		if (function_exists('is_multisite') && is_multisite()) {
+			// check if it is a network activation - if so, run the activation function for each blog id
+			if ($networkwide) {
+				$old_blog = $wpdb->blogid;
+				// Get all blog ids
+				$blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
+				foreach ($blog_ids as $blog_id) {
+					switch_to_blog($blog_id);
+					self::migrate_wallee_db();
+				}
+				switch_to_blog($old_blog);
+				return;
+			}
+		}
+		self::migrate_wallee_db();
+	}
+
+	
+	/**
+	 * Checks if the system requirements are met
+	 *
+	 * calls wp_die f requirements not met
+	 */
+	private static function check_requirements() {
+		global $wp_version;
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' ) ;
+		
+		$errors = array();
+		
+		if ( version_compare( PHP_VERSION, WC_WALLEE_REQUIRED_PHP_VERSION, '<' ) ) {
+			$errors[] = sprintf(__("PHP %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_PHP_VERSION, PHP_VERSION);
+		}
+		if ( version_compare( $wp_version, WC_WALLEE_REQUIRED_WP_VERSION, '<' ) ) {
+			$errors[] = sprintf(__("Wordpress %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WP_VERSION, $wp_version);
+			
+		}
+		
+		if (!is_plugin_active('woocommerce/woocommerce.php')){
+			$errors[] = sprintf(__("Woocommerce %s+ has to be active.", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION);
+		}
+		else{
+			$woocommerce_data = get_plugin_data(WP_PLUGIN_DIR .'/woocommerce/woocommerce.php', false, false);
+			
+			if (version_compare ($woocommerce_data['Version'] , WC_WALLEE_REQUIRED_WC_VERSION, '<')){
+				$errors[] = sprintf(__("Woocommerce %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION, $woocommerce_data['Version']);
+			}
+		}
+		
+		try{
+			HttpClientFactory::getClient();
+		}
+		catch(Exception $e){
+			$errors[] = __("Install the PHP cUrl extension or ensure the 'stream_socket_client' function is available.");
+		}
+		
+		if(!empty($errors)){
+			$title = __('Could not activate plugin WooCommerce Wallee', 'woocommerce-wallee');
+			$message = '<h1><strong>'.$title.'</strong></h1><br/>'.
+					'<h3>'.__('Please check the following requirements before activating:', 'woocommerce-wallee').'</h3>'.
+					'<ul><li>'.
+					implode('</li><li>', $errors).
+					'</li></ul>';
+					
+			 
+			wp_die($message, $title, array('back_link' => true));
+			return;
+		}
+	}
+	
+	/**
+	 * Create tables if new MU blog is created
+	 * @param  array $tables
+	 * @return string[]
+	 */
+	public static function wpmu_new_blog($blog_id, $user_id, $domain, $path, $site_id, $meta){
+		global $wpdb;
+		
+		if (is_plugin_active_for_network('woocommerce-wallee/woocommerce-wallee.php')) {
+			$old_blog = $wpdb->blogid;
+			switch_to_blog($blog_id);
+			self::migrate_wallee_db();
+			switch_to_blog($old_blog);
+		}
+	}
+
+	private static function migrate_wallee_db(){
+		$current_version = get_option('wc_wallee_db_version', 0);
+		foreach (self::$db_migrations as $version => $function_name) {
+			if (version_compare($current_version, $version, '<')) {
+				
+				call_user_func(array(
+					__CLASS__,
+					$function_name 
+				));
+				
+				update_option('wc_wallee_db_version', $version);
+				$current_version = $version;
+			}
+		}
+	}
+
+	/**
+	 * Uninstall tables when MU blog is deleted.
+	 * @param  array $tables
+	 * @return string[]
+	 */
+	public static function wpmu_drop_tables($tables){
+		global $wpdb;
+		
+		$tables[] = $wpdb->prefix . 'woocommerce_wallee_method_configuration';
+		$tables[] = $wpdb->prefix . 'woocommerce_wallee_transaction_info';
+		$tables[] = $wpdb->prefix . 'woocommerce_wallee_token_info';
+		$tables[] = $wpdb->prefix . 'woocommerce_wallee_completion_job';
+		$tables[] = $wpdb->prefix . 'woocommerce_wallee_void_job';
+		$tables[] = $wpdb->prefix . 'woocommerce_wallee_refund_job';
+		
+		return $tables;
+	}
+
+	/**
+	 * Check Wallee DB version and run the migration if required.
+	 *
+	 * This check is done on all requests and runs if he versions do not match.
+	 */
+	public static function check_version(){
+		try {
+			$current_version = get_option('woocommerce_wallee_db_version', 0);
+			$version_keys = array_keys(self::$db_migrations);
+			if (version_compare($current_version, '0', '>') && version_compare($current_version, end($version_keys), '<')) {
+				//We migrate the Db for all blogs
+				self::install_wallee_db(true);
+			}
+		}
+		catch (Exception $e) {
+			if (is_admin()) {
+				add_action('admin_notices', array(
+					'WC_Wallee_Admin_Notices',
+					'migration_failed_notices' 
+				));
+			}
+		}
+	}
+
+	/**
+	 * Show plugin changes. Code adapted from W3 Total Cache.
+	 */
+	public static function in_plugin_update_message($args){
+		$transient_name = 'wallee_upgrade_notice_' . $args['Version'];
+		
+		if (false === ($upgrade_notice = get_transient($transient_name))) {
+			$response = wp_safe_remote_get('https://plugins.svn.wordpress.org/woocommerce-wallee/trunk/readme.txt');
+			
+			if (!is_wp_error($response) && !empty($response['body'])) {
+				$upgrade_notice = self::parse_update_notice($response['body'], $args['new_version']);
+				set_transient($transient_name, $upgrade_notice, DAY_IN_SECONDS);
+			}
+		}
+		echo wp_kses_post($upgrade_notice);
+	}
+
+	/**
+	 * Parse update notice from readme file.
+	 *
+	 * @param  string $content
+	 * @param  string $new_version
+	 * @return string
+	 */
+	private static function parse_update_notice($content, $new_version){
+		// Output Upgrade Notice.
+		$matches = null;
+		$regexp = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote(WC_WALLEE_VERSION) . '\s*=|$)~Uis';
+		$upgrade_notice = '';
+		
+		if (preg_match($regexp, $content, $matches)) {
+			$version = trim($matches[1]);
+			$notices = (array) preg_split('~[\r\n]+~', trim($matches[2]));
+			
+			// Check the latest stable version and ignore trunk.
+			if ($version === $new_version && version_compare(WC_WALLEE_VERSION, $version, '<')) {
+				$upgrade_notice .= '<div class="plugin_upgrade_notice">';
+				foreach ($notices as $index => $line) {
+					$upgrade_notice .= wp_kses_post(preg_replace('~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line));
+				}
+				$upgrade_notice .= '</div> ';
+			}
+		}
+		
+		return wp_kses_post($upgrade_notice);
+	}
+
+	public static function wc_wallee_update_1_0_0_initialize(){
+		global $wpdb;
+		
+		$result = $wpdb->query(
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_method_configuration(
+				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`state` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`space_id` bigint(20) unsigned NOT NULL,
+				`created_at` datetime NOT NULL,
+				`updated_at` datetime NOT NULL,
+				`configuration_id` bigint(20) unsigned NOT NULL,
+				`configuration_name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+				`title` longtext COLLATE utf8_unicode_ci,
+				`description` longtext COLLATE utf8_unicode_ci,
+				`image` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `unq_space_id_configuration_id` (`space_id`,`configuration_id`),
+				KEY `idx_space_id` (`space_id`),
+				KEY `idx_configuration_id` (`configuration_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+		
+		$result = $wpdb->query(
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_transaction_info(
+				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`transaction_id` bigint(20) unsigned NOT NULL,
+				`state` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`space_id` bigint(20) unsigned NOT NULL,
+				`space_view_id` bigint(20) unsigned DEFAULT NULL,
+				`language` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`currency` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`created_at` datetime NOT NULL,
+				`updated_at` datetime NOT NULL,
+				`authorization_amount` decimal(19,8) NOT NULL,
+				`image` varchar(512) COLLATE utf8_unicode_ci DEFAULT NULL,
+				`labels` longtext COLLATE utf8_unicode_ci,
+				`payment_method_id` bigint(20) unsigned DEFAULT NULL,
+				`connector_id` bigint(20) unsigned DEFAULT NULL,
+				`order_id` int(10) unsigned NOT NULL,
+				`failure_reason` longtext COLLATE utf8_unicode_ci,
+				`locked_at` datetime,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `unq_transaction_id_space_id` (`transaction_id`,`space_id`),
+				UNIQUE KEY `unq_order_id` (`order_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+		
+		$result = $wpdb->query(
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_token_info(
+				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`token_id` bigint(20) unsigned NOT NULL,
+				`state` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`space_id` bigint(20) unsigned NOT NULL,
+				`name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`created_at` datetime NOT NULL,
+				`updated_at` datetime NOT NULL,
+				`customer_id` int(10) unsigned NOT NULL,
+				`payment_method_id` int(10) unsigned NOT NULL,
+				`connector_id` bigint(20) unsigned DEFAULT NULL,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `unq_transaction_id_space_id` (`token_id`,`space_id`),
+				KEY `idx_customer_id` (`customer_id`),
+				KEY `idx_payment_method_id` (`payment_method_id`),
+				KEY `idx_connector_id` (`connector_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+		$result = $wpdb->query(
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_completion_job(
+				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`state` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`completion_id` bigint(20) unsigned,
+				`transaction_id` bigint(20) unsigned NOT NULL,
+				`space_id` bigint(20) unsigned NOT NULL,
+				`order_id` bigint(20) unsigned NOT NULL,
+				`amount` decimal(19,8) NOT NULL,
+				`created_at` datetime NOT NULL,
+				`updated_at` datetime NOT NULL,
+				`restock`varchar(1) COLLATE utf8_unicode_ci,
+				`items` longtext COLLATE utf8_unicode_ci,
+				`failure_reason` longtext COLLATE utf8_unicode_ci,			
+				PRIMARY KEY (`id`),
+				KEY `idx_transaction_id_space_id` (`transaction_id`,`space_id`),
+				KEY `idx_completion_id_space_id` (`completion_id`,`space_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+		
+		$result = $wpdb->query(
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_void_job(
+				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`state` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`void_id` bigint(20) unsigned,
+				`transaction_id` bigint(20) unsigned NOT NULL,
+				`space_id` bigint(20) unsigned NOT NULL,
+				`order_id` bigint(20) unsigned NOT NULL,
+				`created_at` datetime NOT NULL,
+				`updated_at` datetime NOT NULL,
+				`restock`varchar(1) COLLATE utf8_unicode_ci,
+				`failure_reason` longtext COLLATE utf8_unicode_ci,
+				PRIMARY KEY (`id`),
+				KEY `idx_transaction_id_space_id` (`transaction_id`,`space_id`),
+				KEY `idx_void_id_space_id` (`void_id`,`space_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+		
+		$result = $wpdb->query(
+				"CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_refund_job(
+				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`state` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`wc_refund_id` bigint(20) unsigned NOT NULL,
+				`external_id` varchar(100) NOT NULL,
+				`transaction_id` bigint(20) unsigned NOT NULL,
+				`space_id` bigint(20) unsigned NOT NULL,
+				`order_id` bigint(20) unsigned NOT NULL,
+				`created_at` datetime NOT NULL,
+				`updated_at` datetime NOT NULL,
+				`refund` longtext COLLATE utf8_unicode_ci,
+				`failure_reason` longtext COLLATE utf8_unicode_ci,
+				PRIMARY KEY (`id`),
+				KEY `idx_transaction_id_space_id` (`transaction_id`,`space_id`),
+				KEY `idx_external_id_space_id` (`external_id`,`space_id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+	}
+}
+
+WC_Wallee_Migration::init();

@@ -1,0 +1,122 @@
+<?php
+if (!defined('ABSPATH')) {
+	exit();
+}
+
+/**
+ * WC_Wallee_Service_Method_Configuration Class.
+ */
+class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract {
+
+	/**
+	 * Updates the data of the payment method configuration.
+	 *
+	 * @param \Wallee\Sdk\Model\PaymentMethodConfiguration $configuration
+	 */
+	public function update_data(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
+		/* @var WC_Wallee_Entity_Method_Configuration $entity */
+		$entity = WC_Wallee_Entity_Method_Configuration::load_by_configuration($configuration->getLinkedSpaceId(), $configuration->getId());
+		if ($entity->get_id() !== null && $this->has_changed($configuration, $entity)) {
+			$entity->set_configuration_name($configuration->getName());
+			$entity->set_title($this->get_translations_array($configuration->getTitle()));
+			$entity->set_description($this->get_translations_array($configuration->getDescription()));
+			$entity->set_image(
+					$configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : $this->get_payment_method(
+							$configuration->getPaymentMethod())->getImagePath());
+			$entity->save();
+		}
+	}
+
+	private function has_changed(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration, WC_Wallee_Entity_Method_Configuration $entity){
+		if ($configuration->getName() != $entity->get_configuration_name()) {
+			return true;
+		}
+		
+		if ($this->get_translations_array($configuration->getTitle()) != $entity->get_title()) {
+			return true;
+		}
+		
+		if ($this->get_translations_array($configuration->getDescription()) != $entity->get_description()) {
+			return true;
+		}
+		
+		$image = $configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : $this->get_payment_method(
+				$configuration->getPaymentMethod())->getImagePath();
+		if ($image != $entity->get_image()) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Synchronizes the payment method configurations from Wallee.
+	 */
+	public function synchronize(){
+		$existing_found = array();
+		$space_id = get_option('wc_wallee_space_id');
+		
+		$existing_configurations = WC_Wallee_Entity_Method_Configuration::load_all();
+		
+		if (!empty($space_id)) {
+			$payment_method_configuration_service = new \Wallee\Sdk\Service\PaymentMethodConfigurationService(
+					WC_Wallee_Helper::instance()->get_api_client());
+			$configurations = $payment_method_configuration_service->search($space_id, 
+					new \Wallee\Sdk\Model\EntityQuery());
+			foreach ($configurations as $configuration) {
+				/* @var WC_Wallee_Entity_Method_Configuration $method */
+				$method = WC_Wallee_Entity_Method_Configuration::load_by_configuration($space_id, $configuration->getId());
+				if ($method->get_id() !== null) {
+					$existing_found[] = $method->get_id();
+				}
+				
+				$method->set_space_id($space_id);
+				$method->set_configuration_id($configuration->getId());
+				$method->set_configuration_name($configuration->getName());
+				$method->set_state($this->get_configuration_state($configuration));
+				$method->set_title($this->get_translations_array($configuration->getTitle()));
+				$method->set_description($this->get_translations_array($configuration->getDescription()));
+				$method->set_image(
+						$configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : $this->get_payment_method(
+								$configuration->getPaymentMethod())->getImagePath());
+				$method->save();
+			}
+		}
+		foreach ($existing_configurations as $existing_configuration) {
+			if (!in_array($existing_configuration->get_id(), $existing_found)) {
+				$existing_configuration->set_state(WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN);
+				$existing_configuration->save();
+			}
+		}
+		delete_transient('wc_wallee_payment_methods');
+	}
+
+	/**
+	 * Returns the payment method for the given id.
+	 *
+	 * @param int $id
+	 * @return \Wallee\Sdk\Model\PaymentMethod
+	 */
+	protected function get_payment_method($id){
+		/* @var WC_Wallee_Provider_Payment_Method */
+		$method_provider = WC_Wallee_Provider_Payment_Method::instance();
+		return $method_provider->find($id);
+	}
+
+	/**
+	 * Returns the state for the payment method configuration.
+	 *
+	 * @param \Wallee\Sdk\Model\PaymentMethodConfiguration $configuration
+	 * @return string
+	 */
+	protected function get_configuration_state(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
+		switch ($configuration->getState()) {
+			case \Wallee\Sdk\Model\PaymentMethodConfiguration::STATE_ACTIVE:
+				return WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
+			case \Wallee\Sdk\Model\PaymentMethodConfiguration::STATE_INACTIVE:
+				return WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE;
+			default:
+				return WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN;
+		}
+	}
+}
