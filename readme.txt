@@ -1,8 +1,8 @@
-=== Plugin Name ===
+=== WooCommerce Wallee ===
 Contributors: customweb
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
-Tested up to: 4.7
+Tested up to: 4.8
 Stable tag: 1.0.0
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
