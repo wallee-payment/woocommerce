@@ -47,7 +47,9 @@ To use this extension, a wallee account is required. Sign up on [wallee.com](htt
 
 == Documentation ==
 
-[Wiki]https://github.com/wallee-payment/woocommerce/wiki
+[Wiki](https://github.com/wallee-payment/woocommerce/wiki)
+[Issue Tracker](https://github.com/wallee-payment/woocommerce/issues)
+[Source Code](https://github.com/wallee-payment/woocommerce/)
 
 == Changelog ==
 
