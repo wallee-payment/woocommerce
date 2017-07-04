@@ -1,5 +1,5 @@
 === WooCommerce Wallee ===
-Contributors: customweb
+Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.8
@@ -7,7 +7,7 @@ Stable tag: 1.0.0
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
-Accept payments in WooCommerce with Wallee plugin.
+Accept payments in WooCommerce with Wallee.
 
 == Description ==
 
@@ -45,11 +45,15 @@ To use this extension, a wallee account is required. Sign up on [wallee.com](htt
 4. Set your Wallee credentials at WooCommerce -> Settings -> Wallee (or use the *Settings* link in the Plugins overview)
 5. You're done, the active payment methods should be visible in the checkout of your webshop.
 
-== Documentation ==
+== Frequently Asked Questions ==
 
-[Wiki](https://github.com/wallee-payment/woocommerce/wiki)
-[Issue Tracker](https://github.com/wallee-payment/woocommerce/issues)
-[Source Code](https://github.com/wallee-payment/woocommerce/)
+= Where can I find documentation? =
+
+For help setting up and configuring WooCommerce Wallee please refer to the [wiki](https://github.com/wallee-payment/woocommerce/wiki).
+
+= Where can I report issues? =
+
+If you have an issue please use the [issue tracker](https://github.com/wallee-payment/woocommerce/issues).
 
 == Changelog ==
 
