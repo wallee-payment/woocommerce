@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: WooCommerce Wallee
- * Plugin URI: https://wordpress.org/plugins/woocommerce-wallee
- * Description: Process payments with Wallee
+ * Plugin URI: https://wordpress.org/plugins/woo-wallee
+ * Description: Process WooCommerce payments with Wallee
  * Version: 1.0.0
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0

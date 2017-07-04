@@ -97,7 +97,7 @@ class WC_Wallee_Admin_Transaction {
 						<td class="value"><strong><?php echo  wc_price( $transaction_info->get_authorization_amount(), array( 'currency' => $transaction_info->get_currency()) )?></strong></td>
 					</tr>
 					<tr>
-						<td class="label"><label><?php echo _e('Transaction', 'woocommerce-wallee') ?></label></td>
+						<td class="label"><label><?php _e('Transaction', 'woocommerce-wallee') ?></label></td>
 						<td class="value"><strong> <a
 								href="<?php echo self::get_transaction_url($transaction_info) ?>"
 								target="_blank">

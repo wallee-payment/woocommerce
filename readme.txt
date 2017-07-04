@@ -39,8 +39,8 @@ To use this extension, a wallee account is required. Sign up on [wallee.com](htt
 
 = Manual installation =
 
-1. Unpack the download package
-2. Upload the directory 'woocommerce-wallee' to the `/wp-content/plugins/` directory
+1. Unpack the downloaded package.
+2. Upload the directory 'woo-wallee' to the `/wp-content/plugins/` directory
 3. Activate the 'WooCommerce Wallee' plugin through the 'Plugins' menu in WordPress
 4. Set your Wallee credentials at WooCommerce -> Settings -> Wallee (or use the *Settings* link in the Plugins overview)
 5. You're done, the active payment methods should be visible in the checkout of your webshop.
