@@ -29,7 +29,7 @@ class WC_Wallee_Migration {
 			__CLASS__,
 			'wpmu_drop_tables' 
 		));
-		add_action('in_plugin_update_message-woocommerce-wallee/woocommerce-wallee.php', array(
+		add_action('in_plugin_update_message-woo-wallee/woocommerce-wallee.php', array(
 			__CLASS__,
 			'in_plugin_update_message' 
 		));
@@ -124,7 +124,7 @@ class WC_Wallee_Migration {
 	public static function wpmu_new_blog($blog_id, $user_id, $domain, $path, $site_id, $meta){
 		global $wpdb;
 		
-		if (is_plugin_active_for_network('woocommerce-wallee/woocommerce-wallee.php')) {
+		if (is_plugin_active_for_network('woo-wallee/woocommerce-wallee.php')) {
 			$old_blog = $wpdb->blogid;
 			switch_to_blog($blog_id);
 			self::migrate_wallee_db();
@@ -197,7 +197,7 @@ class WC_Wallee_Migration {
 		$transient_name = 'wallee_upgrade_notice_' . $args['Version'];
 		
 		if (false === ($upgrade_notice = get_transient($transient_name))) {
-			$response = wp_safe_remote_get('https://plugins.svn.wordpress.org/woocommerce-wallee/trunk/readme.txt');
+			$response = wp_safe_remote_get('https://plugins.svn.wordpress.org/woo-wallee/trunk/readme.txt');
 			
 			if (!is_wp_error($response) && !empty($response['body'])) {
 				$upgrade_notice = self::parse_update_notice($response['body'], $args['new_version']);

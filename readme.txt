@@ -57,6 +57,10 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 == Changelog ==
 
+= 1.0.1 - July 28, 2017 =
+
+- Added document download buttons to order overview
+
 = 1.0.0 - July 1, 2017 =
 
 - Initial release.
