@@ -137,7 +137,7 @@ class WC_Wallee_Admin_Refund {
 			$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
 			$refund_job->save();
 			$wpdb->query("COMMIT;");
-			throw new Exception(__('There has been an error while sending the refund to the gateway.', 'woocommerce-wallee'));
+			throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woocommerce-wallee'), $e->getMessage()));
 		}
 	}
 

@@ -302,7 +302,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			
 			$transaction_service = WC_Wallee_Service_Transaction::instance();
 			
-			$transaction = $transaction_service->update_transaction($wallee_transaction_id, $wallee_space_id, $order);
+			$transaction = $transaction_service->update_transaction($wallee_transaction_id, $wallee_space_id, $order, true);
 			$transaction_service->update_transaction_info($transaction, $order);
 			
 			$order->add_meta_data('_wallee_linked_space_id', $transaction->getLinkedSpaceId(), true);

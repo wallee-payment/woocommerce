@@ -287,7 +287,6 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 					$transaction->getId());
 			
 			$method_configuration_service = WC_Wallee_Service_Method_Configuration::instance();
-			
 			foreach ($payment_methods as $payment_method) {
 				$method_configuration_service->update_data($payment_method);
 			}
@@ -305,7 +304,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @param WC_Order $order
 	 * @return \Wallee\Sdk\Model\Transaction
 	 */
-	public function update_transaction($transaction_id, $space_id, WC_Order $order){
+	public function update_transaction($transaction_id, $space_id, WC_Order $order, $confirm = false){
 		$last = null;
 		for ($i = 0; $i < 5; $i++) {
 			try {
@@ -317,7 +316,12 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 				$pending_transaction->setId($transaction->getId());
 				$pending_transaction->setVersion($transaction->getVersion());
 				$this->assemble_order_transaction_data($order, $pending_transaction);
-				return $this->get_transaction_service()->update($space_id, $pending_transaction);
+				if($confirm){
+					return $this->get_transaction_service()->confirm($space_id, $pending_transaction);	
+				}
+				else{
+					return $this->get_transaction_service()->update($space_id, $pending_transaction);
+				}
 			}
 			catch (\Wallee\Sdk\ApiException $e) {
 				$last = $e;

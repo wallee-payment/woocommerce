@@ -33,7 +33,7 @@ class WC_Wallee_Customer_Document {
 		}
 		$packing = false;
 		$invoice = false;
-		if (get_option('wc_wallee_customer_invoice') == 'yes' && in_array($transaction_info->get_state(), 
+		if (get_option('wc_wallee_customer_invoice') == 'yes' && in_array($transaction_info->get_state(),
 				array(
 					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
 					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
@@ -41,8 +41,7 @@ class WC_Wallee_Customer_Document {
 				))) {
 			$invoice = true;
 		}
-		if (get_option('wc_wallee_customer_packing') == 'yes' &&
-				 $transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL) {
+		if (get_option('wc_wallee_customer_packing') == 'yes' && $transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL) {
 			$packing = true;
 		}
 		if ($invoice || $packing) {
@@ -123,22 +122,27 @@ class WC_Wallee_Customer_Document {
 		if ($user->ID !== $customer_user_id) {
 			wp_die('Access denied');
 		}
-		
-		switch ($action) {
-			case 'download_invoice':
-				if (get_option('wc_wallee_customer_invoice') != 'yes') {
-					wp_die('Access denied');
-				}
-				WC_Wallee_Download_Helper::download_invoice($order_id);
-				break;
-			case 'download_packing':
-				if (get_option('wc_wallee_customer_packing') != 'yes') {
-					wp_die('Access denied');
-				}
-				WC_Wallee_Download_Helper::download_packing_slip($order_id);
-				break;
+		try {
+			
+			switch ($action) {
+				case 'download_invoice':
+					if (get_option('wc_wallee_customer_invoice') != 'yes') {
+						wp_die('Access denied');
+					}
+					WC_Wallee_Download_Helper::download_invoice($order_id);
+					break;
+				case 'download_packing':
+					if (get_option('wc_wallee_customer_packing') != 'yes') {
+						wp_die('Access denied');
+					}
+					WC_Wallee_Download_Helper::download_packing_slip($order_id);
+					break;
+			}
 		}
-		wp_redirect(wc_get_endpoint_url('view-order', $order_id, wc_get_page_permalink('my-account')));
+		catch (Exception $e) {
+			wc_add_notice(__('There was an error downloading the document.', 'woocommerce-wallee'), 'error');
+		}
+		wp_redirect(wc_get_endpoint_url('my-account/view-order', $order_id, wc_get_page_permalink('my-account')));
 		exit();
 	}
 }

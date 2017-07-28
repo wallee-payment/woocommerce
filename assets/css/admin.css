@@ -1,21 +1,20 @@
 /* Icons for status */
 @font-face {
-	font-family: 'walleewoocommerce';
-	src: url('../font/walleewoocommerce.eot?48263075');
-	src: url('../font/walleewoocommerce.eot?48263075#iefix')
-		format('embedded-opentype'),
-		url('../font/walleewoocommerce.woff2?48263075') format('woff2'),
-		url('../font/walleewoocommerce.woff?48263075') format('woff'),
-		url('../font/walleewoocommerce.ttf?48263075') format('truetype'),
-		url('../font/walleewoocommerce.svg?48263075#walleewoocommerce')
-		format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'woocommerce-wallee';
+  src: url('../font/woocommerce-wallee.eot?8310684');
+  src: url('../font/woocommerce-wallee.eot?8310684#iefix') format('embedded-opentype'),
+       url('../font/woocommerce-wallee.woff2?8310684') format('woff2'),
+       url('../font/woocommerce-wallee.woff?8310684') format('woff'),
+       url('../font/woocommerce-wallee.ttf?8310684') format('truetype'),
+       url('../font/woocommerce-wallee.svg?8310684#woocommerce-wallee') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
+/* Status Icons */
 .widefat .column-order_status mark.wallee-redirected::after, .widefat .column-order_status mark.wallee-waiting::after,
 	.widefat .column-order_status mark.wallee-manual::after {
-	font-family: walleewoocommerce;
+	font-family: woocommerce-wallee;
 	speak: none;
 	font-weight: 400;
 	text-transform: none;
@@ -54,6 +53,55 @@
 	color: #ffffff;
 	line-height: 1.4;
 	font-size: 75%;
+}
+
+/* Invoice & PackingSlip Download */
+
+.order_actions .wallee-button-download-invoice,.order_actions .wallee-button-download-packingslip {
+    display: block;
+    text-indent: -9999px;
+    position: relative;
+    height: 1em;
+    width: 1em;
+    padding: 0!important;
+    height: 2em!important;
+    width: 2em
+}
+
+.order_actions .wallee-button-download-invoice::after {
+	font-family: woocommerce-wallee;
+	speak: none;
+	font-weight: 400;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	text-indent: 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	content: "\f0f6";
+	line-height: 1.85;
+	margin: 0px;
+}
+
+.order_actions .wallee-button-download-packingslip::after {
+	font-family: woocommerce-wallee;
+	speak: none;
+	font-weight: 400;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	text-indent: 0px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	content: "\e802";
+	line-height: 1.85;
+	margin: 0px;
 }
 
 /* Backend Transction info */

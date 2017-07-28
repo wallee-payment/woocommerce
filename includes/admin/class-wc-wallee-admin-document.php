@@ -13,10 +13,55 @@ class WC_Wallee_Admin_Document {
 			__CLASS__,
 			'add_meta_box' 
 		), 40);
+		add_action('woocommerce_admin_order_actions_end', array(
+			__CLASS__,
+			'add_buttons_to_overview' 
+		), 12, 1);
 		add_action('admin_init', array(
 			__CLASS__,
 			'download_document' 
 		));
+	}
+
+	public static function add_buttons_to_overview(WC_Order $order){
+		$method = wc_get_payment_gateway_by_order($order);
+		if (!($method instanceof WC_Wallee_Gateway)) {
+			return;
+		}
+		$helper = WC_Wallee_Helper::instance();
+		
+		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+		if ($transaction_info->get_id() == null) {
+			return;
+		}
+		if (in_array($transaction_info->get_state(),
+				array(
+					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
+					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
+					\Wallee\Sdk\Model\Transaction::STATE_DECLINE 
+				))) {
+			
+			$url = wp_nonce_url(
+					add_query_arg(
+							array(
+								'post' => $order->get_id(),
+								'refer' => 'overview',
+								'wallee_admin' => 'download_invoice' 
+							), admin_url('post.php')), 'download_invoice', 'nonce');
+			$title = esc_attr(__('Invoice', 'woocommerce-wallee'));
+			printf('<a class="button tips wallee-button-download-invoice" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
+		}
+		if ($transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL) {
+			$url = wp_nonce_url(
+					add_query_arg(
+							array(
+								'post' => $order->get_id(),
+								'refer' => 'overview',
+								'wallee_admin' => 'download_packing' 
+							), admin_url('post.php')), 'download_packing', 'nonce');
+			$title = esc_attr(__('Packing Slip', 'woocommerce-wallee'));
+			printf('<a class="button tips wallee-button-download-packingslip" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
+		}
 	}
 
 	/**
@@ -33,7 +78,7 @@ class WC_Wallee_Admin_Document {
 			return;
 		}
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
-		if ($transaction_info->get_id() != null && in_array($transaction_info->get_state(), 
+		if ($transaction_info->get_id() != null && in_array($transaction_info->get_state(),
 				array(
 					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
 					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
@@ -65,7 +110,7 @@ class WC_Wallee_Admin_Document {
 		if ($transaction_info->get_id() == null) {
 			return;
 		}
-		if (in_array($transaction_info->get_state(), 
+		if (in_array($transaction_info->get_state(),
 				array(
 					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
 					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
@@ -81,7 +126,7 @@ class WC_Wallee_Admin_Document {
 					add_query_arg(
 							array(
 								'post' => $order->get_id(),
-								'action' => 'edit',
+								'refer' => 'edit',
 								'wallee_admin' => 'download_invoice' 
 							), admin_url('post.php')), 'download_invoice', 'nonce');
 			?>"
@@ -95,7 +140,7 @@ class WC_Wallee_Admin_Document {
 						add_query_arg(
 								array(
 									'post' => $order->get_id(),
-									'action' => 'edit',
+									'refer' => 'edit',
 									'wallee_admin' => 'download_packing' 
 								), admin_url('post.php')), 'download_packing', 'nonce');
 				?>"
@@ -133,20 +178,30 @@ class WC_Wallee_Admin_Document {
 		}
 		
 		$order_id = intval($_GET['post']);
-		
-		switch ($action) {
-			case 'download_invoice':
-				WC_Wallee_Download_Helper::download_invoice($order_id);
-				break;
-			case 'download_packing':
-				WC_Wallee_Download_Helper::download_packing_slip($order_id);
-				break;
+		try {
+			switch ($action) {
+				case 'download_invoice':
+					WC_Wallee_Download_Helper::download_invoice($order_id);
+					break;
+				case 'download_packing':
+					WC_Wallee_Download_Helper::download_packing_slip($order_id);
+					break;
+			}
 		}
-		
-		wp_redirect(add_query_arg(array(
-			'post' => $order_id,
-			'action' => 'edit' 
-		), admin_url('post.php')));
+		catch (Exception $e) {
+			wp_die(__('Could not fetch the document from Wallee.', 'woocommerce-wallee'));
+		}
+		if ($_GET['refer'] == 'edit') {
+			wp_redirect(add_query_arg(array(
+				'post' => $order_id,
+				'action' => 'edit' 
+			), admin_url('post.php')));
+		}
+		else {
+			wp_redirect(add_query_arg(array(
+				'post_type' => 'shop_order' 
+			), admin_url('edit.php')));
+		}
 		exit();
 	}
 
