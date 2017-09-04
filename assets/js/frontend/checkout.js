@@ -48,20 +48,25 @@ jQuery(function($) {
 		    + current_method);
 	    var description = configuration.data("description-available");
 
+	    //Hide iFrame by moving it (display:none leads to issues)
 	    var item = $('form.checkout').find(
 		    'input[name="payment_method"]:checked').closest(
 		    'li.wc_payment_method').find('div.payment_box');
-
-	    if (description == "false"
+	    var form = item.find('#payment-form-' + method_id);
+		form.css('display', '');
+	    if ((!description || description == "false")
 		    && this.payment_methods[method_id]['height'] == 0) {
-		item.hide();
+		item.css('position', 'absolute');
+		item.css('left', '-100000px');
 	    } else if (this.payment_methods[method_id]['height'] == 0) {
-		var form = item.find('#payment-form-' + method_id);
-		form.css('display', 'none');
+		form.css('position', 'absolute');
+		form.css('left', '-100000px');
 
 	    } else {
-		var form = item.find('#payment-form-' + method_id);
-		form.css('display', '');
+		item.css('position', '');
+		item.css('left', '');
+		form.css('position', '');
+		form.css('left', '');
 		item.slideDown(250);
 	    }
 	},
@@ -109,10 +114,14 @@ jQuery(function($) {
 		return;
 	    }
 	    var self = this;
+	    
+	    //Create visible div and add iframe to it. otherwise some browsers have issues reporting the correct height
+	    var tmp_container_id = 'tmp-'+container_id;
+	    $('<div>').attr('id', tmp_container_id).appendTo('body');
 
 	    this.payment_methods[method_id] = {
 		configuration_id : configuration_id,
-		container_id : container_id,
+		container_id : tmp_container_id,
 		handler : window.IframeCheckoutHandler(configuration_id),
 		height : 0
 	    };
@@ -128,6 +137,11 @@ jQuery(function($) {
 
 	    this.payment_methods[method_id].handler
 		    .create(self.payment_methods[method_id].container_id);
+	    
+	    $('#'+container_id).replaceWith($('#'+tmp_container_id));
+	    $('#'+tmp_container_id).attr('id', container_id);
+
+	    
 	    var form = $('form.checkout');
 	    form.off('checkout_place_order_' + method_id + '.wallee').on(
 		    'checkout_place_order_' + method_id + '.wallee',

@@ -49,9 +49,9 @@ if git show-ref --tags --quiet --verify -- "refs/tags/$NEWVERSION1"
 fi
 
 cd $GITPATH
-#echo -e "Enter a commit message for this new version: \c"
-#read COMMITMSG
-#git commit -am "$COMMITMSG"
+echo -e "Enter a commit message for this new version: \c"
+read COMMITMSG
+git commit -am "$COMMITMSG"
 
 echo "Tagging new version in git"
 git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
@@ -80,6 +80,7 @@ echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"

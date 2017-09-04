@@ -38,7 +38,7 @@ class WC_Wallee_Service_Token extends WC_Wallee_Service_Abstract {
 		$query->setFilter($filter);
 		$query->setNumberOfEntities(1);
 		$token_versions = $this->get_token_version_service()->search($space_id, $query);
-		if (!empty($token_version)) {
+		if (!empty($token_versions)) {
 			$this->update_info($space_id, current($token_versions));
 		}
 		else {

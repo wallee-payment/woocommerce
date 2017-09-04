@@ -23,11 +23,15 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			$this,
 			'settings_tab' 
 		));
+		add_action('woocommerce_settings_save_' . $this->id, array(
+			$this,
+			'save' 
+		));
+		
 		add_action('woocommerce_update_options_' . $this->id, array(
 			$this,
 			'update_settings' 
 		));
-		//add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
 	}
 
 	public function add_settings_tab($settings_tabs){
@@ -38,9 +42,14 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	public function settings_tab(){
 		woocommerce_admin_fields($this->get_settings());
 	}
+	
+	public function save(){
+		$settings = $this->get_settings();
+		WC_Admin_Settings::save_fields( $settings );
+		
+	}
 
 	public function update_settings(){
-		woocommerce_update_options($this->get_settings());
 		$user_id = get_option('wc_wallee_application_user_id');
 		$user_key = get_option('wc_wallee_application_user_key');
 		if (!empty($user_id) && !empty($user_key)) {
@@ -49,12 +58,12 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			}
 			catch (Exception $e) {
 				WC_Admin_Settings::add_error(
-						__('Could not fetch configuration from Wallee. Please check your credentials and try again.', 'woocommerce-wallee'));
+						__('Could not fetch configuration from Wallee. Please check your credentials and save again.', 'woocommerce-wallee'));
 			}
 		}
 		$this->delete_provider_transients();
 	}
-	
+
 	private function delete_provider_transients(){
 		$transients = array(
 			'wc_wallee_currencies',
@@ -62,9 +71,9 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			'wc_wallee_label_descriptor',
 			'wc_wallee_languages',
 			'wc_wallee_payment_connectors',
-			'wc_wallee_payment_methods',
+			'wc_wallee_payment_methods' 
 		);
-		foreach($transients as $transient){
+		foreach ($transients as $transient) {
 			delete_transient($transient);
 		}
 	}
@@ -80,33 +89,35 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => __('General', 'woocommerce-wallee'),
 				'desc' => sprintf(
-						__('To use this extension, a wallee account is required. Sign up on <a href="%s" target="_blank">wallee.com</a>.', 
-								'woocommerce-wallee'), 'https://app-wallee.com/user/signup'),
+						__('To use this extension, a wallee account is required. Sign up on <a href="%s" target="_blank">wallee.com</a>.<br />You can find more information on how to retrieve the required information <a href="%s" target="_blank">here</a>.',
+								'woocommerce-wallee'), 'https://app-wallee.com/user/signup', 'https://github.com/wallee-payment/woocommerce/wiki/Getting-Started#prerequisites'),
 				'type' => 'title',
 				'id' => 'general_options' 
 			),
 			
 			array(
-				'title' => __('Application User Id', 'woocommerce-wallee'),
-				'desc' => __('The Application User needs to have full permissions in the space this shop is linked to.', 'woocommerce-wallee'),
+				'title' => __('User Id', 'woocommerce-wallee'),
+				'desc_tip' => __('The Application User needs to have full permissions in the space this shop is linked to.', 'woocommerce-wallee'),
 				'id' => 'wc_wallee_application_user_id',
 				'type' => 'text',
 				'css' => 'min-width:300px;',
-				'desc_tip' => true 
+				'desc' => __('(required)', 'woocommerce-wallee') 
 			),
 			
 			array(
-				'title' => __('Application User Key', 'woocommerce-wallee'),
+				'title' => __('Application Key', 'woocommerce-wallee'),
 				'id' => 'wc_wallee_application_user_key',
 				'type' => 'password',
-				'css' => 'min-width:300px;' 
+				'css' => 'min-width:300px;',
+				'desc' => __('(required)', 'woocommerce-wallee') 
 			),
 			
 			array(
 				'title' => __('Space Id', 'woocommerce-wallee'),
 				'id' => 'wc_wallee_space_id',
 				'type' => 'text',
-				'css' => 'min-width:300px;' 
+				'css' => 'min-width:300px;',
+				'desc' => __('(required)', 'woocommerce-wallee') 
 			),
 			
 			array(
