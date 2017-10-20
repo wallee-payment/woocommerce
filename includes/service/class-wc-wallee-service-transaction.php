@@ -362,7 +362,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$transaction->setShippingAddress($this->get_order_shipping_address($order));
 		$transaction->setCustomerEmailAddress($this->get_order_email_address($order));
 		$transaction->setCustomerId($this->get_customer_id());
-		$transaction->setLanguage(get_locale());
+		$transaction->setLanguage(WC_Wallee_Helper::instance()->get_cleaned_locale());
 		$transaction->setShippingMethod($this->fix_length($order->get_shipping_method(), 200));
 		
 		$transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));
@@ -536,7 +536,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$transaction->setShippingAddress($this->get_session_shipping_address());
 		$transaction->setCustomerEmailAddress($this->get_session_email_address());
 		$transaction->setCustomerId($this->get_customer_id());
-		$transaction->setLanguage(get_locale());
+		$transaction->setLanguage(WC_Wallee_Helper::instance()->get_cleaned_locale());
 		$transaction->setShippingMethod($this->fix_length($this->get_session_shipping_method_name(), 200));
 		
 		$transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));

@@ -37,6 +37,15 @@ class WC_Wallee_Provider_Language extends WC_Wallee_Provider_Abstract {
 		
 		return false;
 	}
+	
+	public function findByIsoCode($iso){
+		foreach ($this->get_all() as $language) {
+			if ($language->getIso2Code() == $iso || $language->getIso3Code() == $iso) {
+				return $language;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Returns a list of language.

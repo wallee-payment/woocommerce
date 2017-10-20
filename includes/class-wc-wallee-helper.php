@@ -61,10 +61,8 @@ class WC_Wallee_Helper {
 	 */
 	public function translate($translated_string, $language = null){
 		if ($language == null) {
-			$language = get_locale();
+			$language = WC_Wallee_Helper::instance()->get_cleaned_locale();
 		}
-		
-		$language = str_replace('_', '-', $language);
 		if (isset($translated_string[$language])) {
 			return $translated_string[$language];
 		}
@@ -305,5 +303,32 @@ class WC_Wallee_Helper {
 					"%d",
 					"%d" 
 				));
+	}
+	
+	public function get_cleaned_locale($useDefault = true){
+		$languageString = get_locale();
+		$languageString = str_replace('_','-', $languageString);
+		$language = false;
+		if(strlen($languageString) >= 5){
+			//We assume it was a long ietf code, check if it exists
+			$language = WC_Wallee_Provider_Language::instance()->find($languageString);
+			//Get first part of IETF and try to resolve as ISO
+			if(strpos($languageString, '-') !== false){
+				$languageString = substr($languageString, 0, strpos($languageString, '-'));
+			}
+			
+		}
+		if(!$language){
+			$language = WC_Wallee_Provider_Language::instance()->findByIsoCode(strtolower($languageString));
+		}
+		//We did not find anything, so fall back
+		if(!$language){
+			if($useDefault){
+				return 'en-US';
+			}
+			return null;
+		}
+		return $language->getIetfCode();
+		
 	}
 }

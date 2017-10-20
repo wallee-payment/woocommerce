@@ -56,7 +56,7 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 		return new self();
 	}
 
-	public static function load_by_states(array $states){
+	public static function load_by_states_and_space_id($space_id, array $states){
 		global $wpdb;
 		if (empty($states)) {
 			return array();
@@ -67,10 +67,12 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 		}
 		$replace = rtrim($replace, ", ");
 		
-		$query = "SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE state IN (" . $replace . ")";
+		$values = array_merge(array($space_id), $states);
+		
+		$query = "SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE space_id = %d AND state IN (" . $replace . ")";
 		$result = array();
 		
-		$db_results = $wpdb->get_results($wpdb->prepare($query, $states), ARRAY_A);
+		$db_results = $wpdb->get_results($wpdb->prepare($query, $values), ARRAY_A);
 		foreach ($db_results as $object_values) {
 			$result[] = new static($object_values);
 		}

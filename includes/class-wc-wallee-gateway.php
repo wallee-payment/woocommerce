@@ -105,7 +105,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		if ($this->show_icon == 'yes') {
 			$space_id = $this->get_payment_method_configuration()->get_space_id();
 			$space_view_id = get_option('wc_wallee_space_view_id');
-			$language = get_locale();
+			$language = WC_Wallee_Helper::instance()->get_cleaned_locale();
 			
 			$url = WC_Wallee_Helper::instance()->get_resource_url($this->icon, $language, $space_id, $space_view_id);
 			$icon = '<img src="' . WC_HTTPS::force_https_url($url) . '" alt="' . esc_attr($this->get_title()) . '" width="35px" />';

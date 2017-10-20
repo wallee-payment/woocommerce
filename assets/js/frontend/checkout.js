@@ -99,7 +99,7 @@ jQuery(function($) {
 	},
 
 	is_supported_method : function(method_id) {
-	    return method_id && method_id.startsWith('wallee_');
+	    return method_id && (method_id.indexOf('wallee_') == 0);
 	},
 
 	get_selected_payment_method : function() {

@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with Wallee
- * Version: 1.0.2
+ * Version: 1.0.3
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -33,7 +33,7 @@ if (!class_exists('WooCommerce_Wallee')) :
 		 *
 		 * @var string
 		 */
-		private $version = '1.0.2';
+		private $version = '1.0.3';
 		
 		/**
 		 * The single instance of the class.
@@ -237,7 +237,8 @@ if (!class_exists('WooCommerce_Wallee')) :
 		 *
 		 */
 		public function add_gateways($methods){
-			$wallee_method_configurations = WC_Wallee_Entity_Method_Configuration::load_by_states(
+			$space_id = get_option('wc_wallee_space_id');
+			$wallee_method_configurations = WC_Wallee_Entity_Method_Configuration::load_by_states_and_space_id($space_id,
 					array(
 						WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE,
 						WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE 

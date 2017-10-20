@@ -160,7 +160,6 @@ class WC_Wallee_Admin {
 
 	public function enque_script_and_css(){
 		wp_enqueue_style('woocommerce-wallee-admin-styles', WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/admin.css');
-		wp_enqueue_style('woocommerce-wallee-management-styles', WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/management.css');
 		wp_enqueue_script('wallee-admin-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/admin/management.js', 
 				array(
 					'jquery',
