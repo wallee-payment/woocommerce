@@ -101,8 +101,10 @@ class WC_Wallee_Entity_Void_Job extends WC_Wallee_Entity_Abstract {
 				$wpdb->prepare("SELECT id FROM " . $wpdb->prefix . self::get_table_name() . " WHERE state == %s AND updated_at < %s", 
 						self::STATE_CREATED, $time->format('Y-m-d H:i:s')), ARRAY_A);
 		$result = array();
-		foreach ($db_results as $object_values) {
-			$result[] = $object_values['id'];
+		if(is_array($db_results)){
+			foreach ($db_results as $object_values) {
+				$result[] = $object_values['id'];
+			}
 		}
 		return $result;
 	}

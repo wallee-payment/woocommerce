@@ -222,6 +222,11 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		if (!$is_available) {
 			return false;
 		}
+		//It is possbile this function is called in the wordpress admin section.
+		//There is not a cart, so all active methods are available
+		if(is_admin() ) {
+			return $this->get_payment_method_configuration()->get_state() ==  WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
+		}
 		//The gateways are always available during order total caluclation, as other plugins could need them.
 		if (isset($GLOBALS['_wc_wallee_calculating']) && $GLOBALS['_wc_wallee_calculating']) {
 			return true;

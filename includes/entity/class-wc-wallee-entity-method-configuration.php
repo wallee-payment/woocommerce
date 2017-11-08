@@ -73,8 +73,10 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 		$result = array();
 		
 		$db_results = $wpdb->get_results($wpdb->prepare($query, $values), ARRAY_A);
-		foreach ($db_results as $object_values) {
-			$result[] = new static($object_values);
+		if(is_array($db_results)){
+			foreach ($db_results as $object_values) {
+				$result[] = new static($object_values);
+			}
 		}
 		return $result;
 	}
