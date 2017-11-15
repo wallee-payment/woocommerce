@@ -27,14 +27,14 @@ if (!class_exists('WooCommerce_Wallee')) :
 	 * @class WooCommerce_Wallee
 	 */
 	final class WooCommerce_Wallee {
-		
+
 		/**
 		 * WooCommerce Wallee version.
 		 *
 		 * @var string
 		 */
 		private $version = '1.0.4';
-		
+
 		/**
 		 * The single instance of the class.
 		 *
@@ -92,7 +92,7 @@ if (!class_exists('WooCommerce_Wallee')) :
 			 */
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-autoloader.php');
 			require_once (WC_WALLEE_ABSPATH . 'wallee-sdk/autoload.php');
-			
+
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-migration.php');
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-email.php');
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-return-handler.php');
@@ -100,7 +100,7 @@ if (!class_exists('WooCommerce_Wallee')) :
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-unique-id.php');
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-customer-document.php');
 			require_once (WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-cron.php');
-			
+
 			if (is_admin()) {
 				require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin.php');
 			}
@@ -109,36 +109,36 @@ if (!class_exists('WooCommerce_Wallee')) :
 		private function init_hooks(){
 			register_activation_hook(__FILE__, array(
 				'WC_Wallee_Migration',
-				'install_wallee_db' 
+				'install_wallee_db'
 			));
 			register_activation_hook(__FILE__, array(
 				'WC_Wallee_Cron',
-				'activate' 
+				'activate'
 			));
 			register_deactivation_hook(__FILE__, array(
 				'WC_Wallee_Cron',
-				'deactivate' 
+				'deactivate'
 			));
-			
+
 			add_action('plugins_loaded', array(
 				$this,
-				'loaded' 
+				'loaded'
 			), 0);
 			add_action('init', array(
 				$this,
-				'register_order_statuses' 
+				'register_order_statuses'
 			));
 			add_filter('wc_order_is_editable', array(
 				$this,
-				'order_editable_check' 
+				'order_editable_check'
 			), 10, 2);
 			add_filter('woocommerce_before_calculate_totals', array(
 				$this,
-				'before_calculate_totals' 
+				'before_calculate_totals'
 			), 10);
 			add_filter('woocommerce_after_calculate_totals', array(
 				$this,
-				'after_calculate_totals' 
+				'after_calculate_totals'
 			), 10);
 		}
 
@@ -152,56 +152,56 @@ if (!class_exists('WooCommerce_Wallee')) :
 		 */
 		public function load_plugin_textdomain(){
 			$locale = apply_filters('plugin_locale', get_locale(), 'woocommerce-wallee');
-			
+
 			load_textdomain('woocommerce-wallee', WP_LANG_DIR . '/woocommerce-wallee/woocommerce-wallee' . $locale . '.mo');
 			load_plugin_textdomain('woocommerce-wallee', false, plugin_basename(dirname(__FILE__)) . '/languages');
 		}
 
 		/**
-		 * Init WooCommerce Wallee when plugins are loaded. 
+		 * Init WooCommerce Wallee when plugins are loaded.
 		 */
 		public function loaded(){
-			
+
 			// Set up localisation.
 			$this->load_plugin_textdomain();
-			
+
 			add_filter('woocommerce_payment_gateways', array(
 				$this,
-				'add_gateways' 
+				'add_gateways'
 			));
 			add_filter('wc_order_statuses', array(
 				$this,
-				'add_order_statuses' 
+				'add_order_statuses'
 			));
 		}
 
 		public function register_order_statuses(){
-			register_post_status('wc-wallee-redirected', 
+			register_post_status('wc-wallee-redirected',
 					array(
 						'label' => 'Redirected',
 						'public' => true,
 						'exclude_from_search' => false,
 						'show_in_admin_all_list' => true,
 						'show_in_admin_status_list' => true,
-						'label_count' => _n_noop('Redirected <span class="count">(%s)</span>', 'Redirected <span class="count">(%s)</span>') 
+						'label_count' => _n_noop('Redirected <span class="count">(%s)</span>', 'Redirected <span class="count">(%s)</span>')
 					));
-			register_post_status('wc-wallee-waiting', 
+			register_post_status('wc-wallee-waiting',
 					array(
 						'label' => 'Waiting',
 						'public' => true,
 						'exclude_from_search' => false,
 						'show_in_admin_all_list' => true,
 						'show_in_admin_status_list' => true,
-						'label_count' => _n_noop('Waiting <span class="count">(%s)</span>', 'Waiting <span class="count">(%s)</span>') 
+						'label_count' => _n_noop('Waiting <span class="count">(%s)</span>', 'Waiting <span class="count">(%s)</span>')
 					));
-			register_post_status('wc-wallee-manual', 
+			register_post_status('wc-wallee-manual',
 					array(
 						'label' => 'Manual Decision',
 						'public' => true,
 						'exclude_from_search' => false,
 						'show_in_admin_all_list' => true,
 						'show_in_admin_status_list' => true,
-						'label_count' => _n_noop('Manual Decision <span class="count">(%s)</span>', 'Manual Decision <span class="count">(%s)</span>') 
+						'label_count' => _n_noop('Manual Decision <span class="count">(%s)</span>', 'Manual Decision <span class="count">(%s)</span>')
 					));
 		}
 
@@ -209,7 +209,7 @@ if (!class_exists('WooCommerce_Wallee')) :
 			$order_statuses['wc-wallee-redirected'] = _x('Redirected', 'Order status', 'woocommerce');
 			$order_statuses['wc-wallee-waiting'] = _x('Waiting', 'Order status', 'woocommerce');
 			$order_statuses['wc-wallee-manual'] = _x('Manual Decision', 'Order status', 'woocommerce');
-			
+
 			return $order_statuses;
 		}
 
@@ -241,10 +241,20 @@ if (!class_exists('WooCommerce_Wallee')) :
 			$wallee_method_configurations = WC_Wallee_Entity_Method_Configuration::load_by_states_and_space_id($space_id,
 					array(
 						WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE,
-						WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE 
+						WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE
 					));
 			foreach ($wallee_method_configurations as $configuration) {
-				$methods[] = new WC_Wallee_Gateway($configuration);
+				try {
+					$methods[] = new WC_Wallee_Gateway($configuration);
+				}
+				catch (\Wallee\Sdk\ApiException $e) {
+					if ($e->getCode() === 401) {
+						// Ignore it because we simply are not allowed to access the API
+					}
+					else {
+						throw $e;
+					}
+				}
 			}
 			return $methods;
 		}
@@ -265,11 +275,11 @@ if (!class_exists('WooCommerce_Wallee')) :
 			if ($this->logger == null) {
 				$this->logger = new WC_Logger();
 			}
-			
+
 			$this->logger->log($level, $message, array(
-				'source' => 'woocommerce-wallee' 
+				'source' => 'woocommerce-wallee'
 			));
-			
+
 			if (defined('WP_DEBUG') && WP_DEBUG) {
 				error_log("Woocommerce Wallee: " . $message);
 			}
@@ -286,7 +296,7 @@ if (!class_exists('WooCommerce_Wallee')) :
 			$type = in_array($type, array(
 				'notice',
 				'error',
-				'success' 
+				'success'
 			)) ? $type : 'notice';
 			wc_add_notice($message, $type);
 		}
@@ -307,7 +317,7 @@ if (!class_exists('WooCommerce_Wallee')) :
 			return untrailingslashit(plugin_dir_path(__FILE__));
 		}
 	}
-	
+
 endif;
 
 WooCommerce_Wallee::instance();
