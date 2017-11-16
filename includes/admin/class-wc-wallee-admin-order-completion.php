@@ -111,7 +111,6 @@ class WC_Wallee_Admin_Order_Completion {
 			}
 			
 			wc_transaction_query("start");
-			$wpdb->query("START TRANSACTION;");
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
 			if (!$transaction_info->get_id()) {
 				throw new Exception(__('Could not load corresponding wallee transaction'));
@@ -145,11 +144,9 @@ class WC_Wallee_Admin_Order_Completion {
 			$completion_job->save();
 			$current_completion_id = $completion_job->get_id();
 			wc_transaction_query("commit");
-			$wpdb->query("COMMIT;");
 		}
 		catch (Exception $e) {
 			wc_transaction_query("rollback");
-			$wpdb->query("ROLLBACK;");
 			wp_send_json_error(array(
 				'error' => $e->getMessage() 
 			));
@@ -176,7 +173,6 @@ class WC_Wallee_Admin_Order_Completion {
 		global $wpdb;
 		$completion_job = WC_Wallee_Entity_Completion_Job::load_by_id($completion_job_id);
 		wc_transaction_query("start");
-		$wpdb->query("START TRANSACTION;");
 		WC_Wallee_Helper::instance()->lock_by_transaction_id($completion_job->get_space_id(), $completion_job->get_transaction_id());
 		//Reload void job;
 		$completion_job = WC_Wallee_Entity_Completion_Job::load_by_id($completion_job_id);
@@ -184,7 +180,6 @@ class WC_Wallee_Admin_Order_Completion {
 		if ($completion_job->get_state() != WC_Wallee_Entity_Completion_Job::STATE_CREATED) {
 			//Already updated in the meantime
 			wc_transaction_query("rollback");
-			$wpdb->query("ROLLBACK;");
 			return;
 		}
 		try {
@@ -195,13 +190,11 @@ class WC_Wallee_Admin_Order_Completion {
 			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_ITEMS_UPDATED);
 			$completion_job->save();
 			wc_transaction_query("commit");
-			$wpdb->query("COMMIT;");
 		}
 		catch (Exception $e) {
 			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
 			$completion_job->save();
 			wc_transaction_query("commit");
-			$wpdb->query("COMMIT;");
 			throw $e;
 		}
 	}
@@ -209,7 +202,6 @@ class WC_Wallee_Admin_Order_Completion {
 	protected static function send_completion($completion_job_id){
 		global $wpdb;
 		$completion_job = WC_Wallee_Entity_Completion_Job::load_by_id($completion_job_id);
-		$wpdb->query("START TRANSACTION;");
 		wc_transaction_query("start");
 		WC_Wallee_Helper::instance()->lock_by_transaction_id($completion_job->get_space_id(), $completion_job->get_transaction_id());
 		//Reload void job;
@@ -218,7 +210,6 @@ class WC_Wallee_Admin_Order_Completion {
 		if ($completion_job->get_state() != WC_Wallee_Entity_Completion_Job::STATE_ITEMS_UPDATED) {
 			//Already sent in the meantime
 			wc_transaction_query("rollback");
-			$wpdb->query("ROLLBACK;");
 			return;
 		}
 		try {
@@ -230,13 +221,11 @@ class WC_Wallee_Admin_Order_Completion {
 			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_SENT);
 			$completion_job->save();
 			wc_transaction_query("commit");
-			$wpdb->query("COMMIT;");
 		}
 		catch (Exception $e) {
 			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
 			$completion_job->save();
 			wc_transaction_query("commit");
-			$wpdb->query("COMMIT;");
 			throw $e;
 		}
 	}

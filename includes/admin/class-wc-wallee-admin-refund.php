@@ -83,7 +83,6 @@ class WC_Wallee_Admin_Refund {
 		$refund_service = WC_Wallee_Service_Refund::instance();
 		try {
 			wc_transaction_query("start");
-			$wpdb->query("START TRANSACTION;");
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 			if (!$transaction_info->get_id()) {
 				throw new Exception(__('Could not load corresponding wallee transaction', 'woocommerce-wallee'));
@@ -102,7 +101,6 @@ class WC_Wallee_Admin_Refund {
 			$refund->add_meta_data('_wallee_refund_job_id', $refund_job->get_id());
 			$refund->save();
 			wc_transaction_query("commit");
-			$wpdb->query("COMMIT;");
 		}
 		catch (Exception $e) {
 			$wpdb->query("ROLLBACK;");
@@ -116,7 +114,6 @@ class WC_Wallee_Admin_Refund {
 		global $wpdb;
 		$refund_job = WC_Wallee_Entity_Refund_Job::load_by_id($refund_job_id);
 		wc_transaction_query("start");
-		$wpdb->query("START TRANSACTION;");
 		WC_Wallee_Helper::instance()->lock_by_transaction_id($refund_job->get_space_id(), $refund_job->get_transaction_id());
 		//Reload void job;
 		$refund_job = WC_Wallee_Entity_Refund_Job::load_by_id($refund_job_id);
@@ -124,7 +121,6 @@ class WC_Wallee_Admin_Refund {
 		if ($refund_job->get_state() != WC_Wallee_Entity_Refund_Job::STATE_CREATED) {
 			//Already sent in the meantime
 			wc_transaction_query("rollback");
-			$wpdb->query("ROLLBACK;");
 			return;
 		}
 		try {
@@ -136,13 +132,11 @@ class WC_Wallee_Admin_Refund {
 				$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_PENDING);
 			}
 			$refund_job->save();
-			$wpdb->query("COMMIT;");
 			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
 			$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
 			$refund_job->save();
-			$wpdb->query("COMMIT;");
 			wc_transaction_query("commit");
 			throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woocommerce-wallee'), $e->getMessage()));
 		}
