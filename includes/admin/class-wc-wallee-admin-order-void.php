@@ -62,7 +62,7 @@ class WC_Wallee_Admin_Order_Void {
 		$restock_void_items = 'true' === $_POST['restock_voided_items'];
 		$current_void_id = null;
 		try {
-			
+			wc_transaction_query("start");
 			$wpdb->query("START TRANSACTION;");
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
 			if (!$transaction_info->get_id()) {
@@ -94,10 +94,12 @@ class WC_Wallee_Admin_Order_Void {
 			$void_job->set_order_id($order_id);
 			$void_job->save();
 			$current_void_id = $void_job->get_id();
+			wc_transaction_query("commit");
 			$wpdb->query("COMMIT;");
 		}
 		catch (Exception $e) {
 			$wpdb->query("ROLLBACK;");
+			wc_transaction_query("rollback");
 			wp_send_json_error(array(
 				'error' => $e->getMessage() 
 			));
@@ -121,12 +123,14 @@ class WC_Wallee_Admin_Order_Void {
 	protected static function send_void($void_job_id){
 		global $wpdb;
 		$void_job = WC_Wallee_Entity_Void_Job::load_by_id($void_job_id);
+		wc_transaction_query("start");
 		$wpdb->query("START TRANSACTION;");
 		WC_Wallee_Helper::instance()->lock_by_transaction_id($void_job->get_space_id(), $void_job->get_transaction_id());
 		//Reload void job;
 		$void_job = WC_Wallee_Entity_Void_Job::load_by_id($void_job_id);
 		if ($void_job->get_state() != WC_Wallee_Entity_Void_Job::STATE_CREATED) {
 			//Already sent in the meantime
+			wc_transaction_query("rollback");
 			$wpdb->query("ROLLBACK;");
 			return;
 		}
@@ -137,11 +141,13 @@ class WC_Wallee_Admin_Order_Void {
 			$void_job->set_void_id($void->getId());
 			$void_job->set_state(WC_Wallee_Entity_Void_Job::STATE_SENT);
 			$void_job->save();
+			wc_transaction_query("commit");
 			$wpdb->query("COMMIT;");
 		}
 		catch (Exception $e) {
 			$void_job->set_state(WC_Wallee_Entity_Void_Job::STATE_DONE);
 			$void_job->save();
+			wc_transaction_query("commit");
 			$wpdb->query("COMMIT;");
 			throw $e;
 		}

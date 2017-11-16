@@ -42,6 +42,11 @@ class WC_Wallee_Helper {
 		}
 		return $this->api_client;
 	}
+	
+	
+	public function reset_api_client(){
+		$this->api_client = null;
+	}
 
 	/**
 	 * Returns the base URL to the gateway.

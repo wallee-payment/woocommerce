@@ -50,18 +50,22 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	}
 
 	public function update_settings(){
+		WC_Wallee_Helper::instance()->reset_api_client();
 		$user_id = get_option('wc_wallee_application_user_id');
 		$user_key = get_option('wc_wallee_application_user_key');
 		if (!empty($user_id) && !empty($user_key)) {
 			try {
 				do_action('wc_wallee_settings_changed');
+				$this->delete_provider_transients();
 			}
 			catch (Exception $e) {
+				WC_Admin_Settings::add_error($e->getTraceAsString());
+				WC_Admin_Settings::add_error($user_id."-".$user_key);
 				WC_Admin_Settings::add_error(
 						__('Could not fetch configuration from Wallee. Please check your credentials and save again.', 'woocommerce-wallee'));
 			}
 		}
-		$this->delete_provider_transients();
+		
 	}
 
 	private function delete_provider_transients(){

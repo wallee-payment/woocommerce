@@ -18,7 +18,7 @@ abstract class WC_Wallee_Webhook_Order_Related_Abstract extends WC_Wallee_Webhoo
 		 * @var wpdb $wpdb
 		 */
 		global $wpdb;
-		
+		wc_transaction_query("start");
 		$wpdb->query("START TRANSACTION;");
 		$entity = $this->load_entity($request);
 		try {
@@ -34,9 +34,11 @@ abstract class WC_Wallee_Webhook_Order_Related_Abstract extends WC_Wallee_Webhoo
 				$this->process_order_related_inner($order, $entity);
 			}
 			$wpdb->query("COMMIT;");
+			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
 			$wpdb->query("ROLLBACK;");
+			wc_transaction_query("rollback");
 			throw $e;
 		}
 	}
