@@ -18,7 +18,7 @@ abstract class WC_Wallee_Webhook_Order_Related_Abstract extends WC_Wallee_Webhoo
 		 * @var wpdb $wpdb
 		 */
 		global $wpdb;
-		$wpdb->query("START TRANSACTION;");
+		wc_transaction_query("start");
 		$entity = $this->load_entity($request);
 		try {
 			$order = WC_Order_Factory::get_order($this->get_order_id($entity));
