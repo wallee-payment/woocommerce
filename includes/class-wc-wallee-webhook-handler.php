@@ -7,6 +7,9 @@ if (!defined('ABSPATH')) {
  * This class handles the webhooks of Wallee
  */
 class WC_Wallee_Webhook_Handler {
+	
+	
+	
 
 	public static function init(){
 		add_action('woocommerce_api_wallee_webhook', array(
@@ -16,7 +19,11 @@ class WC_Wallee_Webhook_Handler {
 	}
 	
 	public static function handle_webhook_errors($errno, $errstr, $errfile, $errline){
-		throw new ErrorException($errstr, $errno, E_ERROR, $errfile, $errline);
+		$fatal = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
+		if($errno & $fatal){
+			throw new ErrorException($errstr, $errno, E_ERROR, $errfile, $errline);
+		}
+		return false;
 		
 	}
 

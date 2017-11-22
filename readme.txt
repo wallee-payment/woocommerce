@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.8
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -57,7 +57,11 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 == Changelog ==
 
-= 1.0.5 - November 08, 2017 =
+= 1.0.6 - November 22, 2017 =
+
+- Fixes issue with order completion
+
+= 1.0.5 - November 16, 2017 =
 
 - Fixed woocommerce order emails not send 
 - Fixes issue loading the settings page

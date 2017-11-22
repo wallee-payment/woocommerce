@@ -62,7 +62,6 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 			$this->restock_non_completed_items($completion_job->get_items(), $order);
 		}
 		$this->adapt_order_items($completion_job->get_items(), $order);
-		$order = WC_Order_Factory::get_order($order->get_id());
 		$completion_job->save();
 	}
 

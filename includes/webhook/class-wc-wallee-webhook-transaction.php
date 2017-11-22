@@ -72,7 +72,6 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		$status = apply_filters('wc_wallee_confirmed_status', 'wallee-redirected', $order);
 		$order->update_status($status);
 		wc_maybe_reduce_stock_levels($order->get_id());
-		$order->save();
 	}
 
 	protected function authorize(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
@@ -83,14 +82,12 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		if (isset(WC()->cart)) {
 			WC()->cart->empty_cart();
 		}
-		$order->save();
-	}
+		}
 
 	protected function waiting(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 		if (!$order->get_meta('_wallee_manual_check', true)) {
 			$status = apply_filters('wc_wallee_completed_status', 'wallee-waiting', $order);
 			$order->update_status($status);
-			$order->save();
 		}
 	}
 
@@ -98,27 +95,22 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		$status = apply_filters('wc_wallee_decline_status', 'cancelled', $order);
 		$order->update_status($status);
 		WC_Wallee_Helper::instance()->maybe_restock_items_for_cancelled_order($order);
-		$order->save();
 	}
 
 	protected function failed(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 		$status = apply_filters('wc_wallee_failed_status', 'cancelled', $order);
 		$order->update_status($status);
 		WC_Wallee_Helper::instance()->maybe_restock_items_for_cancelled_order($order);
-		
-		$order->save();
 	}
 
 	protected function fulfill(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 		$order->payment_complete($transaction->getId());
 		//Sets the status to procesing or complete depending on items
-		$order->save();
 	}
 
 	protected function voided(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 		$status = apply_filters('wc_wallee_voided_status', 'cancelled', $order);
 		$order->update_status($status);
-		
-		$order->save();
+
 	}
 }
