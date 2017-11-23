@@ -9,7 +9,7 @@
  * Author: customweb GmbH
  * Author URI: https://www.customweb.com
  * Requires at least: 4.4
- * Tested up to: 4.8
+ * Tested up to: 4.9
  *
  * Text Domain: woocommerce-wallee
  * Domain Path: /languages/

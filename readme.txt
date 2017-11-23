@@ -2,7 +2,7 @@
 Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
-Tested up to: 4.8
+Tested up to: 4.9
 Stable tag: 1.0.6
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0

@@ -65,7 +65,6 @@ jQuery(function($) {
 				    refund_thumb
 					    .addClass('wallee-refund-state-pending');
 				}
-
 			    });
 
 	},
@@ -115,8 +114,6 @@ jQuery(function($) {
 		    .show();
 	    $('div.wc-order-refund-items').find('#refund_amount').prop(
 		    'readonly', true);
-	    // $('div.wc-order-refund-items').find('#refund_amount').prop('disabled',
-	    // true);
 
 	    $('div.wc-order-data-row-toggle').not('div.wc-order-refund-items')
 		    .slideUp();
@@ -130,9 +127,6 @@ jQuery(function($) {
 				'input.refund_order_item_qty').val(
 				$(this).val());
 		    })
-
-	    $('#woocommerce-order-items').find('input.refund_order_item_qty')
-		    .trigger('change');
 
 	    $('#woocommerce-order-items').find('input.line_total').each(
 		    function() {
@@ -166,7 +160,7 @@ jQuery(function($) {
 
 	    $('#woocommerce-order-items').find('input.refund_order_item_qty')
 		    .trigger('change');
-
+	    
 	    $('#woocommerce-order-items').find('input.refund_order_item_qty')
 		    .closest('div.refund').show();
 	    $('#woocommerce-order-items').find('input.wc_input_price').closest(
@@ -318,10 +312,9 @@ jQuery(function($) {
 			$(value).show();
 			$('div.refund-actions').prepend($(value));
 		    });
-
 	    $('div.wc-order-refund-items')
-		    .find('span.woocommerce-price-amount').closest('tr')
-		    .remove();
+	    	    .find('span.woocommerce-Price-amount').closest('tr')
+	    	    .remove();
 	    $('div.wc-order-refund-items').find('#refund_reason').closest('tr')
 		    .remove();
 
@@ -451,8 +444,7 @@ jQuery(function($) {
 
 	    $('#woocommerce-order-items').find('input.refund_line_tax').prop(
 		    'readonly', true);
-	    // $('#woocommerce-order-items').find('input.refund_line_tax').prop('disabled',
-	    // true);
+
 	    return false;
 	},
     }
