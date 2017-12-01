@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * WebhookUrlCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class WebhookUrlCreate extends WebhookUrlUpdate  {
+class WebhookUrlCreate extends AbstractWebhookUrlUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -60,30 +60,6 @@ class WebhookUrlCreate extends WebhookUrlUpdate  {
 	}
 
 	
-	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_DELETING = 'DELETING';
-	const STATE_DELETED = 'DELETED';
-	
-	/**
-	 * Returns allowable values of state.
-	 *
-	 * @return string[]
-	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_DELETING,
-			self::STATE_DELETED,
-		);
-	}
-	
 
 
 	/**
@@ -94,36 +70,8 @@ class WebhookUrlCreate extends WebhookUrlUpdate  {
 	public function __construct(array $data = null) {
 		parent::__construct($data);
 
-		if (isset($data['state']) && $data['state'] != null) {
-			$this->setState($data['state']);
-		}
 	}
 
-
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getState() {
-		return parent::getState();
-	}
-
-	/**
-	 * Sets state.
-	 *
-	 * @param string $state
-	 * @return WebhookUrlCreate
-	 */
-	public function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED');
-		if ((!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED'");
-		}
-		return parent::setState($state);
-	}
 
 	/**
 	 * Validates the model's properties and throws a ValidationException if the validation fails.
@@ -132,14 +80,6 @@ class WebhookUrlCreate extends WebhookUrlUpdate  {
 	 */
 	public function validate() {
 		parent::validate();
-
-		if ($this->getState() === null) {
-			throw new ValidationException("'state' can't be null", 'state', $this);
-		}
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "DELETING", "DELETED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
 
 	}
 

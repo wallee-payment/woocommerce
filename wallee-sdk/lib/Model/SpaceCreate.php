@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SpaceCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SpaceCreate extends SpaceUpdate  {
+class SpaceCreate extends AbstractSpaceUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,7 @@ class SpaceCreate extends SpaceUpdate  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'account' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,30 +60,13 @@ class SpaceCreate extends SpaceUpdate  {
 	}
 
 	
+
 	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_DELETING = 'DELETING';
-	const STATE_DELETED = 'DELETED';
-	
-	/**
-	 * Returns allowable values of state.
+	 * The account to which the space belongs to.
 	 *
-	 * @return string[]
+	 * @var int
 	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_DELETING,
-			self::STATE_DELETED,
-		);
-	}
-	
+	private $account;
 
 
 	/**
@@ -97,54 +80,30 @@ class SpaceCreate extends SpaceUpdate  {
 		if (isset($data['account']) && $data['account'] != null) {
 			$this->setAccount($data['account']);
 		}
-		if (isset($data['state']) && $data['state'] != null) {
-			$this->setState($data['state']);
-		}
 	}
 
 
 	/**
 	 * Returns account.
 	 *
-	 * @return \Wallee\Sdk\Model\Account
+	 * The account to which the space belongs to.
+	 *
+	 * @return int
 	 */
 	public function getAccount() {
-		return parent::getAccount();
+		return $this->account;
 	}
 
 	/**
 	 * Sets account.
 	 *
-	 * @param \Wallee\Sdk\Model\Account $account
+	 * @param int $account
 	 * @return SpaceCreate
 	 */
 	public function setAccount($account) {
-		return parent::setAccount($account);
-	}
+		$this->account = $account;
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getState() {
-		return parent::getState();
-	}
-
-	/**
-	 * Sets state.
-	 *
-	 * @param string $state
-	 * @return SpaceCreate
-	 */
-	public function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED');
-		if ((!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED'");
-		}
-		return parent::setState($state);
+		return $this;
 	}
 
 	/**
@@ -155,14 +114,9 @@ class SpaceCreate extends SpaceUpdate  {
 	public function validate() {
 		parent::validate();
 
-		if ($this->getState() === null) {
-			throw new ValidationException("'state' can't be null", 'state', $this);
+		if ($this->getAccount() === null) {
+			throw new ValidationException("'account' can't be null", 'account', $this);
 		}
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "DELETING", "DELETED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
-
 	}
 
 	/**

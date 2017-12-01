@@ -21,9 +21,8 @@
 
 namespace Wallee\Sdk;
 
-use \Wallee\Sdk\Http\HttpRequest;
-use \Wallee\Sdk\Http\HttpClientFactory;
-use \Wallee\Sdk\ApiException;
+use Wallee\Sdk\Http\HttpRequest;
+use Wallee\Sdk\Http\HttpClientFactory;
 
 /**
  * This class sends API calls to the endpoint.
@@ -231,7 +230,7 @@ final class ApiClient {
 	 * Sets the connection timeout in seconds.
 	 *
 	 * @param int $connectionTimeout the connection timeout in seconds
-	 * @return IHttpClient
+	 * @return ApiClient
 	 */
 	public function setConnectionTimeout($connectionTimeout) {
 		if (!is_numeric($connectionTimeout) || $connectionTimeout < 0) {
@@ -433,7 +432,7 @@ final class ApiClient {
 	 * @return mixed
 	 */
 	public function callApi($resourcePath, $method, $queryParams, $postData, $headerParams, $responseType = null, $endpointPath = null) {
-		$request = new HttpRequest($this->getSerializer(), $this->buildRequestUrl($resourcePath, $queryParams), $method);
+		$request = new HttpRequest($this->getSerializer(), $this->buildRequestUrl($resourcePath, $queryParams), $method, $this->generateUniqueToken());
 		$request->setUserAgent($this->getUserAgent());
 		$request->addHeaders(array_merge(
 			(array)$this->defaultHeaders,
@@ -455,13 +454,18 @@ final class ApiClient {
 				$data = $response->getBody();
 			}
 		} else {
+			if ($response->getStatusCode() == 409) {
+				throw new VersioningException();
+			}
+		
 			$data = json_decode($response->getBody());
 			if (json_last_error() > 0) { // if response is a string
 				$data = $response->getBody();
 			}
 
 			throw new ApiException(
-				"[".$response->getStatusCode()."] Error connecting to the API (".$request->getUrl().")",
+				$request->getLogToken(),
+				'Error ' . $response->getStatusCode() . ' connecting to the API (' . $request->getUrl() . ')',
 				$response->getStatusCode(),
 				$response->getHeaders(),
 				$data
@@ -514,6 +518,20 @@ final class ApiClient {
 	private function calculateHmac($securedData) {
 		$decodedSecret = base64_decode($this->applicationKey);
 		return base64_encode(hash_hmac("sha512", $securedData, $decodedSecret, true));
+	}
+	
+	/**
+	 * Generates a unique token to assign to the request.
+	 *
+	 * @return string
+	 */
+	private function generateUniqueToken() {
+		$s = strtoupper(md5(uniqid(rand(),true))); 
+    	return substr($s,0,8) . '-' . 
+	        substr($s,8,4) . '-' . 
+	        substr($s,12,4). '-' . 
+	        substr($s,16,4). '-' . 
+	        substr($s,20); 
 	}
 
 }

@@ -8,9 +8,9 @@ if (!defined('ABSPATH')) {
  */
 class WC_Wallee_Admin_Refund {
 	private static $refundable_states = array(
-		\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
-		\Wallee\Sdk\Model\Transaction::STATE_DECLINE,
-		\Wallee\Sdk\Model\Transaction::STATE_FULFILL 
+		\Wallee\Sdk\Model\TransactionState::COMPLETED,
+		\Wallee\Sdk\Model\TransactionState::DECLINE,
+		\Wallee\Sdk\Model\TransactionState::FULFILL 
 	);
 
 	public static function init(){
@@ -128,7 +128,7 @@ class WC_Wallee_Admin_Refund {
 			$executed_refund = $refund_service->refund($refund_job->get_space_id(), $refund_job->get_refund());
 			$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_SENT);
 			
-			if ($executed_refund->getState() == \Wallee\Sdk\Model\Refund::STATE_PENDING) {
+			if ($executed_refund->getState() == \Wallee\Sdk\Model\RefundState::PENDING) {
 				$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_PENDING);
 			}
 			$refund_job->save();
@@ -179,8 +179,8 @@ class WC_Wallee_Admin_Refund {
 		$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_CREATED);
 		$refund_job->set_wc_refund_id($refund->get_id());
 		$refund_job->set_order_id($order->get_id());
-		$refund_job->set_space_id($wallee_refund->getTransaction()->getLinkedSpaceId());
-		$refund_job->set_transaction_id($wallee_refund->getTransaction()->getId());
+		$refund_job->set_space_id($order->get_meta('_wallee_linked_space_id', true));
+		$refund_job->set_transaction_id($wallee_refund->getTransaction());
 		$refund_job->set_external_id($wallee_refund->getExternalId());
 		$refund_job->set_refund($wallee_refund);
 		$refund_job->save();

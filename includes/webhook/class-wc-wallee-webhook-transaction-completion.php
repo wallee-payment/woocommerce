@@ -31,10 +31,10 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 	protected function process_order_related_inner(WC_Order $order, $completion){
 		/* @var \Wallee\Sdk\Model\TransactionCompletion $completion */
 		switch ($completion->getState()) {
-			case \Wallee\Sdk\Model\TransactionCompletion::STATE_FAILED:
+			case \Wallee\Sdk\Model\TransactionCompletionState::FAILED:
 				$this->failed($completion, $order);
 				break;
-			case \Wallee\Sdk\Model\TransactionCompletion::STATE_SUCCESSFUL:
+			case \Wallee\Sdk\Model\TransactionCompletionState::SUCCESSFUL:
 				$this->success($completion, $order);
 				break;
 			default:

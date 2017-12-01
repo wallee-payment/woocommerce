@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionPending model
@@ -48,7 +48,9 @@ class SubscriptionPending extends SubscriptionUpdate  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'reference' => 'string',
+		'subscriber' => 'int',
+		'token' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,6 +62,27 @@ class SubscriptionPending extends SubscriptionUpdate  {
 	}
 
 	
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	private $reference;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $subscriber;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $token;
 
 
 	/**
@@ -90,7 +113,7 @@ class SubscriptionPending extends SubscriptionUpdate  {
 	 * @return string
 	 */
 	public function getReference() {
-		return parent::getReference();
+		return $this->reference;
 	}
 
 	/**
@@ -100,45 +123,55 @@ class SubscriptionPending extends SubscriptionUpdate  {
 	 * @return SubscriptionPending
 	 */
 	public function setReference($reference) {
-		return parent::setReference($reference);
+		$this->reference = $reference;
+
+		return $this;
 	}
 
 	/**
 	 * Returns subscriber.
 	 *
-	 * @return \Wallee\Sdk\Model\Subscriber
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getSubscriber() {
-		return parent::getSubscriber();
+		return $this->subscriber;
 	}
 
 	/**
 	 * Sets subscriber.
 	 *
-	 * @param \Wallee\Sdk\Model\Subscriber $subscriber
+	 * @param int $subscriber
 	 * @return SubscriptionPending
 	 */
 	public function setSubscriber($subscriber) {
-		return parent::setSubscriber($subscriber);
+		$this->subscriber = $subscriber;
+
+		return $this;
 	}
 
 	/**
 	 * Returns token.
 	 *
-	 * @return \Wallee\Sdk\Model\Token
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getToken() {
-		return parent::getToken();
+		return $this->token;
 	}
 
 	/**
 	 * Sets token.
 	 *
-	 * @param \Wallee\Sdk\Model\Token $token
+	 * @param int $token
 	 * @return SubscriptionPending
 	 */
 	public function setToken($token) {
-		return parent::setToken($token);
+		$this->token = $token;
+
+		return $this;
 	}
 
 	/**
@@ -149,9 +182,6 @@ class SubscriptionPending extends SubscriptionUpdate  {
 	public function validate() {
 		parent::validate();
 
-		if ($this->getReference() === null) {
-			throw new ValidationException("'reference' can't be null", 'reference', $this);
-		}
 	}
 
 	/**

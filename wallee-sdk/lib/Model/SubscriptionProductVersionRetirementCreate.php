@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionProductVersionRetirementCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVersionRetirement  {
+class SubscriptionProductVersionRetirementCreate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,9 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'productVersion' => 'int',
+		'respectTerminiationPeriodsEnabled' => 'bool',
+		'targetProduct' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -56,10 +58,31 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $productVersion;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	private $respectTerminiationPeriodsEnabled;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $targetProduct;
 
 
 	/**
@@ -68,8 +91,6 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
 		if (isset($data['productVersion']) && $data['productVersion'] != null) {
 			$this->setProductVersion($data['productVersion']);
 		}
@@ -85,20 +106,24 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	/**
 	 * Returns productVersion.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductVersion
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getProductVersion() {
-		return parent::getProductVersion();
+		return $this->productVersion;
 	}
 
 	/**
 	 * Sets productVersion.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductVersion $productVersion
+	 * @param int $productVersion
 	 * @return SubscriptionProductVersionRetirementCreate
 	 */
 	public function setProductVersion($productVersion) {
-		return parent::setProductVersion($productVersion);
+		$this->productVersion = $productVersion;
+
+		return $this;
 	}
 
 	/**
@@ -109,7 +134,7 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	 * @return bool
 	 */
 	public function getRespectTerminiationPeriodsEnabled() {
-		return parent::getRespectTerminiationPeriodsEnabled();
+		return $this->respectTerminiationPeriodsEnabled;
 	}
 
 	/**
@@ -119,26 +144,32 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	 * @return SubscriptionProductVersionRetirementCreate
 	 */
 	public function setRespectTerminiationPeriodsEnabled($respectTerminiationPeriodsEnabled) {
-		return parent::setRespectTerminiationPeriodsEnabled($respectTerminiationPeriodsEnabled);
+		$this->respectTerminiationPeriodsEnabled = $respectTerminiationPeriodsEnabled;
+
+		return $this;
 	}
 
 	/**
 	 * Returns targetProduct.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProduct
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getTargetProduct() {
-		return parent::getTargetProduct();
+		return $this->targetProduct;
 	}
 
 	/**
 	 * Sets targetProduct.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProduct $targetProduct
+	 * @param int $targetProduct
 	 * @return SubscriptionProductVersionRetirementCreate
 	 */
 	public function setTargetProduct($targetProduct) {
-		return parent::setTargetProduct($targetProduct);
+		$this->targetProduct = $targetProduct;
+
+		return $this;
 	}
 
 	/**
@@ -147,8 +178,10 @@ class SubscriptionProductVersionRetirementCreate extends SubscriptionProductVers
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
+		if ($this->getProductVersion() === null) {
+			throw new ValidationException("'productVersion' can't be null", 'productVersion', $this);
+		}
 	}
 
 	/**

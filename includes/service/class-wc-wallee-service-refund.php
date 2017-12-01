@@ -43,10 +43,8 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\RefundCreate
 	 */
 	public function create(WC_Order $order, WC_Order_Refund $refund){
-		$transaction = new \Wallee\Sdk\Model\Transaction();
-		
-		$transaction->setId($order->get_meta('_wallee_transaction_id', true));
-		$transaction->setLinkedSpaceId($order->get_meta('_wallee_linked_space_id', true));
+		$transaction = WC_Wallee_Service_Transaction::instance()->get_transaction($order->get_meta('_wallee_linked_space_id', true),
+				$order->get_meta('_wallee_transaction_id', true));
 		
 		$reductions = $this->get_reductions($order, $refund);
 		$reductions = $this->fix_reductions($refund, $transaction, $reductions);
@@ -54,8 +52,8 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 		$wallee_refund = new \Wallee\Sdk\Model\RefundCreate();
 		$wallee_refund->setExternalId(uniqid($refund->get_id() . '-'));
 		$wallee_refund->setReductions($reductions);
-		$wallee_refund->setTransaction($transaction);
-		$wallee_refund->setType(\Wallee\Sdk\Model\RefundCreate::TYPE_MERCHANT_INITIATED_ONLINE);
+		$wallee_refund->setTransaction($transaction->getId());
+		$wallee_refund->setType(\Wallee\Sdk\Model\RefundType::MERCHANT_INITIATED_ONLINE);
 		return $wallee_refund;
 	}
 
@@ -179,7 +177,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\Refund
 	 */
 	public function refund($spaceId, \Wallee\Sdk\Model\RefundCreate $refund){
-		return $this->get_refund_service()->create($spaceId, $refund);
+		return $this->get_refund_service()->refund($spaceId, $refund);
 	}
 
 	/**
@@ -212,11 +210,11 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 		$query = new \Wallee\Sdk\Model\EntityQuery();
 		
 		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilter::TYPE_AND);
+		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
 		$filter->setChildren(
 				array(
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\TransactionInvoice::STATE_CANCELED, 
-							\Wallee\Sdk\Model\EntityQueryFilter::OPERATOR_NOT_EQUALS),
+					$this->create_entity_filter('state', \Wallee\Sdk\Model\TransactionInvoiceState::CANCELED,
+							\Wallee\Sdk\Model\CriteriaOperator::NOT_EQUALS),
 					$this->create_entity_filter('completion.lineItemVersion.transaction.id', $transaction->getId()) 
 				));
 		$query->setFilter($filter);
@@ -244,20 +242,20 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 		$query = new \Wallee\Sdk\Model\EntityQuery();
 		
 		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilter::TYPE_AND);
+		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
 		$filters = array(
-			$this->create_entity_filter('state', \Wallee\Sdk\Model\Refund::STATE_SUCCESSFUL),
+			$this->create_entity_filter('state', \Wallee\Sdk\Model\RefundState::SUCCESSFUL),
 			$this->create_entity_filter('transaction.id', $transaction->getId()) 
 		);
 		if ($refund != null) {
-			$filters[] = $this->create_entity_filter('id', $refund->getId(), \Wallee\Sdk\Model\EntityQueryFilter::OPERATOR_NOT_EQUALS);
+			$filters[] = $this->create_entity_filter('id', $refund->getId(), \Wallee\Sdk\Model\CriteriaOperator::NOT_EQUALS);
 		}
 		
 		$filter->setChildren($filters);
 		$query->setFilter($filter);
 		
 		$query->setOrderBys(array(
-			$this->create_entity_order_by('createdOn', \Wallee\Sdk\Model\EntityQueryOrderBy::SORTING_DESC) 
+			$this->create_entity_order_by('createdOn', \Wallee\Sdk\Model\EntityQueryOrderByType::DESC) 
 		));
 		
 		$query->setNumberOfEntities(1);

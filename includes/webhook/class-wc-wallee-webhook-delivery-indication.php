@@ -31,7 +31,7 @@ class WC_Wallee_Webhook_Delivery_Indication extends WC_Wallee_Webhook_Order_Rela
 	protected function process_order_related_inner(WC_Order $order, $delivery_indication){
 		/* @var \Wallee\Sdk\Model\DeliveryIndication $delivery_indication */
 		switch ($delivery_indication->getState()) {
-			case \Wallee\Sdk\Model\DeliveryIndication::STATE_MANUAL_CHECK_REQUIRED:
+			case \Wallee\Sdk\Model\DeliveryIndicationState::MANUAL_CHECK_REQUIRED:
 				$this->review($order);
 				break;
 			default:

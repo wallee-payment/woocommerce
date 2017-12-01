@@ -42,9 +42,9 @@ class WC_Wallee_Return_Handler {
 		
 		$transaction_service->wait_for_transaction_state($order, 
 				array(
-					\Wallee\Sdk\Model\Transaction::STATE_CONFIRMED,
-					\Wallee\Sdk\Model\Transaction::STATE_PENDING,
-					\Wallee\Sdk\Model\Transaction::STATE_PROCESSING 
+					\Wallee\Sdk\Model\TransactionState::CONFIRMED,
+					\Wallee\Sdk\Model\TransactionState::PENDING,
+					\Wallee\Sdk\Model\TransactionState::PROCESSING 
 				), 5);
 		$gateway = wc_get_payment_gateway_by_order($order);
 		wp_redirect($gateway->get_return_url($order));
@@ -54,7 +54,7 @@ class WC_Wallee_Return_Handler {
 	protected static function process_failure(WC_Order $order){
 		$transaction_service = WC_Wallee_Service_Transaction::instance();
 		$transaction_service->wait_for_transaction_state($order, array(
-			\Wallee\Sdk\Model\Transaction::STATE_FAILED 
+			\Wallee\Sdk\Model\TransactionState::FAILED 
 		), 5);
 		$transaction = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		

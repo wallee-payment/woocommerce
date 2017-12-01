@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * HumanUser model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class HumanUser extends User  {
+class HumanUser  {
 
 	/**
 	 * The original name of the model.
@@ -54,6 +54,7 @@ class HumanUser extends User  {
 		'language' => 'string',
 		'lastname' => 'string',
 		'primaryAccount' => '\Wallee\Sdk\Model\Account',
+		'scope' => '\Wallee\Sdk\Model\Scope',
 		'timeZone' => 'string'	);
 
 	/**
@@ -62,7 +63,7 @@ class HumanUser extends User  {
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
@@ -103,9 +104,18 @@ class HumanUser extends User  {
 	private $lastname;
 
 	/**
+	 * The primary account links the user to a specific account.
+	 *
 	 * @var \Wallee\Sdk\Model\Account
 	 */
 	private $primaryAccount;
+
+	/**
+	 * The scope to which the user belongs to.
+	 *
+	 * @var \Wallee\Sdk\Model\Scope
+	 */
+	private $scope;
 
 	/**
 	 * The time zone which is applied for the user. If no timezone is specified the browser is used to determine an appropriate time zone.
@@ -121,8 +131,6 @@ class HumanUser extends User  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
 		if (isset($data['primaryAccount']) && $data['primaryAccount'] != null) {
 			$this->setPrimaryAccount($data['primaryAccount']);
 		}
@@ -250,6 +258,8 @@ class HumanUser extends User  {
 	/**
 	 * Returns primaryAccount.
 	 *
+	 * The primary account links the user to a specific account.
+	 *
 	 * @return \Wallee\Sdk\Model\Account
 	 */
 	public function getPrimaryAccount() {
@@ -271,10 +281,12 @@ class HumanUser extends User  {
 	/**
 	 * Returns scope.
 	 *
+	 * The scope to which the user belongs to.
+	 *
 	 * @return \Wallee\Sdk\Model\Scope
 	 */
 	public function getScope() {
-		return parent::getScope();
+		return $this->scope;
 	}
 
 	/**
@@ -284,7 +296,9 @@ class HumanUser extends User  {
 	 * @return HumanUser
 	 */
 	public function setScope($scope) {
-		return parent::setScope($scope);
+		$this->scope = $scope;
+
+		return $this;
 	}
 
 	/**
@@ -316,7 +330,6 @@ class HumanUser extends User  {
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
 	}
 

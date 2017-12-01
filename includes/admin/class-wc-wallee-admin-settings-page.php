@@ -71,8 +71,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	private function delete_provider_transients(){
 		$transients = array(
 			'wc_wallee_currencies',
-			'wc_wallee_label_descriptor_group',
-			'wc_wallee_label_descriptor',
+			'wc_wallee_label_description_groups',
+			'wc_wallee_label_descriptions',
 			'wc_wallee_languages',
 			'wc_wallee_payment_connectors',
 			'wc_wallee_payment_methods' 

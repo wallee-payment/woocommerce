@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * WebhookListenerUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class WebhookListenerUpdate extends WebhookListener  {
+class WebhookListenerUpdate extends AbstractWebhookListenerUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,8 @@ class WebhookListenerUpdate extends WebhookListener  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -61,6 +62,20 @@ class WebhookListenerUpdate extends WebhookListener  {
 
 	
 
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
 
 	/**
 	 * Constructor.
@@ -70,31 +85,59 @@ class WebhookListenerUpdate extends WebhookListener  {
 	public function __construct(array $data = null) {
 		parent::__construct($data);
 
-		if (isset($data['name']) && $data['name'] != null) {
-			$this->setName($data['name']);
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
+		}
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
 		}
 	}
 
 
 	/**
-	 * Returns name.
+	 * Returns id.
 	 *
-	 * The webhook listener name is used internally to identify the webhook listener in administrative interfaces.For example it is used within search fields and hence it should be distinct and descriptive.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function getName() {
-		return parent::getName();
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Sets name.
+	 * Sets id.
 	 *
-	 * @param string $name
+	 * @param int $id
 	 * @return WebhookListenerUpdate
 	 */
-	public function setName($name) {
-		return parent::setName($name);
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns version.
+	 *
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @return int
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param int $version
+	 * @return WebhookListenerUpdate
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
 	}
 
 	/**
@@ -105,8 +148,11 @@ class WebhookListenerUpdate extends WebhookListener  {
 	public function validate() {
 		parent::validate();
 
-		if ($this->getName() === null) {
-			throw new ValidationException("'name' can't be null", 'name', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
+		}
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
 	}
 

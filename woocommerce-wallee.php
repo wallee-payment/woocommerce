@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with Wallee
- * Version: 1.0.6
+ * Version: 1.0.7
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -33,7 +33,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.0.6';
+		private $version = '1.0.7';
 		
 		/**
 		 * The single instance of the class.
@@ -140,6 +140,10 @@ if (!class_exists('WooCommerce_Wallee')) {
 				$this,
 				'after_calculate_totals' 
 			), 10);
+			add_filter('woocommerce_valid_order_statuses_for_payment_complete', array(
+				$this,
+				'valid_order_status_for_completion'
+			), 10, 2);
 		}
 
 		/**
@@ -221,6 +225,13 @@ if (!class_exists('WooCommerce_Wallee')) {
 				return false;
 			}
 			return $allowed;
+		}
+		
+		public function valid_order_status_for_completion($statuses, WC_Order $order = null){
+			$statuses[] = 'wallee-waiting';
+			$statuses[] = 'wallee-manual';
+			
+			return $statuses;
 		}
 
 		public function before_calculate_totals(WC_Cart $cart){

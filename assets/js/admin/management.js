@@ -141,7 +141,6 @@ jQuery(function($) {
 			$(this).closest('td.line_cost').find(
 				'input.refund_line_total').on("change",
 				self.update_taxes_for_line_items);
-
 		    })
 	    $('#woocommerce-order-items').find('input.line_tax').each(
 		    function() {
@@ -165,7 +164,6 @@ jQuery(function($) {
 		    .closest('div.refund').show();
 	    $('#woocommerce-order-items').find('input.wc_input_price').closest(
 		    'div.refund').show();
-
 	    return false;
 	},
 

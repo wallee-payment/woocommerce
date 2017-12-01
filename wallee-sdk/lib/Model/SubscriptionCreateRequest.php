@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionCreateRequest model
@@ -72,6 +72,8 @@ class SubscriptionCreateRequest  {
 	private $currency;
 
 	/**
+	 * The subscription has to be linked with a product.
+	 *
 	 * @var \Wallee\Sdk\Model\SubscriptionProduct
 	 */
 	private $product;
@@ -84,6 +86,8 @@ class SubscriptionCreateRequest  {
 	private $selectedComponents;
 
 	/**
+	 * 
+	 *
 	 * @var \Wallee\Sdk\Model\SubscriptionPending
 	 */
 	private $subscription;
@@ -95,9 +99,6 @@ class SubscriptionCreateRequest  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		if (isset($data['currency']) && $data['currency'] != null) {
-			$this->setCurrency($data['currency']);
-		}
 		if (isset($data['product']) && $data['product'] != null) {
 			$this->setProduct($data['product']);
 		}
@@ -127,7 +128,7 @@ class SubscriptionCreateRequest  {
 	 * @param string $currency
 	 * @return SubscriptionCreateRequest
 	 */
-	public function setCurrency($currency) {
+	protected function setCurrency($currency) {
 		$this->currency = $currency;
 
 		return $this;
@@ -135,6 +136,8 @@ class SubscriptionCreateRequest  {
 
 	/**
 	 * Returns product.
+	 *
+	 * The subscription has to be linked with a product.
 	 *
 	 * @return \Wallee\Sdk\Model\SubscriptionProduct
 	 */
@@ -180,6 +183,8 @@ class SubscriptionCreateRequest  {
 	/**
 	 * Returns subscription.
 	 *
+	 * 
+	 *
 	 * @return \Wallee\Sdk\Model\SubscriptionPending
 	 */
 	public function getSubscription() {
@@ -207,6 +212,12 @@ class SubscriptionCreateRequest  {
 
 		if ($this->getCurrency() === null) {
 			throw new ValidationException("'currency' can't be null", 'currency', $this);
+		}
+		if ($this->getProduct() === null) {
+			throw new ValidationException("'product' can't be null", 'product', $this);
+		}
+		if ($this->getSubscription() === null) {
+			throw new ValidationException("'subscription' can't be null", 'subscription', $this);
 		}
 	}
 

@@ -33,30 +33,30 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		if ($transaction->getState() != $transaction_info->get_state()) {
 			switch ($transaction->getState()) {
-				case \Wallee\Sdk\Model\Transaction::STATE_CONFIRMED:
-				case \Wallee\Sdk\Model\Transaction::STATE_PROCESSING:
+				case \Wallee\Sdk\Model\TransactionState::CONFIRMED:
+				case \Wallee\Sdk\Model\TransactionState::PROCESSING:
 					
 					$this->confirm($transaction, $order);
 					break;
-				case \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED:
+				case \Wallee\Sdk\Model\TransactionState::AUTHORIZED:
 					$this->authorize($transaction, $order);
 					break;
-				case \Wallee\Sdk\Model\Transaction::STATE_DECLINE:
+				case \Wallee\Sdk\Model\TransactionState::DECLINE:
 					$this->decline($transaction, $order);
 					break;
-				case \Wallee\Sdk\Model\Transaction::STATE_FAILED:
+				case \Wallee\Sdk\Model\TransactionState::FAILED:
 					$this->failed($transaction, $order);
 					break;
-				case \Wallee\Sdk\Model\Transaction::STATE_FULFILL:
+				case \Wallee\Sdk\Model\TransactionState::FULFILL:
 					if (!$order->get_meta("_wallee_authorized", true)) {
 						$this->authorize($transaction, $order);
 					}
 					$this->fulfill($transaction, $order);
 					break;
-				case \Wallee\Sdk\Model\Transaction::STATE_VOIDED:
+				case \Wallee\Sdk\Model\TransactionState::VOIDED:
 					$this->voided($transaction, $order);
 					break;
-				case \Wallee\Sdk\Model\Transaction::STATE_COMPLETED:
+				case \Wallee\Sdk\Model\TransactionState::COMPLETED:
 					$this->waiting($transaction, $order);
 					break;
 				default:

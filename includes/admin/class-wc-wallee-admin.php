@@ -121,7 +121,7 @@ class WC_Wallee_Admin {
 		$gateway = wc_get_payment_gateway_by_order($order);
 		if ($gateway instanceof WC_Wallee_Gateway) {
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
-			if ($transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED) {
+			if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				if (WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction($transaction_info->get_space_id(), 
 						$transaction_info->get_transaction_id()) > 0 || WC_Wallee_Entity_Void_Job::count_running_void_for_transaction(
 						$transaction_info->get_space_id(), $transaction_info->get_transaction_id()) > 0) {
@@ -152,7 +152,7 @@ class WC_Wallee_Admin {
 	 * Init WooCommerce Wallee when plugins are loaded. 
 	 */
 	public function loaded(){
-		add_action('admin_init', array(
+		add_action('admin_enqueue_scripts', array(
 			$this,
 			'enque_script_and_css' 
 		));
@@ -164,7 +164,7 @@ class WC_Wallee_Admin {
 				array(
 					'jquery',
 					'wc-admin-meta-boxes' 
-				), null, true);
+				), null, false);
 		
 		$localize = array(
 			'i18n_do_void' => __('Are you sure you wish to process this void? This action cannot be undone.', 'woocommerce-wallee'),

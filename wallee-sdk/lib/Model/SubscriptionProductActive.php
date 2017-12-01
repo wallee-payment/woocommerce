@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionProductActive model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriptionProductActive extends SubscriptionProduct  {
+class SubscriptionProductActive extends AbstractSubscriptionProductActive  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,8 @@ class SubscriptionProductActive extends SubscriptionProduct  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,30 +61,20 @@ class SubscriptionProductActive extends SubscriptionProduct  {
 	}
 
 	
+
 	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_RETIRING = 'RETIRING';
-	const STATE_RETIRED = 'RETIRED';
-	
-	/**
-	 * Returns allowable values of state.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
-	 * @return string[]
+	 * @var int
 	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_RETIRING,
-			self::STATE_RETIRED,
-		);
-	}
-	
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
 
 
 	/**
@@ -94,129 +85,59 @@ class SubscriptionProductActive extends SubscriptionProduct  {
 	public function __construct(array $data = null) {
 		parent::__construct($data);
 
-		if (isset($data['allowedPaymentMethodConfigurations']) && $data['allowedPaymentMethodConfigurations'] != null) {
-			$this->setAllowedPaymentMethodConfigurations($data['allowedPaymentMethodConfigurations']);
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
 		}
-		if (isset($data['failedPaymentSuspensionPeriod']) && $data['failedPaymentSuspensionPeriod'] != null) {
-			$this->setFailedPaymentSuspensionPeriod($data['failedPaymentSuspensionPeriod']);
-		}
-		if (isset($data['name']) && $data['name'] != null) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['sortOrder']) && $data['sortOrder'] != null) {
-			$this->setSortOrder($data['sortOrder']);
-		}
-		if (isset($data['state']) && $data['state'] != null) {
-			$this->setState($data['state']);
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
 		}
 	}
 
 
 	/**
-	 * Returns allowedPaymentMethodConfigurations.
+	 * Returns id.
 	 *
-	 * @return int[]
-	 */
-	public function getAllowedPaymentMethodConfigurations() {
-		return parent::getAllowedPaymentMethodConfigurations();
-	}
-
-	/**
-	 * Sets allowedPaymentMethodConfigurations.
-	 *
-	 * @param int[] $allowedPaymentMethodConfigurations
-	 * @return SubscriptionProductActive
-	 */
-	public function setAllowedPaymentMethodConfigurations($allowedPaymentMethodConfigurations) {
-		return parent::setAllowedPaymentMethodConfigurations($allowedPaymentMethodConfigurations);
-	}
-
-	/**
-	 * Returns failedPaymentSuspensionPeriod.
-	 *
-	 * When a payment fails, the subscription to which the payment belongs to will be suspended. When the suspension is not removed within the specified period the subscription will be terminated. A payment is considered as failed when the subscriber issues a refund or when a subscription charge fails.
-	 *
-	 * @return string
-	 */
-	public function getFailedPaymentSuspensionPeriod() {
-		return parent::getFailedPaymentSuspensionPeriod();
-	}
-
-	/**
-	 * Sets failedPaymentSuspensionPeriod.
-	 *
-	 * @param string $failedPaymentSuspensionPeriod
-	 * @return SubscriptionProductActive
-	 */
-	public function setFailedPaymentSuspensionPeriod($failedPaymentSuspensionPeriod) {
-		return parent::setFailedPaymentSuspensionPeriod($failedPaymentSuspensionPeriod);
-	}
-
-	/**
-	 * Returns name.
-	 *
-	 * The product name is used internally to identify the configuration in administrative interfaces. For example it is used within search fields and hence it should be distinct and descriptive.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return parent::getName();
-	}
-
-	/**
-	 * Sets name.
-	 *
-	 * @param string $name
-	 * @return SubscriptionProductActive
-	 */
-	public function setName($name) {
-		return parent::setName($name);
-	}
-
-	/**
-	 * Returns sortOrder.
-	 *
-	 * The sort order controls in which order the product is listed. The sort order is used to order the products in ascending order.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
 	 * @return int
 	 */
-	public function getSortOrder() {
-		return parent::getSortOrder();
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Sets sortOrder.
+	 * Sets id.
 	 *
-	 * @param int $sortOrder
+	 * @param int $id
 	 * @return SubscriptionProductActive
 	 */
-	public function setSortOrder($sortOrder) {
-		return parent::setSortOrder($sortOrder);
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
 	}
 
 	/**
-	 * Returns state.
+	 * Returns version.
 	 *
-	 * 
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function getState() {
-		return parent::getState();
+	public function getVersion() {
+		return $this->version;
 	}
 
 	/**
-	 * Sets state.
+	 * Sets version.
 	 *
-	 * @param string $state
+	 * @param int $version
 	 * @return SubscriptionProductActive
 	 */
-	public function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'RETIRING', 'RETIRED');
-		if (!is_null($state) && (!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'RETIRING', 'RETIRED'");
-		}
-		return parent::setState($state);
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
 	}
 
 	/**
@@ -227,17 +148,12 @@ class SubscriptionProductActive extends SubscriptionProduct  {
 	public function validate() {
 		parent::validate();
 
-		if ($this->getFailedPaymentSuspensionPeriod() === null) {
-			throw new ValidationException("'failedPaymentSuspensionPeriod' can't be null", 'failedPaymentSuspensionPeriod', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
 		}
-		if ($this->getName() === null) {
-			throw new ValidationException("'name' can't be null", 'name', $this);
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "RETIRING", "RETIRED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
-
 	}
 
 	/**

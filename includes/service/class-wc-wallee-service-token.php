@@ -29,11 +29,11 @@ class WC_Wallee_Service_Token extends WC_Wallee_Service_Abstract {
 	public function update_token($space_id, $token_id){
 		$query = new \Wallee\Sdk\Model\EntityQuery();
 		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilter::TYPE_AND);
+		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
 		$filter->setChildren(
 				array(
 					$this->create_entity_filter('token.id', $token_id),
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\TokenVersion::STATE_ACTIVE) 
+					$this->create_entity_filter('state', \Wallee\Sdk\Model\TokenVersionState::ACTIVE) 
 				));
 		$query->setFilter($filter);
 		$query->setNumberOfEntities(1);
@@ -54,8 +54,8 @@ class WC_Wallee_Service_Token extends WC_Wallee_Service_Abstract {
 		$info = WC_Wallee_Entity_Token_Info::load_by_token($space_id, $token_version->getToken()->getId());
 		if (!in_array($token_version->getToken()->getState(), 
 				array(
-					\Wallee\Sdk\Model\Token::STATE_ACTIVE,
-					\Wallee\Sdk\Model\Token::STATE_INACTIVE 
+					\Wallee\Sdk\Model\CreationEntityState::ACTIVE,
+					\Wallee\Sdk\Model\CreationEntityState::INACTIVE 
 				))) {
 			if ($info->get_id()) {
 				$info->delete();

@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * TokenCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class TokenCreate extends TokenUpdate  {
+class TokenCreate extends AbstractTokenUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,8 @@ class TokenCreate extends TokenUpdate  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'externalId' => 'string',
+		'state' => '\Wallee\Sdk\Model\CreationEntityState'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,30 +61,20 @@ class TokenCreate extends TokenUpdate  {
 	}
 
 	
+
 	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_DELETING = 'DELETING';
-	const STATE_DELETED = 'DELETED';
-	
-	/**
-	 * Returns allowable values of state.
+	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
 	 *
-	 * @return string[]
+	 * @var string
 	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_DELETING,
-			self::STATE_DELETED,
-		);
-	}
-	
+	private $externalId;
+
+	/**
+	 * 
+	 *
+	 * @var \Wallee\Sdk\Model\CreationEntityState
+	 */
+	private $state;
 
 
 	/**
@@ -111,7 +102,7 @@ class TokenCreate extends TokenUpdate  {
 	 * @return string
 	 */
 	public function getExternalId() {
-		return parent::getExternalId();
+		return $this->externalId;
 	}
 
 	/**
@@ -121,7 +112,9 @@ class TokenCreate extends TokenUpdate  {
 	 * @return TokenCreate
 	 */
 	public function setExternalId($externalId) {
-		return parent::setExternalId($externalId);
+		$this->externalId = $externalId;
+
+		return $this;
 	}
 
 	/**
@@ -129,24 +122,22 @@ class TokenCreate extends TokenUpdate  {
 	 *
 	 * 
 	 *
-	 * @return string
+	 * @return \Wallee\Sdk\Model\CreationEntityState
 	 */
 	public function getState() {
-		return parent::getState();
+		return $this->state;
 	}
 
 	/**
 	 * Sets state.
 	 *
-	 * @param string $state
+	 * @param \Wallee\Sdk\Model\CreationEntityState $state
 	 * @return TokenCreate
 	 */
 	public function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED');
-		if (!is_null($state) && (!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED'");
-		}
-		return parent::setState($state);
+		$this->state = $state;
+
+		return $this;
 	}
 
 	/**
@@ -160,11 +151,6 @@ class TokenCreate extends TokenUpdate  {
 		if ($this->getExternalId() === null) {
 			throw new ValidationException("'externalId' can't be null", 'externalId', $this);
 		}
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "DELETING", "DELETED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
-
 	}
 
 	/**

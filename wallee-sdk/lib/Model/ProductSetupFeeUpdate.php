@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * ProductSetupFeeUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class ProductSetupFeeUpdate extends ProductSetupFee  {
+class ProductSetupFeeUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,14 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int',
+		'component' => 'int',
+		'description' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
+		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
+		'onDowngradeCreditedAmount' => '\Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]',
+		'onUpgradeCreditedAmount' => '\Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]',
+		'setupFee' => '\Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -56,10 +63,66 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
+
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $component;
+
+	/**
+	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
+	 *
+	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
+	 */
+	private $description;
+
+	/**
+	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
+	 *
+	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
+	 */
+	private $name;
+
+	/**
+	 * When the subscription is changed and the change is considered as a downgrade the amount defined by this property will be credited to the subscriber.
+	 *
+	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
+	 */
+	private $onDowngradeCreditedAmount;
+
+	/**
+	 * When the subscription is changed and the change is considered as a upgrade the amount defined by this property will be credited to the subscriber.
+	 *
+	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
+	 */
+	private $onUpgradeCreditedAmount;
+
+	/**
+	 * The setup fee is charged when the subscriber subscribes to this component. The setup fee is debited with the first charge for the subscriptions.
+	 *
+	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
+	 */
+	private $setupFee;
 
 
 	/**
@@ -68,8 +131,12 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
+		}
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
+		}
 		if (isset($data['component']) && $data['component'] != null) {
 			$this->setComponent($data['component']);
 		}
@@ -92,60 +159,118 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 
 
 	/**
+	 * Returns id.
+	 *
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * Sets id.
+	 *
+	 * @param int $id
+	 * @return ProductSetupFeeUpdate
+	 */
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns version.
+	 *
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @return int
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param int $version
+	 * @return ProductSetupFeeUpdate
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
+	}
+
+	/**
 	 * Returns component.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductComponent
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getComponent() {
-		return parent::getComponent();
+		return $this->component;
 	}
 
 	/**
 	 * Sets component.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductComponent $component
+	 * @param int $component
 	 * @return ProductSetupFeeUpdate
 	 */
 	public function setComponent($component) {
-		return parent::setComponent($component);
+		$this->component = $component;
+
+		return $this;
 	}
 
 	/**
 	 * Returns description.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getDescription() {
-		return parent::getDescription();
+		return $this->description;
 	}
 
 	/**
 	 * Sets description.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $description
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $description
 	 * @return ProductSetupFeeUpdate
 	 */
 	public function setDescription($description) {
-		return parent::setDescription($description);
+		$this->description = $description;
+
+		return $this;
 	}
 
 	/**
 	 * Returns name.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getName() {
-		return parent::getName();
+		return $this->name;
 	}
 
 	/**
 	 * Sets name.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $name
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name
 	 * @return ProductSetupFeeUpdate
 	 */
 	public function setName($name) {
-		return parent::setName($name);
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -156,7 +281,7 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
 	 */
 	public function getOnDowngradeCreditedAmount() {
-		return parent::getOnDowngradeCreditedAmount();
+		return $this->onDowngradeCreditedAmount;
 	}
 
 	/**
@@ -166,7 +291,9 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return ProductSetupFeeUpdate
 	 */
 	public function setOnDowngradeCreditedAmount($onDowngradeCreditedAmount) {
-		return parent::setOnDowngradeCreditedAmount($onDowngradeCreditedAmount);
+		$this->onDowngradeCreditedAmount = $onDowngradeCreditedAmount;
+
+		return $this;
 	}
 
 	/**
@@ -177,7 +304,7 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
 	 */
 	public function getOnUpgradeCreditedAmount() {
-		return parent::getOnUpgradeCreditedAmount();
+		return $this->onUpgradeCreditedAmount;
 	}
 
 	/**
@@ -187,7 +314,9 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return ProductSetupFeeUpdate
 	 */
 	public function setOnUpgradeCreditedAmount($onUpgradeCreditedAmount) {
-		return parent::setOnUpgradeCreditedAmount($onUpgradeCreditedAmount);
+		$this->onUpgradeCreditedAmount = $onUpgradeCreditedAmount;
+
+		return $this;
 	}
 
 	/**
@@ -198,7 +327,7 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
 	 */
 	public function getSetupFee() {
-		return parent::getSetupFee();
+		return $this->setupFee;
 	}
 
 	/**
@@ -208,7 +337,9 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @return ProductSetupFeeUpdate
 	 */
 	public function setSetupFee($setupFee) {
-		return parent::setSetupFee($setupFee);
+		$this->setupFee = $setupFee;
+
+		return $this;
 	}
 
 	/**
@@ -217,16 +348,12 @@ class ProductSetupFeeUpdate extends ProductSetupFee  {
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
-		if ($this->getOnDowngradeCreditedAmount() === null) {
-			throw new ValidationException("'onDowngradeCreditedAmount' can't be null", 'onDowngradeCreditedAmount', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
 		}
-		if ($this->getOnUpgradeCreditedAmount() === null) {
-			throw new ValidationException("'onUpgradeCreditedAmount' can't be null", 'onUpgradeCreditedAmount', $this);
-		}
-		if ($this->getSetupFee() === null) {
-			throw new ValidationException("'setupFee' can't be null", 'setupFee', $this);
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
 	}
 

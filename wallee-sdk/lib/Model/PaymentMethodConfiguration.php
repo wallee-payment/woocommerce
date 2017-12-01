@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * PaymentMethodConfiguration model
@@ -48,18 +48,21 @@ class PaymentMethodConfiguration  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-		'dataCollectionType' => 'string',
+		'dataCollectionType' => '\Wallee\Sdk\Model\DataCollectionType',
 		'description' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
 		'id' => 'int',
 		'imageResourcePath' => '\Wallee\Sdk\Model\ModelResourcePath',
 		'linkedSpaceId' => 'int',
 		'name' => 'string',
-		'oneClickPaymentMode' => 'string',
+		'oneClickPaymentMode' => '\Wallee\Sdk\Model\OneClickPaymentMode',
 		'paymentMethod' => 'int',
 		'plannedPurgeDate' => '\DateTime',
+		'resolvedDescription' => 'map[string,string]',
+		'resolvedImageUrl' => 'string',
+		'resolvedTitle' => 'map[string,string]',
 		'sortOrder' => 'int',
 		'spaceId' => 'int',
-		'state' => 'string',
+		'state' => '\Wallee\Sdk\Model\CreationEntityState',
 		'title' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
 		'version' => 'int'	);
 
@@ -73,77 +76,17 @@ class PaymentMethodConfiguration  {
 	}
 
 	
-	/**
-	 * Values of dataCollectionType.
-	 */
-	const DATA_COLLECTION_TYPE_ONSITE = 'ONSITE';
-	const DATA_COLLECTION_TYPE_OFFSITE = 'OFFSITE';
-	
-	/**
-	 * Returns allowable values of dataCollectionType.
-	 *
-	 * @return string[]
-	 */
-	public function getDataCollectionTypeAllowableValues() {
-		return array(
-			self::DATA_COLLECTION_TYPE_ONSITE,
-			self::DATA_COLLECTION_TYPE_OFFSITE,
-		);
-	}
-	
-	/**
-	 * Values of oneClickPaymentMode.
-	 */
-	const ONE_CLICK_PAYMENT_MODE_DISABLED = 'DISABLED';
-	const ONE_CLICK_PAYMENT_MODE_ALLOW = 'ALLOW';
-	const ONE_CLICK_PAYMENT_MODE_FORCE = 'FORCE';
-	
-	/**
-	 * Returns allowable values of oneClickPaymentMode.
-	 *
-	 * @return string[]
-	 */
-	public function getOneClickPaymentModeAllowableValues() {
-		return array(
-			self::ONE_CLICK_PAYMENT_MODE_DISABLED,
-			self::ONE_CLICK_PAYMENT_MODE_ALLOW,
-			self::ONE_CLICK_PAYMENT_MODE_FORCE,
-		);
-	}
-	
-	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_DELETING = 'DELETING';
-	const STATE_DELETED = 'DELETED';
-	
-	/**
-	 * Returns allowable values of state.
-	 *
-	 * @return string[]
-	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_DELETING,
-			self::STATE_DELETED,
-		);
-	}
-	
 
 	/**
 	 * The data collection type determines who is collecting the payment information. This can be done either by the processor (offsite) or by our application (onsite).
 	 *
-	 * @var string
+	 * @var \Wallee\Sdk\Model\DataCollectionType
 	 */
 	private $dataCollectionType;
 
 	/**
+	 * The payment method configuration description can be used to show a text during the payment process. Choose an appropriate description as it will be displayed to your customer.
+	 *
 	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
 	 */
 	private $description;
@@ -156,11 +99,15 @@ class PaymentMethodConfiguration  {
 	private $id;
 
 	/**
+	 * The image of the payment method configuration overrides the default image of the payment method.
+	 *
 	 * @var \Wallee\Sdk\Model\ModelResourcePath
 	 */
 	private $imageResourcePath;
 
 	/**
+	 * The linked space id holds the ID of the space to which the entity belongs to.
+	 *
 	 * @var int
 	 */
 	private $linkedSpaceId;
@@ -175,11 +122,13 @@ class PaymentMethodConfiguration  {
 	/**
 	 * When the buyer is present on the payment page or within the iFrame the payment details can be stored automatically. The buyer will be able to use the stored payment details for subsequent transactions. When the transaction already contains a token one-click payments are disabled anyway
 	 *
-	 * @var string
+	 * @var \Wallee\Sdk\Model\OneClickPaymentMode
 	 */
 	private $oneClickPaymentMode;
 
 	/**
+	 * 
+	 *
 	 * @var int
 	 */
 	private $paymentMethod;
@@ -190,6 +139,27 @@ class PaymentMethodConfiguration  {
 	 * @var \DateTime
 	 */
 	private $plannedPurgeDate;
+
+	/**
+	 * The resolved description uses the specified description or the default one when it is not overridden.
+	 *
+	 * @var map[string,string]
+	 */
+	private $resolvedDescription;
+
+	/**
+	 * The resolved URL of the image to use with this payment method.
+	 *
+	 * @var string
+	 */
+	private $resolvedImageUrl;
+
+	/**
+	 * The resolved title uses the specified title or the default one when it is not overridden.
+	 *
+	 * @var map[string,string]
+	 */
+	private $resolvedTitle;
 
 	/**
 	 * The sort order of the payment method determines the ordering of the methods shown to the user during the payment process.
@@ -208,11 +178,13 @@ class PaymentMethodConfiguration  {
 	/**
 	 * 
 	 *
-	 * @var string
+	 * @var \Wallee\Sdk\Model\CreationEntityState
 	 */
 	private $state;
 
 	/**
+	 * The title of the payment method configuration is used within the payment process. The title is visible to the customer.
+	 *
 	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
 	 */
 	private $title;
@@ -231,6 +203,9 @@ class PaymentMethodConfiguration  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
+		if (isset($data['dataCollectionType']) && $data['dataCollectionType'] != null) {
+			$this->setDataCollectionType($data['dataCollectionType']);
+		}
 		if (isset($data['description']) && $data['description'] != null) {
 			$this->setDescription($data['description']);
 		}
@@ -240,11 +215,17 @@ class PaymentMethodConfiguration  {
 		if (isset($data['imageResourcePath']) && $data['imageResourcePath'] != null) {
 			$this->setImageResourcePath($data['imageResourcePath']);
 		}
-		if (isset($data['linkedSpaceId']) && $data['linkedSpaceId'] != null) {
-			$this->setLinkedSpaceId($data['linkedSpaceId']);
+		if (isset($data['oneClickPaymentMode']) && $data['oneClickPaymentMode'] != null) {
+			$this->setOneClickPaymentMode($data['oneClickPaymentMode']);
 		}
-		if (isset($data['paymentMethod']) && $data['paymentMethod'] != null) {
-			$this->setPaymentMethod($data['paymentMethod']);
+		if (isset($data['resolvedDescription']) && $data['resolvedDescription'] != null) {
+			$this->setResolvedDescription($data['resolvedDescription']);
+		}
+		if (isset($data['resolvedTitle']) && $data['resolvedTitle'] != null) {
+			$this->setResolvedTitle($data['resolvedTitle']);
+		}
+		if (isset($data['state']) && $data['state'] != null) {
+			$this->setState($data['state']);
 		}
 		if (isset($data['title']) && $data['title'] != null) {
 			$this->setTitle($data['title']);
@@ -260,7 +241,7 @@ class PaymentMethodConfiguration  {
 	 *
 	 * The data collection type determines who is collecting the payment information. This can be done either by the processor (offsite) or by our application (onsite).
 	 *
-	 * @return string
+	 * @return \Wallee\Sdk\Model\DataCollectionType
 	 */
 	public function getDataCollectionType() {
 		return $this->dataCollectionType;
@@ -269,14 +250,10 @@ class PaymentMethodConfiguration  {
 	/**
 	 * Sets dataCollectionType.
 	 *
-	 * @param string $dataCollectionType
+	 * @param \Wallee\Sdk\Model\DataCollectionType $dataCollectionType
 	 * @return PaymentMethodConfiguration
 	 */
-	protected function setDataCollectionType($dataCollectionType) {
-		$allowed_values = array('ONSITE', 'OFFSITE');
-		if (!is_null($dataCollectionType) && (!in_array($dataCollectionType, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'dataCollectionType', must be one of 'ONSITE', 'OFFSITE'");
-		}
+	public function setDataCollectionType($dataCollectionType) {
 		$this->dataCollectionType = $dataCollectionType;
 
 		return $this;
@@ -284,6 +261,8 @@ class PaymentMethodConfiguration  {
 
 	/**
 	 * Returns description.
+	 *
+	 * The payment method configuration description can be used to show a text during the payment process. Choose an appropriate description as it will be displayed to your customer.
 	 *
 	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
 	 */
@@ -329,6 +308,8 @@ class PaymentMethodConfiguration  {
 	/**
 	 * Returns imageResourcePath.
 	 *
+	 * The image of the payment method configuration overrides the default image of the payment method.
+	 *
 	 * @return \Wallee\Sdk\Model\ModelResourcePath
 	 */
 	public function getImageResourcePath() {
@@ -350,6 +331,8 @@ class PaymentMethodConfiguration  {
 	/**
 	 * Returns linkedSpaceId.
 	 *
+	 * The linked space id holds the ID of the space to which the entity belongs to.
+	 *
 	 * @return int
 	 */
 	public function getLinkedSpaceId() {
@@ -362,7 +345,7 @@ class PaymentMethodConfiguration  {
 	 * @param int $linkedSpaceId
 	 * @return PaymentMethodConfiguration
 	 */
-	public function setLinkedSpaceId($linkedSpaceId) {
+	protected function setLinkedSpaceId($linkedSpaceId) {
 		$this->linkedSpaceId = $linkedSpaceId;
 
 		return $this;
@@ -396,7 +379,7 @@ class PaymentMethodConfiguration  {
 	 *
 	 * When the buyer is present on the payment page or within the iFrame the payment details can be stored automatically. The buyer will be able to use the stored payment details for subsequent transactions. When the transaction already contains a token one-click payments are disabled anyway
 	 *
-	 * @return string
+	 * @return \Wallee\Sdk\Model\OneClickPaymentMode
 	 */
 	public function getOneClickPaymentMode() {
 		return $this->oneClickPaymentMode;
@@ -405,14 +388,10 @@ class PaymentMethodConfiguration  {
 	/**
 	 * Sets oneClickPaymentMode.
 	 *
-	 * @param string $oneClickPaymentMode
+	 * @param \Wallee\Sdk\Model\OneClickPaymentMode $oneClickPaymentMode
 	 * @return PaymentMethodConfiguration
 	 */
-	protected function setOneClickPaymentMode($oneClickPaymentMode) {
-		$allowed_values = array('DISABLED', 'ALLOW', 'FORCE');
-		if (!is_null($oneClickPaymentMode) && (!in_array($oneClickPaymentMode, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'oneClickPaymentMode', must be one of 'DISABLED', 'ALLOW', 'FORCE'");
-		}
+	public function setOneClickPaymentMode($oneClickPaymentMode) {
 		$this->oneClickPaymentMode = $oneClickPaymentMode;
 
 		return $this;
@@ -420,6 +399,8 @@ class PaymentMethodConfiguration  {
 
 	/**
 	 * Returns paymentMethod.
+	 *
+	 * 
 	 *
 	 * @return int
 	 */
@@ -433,7 +414,7 @@ class PaymentMethodConfiguration  {
 	 * @param int $paymentMethod
 	 * @return PaymentMethodConfiguration
 	 */
-	public function setPaymentMethod($paymentMethod) {
+	protected function setPaymentMethod($paymentMethod) {
 		$this->paymentMethod = $paymentMethod;
 
 		return $this;
@@ -458,6 +439,75 @@ class PaymentMethodConfiguration  {
 	 */
 	protected function setPlannedPurgeDate($plannedPurgeDate) {
 		$this->plannedPurgeDate = $plannedPurgeDate;
+
+		return $this;
+	}
+
+	/**
+	 * Returns resolvedDescription.
+	 *
+	 * The resolved description uses the specified description or the default one when it is not overridden.
+	 *
+	 * @return map[string,string]
+	 */
+	public function getResolvedDescription() {
+		return $this->resolvedDescription;
+	}
+
+	/**
+	 * Sets resolvedDescription.
+	 *
+	 * @param map[string,string] $resolvedDescription
+	 * @return PaymentMethodConfiguration
+	 */
+	public function setResolvedDescription($resolvedDescription) {
+		$this->resolvedDescription = $resolvedDescription;
+
+		return $this;
+	}
+
+	/**
+	 * Returns resolvedImageUrl.
+	 *
+	 * The resolved URL of the image to use with this payment method.
+	 *
+	 * @return string
+	 */
+	public function getResolvedImageUrl() {
+		return $this->resolvedImageUrl;
+	}
+
+	/**
+	 * Sets resolvedImageUrl.
+	 *
+	 * @param string $resolvedImageUrl
+	 * @return PaymentMethodConfiguration
+	 */
+	protected function setResolvedImageUrl($resolvedImageUrl) {
+		$this->resolvedImageUrl = $resolvedImageUrl;
+
+		return $this;
+	}
+
+	/**
+	 * Returns resolvedTitle.
+	 *
+	 * The resolved title uses the specified title or the default one when it is not overridden.
+	 *
+	 * @return map[string,string]
+	 */
+	public function getResolvedTitle() {
+		return $this->resolvedTitle;
+	}
+
+	/**
+	 * Sets resolvedTitle.
+	 *
+	 * @param map[string,string] $resolvedTitle
+	 * @return PaymentMethodConfiguration
+	 */
+	public function setResolvedTitle($resolvedTitle) {
+		$this->resolvedTitle = $resolvedTitle;
 
 		return $this;
 	}
@@ -513,7 +563,7 @@ class PaymentMethodConfiguration  {
 	 *
 	 * 
 	 *
-	 * @return string
+	 * @return \Wallee\Sdk\Model\CreationEntityState
 	 */
 	public function getState() {
 		return $this->state;
@@ -522,14 +572,10 @@ class PaymentMethodConfiguration  {
 	/**
 	 * Sets state.
 	 *
-	 * @param string $state
+	 * @param \Wallee\Sdk\Model\CreationEntityState $state
 	 * @return PaymentMethodConfiguration
 	 */
-	protected function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED');
-		if (!is_null($state) && (!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED'");
-		}
+	public function setState($state) {
 		$this->state = $state;
 
 		return $this;
@@ -537,6 +583,8 @@ class PaymentMethodConfiguration  {
 
 	/**
 	 * Returns title.
+	 *
+	 * The title of the payment method configuration is used within the payment process. The title is visible to the customer.
 	 *
 	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
 	 */
@@ -585,21 +633,6 @@ class PaymentMethodConfiguration  {
 	 * @throws ValidationException
 	 */
 	public function validate() {
-
-		$allowed_values = array("ONSITE", "OFFSITE");
-		if (!in_array($this->getDataCollectionType(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'dataCollectionType', must be one of #{allowed_values}.", 'dataCollectionType', $this);
-		}
-
-		$allowed_values = array("DISABLED", "ALLOW", "FORCE");
-		if (!in_array($this->getOneClickPaymentMode(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'oneClickPaymentMode', must be one of #{allowed_values}.", 'oneClickPaymentMode', $this);
-		}
-
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "DELETING", "DELETED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
 
 	}
 

@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionProductVersionPending model
@@ -48,26 +48,17 @@ class SubscriptionProductVersionPending  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-		'activatedOn' => '\DateTime',
+		'id' => 'int',
+		'version' => 'int',
 		'billingCycle' => 'string',
 		'comment' => 'string',
-		'createdOn' => '\DateTime',
 		'defaultCurrency' => 'string',
 		'enabledCurrencies' => 'string[]',
-		'id' => 'int',
-		'incrementNumber' => 'int',
-		'linkedSpaceId' => 'int',
 		'minimalNumberOfPeriods' => 'int',
-		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringUpdate',
+		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
 		'numberOfNoticePeriods' => 'int',
-		'obsoletedOn' => '\DateTime',
-		'plannedPurgeDate' => '\DateTime',
-		'product' => '\Wallee\Sdk\Model\SubscriptionProduct',
-		'reference' => 'string',
-		'retiringFinishedOn' => '\DateTime',
-		'retiringStartedOn' => '\DateTime',
-		'state' => 'string',
-		'version' => 'int'	);
+		'product' => 'int',
+		'state' => '\Wallee\Sdk\Model\SubscriptionProductVersionState'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -79,37 +70,20 @@ class SubscriptionProductVersionPending  {
 	}
 
 	
-	/**
-	 * Values of state.
-	 */
-	const STATE_PENDING = 'PENDING';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_OBSOLETE = 'OBSOLETE';
-	const STATE_RETIRING = 'RETIRING';
-	const STATE_RETIRED = 'RETIRED';
-	
-	/**
-	 * Returns allowable values of state.
-	 *
-	 * @return string[]
-	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_PENDING,
-			self::STATE_ACTIVE,
-			self::STATE_OBSOLETE,
-			self::STATE_RETIRING,
-			self::STATE_RETIRED,
-		);
-	}
-	
 
 	/**
-	 * 
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
-	 * @var \DateTime
+	 * @var int
 	 */
-	private $activatedOn;
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
 
 	/**
 	 * The billing cycle determines the rhythm with which the subscriber is billed. The charging may have different rhythm.
@@ -126,13 +100,6 @@ class SubscriptionProductVersionPending  {
 	private $comment;
 
 	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
-
-	/**
 	 * The default currency has to be used in all fees.
 	 *
 	 * @var string
@@ -147,25 +114,6 @@ class SubscriptionProductVersionPending  {
 	private $enabledCurrencies;
 
 	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
-
-	/**
-	 * The increment number represents the version number incremented whenever a new version is activated.
-	 *
-	 * @var int
-	 */
-	private $incrementNumber;
-
-	/**
-	 * @var int
-	 */
-	private $linkedSpaceId;
-
-	/**
 	 * The minimal number of periods determines how long the subscription has to run before the subscription can be terminated.
 	 *
 	 * @var int
@@ -173,7 +121,9 @@ class SubscriptionProductVersionPending  {
 	private $minimalNumberOfPeriods;
 
 	/**
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * The product version name is the name of the product which is shown to the user for the version. When the visible product name should be changed for a particular product a new version has to be created which contains the new name of the product.
+	 *
+	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	private $name;
 
@@ -185,58 +135,18 @@ class SubscriptionProductVersionPending  {
 	private $numberOfNoticePeriods;
 
 	/**
-	 * 
+	 * Each product version is linked to a product.
 	 *
-	 * @var \DateTime
-	 */
-	private $obsoletedOn;
-
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
-
-	/**
-	 * @var \Wallee\Sdk\Model\SubscriptionProduct
+	 * @var int
 	 */
 	private $product;
 
 	/**
-	 * The product version reference helps to identify the version. The reference is generated out of the product reference.
-	 *
-	 * @var string
-	 */
-	private $reference;
-
-	/**
 	 * 
 	 *
-	 * @var \DateTime
-	 */
-	private $retiringFinishedOn;
-
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $retiringStartedOn;
-
-	/**
-	 * 
-	 *
-	 * @var string
+	 * @var \Wallee\Sdk\Model\SubscriptionProductVersionState
 	 */
 	private $state;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
 
 
 	/**
@@ -245,6 +155,12 @@ class SubscriptionProductVersionPending  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
+		}
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
+		}
 		if (isset($data['billingCycle']) && $data['billingCycle'] != null) {
 			$this->setBillingCycle($data['billingCycle']);
 		}
@@ -256,12 +172,6 @@ class SubscriptionProductVersionPending  {
 		}
 		if (isset($data['enabledCurrencies']) && $data['enabledCurrencies'] != null) {
 			$this->setEnabledCurrencies($data['enabledCurrencies']);
-		}
-		if (isset($data['id']) && $data['id'] != null) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['linkedSpaceId']) && $data['linkedSpaceId'] != null) {
-			$this->setLinkedSpaceId($data['linkedSpaceId']);
 		}
 		if (isset($data['minimalNumberOfPeriods']) && $data['minimalNumberOfPeriods'] != null) {
 			$this->setMinimalNumberOfPeriods($data['minimalNumberOfPeriods']);
@@ -278,31 +188,51 @@ class SubscriptionProductVersionPending  {
 		if (isset($data['state']) && $data['state'] != null) {
 			$this->setState($data['state']);
 		}
-		if (isset($data['version']) && $data['version'] != null) {
-			$this->setVersion($data['version']);
-		}
 	}
 
 
 	/**
-	 * Returns activatedOn.
+	 * Returns id.
 	 *
-	 * 
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
-	 * @return \DateTime
+	 * @return int
 	 */
-	public function getActivatedOn() {
-		return $this->activatedOn;
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Sets activatedOn.
+	 * Sets id.
 	 *
-	 * @param \DateTime $activatedOn
+	 * @param int $id
 	 * @return SubscriptionProductVersionPending
 	 */
-	protected function setActivatedOn($activatedOn) {
-		$this->activatedOn = $activatedOn;
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns version.
+	 *
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @return int
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param int $version
+	 * @return SubscriptionProductVersionPending
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
 
 		return $this;
 	}
@@ -354,29 +284,6 @@ class SubscriptionProductVersionPending  {
 	}
 
 	/**
-	 * Returns createdOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
-
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
-
-		return $this;
-	}
-
-	/**
 	 * Returns defaultCurrency.
 	 *
 	 * The default currency has to be used in all fees.
@@ -423,73 +330,6 @@ class SubscriptionProductVersionPending  {
 	}
 
 	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
-
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setId($id) {
-		$this->id = $id;
-
-		return $this;
-	}
-
-	/**
-	 * Returns incrementNumber.
-	 *
-	 * The increment number represents the version number incremented whenever a new version is activated.
-	 *
-	 * @return int
-	 */
-	public function getIncrementNumber() {
-		return $this->incrementNumber;
-	}
-
-	/**
-	 * Sets incrementNumber.
-	 *
-	 * @param int $incrementNumber
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setIncrementNumber($incrementNumber) {
-		$this->incrementNumber = $incrementNumber;
-
-		return $this;
-	}
-
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
-
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
-
-		return $this;
-	}
-
-	/**
 	 * Returns minimalNumberOfPeriods.
 	 *
 	 * The minimal number of periods determines how long the subscription has to run before the subscription can be terminated.
@@ -515,7 +355,9 @@ class SubscriptionProductVersionPending  {
 	/**
 	 * Returns name.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * The product version name is the name of the product which is shown to the user for the version. When the visible product name should be changed for a particular product a new version has to be created which contains the new name of the product.
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getName() {
 		return $this->name;
@@ -524,7 +366,7 @@ class SubscriptionProductVersionPending  {
 	/**
 	 * Sets name.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $name
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name
 	 * @return SubscriptionProductVersionPending
 	 */
 	public function setName($name) {
@@ -557,55 +399,11 @@ class SubscriptionProductVersionPending  {
 	}
 
 	/**
-	 * Returns obsoletedOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getObsoletedOn() {
-		return $this->obsoletedOn;
-	}
-
-	/**
-	 * Sets obsoletedOn.
-	 *
-	 * @param \DateTime $obsoletedOn
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setObsoletedOn($obsoletedOn) {
-		$this->obsoletedOn = $obsoletedOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
-
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
-
-		return $this;
-	}
-
-	/**
 	 * Returns product.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProduct
+	 * Each product version is linked to a product.
+	 *
+	 * @return int
 	 */
 	public function getProduct() {
 		return $this->product;
@@ -614,7 +412,7 @@ class SubscriptionProductVersionPending  {
 	/**
 	 * Sets product.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProduct $product
+	 * @param int $product
 	 * @return SubscriptionProductVersionPending
 	 */
 	public function setProduct($product) {
@@ -624,80 +422,11 @@ class SubscriptionProductVersionPending  {
 	}
 
 	/**
-	 * Returns reference.
-	 *
-	 * The product version reference helps to identify the version. The reference is generated out of the product reference.
-	 *
-	 * @return string
-	 */
-	public function getReference() {
-		return $this->reference;
-	}
-
-	/**
-	 * Sets reference.
-	 *
-	 * @param string $reference
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setReference($reference) {
-		$this->reference = $reference;
-
-		return $this;
-	}
-
-	/**
-	 * Returns retiringFinishedOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getRetiringFinishedOn() {
-		return $this->retiringFinishedOn;
-	}
-
-	/**
-	 * Sets retiringFinishedOn.
-	 *
-	 * @param \DateTime $retiringFinishedOn
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setRetiringFinishedOn($retiringFinishedOn) {
-		$this->retiringFinishedOn = $retiringFinishedOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns retiringStartedOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getRetiringStartedOn() {
-		return $this->retiringStartedOn;
-	}
-
-	/**
-	 * Sets retiringStartedOn.
-	 *
-	 * @param \DateTime $retiringStartedOn
-	 * @return SubscriptionProductVersionPending
-	 */
-	protected function setRetiringStartedOn($retiringStartedOn) {
-		$this->retiringStartedOn = $retiringStartedOn;
-
-		return $this;
-	}
-
-	/**
 	 * Returns state.
 	 *
 	 * 
 	 *
-	 * @return string
+	 * @return \Wallee\Sdk\Model\SubscriptionProductVersionState
 	 */
 	public function getState() {
 		return $this->state;
@@ -706,38 +435,11 @@ class SubscriptionProductVersionPending  {
 	/**
 	 * Sets state.
 	 *
-	 * @param string $state
+	 * @param \Wallee\Sdk\Model\SubscriptionProductVersionState $state
 	 * @return SubscriptionProductVersionPending
 	 */
 	public function setState($state) {
-		$allowed_values = array('PENDING', 'ACTIVE', 'OBSOLETE', 'RETIRING', 'RETIRED');
-		if (!is_null($state) && (!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'PENDING', 'ACTIVE', 'OBSOLETE', 'RETIRING', 'RETIRED'");
-		}
 		$this->state = $state;
-
-		return $this;
-	}
-
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
-
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
 
 		return $this;
 	}
@@ -749,20 +451,12 @@ class SubscriptionProductVersionPending  {
 	 */
 	public function validate() {
 
-		if ($this->getBillingCycle() === null) {
-			throw new ValidationException("'billingCycle' can't be null", 'billingCycle', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
 		}
-		if ($this->getDefaultCurrency() === null) {
-			throw new ValidationException("'defaultCurrency' can't be null", 'defaultCurrency', $this);
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
-		if ($this->getEnabledCurrencies() === null) {
-			throw new ValidationException("'enabledCurrencies' can't be null", 'enabledCurrencies', $this);
-		}
-		$allowed_values = array("PENDING", "ACTIVE", "OBSOLETE", "RETIRING", "RETIRED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
-
 	}
 
 	/**

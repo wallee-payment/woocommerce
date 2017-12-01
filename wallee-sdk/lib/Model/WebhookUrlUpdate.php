@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * WebhookUrlUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class WebhookUrlUpdate extends WebhookUrl  {
+class WebhookUrlUpdate extends AbstractWebhookUrlUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,8 @@ class WebhookUrlUpdate extends WebhookUrl  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -61,6 +62,20 @@ class WebhookUrlUpdate extends WebhookUrl  {
 
 	
 
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
 
 	/**
 	 * Constructor.
@@ -70,55 +85,59 @@ class WebhookUrlUpdate extends WebhookUrl  {
 	public function __construct(array $data = null) {
 		parent::__construct($data);
 
-		if (isset($data['name']) && $data['name'] != null) {
-			$this->setName($data['name']);
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
 		}
-		if (isset($data['url']) && $data['url'] != null) {
-			$this->setUrl($data['url']);
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
 		}
 	}
 
 
 	/**
-	 * Returns name.
+	 * Returns id.
 	 *
-	 * The URL name is used internally to identify the URL in administrative interfaces. For example it is used within search fields and hence it should be distinct and descriptive.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function getName() {
-		return parent::getName();
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Sets name.
+	 * Sets id.
 	 *
-	 * @param string $name
+	 * @param int $id
 	 * @return WebhookUrlUpdate
 	 */
-	public function setName($name) {
-		return parent::setName($name);
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
 	}
 
 	/**
-	 * Returns url.
+	 * Returns version.
 	 *
-	 * The URL to which the HTTP requests are sent to. An example URL could look like https://www.example.com/some/path?some-query-parameter=value.
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function getUrl() {
-		return parent::getUrl();
+	public function getVersion() {
+		return $this->version;
 	}
 
 	/**
-	 * Sets url.
+	 * Sets version.
 	 *
-	 * @param string $url
+	 * @param int $version
 	 * @return WebhookUrlUpdate
 	 */
-	public function setUrl($url) {
-		return parent::setUrl($url);
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
 	}
 
 	/**
@@ -129,11 +148,11 @@ class WebhookUrlUpdate extends WebhookUrl  {
 	public function validate() {
 		parent::validate();
 
-		if ($this->getName() === null) {
-			throw new ValidationException("'name' can't be null", 'name', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
 		}
-		if ($this->getUrl() === null) {
-			throw new ValidationException("'url' can't be null", 'url', $this);
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
 	}
 

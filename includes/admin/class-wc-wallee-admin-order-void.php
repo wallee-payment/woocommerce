@@ -34,7 +34,7 @@ class WC_Wallee_Admin_Order_Void {
 		$gateway = wc_get_payment_gateway_by_order($order);
 		if ($gateway instanceof WC_Wallee_Gateway) {
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
-			if ($transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED) {
+			if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				echo '<button type="button" class="button wallee-void-button action-wallee-void-cancel" style="display:none">' .
 						 __('Cancel', 'woocommerce-wallee') . '</button>';
 				echo '<button type="button" class="button button-primary wallee-void-button action-wallee-void-execute" style="display:none">' .
@@ -72,7 +72,7 @@ class WC_Wallee_Admin_Order_Void {
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id(), $transaction_info->get_space_id());
 			
-			if ($transaction_info->get_state() != \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED) {
+			if ($transaction_info->get_state() != \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				throw new Exception(__('The transaction is not in a state to be voided.', 'woocommerce-wallee'));
 			}
 			

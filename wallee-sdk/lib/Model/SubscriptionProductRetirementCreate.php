@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionProductRetirementCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement  {
+class SubscriptionProductRetirementCreate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,9 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'product' => 'int',
+		'respectTerminiationPeriodsEnabled' => 'bool',
+		'targetProduct' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -56,10 +58,31 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $product;
+
+	/**
+	 * 
+	 *
+	 * @var bool
+	 */
+	private $respectTerminiationPeriodsEnabled;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $targetProduct;
 
 
 	/**
@@ -68,8 +91,6 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
 		if (isset($data['product']) && $data['product'] != null) {
 			$this->setProduct($data['product']);
 		}
@@ -85,20 +106,24 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	/**
 	 * Returns product.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProduct
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getProduct() {
-		return parent::getProduct();
+		return $this->product;
 	}
 
 	/**
 	 * Sets product.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProduct $product
+	 * @param int $product
 	 * @return SubscriptionProductRetirementCreate
 	 */
 	public function setProduct($product) {
-		return parent::setProduct($product);
+		$this->product = $product;
+
+		return $this;
 	}
 
 	/**
@@ -109,7 +134,7 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	 * @return bool
 	 */
 	public function getRespectTerminiationPeriodsEnabled() {
-		return parent::getRespectTerminiationPeriodsEnabled();
+		return $this->respectTerminiationPeriodsEnabled;
 	}
 
 	/**
@@ -119,26 +144,32 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	 * @return SubscriptionProductRetirementCreate
 	 */
 	public function setRespectTerminiationPeriodsEnabled($respectTerminiationPeriodsEnabled) {
-		return parent::setRespectTerminiationPeriodsEnabled($respectTerminiationPeriodsEnabled);
+		$this->respectTerminiationPeriodsEnabled = $respectTerminiationPeriodsEnabled;
+
+		return $this;
 	}
 
 	/**
 	 * Returns targetProduct.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProduct
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getTargetProduct() {
-		return parent::getTargetProduct();
+		return $this->targetProduct;
 	}
 
 	/**
 	 * Sets targetProduct.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProduct $targetProduct
+	 * @param int $targetProduct
 	 * @return SubscriptionProductRetirementCreate
 	 */
 	public function setTargetProduct($targetProduct) {
-		return parent::setTargetProduct($targetProduct);
+		$this->targetProduct = $targetProduct;
+
+		return $this;
 	}
 
 	/**
@@ -147,8 +178,10 @@ class SubscriptionProductRetirementCreate extends SubscriptionProductRetirement 
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
+		if ($this->getProduct() === null) {
+			throw new ValidationException("'product' can't be null", 'product', $this);
+		}
 	}
 
 	/**

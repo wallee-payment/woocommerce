@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriberUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriberUpdate extends Subscriber  {
+class SubscriberUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,17 @@ class SubscriberUpdate extends Subscriber  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int',
+		'additionalAllowedPaymentMethodConfigurations' => 'int[]',
+		'billingAddress' => '\Wallee\Sdk\Model\AddressCreate',
+		'description' => 'string',
+		'disallowedPaymentMethodConfigurations' => 'int[]',
+		'emailAddress' => 'string',
+		'language' => 'string',
+		'metaData' => 'map[string,string]',
+		'reference' => 'string',
+		'shippingAddress' => '\Wallee\Sdk\Model\AddressCreate'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -56,10 +66,87 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
+
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
+	/**
+	 * Those payment methods which are allowed additionally will be available even when the product does not allow those methods.
+	 *
+	 * @var int[]
+	 */
+	private $additionalAllowedPaymentMethodConfigurations;
+
+	/**
+	 * 
+	 *
+	 * @var \Wallee\Sdk\Model\AddressCreate
+	 */
+	private $billingAddress;
+
+	/**
+	 * The subscriber description can be used to add a description to the subscriber. This is used in the back office to identify the subscriber.
+	 *
+	 * @var string
+	 */
+	private $description;
+
+	/**
+	 * Those payment methods which are disallowed will not be available to the subscriber even if the product allows those methods.
+	 *
+	 * @var int[]
+	 */
+	private $disallowedPaymentMethodConfigurations;
+
+	/**
+	 * The email address is used to communicate with the subscriber. There can be only one subscriber per space with the same email address.
+	 *
+	 * @var string
+	 */
+	private $emailAddress;
+
+	/**
+	 * The subscriber language determines the language which is used to communicate with the subscriber in emails and documents (e.g. invoices).
+	 *
+	 * @var string
+	 */
+	private $language;
+
+	/**
+	 * Meta data allow to store additional data along the object.
+	 *
+	 * @var map[string,string]
+	 */
+	private $metaData;
+
+	/**
+	 * The subscriber reference identifies the subscriber in administrative interfaces (e.g. customer id).
+	 *
+	 * @var string
+	 */
+	private $reference;
+
+	/**
+	 * 
+	 *
+	 * @var \Wallee\Sdk\Model\AddressCreate
+	 */
+	private $shippingAddress;
 
 
 	/**
@@ -68,8 +155,12 @@ class SubscriberUpdate extends Subscriber  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
+		}
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
+		}
 		if (isset($data['additionalAllowedPaymentMethodConfigurations']) && $data['additionalAllowedPaymentMethodConfigurations'] != null) {
 			$this->setAdditionalAllowedPaymentMethodConfigurations($data['additionalAllowedPaymentMethodConfigurations']);
 		}
@@ -88,6 +179,9 @@ class SubscriberUpdate extends Subscriber  {
 		if (isset($data['language']) && $data['language'] != null) {
 			$this->setLanguage($data['language']);
 		}
+		if (isset($data['metaData']) && $data['metaData'] != null) {
+			$this->setMetaData($data['metaData']);
+		}
 		if (isset($data['reference']) && $data['reference'] != null) {
 			$this->setReference($data['reference']);
 		}
@@ -98,12 +192,60 @@ class SubscriberUpdate extends Subscriber  {
 
 
 	/**
+	 * Returns id.
+	 *
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * Sets id.
+	 *
+	 * @param int $id
+	 * @return SubscriberUpdate
+	 */
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns version.
+	 *
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @return int
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param int $version
+	 * @return SubscriberUpdate
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
+	}
+
+	/**
 	 * Returns additionalAllowedPaymentMethodConfigurations.
+	 *
+	 * Those payment methods which are allowed additionally will be available even when the product does not allow those methods.
 	 *
 	 * @return int[]
 	 */
 	public function getAdditionalAllowedPaymentMethodConfigurations() {
-		return parent::getAdditionalAllowedPaymentMethodConfigurations();
+		return $this->additionalAllowedPaymentMethodConfigurations;
 	}
 
 	/**
@@ -113,16 +255,20 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setAdditionalAllowedPaymentMethodConfigurations($additionalAllowedPaymentMethodConfigurations) {
-		return parent::setAdditionalAllowedPaymentMethodConfigurations($additionalAllowedPaymentMethodConfigurations);
+		$this->additionalAllowedPaymentMethodConfigurations = $additionalAllowedPaymentMethodConfigurations;
+
+		return $this;
 	}
 
 	/**
 	 * Returns billingAddress.
 	 *
+	 * 
+	 *
 	 * @return \Wallee\Sdk\Model\AddressCreate
 	 */
 	public function getBillingAddress() {
-		return parent::getBillingAddress();
+		return $this->billingAddress;
 	}
 
 	/**
@@ -132,7 +278,9 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setBillingAddress($billingAddress) {
-		return parent::setBillingAddress($billingAddress);
+		$this->billingAddress = $billingAddress;
+
+		return $this;
 	}
 
 	/**
@@ -143,7 +291,7 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return string
 	 */
 	public function getDescription() {
-		return parent::getDescription();
+		return $this->description;
 	}
 
 	/**
@@ -153,16 +301,20 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setDescription($description) {
-		return parent::setDescription($description);
+		$this->description = $description;
+
+		return $this;
 	}
 
 	/**
 	 * Returns disallowedPaymentMethodConfigurations.
 	 *
+	 * Those payment methods which are disallowed will not be available to the subscriber even if the product allows those methods.
+	 *
 	 * @return int[]
 	 */
 	public function getDisallowedPaymentMethodConfigurations() {
-		return parent::getDisallowedPaymentMethodConfigurations();
+		return $this->disallowedPaymentMethodConfigurations;
 	}
 
 	/**
@@ -172,7 +324,9 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setDisallowedPaymentMethodConfigurations($disallowedPaymentMethodConfigurations) {
-		return parent::setDisallowedPaymentMethodConfigurations($disallowedPaymentMethodConfigurations);
+		$this->disallowedPaymentMethodConfigurations = $disallowedPaymentMethodConfigurations;
+
+		return $this;
 	}
 
 	/**
@@ -183,7 +337,7 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return string
 	 */
 	public function getEmailAddress() {
-		return parent::getEmailAddress();
+		return $this->emailAddress;
 	}
 
 	/**
@@ -193,7 +347,9 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setEmailAddress($emailAddress) {
-		return parent::setEmailAddress($emailAddress);
+		$this->emailAddress = $emailAddress;
+
+		return $this;
 	}
 
 	/**
@@ -204,7 +360,7 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return string
 	 */
 	public function getLanguage() {
-		return parent::getLanguage();
+		return $this->language;
 	}
 
 	/**
@@ -214,7 +370,32 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setLanguage($language) {
-		return parent::setLanguage($language);
+		$this->language = $language;
+
+		return $this;
+	}
+
+	/**
+	 * Returns metaData.
+	 *
+	 * Meta data allow to store additional data along the object.
+	 *
+	 * @return map[string,string]
+	 */
+	public function getMetaData() {
+		return $this->metaData;
+	}
+
+	/**
+	 * Sets metaData.
+	 *
+	 * @param map[string,string] $metaData
+	 * @return SubscriberUpdate
+	 */
+	public function setMetaData($metaData) {
+		$this->metaData = $metaData;
+
+		return $this;
 	}
 
 	/**
@@ -225,7 +406,7 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return string
 	 */
 	public function getReference() {
-		return parent::getReference();
+		return $this->reference;
 	}
 
 	/**
@@ -235,16 +416,20 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setReference($reference) {
-		return parent::setReference($reference);
+		$this->reference = $reference;
+
+		return $this;
 	}
 
 	/**
 	 * Returns shippingAddress.
 	 *
+	 * 
+	 *
 	 * @return \Wallee\Sdk\Model\AddressCreate
 	 */
 	public function getShippingAddress() {
-		return parent::getShippingAddress();
+		return $this->shippingAddress;
 	}
 
 	/**
@@ -254,7 +439,9 @@ class SubscriberUpdate extends Subscriber  {
 	 * @return SubscriberUpdate
 	 */
 	public function setShippingAddress($shippingAddress) {
-		return parent::setShippingAddress($shippingAddress);
+		$this->shippingAddress = $shippingAddress;
+
+		return $this;
 	}
 
 	/**
@@ -263,10 +450,12 @@ class SubscriberUpdate extends Subscriber  {
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
-		if ($this->getEmailAddress() === null) {
-			throw new ValidationException("'emailAddress' can't be null", 'emailAddress', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
+		}
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
 	}
 

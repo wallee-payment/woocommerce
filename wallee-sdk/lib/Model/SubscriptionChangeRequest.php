@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionChangeRequest model
@@ -73,6 +73,8 @@ class SubscriptionChangeRequest  {
 	private $currency;
 
 	/**
+	 * The subscription has to be linked with a product.
+	 *
 	 * @var \Wallee\Sdk\Model\SubscriptionProduct
 	 */
 	private $product;
@@ -92,6 +94,8 @@ class SubscriptionChangeRequest  {
 	private $selectedComponents;
 
 	/**
+	 * 
+	 *
 	 * @var \Wallee\Sdk\Model\Subscription
 	 */
 	private $subscription;
@@ -103,14 +107,8 @@ class SubscriptionChangeRequest  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		if (isset($data['currency']) && $data['currency'] != null) {
-			$this->setCurrency($data['currency']);
-		}
 		if (isset($data['product']) && $data['product'] != null) {
 			$this->setProduct($data['product']);
-		}
-		if (isset($data['respectTerminationPeriod']) && $data['respectTerminationPeriod'] != null) {
-			$this->setRespectTerminationPeriod($data['respectTerminationPeriod']);
 		}
 		if (isset($data['selectedComponents']) && $data['selectedComponents'] != null) {
 			$this->setSelectedComponents($data['selectedComponents']);
@@ -138,7 +136,7 @@ class SubscriptionChangeRequest  {
 	 * @param string $currency
 	 * @return SubscriptionChangeRequest
 	 */
-	public function setCurrency($currency) {
+	protected function setCurrency($currency) {
 		$this->currency = $currency;
 
 		return $this;
@@ -146,6 +144,8 @@ class SubscriptionChangeRequest  {
 
 	/**
 	 * Returns product.
+	 *
+	 * The subscription has to be linked with a product.
 	 *
 	 * @return \Wallee\Sdk\Model\SubscriptionProduct
 	 */
@@ -182,7 +182,7 @@ class SubscriptionChangeRequest  {
 	 * @param bool $respectTerminationPeriod
 	 * @return SubscriptionChangeRequest
 	 */
-	public function setRespectTerminationPeriod($respectTerminationPeriod) {
+	protected function setRespectTerminationPeriod($respectTerminationPeriod) {
 		$this->respectTerminationPeriod = $respectTerminationPeriod;
 
 		return $this;
@@ -214,6 +214,8 @@ class SubscriptionChangeRequest  {
 	/**
 	 * Returns subscription.
 	 *
+	 * 
+	 *
 	 * @return \Wallee\Sdk\Model\Subscription
 	 */
 	public function getSubscription() {
@@ -241,6 +243,9 @@ class SubscriptionChangeRequest  {
 
 		if ($this->getCurrency() === null) {
 			throw new ValidationException("'currency' can't be null", 'currency', $this);
+		}
+		if ($this->getProduct() === null) {
+			throw new ValidationException("'product' can't be null", 'product', $this);
 		}
 	}
 

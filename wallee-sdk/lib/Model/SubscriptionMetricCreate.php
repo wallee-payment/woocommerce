@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionMetricCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriptionMetricCreate extends SubscriptionMetricActive  {
+class SubscriptionMetricCreate extends AbstractSubscriptionMetricUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,7 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'type' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,6 +60,13 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	}
 
 	
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $type;
 
 
 	/**
@@ -85,7 +92,9 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	/**
 	 * Returns description.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * 
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getDescription() {
 		return parent::getDescription();
@@ -94,7 +103,7 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	/**
 	 * Sets description.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $description
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $description
 	 * @return SubscriptionMetricCreate
 	 */
 	public function setDescription($description) {
@@ -104,7 +113,9 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	/**
 	 * Returns name.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * 
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getName() {
 		return parent::getName();
@@ -113,7 +124,7 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	/**
 	 * Sets name.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $name
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name
 	 * @return SubscriptionMetricCreate
 	 */
 	public function setName($name) {
@@ -123,20 +134,24 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	/**
 	 * Returns type.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionMetricType
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getType() {
-		return parent::getType();
+		return $this->type;
 	}
 
 	/**
 	 * Sets type.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionMetricType $type
+	 * @param int $type
 	 * @return SubscriptionMetricCreate
 	 */
 	public function setType($type) {
-		return parent::setType($type);
+		$this->type = $type;
+
+		return $this;
 	}
 
 	/**
@@ -147,6 +162,12 @@ class SubscriptionMetricCreate extends SubscriptionMetricActive  {
 	public function validate() {
 		parent::validate();
 
+		if ($this->getName() === null) {
+			throw new ValidationException("'name' can't be null", 'name', $this);
+		}
+		if ($this->getType() === null) {
+			throw new ValidationException("'type' can't be null", 'type', $this);
+		}
 	}
 
 	/**

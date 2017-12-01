@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriberActive model
@@ -48,7 +48,7 @@ class SubscriberActive extends SubscriberUpdate  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'state' => '\Wallee\Sdk\Model\CreationEntityState'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,30 +60,13 @@ class SubscriberActive extends SubscriberUpdate  {
 	}
 
 	
+
 	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_DELETING = 'DELETING';
-	const STATE_DELETED = 'DELETED';
-	
-	/**
-	 * Returns allowable values of state.
+	 * 
 	 *
-	 * @return string[]
+	 * @var \Wallee\Sdk\Model\CreationEntityState
 	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_DELETING,
-			self::STATE_DELETED,
-		);
-	}
-	
+	private $state;
 
 
 	/**
@@ -105,24 +88,22 @@ class SubscriberActive extends SubscriberUpdate  {
 	 *
 	 * 
 	 *
-	 * @return string
+	 * @return \Wallee\Sdk\Model\CreationEntityState
 	 */
 	public function getState() {
-		return parent::getState();
+		return $this->state;
 	}
 
 	/**
 	 * Sets state.
 	 *
-	 * @param string $state
+	 * @param \Wallee\Sdk\Model\CreationEntityState $state
 	 * @return SubscriberActive
 	 */
 	public function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED');
-		if (!is_null($state) && (!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED'");
-		}
-		return parent::setState($state);
+		$this->state = $state;
+
+		return $this;
 	}
 
 	/**
@@ -132,11 +113,6 @@ class SubscriberActive extends SubscriberUpdate  {
 	 */
 	public function validate() {
 		parent::validate();
-
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "DELETING", "DELETED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
 
 	}
 

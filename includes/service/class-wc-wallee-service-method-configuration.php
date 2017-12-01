@@ -22,7 +22,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 			$entity->set_description($this->get_translations_array($configuration->getDescription()));
 			$entity->set_image(
 					$configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : $this->get_payment_method(
-							$configuration->getPaymentMethod())->getImagePath());
+							$configuration->getPaymentMethod()) ? $this->get_payment_method($configuration->getPaymentMethod())->getImagePath() : null);
 			$entity->save();
 		}
 	}
@@ -41,7 +41,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 		}
 		
 		$image = $configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : $this->get_payment_method(
-				$configuration->getPaymentMethod())->getImagePath();
+				$configuration->getPaymentMethod()) ? $this->get_payment_method($configuration->getPaymentMethod())->getImagePath() : null;
 		if ($image != $entity->get_image()) {
 			return true;
 		}
@@ -78,7 +78,8 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 				$method->set_description($this->get_translations_array($configuration->getDescription()));
 				$method->set_image(
 						$configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : $this->get_payment_method(
-								$configuration->getPaymentMethod())->getImagePath());
+								$configuration->getPaymentMethod()) ? $this->get_payment_method(
+										$configuration->getPaymentMethod())->getImagePath() : null);
 				$method->save();
 			}
 		}
@@ -111,9 +112,9 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	 */
 	protected function get_configuration_state(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
 		switch ($configuration->getState()) {
-			case \Wallee\Sdk\Model\PaymentMethodConfiguration::STATE_ACTIVE:
+			case \Wallee\Sdk\Model\CreationEntityState::ACTIVE:
 				return WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
-			case \Wallee\Sdk\Model\PaymentMethodConfiguration::STATE_INACTIVE:
+			case \Wallee\Sdk\Model\CreationEntityState::INACTIVE:
 				return WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE;
 			default:
 				return WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN;

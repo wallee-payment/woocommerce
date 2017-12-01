@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * HumanUserUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class HumanUserUpdate extends HumanUser  {
+class HumanUserUpdate extends AbstractHumanUserUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,8 @@ class HumanUserUpdate extends HumanUser  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -61,6 +62,20 @@ class HumanUserUpdate extends HumanUser  {
 
 	
 
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
 
 	/**
 	 * Constructor.
@@ -70,127 +85,59 @@ class HumanUserUpdate extends HumanUser  {
 	public function __construct(array $data = null) {
 		parent::__construct($data);
 
-		if (isset($data['emailAddress']) && $data['emailAddress'] != null) {
-			$this->setEmailAddress($data['emailAddress']);
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
 		}
-		if (isset($data['firstname']) && $data['firstname'] != null) {
-			$this->setFirstname($data['firstname']);
-		}
-		if (isset($data['language']) && $data['language'] != null) {
-			$this->setLanguage($data['language']);
-		}
-		if (isset($data['lastname']) && $data['lastname'] != null) {
-			$this->setLastname($data['lastname']);
-		}
-		if (isset($data['timeZone']) && $data['timeZone'] != null) {
-			$this->setTimeZone($data['timeZone']);
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
 		}
 	}
 
 
 	/**
-	 * Returns emailAddress.
+	 * Returns id.
 	 *
-	 * The email address of the user.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function getEmailAddress() {
-		return parent::getEmailAddress();
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Sets emailAddress.
+	 * Sets id.
 	 *
-	 * @param string $emailAddress
+	 * @param int $id
 	 * @return HumanUserUpdate
 	 */
-	public function setEmailAddress($emailAddress) {
-		return parent::setEmailAddress($emailAddress);
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
 	}
 
 	/**
-	 * Returns firstname.
+	 * Returns version.
 	 *
-	 * The first name of the user.
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function getFirstname() {
-		return parent::getFirstname();
+	public function getVersion() {
+		return $this->version;
 	}
 
 	/**
-	 * Sets firstname.
+	 * Sets version.
 	 *
-	 * @param string $firstname
+	 * @param int $version
 	 * @return HumanUserUpdate
 	 */
-	public function setFirstname($firstname) {
-		return parent::setFirstname($firstname);
-	}
+	public function setVersion($version) {
+		$this->version = $version;
 
-	/**
-	 * Returns language.
-	 *
-	 * The preferred language of the user.
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return parent::getLanguage();
-	}
-
-	/**
-	 * Sets language.
-	 *
-	 * @param string $language
-	 * @return HumanUserUpdate
-	 */
-	public function setLanguage($language) {
-		return parent::setLanguage($language);
-	}
-
-	/**
-	 * Returns lastname.
-	 *
-	 * The last name of the user.
-	 *
-	 * @return string
-	 */
-	public function getLastname() {
-		return parent::getLastname();
-	}
-
-	/**
-	 * Sets lastname.
-	 *
-	 * @param string $lastname
-	 * @return HumanUserUpdate
-	 */
-	public function setLastname($lastname) {
-		return parent::setLastname($lastname);
-	}
-
-	/**
-	 * Returns timeZone.
-	 *
-	 * The time zone which is applied for the user. If no timezone is specified the browser is used to determine an appropriate time zone.
-	 *
-	 * @return string
-	 */
-	public function getTimeZone() {
-		return parent::getTimeZone();
-	}
-
-	/**
-	 * Sets timeZone.
-	 *
-	 * @param string $timeZone
-	 * @return HumanUserUpdate
-	 */
-	public function setTimeZone($timeZone) {
-		return parent::setTimeZone($timeZone);
+		return $this;
 	}
 
 	/**
@@ -201,17 +148,11 @@ class HumanUserUpdate extends HumanUser  {
 	public function validate() {
 		parent::validate();
 
-		if ($this->getEmailAddress() === null) {
-			throw new ValidationException("'emailAddress' can't be null", 'emailAddress', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
 		}
-		if ($this->getFirstname() === null) {
-			throw new ValidationException("'firstname' can't be null", 'firstname', $this);
-		}
-		if ($this->getLanguage() === null) {
-			throw new ValidationException("'language' can't be null", 'language', $this);
-		}
-		if ($this->getLastname() === null) {
-			throw new ValidationException("'lastname' can't be null", 'lastname', $this);
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
 	}
 

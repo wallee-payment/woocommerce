@@ -35,13 +35,13 @@ class WC_Wallee_Customer_Document {
 		$invoice = false;
 		if (get_option('wc_wallee_customer_invoice') == 'yes' && in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
-					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
-					\Wallee\Sdk\Model\Transaction::STATE_DECLINE 
+					\Wallee\Sdk\Model\TransactionState::COMPLETED,
+					\Wallee\Sdk\Model\TransactionState::FULFILL,
+					\Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			$invoice = true;
 		}
-		if (get_option('wc_wallee_customer_packing') == 'yes' && $transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL) {
+		if (get_option('wc_wallee_customer_packing') == 'yes' && $transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
 			$packing = true;
 		}
 		if ($invoice || $packing) {

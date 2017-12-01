@@ -30,7 +30,7 @@ class WC_Wallee_Service_Manual_Task extends WC_Wallee_Service_Abstract {
 		$space_id = get_option('wc_wallee_space_id');
 		if (!empty($space_id)) {
 			$number_of_manual_tasks = $manual_task_service->count($space_id, 
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\ManualTask::STATE_OPEN));
+					$this->create_entity_filter('state', \Wallee\Sdk\Model\ManualTaskState::OPEN));
 			update_option(self::CONFIG_KEY, $number_of_manual_tasks);
 		}
 		

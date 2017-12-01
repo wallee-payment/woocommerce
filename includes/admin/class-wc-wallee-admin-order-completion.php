@@ -34,7 +34,7 @@ class WC_Wallee_Admin_Order_Completion {
 		$gateway = wc_get_payment_gateway_by_order($order);
 		if ($gateway instanceof WC_Wallee_Gateway) {
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
-			if ($transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED) {
+			if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				echo '<button type="button" class="button wallee-completion-button action-wallee-completion-cancel" style="display:none">' .
 						 __('Cancel', 'woocommerce-wallee') . '</button>';
 				echo '<button type="button" class="button button-primary wallee-completion-button action-wallee-completion-execute" style="display:none">' .
@@ -89,6 +89,12 @@ class WC_Wallee_Admin_Order_Completion {
 				$line_items[$item_id]['completion_tax'] = array_filter(array_map('wc_format_decimal', $tax_totals));
 			}
 			
+			foreach($line_items as $item_id => $ignore){
+				if(isset($line_items[$item_id]['qty']) && $line_items[$item_id]['qty'] == 0 && $line_items[$item_id]['completion_total'] == 0){
+					unset($line_items[$item_id]);
+				}
+			}
+			
 			//Validate input first;
 			$total_items_sum = 0;
 			foreach ($line_items as $item) {
@@ -120,7 +126,7 @@ class WC_Wallee_Admin_Order_Completion {
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id(), $transaction_info->get_space_id());
 			
-			if ($transaction_info->get_state() != \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED) {
+			if ($transaction_info->get_state() != \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				throw new Exception(__('The transaction is not in a state to be completed.', 'woocommerce-wallee'));
 			}
 			

@@ -21,13 +21,13 @@
 
 namespace Wallee\Sdk;
 
-use \Exception;
+use Exception;
 
 /**
  * This exception is used to inform about a failed validation.
  *
  * @category Class
- * @package  Wallee\Sdk\Http
+ * @package  Wallee\Sdk
  * @author   customweb GmbH
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link	 https://github.com/wallee-payment/wallee-php-sdk
@@ -52,7 +52,7 @@ final class ValidationException extends Exception {
 	 * Constructor.
 	 *
 	 * @param string $message	the error message
-	 * @param string $property	the name of the invalid propery
+	 * @param string $property	the name of the invalid property
 	 * @param object $model		the instance of the validated model
 	 */
 	public function __construct($message = "", $property = null, $model = null) {

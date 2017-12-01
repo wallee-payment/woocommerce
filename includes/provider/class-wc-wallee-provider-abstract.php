@@ -73,21 +73,28 @@ abstract class WC_Wallee_Provider_Abstract {
 		if ($this->data == null) {
 			$this->load_data();
 		}
-		
+		if(!is_array($this->data)){
+			return array();
+		}		
 		return $this->data;
 	}
 
 	private function load_data(){
 		$cached_data = get_transient($this->cache_key);
-		if ($cached_data !== false) {
-			$this->data = unserialize($cached_data);
+		if ($cached_data !== false && is_array($cached_data)) {
+			$this->data = $cached_data;
 		}
 		else {
 			$this->data = array();
-			foreach ($this->fetch_data() as $entry) {
-				$this->data[$this->get_id($entry)] = $entry;
+			try{
+				foreach ($this->fetch_data() as $entry) {
+					$this->data[$this->get_id($entry)] = $entry;
+				}
+				set_transient($this->cache_key, $this->data, WEEK_IN_SECONDS);
 			}
-			set_transient($this->cache_key, serialize($this->data), MONTH_IN_SECONDS);
+			catch(\Wallee\Sdk\ApiException $e){}
+			catch(\Wallee\Sdk\Http\ConnectionException $e){}
+			
 		}
 	}
 }

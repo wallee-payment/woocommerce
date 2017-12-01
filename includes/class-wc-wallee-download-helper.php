@@ -15,9 +15,9 @@ class WC_Wallee_Download_Helper {
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
 		if ($transaction_info->get_id() != null && in_array($transaction_info->get_state(), 
 				array(
-					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
-					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
-					\Wallee\Sdk\Model\Transaction::STATE_DECLINE 
+					\Wallee\Sdk\Model\TransactionState::COMPLETED,
+					\Wallee\Sdk\Model\TransactionState::FULFILL,
+					\Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			
 			$service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
@@ -31,7 +31,7 @@ class WC_Wallee_Download_Helper {
 	 */
 	public static function download_packing_slip($order_id){
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
-		if ($transaction_info->get_id() != null && $transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL) {
+		if ($transaction_info->get_id() != null && $transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
 			
 			$service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
 			$document = $service->getPackingSlip($transaction_info->get_space_id(), $transaction_info->get_transaction_id());

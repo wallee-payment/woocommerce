@@ -58,7 +58,6 @@ class WC_Wallee_Admin_Transaction {
 			return;
 		}
 		$labels_by_group = self::get_grouped_charge_attempt_labels($transaction_info);
-		
 		?>
 <div class="order-wallee-transaction-metabox wc-metaboxes-wrapper">
 	<div class="wallee-transaction-data-column-container">
@@ -146,23 +145,23 @@ class WC_Wallee_Admin_Transaction {
 	 */
 	protected static function get_transaction_state(WC_Wallee_Entity_Transaction_Info $transaction_info){
 		switch ($transaction_info->get_state()) {
-			case \Wallee\Sdk\Model\Transaction::STATE_AUTHORIZED:
+			case \Wallee\Sdk\Model\TransactionState::AUTHORIZED:
 				return __('Authorized', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_COMPLETED:
+			case \Wallee\Sdk\Model\TransactionState::COMPLETED:
 				return __('Completed', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_CONFIRMED:
+			case \Wallee\Sdk\Model\TransactionState::CONFIRMED:
 				return __('Confirmed', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_DECLINE:
+			case \Wallee\Sdk\Model\TransactionState::DECLINE:
 				return __('Decline', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_FAILED:
+			case \Wallee\Sdk\Model\TransactionState::FAILED:
 				return __('Failed', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_FULFILL:
+			case \Wallee\Sdk\Model\TransactionState::FULFILL:
 				return __('Fulfill', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_PENDING:
+			case \Wallee\Sdk\Model\TransactionState::PENDING:
 				return __('Pending', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_PROCESSING:
+			case \Wallee\Sdk\Model\TransactionState::PROCESSING:
 				return __('Processing', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\Transaction::STATE_VOIDED:
+			case \Wallee\Sdk\Model\TransactionState::VOIDED:
 				return __('Voided', 'woocommerce-wallee');
 			default:
 				return __('Unknown State', 'woocommerce-wallee');
@@ -186,12 +185,12 @@ class WC_Wallee_Admin_Transaction {
 	 */
 	protected static function get_grouped_charge_attempt_labels(WC_Wallee_Entity_Transaction_Info $info){
 		try {
-			$label_descriptor_provider = WC_Wallee_Provider_Label_Descriptor::instance();
-			$label_descriptor_group_provider = WC_Wallee_Provider_Label_Descriptor_Group::instance();
+			$label_description_provider = WC_Wallee_Provider_Label_Description::instance();
+			$label_description_group_provider = WC_Wallee_Provider_Label_Description_Group::instance();
 			
 			$labels_by_group_id = array();
 			foreach ($info->get_labels() as $descriptor_id => $value) {
-				$descriptor = $label_descriptor_provider->find($descriptor_id);
+				$descriptor = $label_description_provider->find($descriptor_id);
 				if ($descriptor) {
 					$labels_by_group_id[$descriptor->getGroup()][] = array(
 						'descriptor' => $descriptor,
@@ -202,7 +201,7 @@ class WC_Wallee_Admin_Transaction {
 			
 			$labels_by_group = array();
 			foreach ($labels_by_group_id as $group_id => $labels) {
-				$group = $label_descriptor_group_provider->find($group_id);
+				$group = $label_description_group_provider->find($group_id);
 				if ($group) {
 					usort($labels, function ($a, $b){
 						return $a['descriptor']->getWeight() - $b['descriptor']->getWeight();
@@ -220,7 +219,6 @@ class WC_Wallee_Admin_Transaction {
 			return $labels_by_group;
 		}
 		catch (Exception $e) {
-			echo $e->getMessage();
 			return array();
 		}
 	}

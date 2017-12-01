@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * EntityQuery model
@@ -66,6 +66,8 @@ class EntityQuery  {
 	
 
 	/**
+	 * The filter node defines the root filter node of the query. The root node may contain multiple sub nodes with different filters in it.
+	 *
 	 * @var \Wallee\Sdk\Model\EntityQueryFilter
 	 */
 	private $filter;
@@ -78,7 +80,7 @@ class EntityQuery  {
 	private $language;
 
 	/**
-	 * The number of entities defines how many entities should be returned. There is a maximum of 500 entities.
+	 * The number of entities defines how many entities should be returned. There is a maximum of 100 entities.
 	 *
 	 * @var int
 	 */
@@ -108,23 +110,16 @@ class EntityQuery  {
 		if (isset($data['filter']) && $data['filter'] != null) {
 			$this->setFilter($data['filter']);
 		}
-		if (isset($data['language']) && $data['language'] != null) {
-			$this->setLanguage($data['language']);
-		}
-		if (isset($data['numberOfEntities']) && $data['numberOfEntities'] != null) {
-			$this->setNumberOfEntities($data['numberOfEntities']);
-		}
 		if (isset($data['orderBys']) && $data['orderBys'] != null) {
 			$this->setOrderBys($data['orderBys']);
-		}
-		if (isset($data['startingEntity']) && $data['startingEntity'] != null) {
-			$this->setStartingEntity($data['startingEntity']);
 		}
 	}
 
 
 	/**
 	 * Returns filter.
+	 *
+	 * The filter node defines the root filter node of the query. The root node may contain multiple sub nodes with different filters in it.
 	 *
 	 * @return \Wallee\Sdk\Model\EntityQueryFilter
 	 */
@@ -161,7 +156,7 @@ class EntityQuery  {
 	 * @param string $language
 	 * @return EntityQuery
 	 */
-	public function setLanguage($language) {
+	protected function setLanguage($language) {
 		$this->language = $language;
 
 		return $this;
@@ -170,7 +165,7 @@ class EntityQuery  {
 	/**
 	 * Returns numberOfEntities.
 	 *
-	 * The number of entities defines how many entities should be returned. There is a maximum of 500 entities.
+	 * The number of entities defines how many entities should be returned. There is a maximum of 100 entities.
 	 *
 	 * @return int
 	 */
@@ -230,7 +225,7 @@ class EntityQuery  {
 	 * @param int $startingEntity
 	 * @return EntityQuery
 	 */
-	public function setStartingEntity($startingEntity) {
+	protected function setStartingEntity($startingEntity) {
 		$this->startingEntity = $startingEntity;
 
 		return $this;

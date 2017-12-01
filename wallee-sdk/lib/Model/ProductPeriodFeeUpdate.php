@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * ProductPeriodFeeUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class ProductPeriodFeeUpdate extends ProductPeriodFee  {
+class ProductPeriodFeeUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,13 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int',
+		'component' => 'int',
+		'description' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
+		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
+		'numberOfFreeTrialPeriods' => 'int',
+		'periodFee' => '\Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -56,10 +62,59 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
+
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
+	/**
+	 * 
+	 *
+	 * @var int
+	 */
+	private $component;
+
+	/**
+	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
+	 *
+	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
+	 */
+	private $description;
+
+	/**
+	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
+	 *
+	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
+	 */
+	private $name;
+
+	/**
+	 * The number of free trial periods specify how many periods are free of charge at the begining of the subscription.
+	 *
+	 * @var int
+	 */
+	private $numberOfFreeTrialPeriods;
+
+	/**
+	 * The period fee is charged for every period of the subscription except for those periods which are trial periods.
+	 *
+	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
+	 */
+	private $periodFee;
 
 
 	/**
@@ -68,8 +123,12 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
+		}
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
+		}
 		if (isset($data['component']) && $data['component'] != null) {
 			$this->setComponent($data['component']);
 		}
@@ -89,60 +148,118 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 
 
 	/**
+	 * Returns id.
+	 *
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * Sets id.
+	 *
+	 * @param int $id
+	 * @return ProductPeriodFeeUpdate
+	 */
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns version.
+	 *
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @return int
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param int $version
+	 * @return ProductPeriodFeeUpdate
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
+	}
+
+	/**
 	 * Returns component.
 	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductComponent
+	 * 
+	 *
+	 * @return int
 	 */
 	public function getComponent() {
-		return parent::getComponent();
+		return $this->component;
 	}
 
 	/**
 	 * Sets component.
 	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductComponent $component
+	 * @param int $component
 	 * @return ProductPeriodFeeUpdate
 	 */
 	public function setComponent($component) {
-		return parent::setComponent($component);
+		$this->component = $component;
+
+		return $this;
 	}
 
 	/**
 	 * Returns description.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getDescription() {
-		return parent::getDescription();
+		return $this->description;
 	}
 
 	/**
 	 * Sets description.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $description
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $description
 	 * @return ProductPeriodFeeUpdate
 	 */
 	public function setDescription($description) {
-		return parent::setDescription($description);
+		$this->description = $description;
+
+		return $this;
 	}
 
 	/**
 	 * Returns name.
 	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate
+	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
+	 *
+	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
 	 */
 	public function getName() {
-		return parent::getName();
+		return $this->name;
 	}
 
 	/**
 	 * Sets name.
 	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringUpdate $name
+	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name
 	 * @return ProductPeriodFeeUpdate
 	 */
 	public function setName($name) {
-		return parent::setName($name);
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -153,7 +270,7 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @return int
 	 */
 	public function getNumberOfFreeTrialPeriods() {
-		return parent::getNumberOfFreeTrialPeriods();
+		return $this->numberOfFreeTrialPeriods;
 	}
 
 	/**
@@ -163,7 +280,9 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @return ProductPeriodFeeUpdate
 	 */
 	public function setNumberOfFreeTrialPeriods($numberOfFreeTrialPeriods) {
-		return parent::setNumberOfFreeTrialPeriods($numberOfFreeTrialPeriods);
+		$this->numberOfFreeTrialPeriods = $numberOfFreeTrialPeriods;
+
+		return $this;
 	}
 
 	/**
@@ -174,7 +293,7 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmountUpdate[]
 	 */
 	public function getPeriodFee() {
-		return parent::getPeriodFee();
+		return $this->periodFee;
 	}
 
 	/**
@@ -184,7 +303,9 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @return ProductPeriodFeeUpdate
 	 */
 	public function setPeriodFee($periodFee) {
-		return parent::setPeriodFee($periodFee);
+		$this->periodFee = $periodFee;
+
+		return $this;
 	}
 
 	/**
@@ -193,10 +314,12 @@ class ProductPeriodFeeUpdate extends ProductPeriodFee  {
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
-		if ($this->getPeriodFee() === null) {
-			throw new ValidationException("'periodFee' can't be null", 'periodFee', $this);
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
+		}
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
 		}
 	}
 

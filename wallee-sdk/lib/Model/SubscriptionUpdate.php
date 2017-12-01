@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriptionUpdate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriptionUpdate extends Subscription  {
+class SubscriptionUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,10 @@ class SubscriptionUpdate extends Subscription  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'id' => 'int',
+		'version' => 'int',
+		'description' => 'string',
+		'plannedTerminationDate' => '\DateTime'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -56,10 +59,38 @@ class SubscriptionUpdate extends Subscription  {
 	 * @return string[]
 	 */
 	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
+		return self::$swaggerTypes;
 	}
 
 	
+
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @var int
+	 */
+	private $version;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	private $description;
+
+	/**
+	 * 
+	 *
+	 * @var \DateTime
+	 */
+	private $plannedTerminationDate;
 
 
 	/**
@@ -68,8 +99,12 @@ class SubscriptionUpdate extends Subscription  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		parent::__construct($data);
-
+		if (isset($data['id']) && $data['id'] != null) {
+			$this->setId($data['id']);
+		}
+		if (isset($data['version']) && $data['version'] != null) {
+			$this->setVersion($data['version']);
+		}
 		if (isset($data['description']) && $data['description'] != null) {
 			$this->setDescription($data['description']);
 		}
@@ -80,6 +115,52 @@ class SubscriptionUpdate extends Subscription  {
 
 
 	/**
+	 * Returns id.
+	 *
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * Sets id.
+	 *
+	 * @param int $id
+	 * @return SubscriptionUpdate
+	 */
+	public function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns version.
+	 *
+	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+	 *
+	 * @return int
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+
+	/**
+	 * Sets version.
+	 *
+	 * @param int $version
+	 * @return SubscriptionUpdate
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
+
+		return $this;
+	}
+
+	/**
 	 * Returns description.
 	 *
 	 * 
@@ -87,7 +168,7 @@ class SubscriptionUpdate extends Subscription  {
 	 * @return string
 	 */
 	public function getDescription() {
-		return parent::getDescription();
+		return $this->description;
 	}
 
 	/**
@@ -97,7 +178,9 @@ class SubscriptionUpdate extends Subscription  {
 	 * @return SubscriptionUpdate
 	 */
 	public function setDescription($description) {
-		return parent::setDescription($description);
+		$this->description = $description;
+
+		return $this;
 	}
 
 	/**
@@ -108,7 +191,7 @@ class SubscriptionUpdate extends Subscription  {
 	 * @return \DateTime
 	 */
 	public function getPlannedTerminationDate() {
-		return parent::getPlannedTerminationDate();
+		return $this->plannedTerminationDate;
 	}
 
 	/**
@@ -118,7 +201,9 @@ class SubscriptionUpdate extends Subscription  {
 	 * @return SubscriptionUpdate
 	 */
 	public function setPlannedTerminationDate($plannedTerminationDate) {
-		return parent::setPlannedTerminationDate($plannedTerminationDate);
+		$this->plannedTerminationDate = $plannedTerminationDate;
+
+		return $this;
 	}
 
 	/**
@@ -127,8 +212,13 @@ class SubscriptionUpdate extends Subscription  {
 	 * @throws ValidationException
 	 */
 	public function validate() {
-		parent::validate();
 
+		if ($this->getId() === null) {
+			throw new ValidationException("'id' can't be null", 'id', $this);
+		}
+		if ($this->getVersion() === null) {
+			throw new ValidationException("'version' can't be null", 'version', $this);
+		}
 	}
 
 	/**

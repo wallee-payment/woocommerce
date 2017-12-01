@@ -36,9 +36,9 @@ class WC_Wallee_Admin_Document {
 		}
 		if (in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
-					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
-					\Wallee\Sdk\Model\Transaction::STATE_DECLINE 
+					\Wallee\Sdk\Model\TransactionState::COMPLETED,
+					\Wallee\Sdk\Model\TransactionState::FULFILL,
+					\Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			
 			$url = wp_nonce_url(
@@ -51,7 +51,7 @@ class WC_Wallee_Admin_Document {
 			$title = esc_attr(__('Invoice', 'woocommerce-wallee'));
 			printf('<a class="button tips wallee-button-download-invoice" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
 		}
-		if ($transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL) {
+		if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
 			$url = wp_nonce_url(
 					add_query_arg(
 							array(
@@ -80,9 +80,9 @@ class WC_Wallee_Admin_Document {
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		if ($transaction_info->get_id() != null && in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
-					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
-					\Wallee\Sdk\Model\Transaction::STATE_DECLINE 
+					\Wallee\Sdk\Model\TransactionState::COMPLETED,
+					\Wallee\Sdk\Model\TransactionState::FULFILL,
+					\Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			add_meta_box('woocommerce-order-wallee-documents', __('Wallee Documents', 'woocommerc-wallee'), array(
 				__CLASS__,
@@ -112,9 +112,9 @@ class WC_Wallee_Admin_Document {
 		}
 		if (in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\Transaction::STATE_COMPLETED,
-					\Wallee\Sdk\Model\Transaction::STATE_FULFILL,
-					\Wallee\Sdk\Model\Transaction::STATE_DECLINE 
+					\Wallee\Sdk\Model\TransactionState::COMPLETED,
+					\Wallee\Sdk\Model\TransactionState::FULFILL,
+					\Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			
 			?>
@@ -132,7 +132,7 @@ class WC_Wallee_Admin_Document {
 			?>"
 		class="wallee-admin-download wallee-admin-download-invoice button"><?php _e('Invoice', 'woocommerce-wallee')?></a></li>				
 
-					<?php if ($transaction_info->get_state() == \Wallee\Sdk\Model\Transaction::STATE_FULFILL): ?>
+					<?php if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL): ?>
 						<li><a
 		href="<?php
 				

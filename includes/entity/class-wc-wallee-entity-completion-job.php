@@ -103,7 +103,7 @@ class WC_Wallee_Entity_Completion_Job extends WC_Wallee_Entity_Abstract {
 		//Returns empty array
 		
 		$time = new DateTime();
-		$time->sub(new DateInterval(PT10M));
+		$time->sub(new DateInterval('PT10M'));
 		$db_results = $wpdb->get_results(
 				$wpdb->prepare(
 						"SELECT id FROM " . $wpdb->prefix . self::get_table_name() . " WHERE (state == %s OR state == %s ) AND updated_at < %s", 

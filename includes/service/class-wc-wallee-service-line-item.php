@@ -69,7 +69,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			$line_item->setTaxes($this->get_taxes(WC_Tax::get_rates($product->get_tax_class())));
 			
-			$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_PRODUCT);
+			$line_item->setType(\Wallee\Sdk\Model\LineItemType::PRODUCT);
 			
 			$unique_id = hash('sha256', rand());
 			
@@ -113,11 +113,11 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			if ($amount_including_tax < 0) {
 				//There are plugins which create fees with a negative values (used as discounts)
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_DISCOUNT);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
 				$line_item->setUniqueId('discount-' . $fee->id);
 			}
 			else {
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_FEE);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
 				$line_item->setUniqueId('fee-' . $fee->id);
 			}
 			$fees[] = $this->clean_line_item($line_item);
@@ -158,7 +158,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 				
 				$line_item->setTaxes($this->get_taxes(WC_Tax::get_shipping_tax_rates()));
 				
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_SHIPPING);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::SHIPPING);
 				$meta_data = $shipping_rate->get_meta_data();
 				$unique_id = hash('sha256', rand());
 				
@@ -227,7 +227,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			$line_item->setTaxes($this->get_taxes(WC_Tax::get_rates($item->get_tax_class())));
 			
-			$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_PRODUCT);
+			$line_item->setType(\Wallee\Sdk\Model\LineItemType::PRODUCT);
 			$line_item->setUniqueId($item->get_meta('_wallee_unique_line_item_id', true));
 			
 			$items[] = $this->clean_line_item($line_item);
@@ -270,10 +270,10 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			if ($amount_including_tax < 0) {
 				//There are plugins which create fees with a negative values (used as discounts)
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_DISCOUNT);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
 			}
 			else {
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_FEE);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
 			}
 			
 			$line_item->setUniqueId($fee->get_meta('_wallee_unique_line_item_id', true));
@@ -315,7 +315,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			$taxes = $shipping->get_taxes();
 			$line_item->setTaxes($this->get_taxes($taxes['total']));
 			
-			$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_SHIPPING);
+			$line_item->setType(\Wallee\Sdk\Model\LineItemType::SHIPPING);
 			$line_item->setUniqueId($shipping->get_meta('_wallee_unique_line_item_id', true));
 			
 			$shippings[] = $this->clean_line_item($line_item);
@@ -376,7 +376,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			$line_item->setTaxes($this->get_taxes(WC_Tax::get_rates($item->get_tax_class())));
 			
-			$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_PRODUCT);
+			$line_item->setType(\Wallee\Sdk\Model\LineItemType::PRODUCT);
 			$line_item->setUniqueId($item->get_meta('_wallee_unique_line_item_id', true));
 			
 			$items[] = $this->clean_line_item($line_item);
@@ -426,10 +426,10 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			if ($amount_including_tax < 0) {
 				//There are plugins which create fees with a negative values (used as discounts)
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_DISCOUNT);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
 			}
 			else {
-				$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_FEE);
+				$line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
 			}
 			
 			$line_item->setUniqueId($fee->get_meta('_wallee_unique_line_item_id', true));
@@ -478,7 +478,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			$taxes = $shipping->get_taxes();
 			$line_item->setTaxes($this->get_taxes($taxes['total']));
 			
-			$line_item->setType(\Wallee\Sdk\Model\LineItem::TYPE_SHIPPING);
+			$line_item->setType(\Wallee\Sdk\Model\LineItemType::SHIPPING);
 			$line_item->setUniqueId($shipping->get_meta('_wallee_unique_line_item_id', true));
 			
 			$shippings[] = $this->clean_line_item($line_item);

@@ -66,7 +66,7 @@ class WC_Wallee_Helper {
 	 */
 	public function translate($translated_string, $language = null){
 		if ($language == null) {
-			$language = WC_Wallee_Helper::instance()->get_cleaned_locale();
+			$language = $this->get_cleaned_locale();
 		}
 		if (isset($translated_string[$language])) {
 			return $translated_string[$language];
@@ -76,7 +76,7 @@ class WC_Wallee_Helper {
 			/* @var WC_Wallee_Provider_Language $language_provider */
 			$language_provider = WC_Wallee_Provider_Language::instance();
 			$primary_language = $language_provider->find_primary($language);
-			if (isset($translated_string[$primary_language->getIetfCode()])) {
+			if ($primary_language && isset($translated_string[$primary_language->getIetfCode()])) {
 				return $translated_string[$primary_language->getIetfCode()];
 			}
 		}
@@ -165,11 +165,10 @@ class WC_Wallee_Helper {
 			$line_item->setName(__('Rounding Adjustment', 'woocommerce-wallee'));
 			$line_item->setQuantity(1);
 			$line_item->setSku('rounding-adjustment');
-			$line_item->setType($diff < 0 ? \Wallee\Sdk\Model\LineItem::TYPE_DISCOUNT : \Wallee\Sdk\Model\LineItem::TYPE_FEE);
+			$line_item->setType($diff < 0 ? \Wallee\Sdk\Model\LineItemType::DISCOUNT : \Wallee\Sdk\Model\LineItemType::FEE);
 			$line_item->setUniqueId('rounding-adjustment');
 			$line_items[] = $line_item;
-		}
-		
+		}		
 		return $this->ensure_unique_ids($line_items);
 	}
 
@@ -186,11 +185,9 @@ class WC_Wallee_Helper {
 			if (empty($unique_id)) {
 				$unique_id = preg_replace("/[^a-z0-9]/", '', strtolower($line_item->getSku()));
 			}
-			
 			if (empty($unique_id)) {
 				throw new Exception("There is an invoice item without unique id.");
 			}
-			
 			if (isset($unique_ids[$unique_id])) {
 				$backup = $unique_id;
 				$unique_id = $unique_id . '_' . $unique_ids[$unique_id];
@@ -250,7 +247,6 @@ class WC_Wallee_Helper {
 
 	public function maybe_restock_items_for_cancelled_order(WC_Order $order){
 		$restocked = $order->get_meta('_wc_wallee_restocked', true);
-		
 		if (apply_filters('wc_wallee_cancelled_payment_restock', !$restocked, $order)) {
 			$this->restock_items_for_cancelled_order($order);
 			$order->add_meta_data('_wc_wallee_restocked', true, true);
@@ -275,7 +271,6 @@ class WC_Wallee_Helper {
 					}
 				}
 			}
-			
 			do_action('wc_wallee_restocked_order', $order);
 		}
 	}
@@ -321,10 +316,9 @@ class WC_Wallee_Helper {
 			if(strpos($languageString, '-') !== false){
 				$languageString = substr($languageString, 0, strpos($languageString, '-'));
 			}
-			
 		}
 		if(!$language){
-			$language = WC_Wallee_Provider_Language::instance()->findByIsoCode(strtolower($languageString));
+			$language = WC_Wallee_Provider_Language::instance()->find_by_iso_code(strtolower($languageString));
 		}
 		//We did not find anything, so fall back
 		if(!$language){

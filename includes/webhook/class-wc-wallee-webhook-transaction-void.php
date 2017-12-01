@@ -31,10 +31,10 @@ class WC_Wallee_Webhook_Transaction_Void extends WC_Wallee_Webhook_Order_Related
 	protected function process_order_related_inner(WC_Order $order, $void){
 		/* @var \Wallee\Sdk\Model\TransactionVoid $void */
 		switch ($void->getState()) {
-			case \Wallee\Sdk\Model\TransactionVoid::STATE_FAILED:
+			case \Wallee\Sdk\Model\TransactionVoidState::FAILED:
 				$this->failed($void, $order);
 				break;
-			case \Wallee\Sdk\Model\TransactionVoid::STATE_SUCCESSFUL:
+			case \Wallee\Sdk\Model\TransactionVoidState::SUCCESSFUL:
 				$this->success($void, $order);
 				break;
 			default:

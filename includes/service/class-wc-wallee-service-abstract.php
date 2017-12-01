@@ -68,9 +68,9 @@ abstract class WC_Wallee_Service_Abstract {
 	 * @param string $operator
 	 * @return \Wallee\Sdk\Model\EntityQueryFilter
 	 */
-	protected function create_entity_filter($field_name, $value, $operator = \Wallee\Sdk\Model\EntityQueryFilter::OPERATOR_EQUALS){
+	protected function create_entity_filter($field_name, $value, $operator = \Wallee\Sdk\Model\CriteriaOperator::EQUALS){
 		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilter::TYPE_LEAF);
+		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::LEAF);
 		$filter->setOperator($operator);
 		$filter->setFieldName($field_name);
 		$filter->setValue($value);
@@ -84,7 +84,7 @@ abstract class WC_Wallee_Service_Abstract {
 	 * @param string $sort_order
 	 * @return \Wallee\Sdk\Model\EntityQueryOrderBy
 	 */
-	protected function create_entity_order_by($field_name, $sort_order = \Wallee\Sdk\Model\EntityQueryOrderBy::SORTING_DESC){
+	protected function create_entity_order_by($field_name, $sort_order = \Wallee\Sdk\Model\EntityQueryOrderByType::DESC){
 		$order_by = new \Wallee\Sdk\Model\EntityQueryOrderBy();
 		$order_by->setFieldName($field_name);
 		$order_by->setSorting($sort_order);

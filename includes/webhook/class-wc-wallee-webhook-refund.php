@@ -31,10 +31,10 @@ class WC_Wallee_Webhook_Refund extends WC_Wallee_Webhook_Order_Related_Abstract 
 	protected function process_order_related_inner(WC_Order $order, $refund){
 		/* @var \Wallee\Sdk\Model\Refund $refund */
 		switch ($refund->getState()) {
-			case \Wallee\Sdk\Model\Refund::STATE_FAILED:
+			case \Wallee\Sdk\Model\RefundState::FAILED:
 				$this->failed($refund, $order);
 				break;
-			case \Wallee\Sdk\Model\Refund::STATE_SUCCESSFUL:
+			case \Wallee\Sdk\Model\RefundState::SUCCESSFUL:
 				$this->refunded($refund, $order);
 			default:
 				// Nothing to do.

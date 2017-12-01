@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -56,6 +56,11 @@ For help setting up and configuring WooCommerce Wallee please refer to the [wiki
 If you have an issue please use the [issue tracker](https://github.com/wallee-payment/woocommerce/issues).
 
 == Changelog ==
+
+= 1.0.7 - December 01, 2017 =
+
+- Fixes order status transitions after manual task
+- Updated to newest Wallee SDK
 
 = 1.0.6 - November 22, 2017 =
 

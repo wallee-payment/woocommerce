@@ -21,7 +21,7 @@
 
 namespace Wallee\Sdk\Model;
 
-use \Wallee\Sdk\ValidationException;
+use Wallee\Sdk\ValidationException;
 
 /**
  * SubscriberCreate model
@@ -33,7 +33,7 @@ use \Wallee\Sdk\ValidationException;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  * @link        https://github.com/wallee-payment/wallee-php-sdk
  */
-class SubscriberCreate extends SubscriberActive  {
+class SubscriberCreate extends AbstractSubscriberUpdate  {
 
 	/**
 	 * The original name of the model.
@@ -48,7 +48,8 @@ class SubscriberCreate extends SubscriberActive  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-	);
+		'state' => '\Wallee\Sdk\Model\CreationEntityState',
+		'externalId' => 'string'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -60,30 +61,20 @@ class SubscriberCreate extends SubscriberActive  {
 	}
 
 	
+
 	/**
-	 * Values of state.
-	 */
-	const STATE_CREATE = 'CREATE';
-	const STATE_ACTIVE = 'ACTIVE';
-	const STATE_INACTIVE = 'INACTIVE';
-	const STATE_DELETING = 'DELETING';
-	const STATE_DELETED = 'DELETED';
-	
-	/**
-	 * Returns allowable values of state.
+	 * 
 	 *
-	 * @return string[]
+	 * @var \Wallee\Sdk\Model\CreationEntityState
 	 */
-	public function getStateAllowableValues() {
-		return array(
-			self::STATE_CREATE,
-			self::STATE_ACTIVE,
-			self::STATE_INACTIVE,
-			self::STATE_DELETING,
-			self::STATE_DELETED,
-		);
-	}
-	
+	private $state;
+
+	/**
+	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
+	 *
+	 * @var string
+	 */
+	private $externalId;
 
 
 	/**
@@ -94,14 +85,37 @@ class SubscriberCreate extends SubscriberActive  {
 	public function __construct(array $data = null) {
 		parent::__construct($data);
 
-		if (isset($data['externalId']) && $data['externalId'] != null) {
-			$this->setExternalId($data['externalId']);
-		}
 		if (isset($data['state']) && $data['state'] != null) {
 			$this->setState($data['state']);
 		}
+		if (isset($data['externalId']) && $data['externalId'] != null) {
+			$this->setExternalId($data['externalId']);
+		}
 	}
 
+
+	/**
+	 * Returns state.
+	 *
+	 * 
+	 *
+	 * @return \Wallee\Sdk\Model\CreationEntityState
+	 */
+	public function getState() {
+		return $this->state;
+	}
+
+	/**
+	 * Sets state.
+	 *
+	 * @param \Wallee\Sdk\Model\CreationEntityState $state
+	 * @return SubscriberCreate
+	 */
+	public function setState($state) {
+		$this->state = $state;
+
+		return $this;
+	}
 
 	/**
 	 * Returns externalId.
@@ -111,7 +125,7 @@ class SubscriberCreate extends SubscriberActive  {
 	 * @return string
 	 */
 	public function getExternalId() {
-		return parent::getExternalId();
+		return $this->externalId;
 	}
 
 	/**
@@ -121,32 +135,9 @@ class SubscriberCreate extends SubscriberActive  {
 	 * @return SubscriberCreate
 	 */
 	public function setExternalId($externalId) {
-		return parent::setExternalId($externalId);
-	}
+		$this->externalId = $externalId;
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getState() {
-		return parent::getState();
-	}
-
-	/**
-	 * Sets state.
-	 *
-	 * @param string $state
-	 * @return SubscriberCreate
-	 */
-	public function setState($state) {
-		$allowed_values = array('CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED');
-		if (!is_null($state) && (!in_array($state, $allowed_values))) {
-			throw new \InvalidArgumentException("Invalid value for 'state', must be one of 'CREATE', 'ACTIVE', 'INACTIVE', 'DELETING', 'DELETED'");
-		}
-		return parent::setState($state);
+		return $this;
 	}
 
 	/**
@@ -160,11 +151,6 @@ class SubscriberCreate extends SubscriberActive  {
 		if ($this->getExternalId() === null) {
 			throw new ValidationException("'externalId' can't be null", 'externalId', $this);
 		}
-		$allowed_values = array("CREATE", "ACTIVE", "INACTIVE", "DELETING", "DELETED");
-		if (!in_array($this->getState(), $allowed_values)) {
-			throw new ValidationException("invalid value for 'state', must be one of #{allowed_values}.", 'state', $this);
-		}
-
 	}
 
 	/**
