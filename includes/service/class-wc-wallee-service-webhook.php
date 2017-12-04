@@ -136,7 +136,6 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 		$webhook_listener = new \Wallee\Sdk\Model\WebhookListenerCreate();
 		$webhook_listener->setEntity($entity->get_id());
 		$webhook_listener->setEntityStates($entity->get_states());
-		$webhook_listener->setLinkedSpaceId($space_id);
 		$webhook_listener->setName('Woocommerce ' . $entity->get_name());
 		$webhook_listener->setState(\Wallee\Sdk\Model\CreationEntityState::ACTIVE);
 		$webhook_listener->setUrl($webhook_url->getId());
@@ -172,7 +171,6 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 */
 	protected function create_webhook_url($space_id){
 		$webhook_url = new \Wallee\Sdk\Model\WebhookUrlCreate();
-		$webhook_url->setLinkedSpaceId($space_id);
 		$webhook_url->setUrl($this->get_url());
 		$webhook_url->setState(\Wallee\Sdk\Model\CreationEntityState::ACTIVE);
 		$webhook_url->setName('Woocommerce');
@@ -187,8 +185,15 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_webhook_url($space_id){
 		$query = new \Wallee\Sdk\Model\EntityQuery();
+		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
+		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
+		$filter->setChildren(
+				array(
+					$this->create_entity_filter('state', \Wallee\Sdk\Model\CreationEntityState::ACTIVE),
+					$this->create_entity_filter('url', $this->get_url())
+				));
+		$query->setFilter($filter);
 		$query->setNumberOfEntities(1);
-		$query->setFilter($this->create_entity_filter('url', $this->get_url()));
 		$result = $this->get_webhook_url_service()->search($space_id, $query);
 		if (!empty($result)) {
 			return $result[0];

@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -57,40 +57,44 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 == Changelog ==
 
+= 1.0.8 - December 04, 2017 =
+
+* Fix - Webhook not updated correctly
+
 = 1.0.7 - December 01, 2017 =
 
-- Fixes order status transitions after manual task
-- Updated to newest Wallee SDK
+* Fix - Order status transitions after manual task
+* Dev - Updated to Wallee SDK 1.1.1
 
 = 1.0.6 - November 22, 2017 =
 
-- Fixes issue with order completion
+* Fix - Order completion not updating correctly
 
 = 1.0.5 - November 16, 2017 =
 
-- Fixed woocommerce order emails not send 
-- Fixes issue loading the settings page
+* Fix - Woocommerce order emails not send 
+* Fix - Settings page not loading
 
 = 1.0.4 - November 08, 2017 =
 
-- Fixed issue in wordpress admin
+* Fix - Fatal Error in Widgets Page
 
 = 1.0.3 - October 20, 2017 =
 
-- Fixed Javascript issue with IE11
-- Improved language code resolving
-- Removed include of none existing CSS file
+* Fix - Javascript issue with IE11
+* Fix - Removed include of none existing CSS file
+* Tweak - Improved language code resolving
 
 = 1.0.2 - August 31, 2017 =
 
-- Fixed Javascript issues with Firefox/IE
+* Fix - Javascript Issues with Firefox/IE
 
 = 1.0.1 - July 28, 2017 =
 
-- Added document download buttons to order overview
+* Featue - Added document download buttons to order overview
 
 = 1.0.0 - July 1, 2017 =
 
-- Initial release.
+* Initial release.
 
  

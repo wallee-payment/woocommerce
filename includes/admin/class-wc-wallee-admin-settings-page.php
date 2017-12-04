@@ -59,8 +59,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				$this->delete_provider_transients();
 			}
 			catch (Exception $e) {
-				WC_Admin_Settings::add_error($e->getTraceAsString());
-				WC_Admin_Settings::add_error($user_id."-".$user_key);
+				WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
+				WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 				WC_Admin_Settings::add_error(
 						__('Could not fetch configuration from Wallee. Please check your credentials and save again.', 'woocommerce-wallee'));
 			}
