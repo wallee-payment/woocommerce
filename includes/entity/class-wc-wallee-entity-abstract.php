@@ -172,7 +172,7 @@ abstract class WC_Wallee_Entity_Abstract {
 		return $result;
 	}
 
-	public static function delete(){
+	public function delete(){
 		global $wpdb;
 		$result = $wpdb->delete($wpdb->prefix . $this->get_table_name(), array(
 			'id' => $this->get_id() 

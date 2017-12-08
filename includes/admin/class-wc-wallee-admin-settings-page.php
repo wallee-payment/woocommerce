@@ -94,7 +94,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'title' => __('General', 'woocommerce-wallee'),
 				'desc' => sprintf(
 						__('To use this extension, a wallee account is required. Sign up on <a href="%s" target="_blank">wallee.com</a>.<br />You can find more information on how to retrieve the required information <a href="%s" target="_blank">here</a>.',
-								'woocommerce-wallee'), 'https://app-wallee.com/user/signup', 'https://github.com/wallee-payment/woocommerce/wiki/Getting-Started#prerequisites'),
+								'woocommerce-wallee'), 'https://app-wallee.com/user/signup', 'https://github.com/wallee-payment/woo-wallee/wiki/Getting-Started#prerequisites'),
 				'type' => 'title',
 				'id' => 'general_options' 
 			),

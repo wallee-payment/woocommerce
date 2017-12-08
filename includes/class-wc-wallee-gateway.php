@@ -245,10 +245,9 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 				return false;
 			}
 		}
-		catch (\Wallee\Sdk\Http\ConnectionException $e) {
+		catch(Exception $e){
 			return false;
 		}
-		
 		return true;
 	}
 
@@ -326,7 +325,9 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			);
 		}
 		catch (Exception $e) {
-			WooCommerce_Wallee::instance()->add_notice($e->getMessage(), 'error');
+			$message = $e->getMessage();
+			$cleaned = preg_replace("/^\[[A-Fa-f\d\-]+\] /", "", $message);
+			WooCommerce_Wallee::instance()->add_notice($cleaned, 'error');
 			return array(
 				'result' => 'failure',
 				'reload' => 'true' 

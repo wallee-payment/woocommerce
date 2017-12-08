@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -49,13 +49,17 @@ To use this extension, a wallee account is required. Sign up on [wallee.com](htt
 
 = Where can I find documentation? =
 
-For help setting up and configuring WooCommerce Wallee please refer to the [wiki](https://github.com/wallee-payment/woocommerce/wiki).
+For help setting up and configuring WooCommerce Wallee please refer to the [wiki](https://github.com/wallee-payment/woo-wallee/wiki).
 
 = Where can I report issues? =
 
-If you have an issue please use the [issue tracker](https://github.com/wallee-payment/woocommerce/issues).
+If you have an issue please use the [issue tracker](https://github.com/wallee-payment/woo-wallee/issues).
 
 == Changelog ==
+
+= 1.0.9 - December 08, 2017 =
+
+* Fix - Improved exception handling in checkout
 
 = 1.0.8 - December 04, 2017 =
 

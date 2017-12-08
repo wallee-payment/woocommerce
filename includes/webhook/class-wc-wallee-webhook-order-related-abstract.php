@@ -24,6 +24,7 @@ abstract class WC_Wallee_Webhook_Order_Related_Abstract extends WC_Wallee_Webhoo
 			$order = WC_Order_Factory::get_order($this->get_order_id($entity));
 			if ($order !== false) {
 				if ($order->get_meta('_wallee_transaction_id', true) != $this->get_transaction_id($entity)) {
+					wc_transaction_query("commit");
 					return;
 				}
 				WC_Wallee_Helper::instance()->lock_by_transaction_id($request->get_space_id(), $this->get_transaction_id($entity));

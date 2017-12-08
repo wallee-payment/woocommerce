@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with Wallee
- * Version: 1.0.8
+ * Version: 1.0.9
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -33,7 +33,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.0.8';
+		private $version = '1.0.9';
 		
 		/**
 		 * The single instance of the class.
@@ -144,6 +144,10 @@ if (!class_exists('WooCommerce_Wallee')) {
 				$this,
 				'valid_order_status_for_completion'
 			), 10, 2);
+			add_filter('woocommerce_form_field_args', array(
+				$this,
+				'modify_form_fields_args'
+			), 10, 3);
 		}
 
 		/**
@@ -226,7 +230,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 			}
 			return $allowed;
 		}
-		
+
 		public function valid_order_status_for_completion($statuses, WC_Order $order = null){
 			$statuses[] = 'wallee-waiting';
 			$statuses[] = 'wallee-manual';
@@ -258,7 +262,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 				foreach ($wallee_method_configurations as $configuration) {
 					$methods[] = new WC_Wallee_Gateway($configuration);
 				}
-			}			
+			}
 			catch (\Wallee\Sdk\ApiException $e) {
 				if ($e->getCode() === 401) {
 					// Ignore it because we simply are not allowed to access the API
@@ -269,6 +273,14 @@ if (!class_exists('WooCommerce_Wallee')) {
 			}
 			
 			return $methods;
+		}
+
+
+		public function modify_form_fields_args($arguments, $key, $value = null){
+			if($key == 'billing_email'){
+				$arguments['class'][] = 'address-field';
+			}
+			return $arguments;
 		}
 
 		/**

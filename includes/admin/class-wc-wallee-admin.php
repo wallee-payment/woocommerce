@@ -236,8 +236,8 @@ class WC_Wallee_Admin {
 	public function plugin_row_meta( $links, $file ) {
 		if ( WC_WALLEE_PLUGIN_BASENAME == $file ) {
 			$row_meta = array(
-				'docs'    => '<a href="' . esc_url( apply_filters( 'wc_wallee_docs_url', 'https://github.com/wallee-payment/woocommerce/wiki' ) ) . '" target="_blank" aria-label="' . esc_attr__( 'View Docs', 'woocommerce-wallee' ) . '">' . esc_html__( 'Docs', 'woocommerce-wallee' ) . '</a>',
-				'source_code'    => '<a href="' . esc_url( apply_filters( 'wc_wallee_source_url', 'https://github.com/wallee-payment/woocommerce/' ) ) . '" target="_blank" aria-label="' . esc_attr__( 'View Source Code', 'woocommerce-wallee' ) . '">' . esc_html__( 'Source Code', 'woocommerce-wallee' ) . '</a>',
+				'docs'    => '<a href="' . esc_url( apply_filters( 'wc_wallee_docs_url', 'https://github.com/wallee-payment/woo-wallee/wiki' ) ) . '" target="_blank" aria-label="' . esc_attr__( 'View Docs', 'woocommerce-wallee' ) . '">' . esc_html__( 'Docs', 'woocommerce-wallee' ) . '</a>',
+				'source_code'    => '<a href="' . esc_url( apply_filters( 'wc_wallee_source_url', 'https://github.com/wallee-payment/woo-wallee/' ) ) . '" target="_blank" aria-label="' . esc_attr__( 'View Source Code', 'woocommerce-wallee' ) . '">' . esc_html__( 'Source Code', 'woocommerce-wallee' ) . '</a>',
 			);
 			
 			return array_merge( $links, $row_meta );

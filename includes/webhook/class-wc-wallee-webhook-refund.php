@@ -47,7 +47,7 @@ class WC_Wallee_Webhook_Refund extends WC_Wallee_Webhook_Order_Related_Abstract 
 		if ($refund_job->get_id()) {
 			$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
 			if ($refund->getFailureReason() != null) {
-				$refund_job->set_failure_reason($refund->getFailureReason()->getDescription(), $reasons);
+				$refund_job->set_failure_reason($refund->getFailureReason()->getDescription());
 			}
 			$refund_job->save();
 		}

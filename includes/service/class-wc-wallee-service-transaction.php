@@ -427,6 +427,8 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$address->setPostalState($order->get_shipping_state());
 		$address->setPostCode($this->fix_length($order->get_shipping_postcode(), 40));
 		$address->setStreet($this->fix_length(trim($order->get_shipping_address_1() . "\n" . $order->get_shipping_address_2()), 300));
+		
+		return $address;
 	}
 
 	/**
@@ -478,7 +480,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\TransactionCreate
 	 */
 	protected function create_transaction_from_session(){
-		$space_id = $space_id = get_option('wc_wallee_space_id');
+		$space_id = get_option('wc_wallee_space_id');
 		$create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
 		$create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
 		$create_transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));
@@ -597,7 +599,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	protected function get_session_email_address(){
 		
 		//if we are in update_order_review, the entered email is in the post_data string,
-		//as WooCommerce does not update the email on t
+		//as WooCommerce does not update the email on the customer
 		
 		$post_data = array();
 		if(isset($_POST['post_data'])){
