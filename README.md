@@ -11,8 +11,8 @@ This repository contains the Wordpress WooCommerce plugin that enables to proces
 
 ## Documentation
 
-https://github.com/wallee-payment/woocommerce/wiki
+[Wiki](./wiki)
 
 ## License
 
-Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/master/license.txt) for more information.
+Please see the [license file](./blob/master/license.txt) for more information.
