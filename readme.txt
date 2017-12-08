@@ -59,6 +59,7 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 = 1.0.9 - December 08, 2017 =
 
+* Fix - Payment Method Image not updating
 * Fix - Improved exception handling in checkout
 
 = 1.0.8 - December 04, 2017 =
