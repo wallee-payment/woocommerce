@@ -36,7 +36,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	}
 
 	/**
-	 * Creates a refund request model for the given creditmemo.
+	 * Creates a refund request model for the given refund.
 	 *
 	 * @param WC_Order $order
 	 * @param WC_Order_Refund $refund
@@ -58,7 +58,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	}
 
 	/**
-	 * Returns the fixed line item reductions for the creditmemo.
+	 * Returns the fixed line item reductions for the refund.
 	 *
 	 * If the amount of the given reductions does not match the refund's grand total, the amount to refund is distributed equally to the line items.
 	 *
@@ -94,7 +94,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	}
 
 	/**
-	 * Returns the line item reductions for the creditmemo's items.
+	 * Returns the line item reductions for the refund items.
 	 *
 	 * @param WC_Order $order 
 	 * @param WC_Order_Refund $refund

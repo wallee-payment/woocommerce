@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with Wallee
- * Version: 1.0.9
+ * Version: 1.0.10
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -33,7 +33,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.0.9';
+		private $version = '1.0.10';
 		
 		/**
 		 * The single instance of the class.
@@ -128,26 +128,18 @@ if (!class_exists('WooCommerce_Wallee')) {
 				$this,
 				'register_order_statuses' 
 			));
-			add_filter('wc_order_is_editable', array(
+			add_action('init', array(
 				$this,
-				'order_editable_check' 
-			), 10, 2);
-			add_filter('woocommerce_before_calculate_totals', array(
+				'set_device_id_cookie' 
+			));
+			add_action('wp_enqueue_scripts', array(
 				$this,
-				'before_calculate_totals' 
-			), 10);
-			add_filter('woocommerce_after_calculate_totals', array(
+				'enqueue_device_id_script' 
+			));
+			add_filter('script_loader_tag', array(
 				$this,
-				'after_calculate_totals' 
-			), 10);
-			add_filter('woocommerce_valid_order_statuses_for_payment_complete', array(
-				$this,
-				'valid_order_status_for_completion'
-			), 10, 2);
-			add_filter('woocommerce_form_field_args', array(
-				$this,
-				'modify_form_fields_args'
-			), 10, 3);
+				'set_js_async' 
+			), 20, 3);
 		}
 
 		/**
@@ -181,6 +173,30 @@ if (!class_exists('WooCommerce_Wallee')) {
 				$this,
 				'add_order_statuses' 
 			));
+			add_filter('wc_order_is_editable', array(
+				$this,
+				'order_editable_check' 
+			), 10, 2);
+			add_filter('woocommerce_before_calculate_totals', array(
+				$this,
+				'before_calculate_totals' 
+			), 10);
+			add_filter('woocommerce_after_calculate_totals', array(
+				$this,
+				'after_calculate_totals' 
+			), 10);
+			add_filter('woocommerce_valid_order_statuses_for_payment_complete', array(
+				$this,
+				'valid_order_status_for_completion' 
+			), 10, 2);
+			add_filter('woocommerce_form_field_args', array(
+				$this,
+				'modify_form_fields_args' 
+			), 10, 3);
+			add_action('woocommerce_checkout_update_order_review', array(
+				$this,
+				'update_additional_customer_data' 
+			));
 		}
 
 		public function register_order_statuses(){
@@ -211,6 +227,35 @@ if (!class_exists('WooCommerce_Wallee')) {
 						'show_in_admin_status_list' => true,
 						'label_count' => _n_noop('Manual Decision <span class="count">(%s)</span>', 'Manual Decision <span class="count">(%s)</span>') 
 					));
+		}
+
+		public function set_device_id_cookie(){
+			$value = WC_Wallee_Unique_Id::get_uuid();
+			if (isset($_COOKIE['wc_wallee_device_id']) && !empty($_COOKIE['wc_wallee_device_id'])) {
+				$value = $_COOKIE['wc_wallee_device_id'];
+			}
+			setcookie('wc_wallee_device_id', $value, time() + YEAR_IN_SECONDS, '/');
+		}
+
+		public function set_js_async($tag, $handle, $src){
+			$async_script_handles = array('wallee-device-id-js');
+			foreach($async_script_handles as $async_handle){
+				if($async_handle == $handle){
+					return str_replace( ' src', ' async="async" src', $tag );
+				}
+			}			
+			return $tag;
+		}
+
+		public function enqueue_device_id_script(){
+			if(is_woocommerce() || is_cart() || is_checkout()){
+				$unique_id = $_COOKIE['wc_wallee_device_id'];
+				$space_id = get_option('wc_wallee_space_id');
+				$script_url = WC_Wallee_Helper::instance()->get_base_gateway_url() . '/s/' . 
+						$space_id. '/payment/device.js?sessionIdentifier=' .
+						$unique_id;
+				wp_enqueue_script('wallee-device-id-js', $script_url, array(), null, false);
+			}
 		}
 
 		public function add_order_statuses($order_statuses){
@@ -275,12 +320,52 @@ if (!class_exists('WooCommerce_Wallee')) {
 			return $methods;
 		}
 
-
 		public function modify_form_fields_args($arguments, $key, $value = null){
-			if($key == 'billing_email'){
+			if ($key == 'billing_email') {
 				$arguments['class'][] = 'address-field';
 			}
+			if ($key == 'billing_first_name') {
+				$arguments['class'][] = 'address-field';
+			}
+			if ($key == 'billing_last_name') {
+				$arguments['class'][] = 'address-field';
+			}
+			if ($key == 'shipping_first_name') {
+				$arguments['class'][] = 'address-field';
+			}
+			if ($key == 'shipping_last_name') {
+				$arguments['class'][] = 'address-field';
+			}
+			
 			return $arguments;
+		}
+
+		public function update_additional_customer_data($arguments){
+			$post_data = array();
+			if (!empty($arguments)) {
+				parse_str($arguments, $post_data);
+			}
+			
+			WC()->customer->set_props(
+					array(
+						'billing_first_name' => isset($post_data['billing_first_name']) ? wp_unslash($post_data['billing_first_name']) : null,
+						'billing_last_name' => isset($post_data['billing_last_name']) ? wp_unslash($post_data['billing_last_name']) : null 
+					));
+			
+			if (wc_ship_to_billing_address_only() || !isset($post_data['ship_to_different_address']) || $post_data['ship_to_different_address'] == '0') {
+				WC()->customer->set_props(
+						array(
+							'shipping_first_name' => isset($post_data['billing_first_name']) ? wp_unslash($post_data['billing_first_name']) : null,
+							'shipping_last_name' => isset($post_data['billing_last_name']) ? wp_unslash($post_data['billing_last_name']) : null 
+						));
+			}
+			else {
+				WC()->customer->set_props(
+						array(
+							'shipping_first_name' => isset($post_data['shipping_first_name']) ? wp_unslash($post_data['shipping_first_name']) : null,
+							'shipping_last_name' => isset($post_data['shipping_last_name']) ? wp_unslash($post_data['shipping_last_name']) : null 
+						));
+			}
 		}
 
 		/**

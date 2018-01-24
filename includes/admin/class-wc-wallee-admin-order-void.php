@@ -93,10 +93,10 @@ class WC_Wallee_Admin_Order_Void {
 			$void_job->set_order_id($order_id);
 			$void_job->save();
 			$current_void_id = $void_job->get_id();
-			$wpdb->query("COMMIT;");
+			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
-			$wpdb->query("ROLLBACK;");
+			wc_transaction_query("rollback");
 			wp_send_json_error(array(
 				'error' => $e->getMessage() 
 			));
@@ -164,7 +164,7 @@ class WC_Wallee_Admin_Order_Void {
 				self::send_void($id);
 			}
 			catch (Exception $e) {
-				$message = sprintf(__('Error updating void job wiht id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
+				$message = sprintf(__('Error updating void job with id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
 				WooCommerce_Wallee::instance()->log($message, WC_Log_Levels::ERROR);
 			}
 		}

@@ -1,6 +1,4 @@
 <?php
-use Wallee\Sdk\Http\HttpClientFactory;
-
 if (!defined('ABSPATH')) {
 	exit();
 }
@@ -10,7 +8,8 @@ if (!defined('ABSPATH')) {
  */
 class WC_Wallee_Migration {
 	private static $db_migrations = array(
-		'1.0.0' => 'wc_wallee_update_1_0_0_initialize' 
+		'1.0.0' => 'wc_wallee_update_1_0_0_initialize', 
+		'1.0.1' => 'wc_wallee_update_1_0_1_image_url' 
 	);
 
 	/**
@@ -96,7 +95,7 @@ class WC_Wallee_Migration {
 		}
 		
 		try{
-			HttpClientFactory::getClient();
+			\Wallee\Sdk\Http\HttpClientFactory::getClient();
 		}
 		catch(Exception $e){
 			$errors[] = __("Install the PHP cUrl extension or ensure the 'stream_socket_client' function is available.");
@@ -173,7 +172,7 @@ class WC_Wallee_Migration {
 	 */
 	public static function check_version(){
 		try {
-			$current_version = get_option('woocommerce_wallee_db_version', 0);
+			$current_version = get_option('wc_wallee_db_version', 0);
 			$version_keys = array_keys(self::$db_migrations);
 			if (version_compare($current_version, '0', '>') && version_compare($current_version, end($version_keys), '<')) {
 				//We migrate the Db for all blogs
@@ -374,6 +373,22 @@ class WC_Wallee_Migration {
 				KEY `idx_external_id_space_id` (`external_id`,`space_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 		
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+	}
+	
+	public static function wc_wallee_update_1_0_1_image_url(){
+		global $wpdb;
+		$result = $wpdb->query(
+				"ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_method_configuration` CHANGE `image` `image` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
+		if ($result === false) {
+			throw new Exception($wpdb->last_error);
+		}
+		
+		$result = $wpdb->query(
+				"ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` CHANGE `image` `image` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
+				
 		if ($result === false) {
 			throw new Exception($wpdb->last_error);
 		}

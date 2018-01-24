@@ -38,6 +38,20 @@ abstract class WC_Wallee_Service_Abstract {
 		
 		return $translations;
 	}
+	
+	/**
+	 * Returns the resource part of the resolved url
+	 * 
+	 * @param String $resolved_url
+	 * @return string
+	 */
+	protected function get_resource_path($resolved_url) {
+		if(empty($resolved_url)){
+			return $resolved_url;
+		}
+		$index = strpos($resolved_url, 'resource/');
+		return substr($resolved_url, $index + strlen('resource/'));
+	}
 
 	/**
 	 * Returns the fraction digits for the given currency.
@@ -105,7 +119,7 @@ abstract class WC_Wallee_Service_Abstract {
 	/**
 	 * Removes all non printable ASCII chars
 	 * 
-	 * @param unknown $string
+	 * @param String $string
 	 * @return $string
 	 */
 	protected function remove_non_ascii($string){

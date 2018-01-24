@@ -18,28 +18,31 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 		$entity = WC_Wallee_Entity_Method_Configuration::load_by_configuration($configuration->getLinkedSpaceId(), $configuration->getId());
 		if ($entity->get_id() !== null && $this->has_changed($configuration, $entity)) {
 			$entity->set_configuration_name($configuration->getName());
-			$entity->set_title($this->get_translations_array($configuration->getTitle()));
-			$entity->set_description($this->get_translations_array($configuration->getDescription()));
-			$entity->set_image(
-					$configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : ($this->get_payment_method(
-							$configuration->getPaymentMethod()) ? $this->get_payment_method($configuration->getPaymentMethod())->getImagePath() : null));
+			$entity->set_title($configuration->getResolvedTitle());
+			$entity->set_description($configuration->getResolvedDescription());
+			$entity->set_image($this->get_resource_path($configuration->getResolvedImageUrl()));
+			$entity->set_state($this->get_configuration_state($configuration));
 			$entity->save();
 		}
 	}
 
 	private function has_changed(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration, WC_Wallee_Entity_Method_Configuration $entity){
+		
+
+		
+		if($this->get_configuration_state($configuration) != $entity->get_state()){
+			return true;
+		}		
 		if ($configuration->getName() != $entity->get_configuration_name()) {
 			return true;
 		}		
-		if ($this->get_translations_array($configuration->getTitle()) != $entity->get_title()) {
+		if ($configuration->getResolvedTitle() != $entity->get_title()) {
 			return true;
 		}		
-		if ($this->get_translations_array($configuration->getDescription()) != $entity->get_description()) {
+		if ($configuration->getResolvedDescription() != $entity->get_description()) {
 			return true;
 		}		
-		$image = $configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : ($this->get_payment_method(
-				$configuration->getPaymentMethod()) ? $this->get_payment_method($configuration->getPaymentMethod())->getImagePath() : null);
-		if ($image != $entity->get_image()) {
+		if ($this->get_resource_path($configuration->getResolvedImageUrl()) != $entity->get_image()) {
 			return true;
 		}		
 		return false;
@@ -71,13 +74,10 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 				$method->set_configuration_id($configuration->getId());
 				$method->set_configuration_name($configuration->getName());
 				$method->set_state($this->get_configuration_state($configuration));
-				$method->set_title($this->get_translations_array($configuration->getTitle()));
-				$method->set_description($this->get_translations_array($configuration->getDescription()));
+				$method->set_title($configuration->getResolvedTitle());
+				$method->set_description($configuration->getResolvedDescription());
 				
-				$method->set_image(
-						$configuration->getImageResourcePath() != null ? $configuration->getImageResourcePath()->getPath() : ($this->get_payment_method(
-								$configuration->getPaymentMethod()) ? $this->get_payment_method(
-										$configuration->getPaymentMethod())->getImagePath() : null));
+				$method->set_image($this->get_resource_path($configuration->getResolvedImageUrl()));
 				$method->save();
 			}
 		}
@@ -90,6 +90,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 		delete_transient('wc_wallee_payment_methods');
 	}
 
+	
 	/**
 	 * Returns the payment method for the given id.
 	 *

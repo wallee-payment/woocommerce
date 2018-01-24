@@ -2,6 +2,7 @@
 if (!defined('ABSPATH')) {
 	exit(); // Exit if accessed directly.
 }
+
 /**
  * This service provides functions to deal with Wallee transactions.
  */
@@ -172,7 +173,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$info->set_payment_method_id(
 				$transaction->getPaymentConnectorConfiguration() != null && $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration() !=
 						 null ? $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration()->getPaymentMethod() : null);
-		$info->set_image($this->get_payment_method_image($transaction, $order));
+		$info->set_image($this->get_resource_path($this->get_payment_method_image($transaction, $order)));
 		$info->set_labels($this->get_transaction_labels($transaction));
 		if ($transaction->getState() == \Wallee\Sdk\Model\TransactionState::FAILED ||
 				 $transaction->getState() == \Wallee\Sdk\Model\TransactionState::DECLINE) {
@@ -247,30 +248,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 			}
 			return null;
 		}
-		$connector_provider = WC_Wallee_Provider_Payment_Connector::instance();
-		$connector = $connector_provider->find($transaction->getPaymentConnectorConfiguration()->getConnector());
-		
-		$method_provider = WC_Wallee_Provider_Payment_Method::instance();
-		$method = $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration() != null ? $method_provider->find(
-				$transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration()->getPaymentMethod()) : false;
-		
-		if ($connector && $connector->getPaymentMethodBrand() != null) {
-			return $connector->getPaymentMethodBrand()->getImagePath();
+		if ($transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration() != null) {
+			return $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration()->getResolvedImageUrl();
 		}
-		elseif ($transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration() != null && $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration()->getImageResourcePath() !=
-				 null) {
-			return $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration()->getImageResourcePath()->getPath();
-		}
-		elseif ($method) {
-			return $method->getImagePath();
-		}
-		else {
-			$method_instance = wc_get_payment_gateway_by_order($order);
-			if ($methodInstance != false && ($method_instance instanceof WC_Wallee_Gateway)) {
-				return $method_instance->get_payment_method_configuration()->get_image();
-			}
-			return null;
-		}
+		return null;
 	}
 
 	/**
@@ -283,8 +264,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		
 		if (!isset(self::$possible_payment_method_cache[$current_cart_id]) || self::$possible_payment_method_cache[$current_cart_id] == null) {
 			$transaction = $this->get_transaction_from_session();
-			$payment_methods = $this->get_transaction_service()->fetchPossiblePaymentMethods($transaction->getLinkedSpaceId(), 
-					$transaction->getId());
+			$payment_methods = $this->get_transaction_service()->fetchPossiblePaymentMethods($transaction->getLinkedSpaceId(), $transaction->getId());
 			
 			$method_configuration_service = WC_Wallee_Service_Method_Configuration::instance();
 			foreach ($payment_methods as $payment_method) {
@@ -316,10 +296,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 				$pending_transaction->setId($transaction->getId());
 				$pending_transaction->setVersion($transaction->getVersion());
 				$this->assemble_order_transaction_data($order, $pending_transaction);
-				if($confirm){
-					return $this->get_transaction_service()->confirm($space_id, $pending_transaction);	
+				if ($confirm) {
+					return $this->get_transaction_service()->confirm($space_id, $pending_transaction);
 				}
-				else{
+				else {
 					return $this->get_transaction_service()->update($space_id, $pending_transaction);
 				}
 			}
@@ -341,8 +321,11 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
 		$create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
 		$create_transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));
-		$this->assemble_order_transaction_data($order, $create_transaction);
-		
+		$create_transaction->setAutoConfirmationEnabled(false);
+		if(isset($_COOKIE['wc_wallee_device_id'])){
+			$create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);
+		}
+		$this->assemble_order_transaction_data($order, $create_transaction);		
 		$transaction = $this->get_transaction_service()->create($space_id, $create_transaction);
 		$this->store_transaction_ids_in_session($transaction);
 		return $transaction;
@@ -484,6 +467,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
 		$create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
 		$create_transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));
+		$create_transaction->setAutoConfirmationEnabled(false);
+		if(isset($_COOKIE['wc_wallee_device_id'])){
+			$create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);
+		}
 		$this->assemble_session_transaction_data($create_transaction);
 		$transaction = $this->get_transaction_service()->create($space_id, $create_transaction);
 		$this->store_transaction_ids_in_session($transaction);
@@ -535,7 +522,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$transaction->setCustomerId($this->get_customer_id());
 		$transaction->setLanguage(WC_Wallee_Helper::instance()->get_cleaned_locale());
 		$transaction->setShippingMethod($this->fix_length($this->get_session_shipping_method_name(), 200));
-
+		
 		$transaction->setLineItems(WC_Wallee_Service_Line_Item::instance()->get_items_from_session());
 		
 		$transaction->setAllowedPaymentMethodConfigurations(array());
@@ -600,12 +587,11 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		
 		//if we are in update_order_review, the entered email is in the post_data string,
 		//as WooCommerce does not update the email on the customer
-		
 		$post_data = array();
-		if(isset($_POST['post_data'])){
+		if (isset($_POST['post_data'])) {
 			parse_str($_POST['post_data'], $post_data);
 		}
-		if(!empty($post_data['billing_email'])){
+		if (!empty($post_data['billing_email'])) {
 			return $post_data['billing_email'];
 		}
 		
@@ -621,7 +607,6 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 			return $user->get('user_email');
 		}
 		return null;
-		
 	}
 
 	/**

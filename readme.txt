@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -57,6 +57,11 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 == Changelog ==
 
+= 1.0.10 - January 24, 2018 =
+
+* Fix - First and last name not updated correctly during checkout
+* Dev - Updated to Wallee SDK 1.1.2
+
 = 1.0.9 - December 08, 2017 =
 
 * Fix - Payment Method Image not updating
@@ -101,5 +106,8 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 = 1.0.0 - July 1, 2017 =
 
 * Initial release.
+
+
+
 
  

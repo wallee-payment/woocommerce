@@ -19,7 +19,7 @@ class WC_Wallee_Webhook_Handler {
 	}
 	
 	public static function handle_webhook_errors($errno, $errstr, $errfile, $errline){
-		$fatal = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
+		$fatal = E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR | E_PARSE;
 		if($errno & $fatal){
 			throw new ErrorException($errstr, $errno, E_ERROR, $errfile, $errline);
 		}

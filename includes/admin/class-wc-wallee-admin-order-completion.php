@@ -259,7 +259,7 @@ class WC_Wallee_Admin_Order_Completion {
 				self::send_completion($id);
 			}
 			catch (Exception $e) {
-				$message = sprintf(__('Error updating completion job wiht id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
+				$message = sprintf(__('Error updating completion job with id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
 				WooCommerce_Wallee::instance()->log($message, WC_Log_Levels::ERROR);
 			}
 		}

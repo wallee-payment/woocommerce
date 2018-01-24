@@ -103,7 +103,6 @@ class WC_Wallee_Admin_Refund {
 			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
-			$wpdb->query("ROLLBACK;");
 			wc_transaction_query("rolback");
 			throw $e;
 		}
@@ -160,7 +159,7 @@ class WC_Wallee_Admin_Refund {
 				self::send_refund($id);
 			}
 			catch (Exception $e) {
-				$message = sprintf(__('Error updating refund job wiht id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
+				$message = sprintf(__('Error updating refund job with id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
 				WooCommerce_Wallee::instance()->log($message, WC_Log_Levels::ERROR);
 			}
 		}

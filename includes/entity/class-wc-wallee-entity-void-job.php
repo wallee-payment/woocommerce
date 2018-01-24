@@ -98,7 +98,7 @@ class WC_Wallee_Entity_Void_Job extends WC_Wallee_Entity_Abstract {
 		$time = new DateTime();
 		$time->sub(new DateInterval('PT10M'));
 		$db_results = $wpdb->get_results(
-				$wpdb->prepare("SELECT id FROM " . $wpdb->prefix . self::get_table_name() . " WHERE state == %s AND updated_at < %s", 
+				$wpdb->prepare("SELECT id FROM " . $wpdb->prefix . self::get_table_name() . " WHERE state = %s AND updated_at < %s", 
 						self::STATE_CREATED, $time->format('Y-m-d H:i:s')), ARRAY_A);
 		$result = array();
 		if(is_array($db_results)){

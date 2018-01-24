@@ -71,7 +71,7 @@ abstract class WC_Wallee_Webhook_Order_Related_Abstract extends WC_Wallee_Webhoo
 	 * This must be implemented
 	 *
 	 * @param WC_Order $order
-	 * @param unknown $entity
+	 * @param Object $entity
 	 */
 	abstract protected function process_order_related_inner(WC_Order $order, $entity);
 }
