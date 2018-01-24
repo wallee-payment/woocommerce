@@ -187,12 +187,13 @@ jQuery(function($) {
 			    .submit_error(this
 				    .format_error_messages(validation_result.error_messages));
 		} else {
-		    $('html, body').animate(
-			    {
-				scrollTop : ($(
-				'#'+ this.payment_methods[method_id].container_id)
-						.offset().top - 20)
-			    }, 1000);
+		    var container_id_selector = $('#'+ this.payment_methods[method_id].container_id);
+		    if (container_id_selector.lenght) {
+			$('html, body').animate(
+			   {
+				scrollTop : (container_id_selector.offset().top - 20)
+			   }, 1000);
+		    }
 		}
 	    }
 	},
