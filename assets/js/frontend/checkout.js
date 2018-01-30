@@ -140,7 +140,7 @@ jQuery(function($) {
 	    
 	    $('#'+container_id).replaceWith($('#'+tmp_container_id));
 	    $('#'+tmp_container_id).attr('id', container_id);
-
+	    this.payment_methods[method_id].container_id = container_id;
 	    
 	    var form = $('form.checkout');
 	    form.off('checkout_place_order_' + method_id + '.wallee').on(
@@ -182,20 +182,31 @@ jQuery(function($) {
 	    } else {
 		var form = $('form.checkout');
 		form.unblock();
-		if (validation_result.error_messages) {
-		    wc_checkout_form
-			    .submit_error(this
-				    .format_error_messages(validation_result.error_messages));
+		if (validation_result.errors) {
+		    this.submit_error(validation_result.errors);
 		} else {
 		    var container_id_selector = $('#'+ this.payment_methods[method_id].container_id);
-		    if (container_id_selector.lenght) {
-			$('html, body').animate(
-			   {
-				scrollTop : (container_id_selector.offset().top - 20)
-			   }, 1000);
+		    if (container_id_selector.length) {
+        		    $('html, body').animate(
+        			    {
+        				scrollTop : (container_id_selector.offset().top - 20)
+        			    }, 1000);
 		    }
 		}
 	    }
+	},
+	
+	//We simulate the woocommerce submit_error function, as it is not callable from outside
+	submit_error: function( error_message ) {
+	    	var formatted_message = '<div class="woocommerce-error">'+this.format_error_messages(error_message)+'</div>';
+	 	$( '.woocommerce-NoticeGroup-checkout, .woocommerce-error, .woocommerce-message' ).remove();
+		$('form.checkout').prepend( '<div class="woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout">' + formatted_message + '</div>' );
+		$('form.checkout').removeClass( 'processing' ).unblock();
+		$('form.checkout').find( '.input-text, select, input:checkbox' ).trigger( 'validate' ).blur();
+		$( 'html, body' ).animate({
+			scrollTop: ( $( 'form.checkout' ).offset().top - 100 )
+		}, 1000 );
+		$( document.body ).trigger( 'checkout_error' );
 	},
 
 	format_error_messages : function(messages) {

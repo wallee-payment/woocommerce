@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.10
+Stable tag: 1.0.11
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -56,6 +56,12 @@ For help setting up and configuring WooCommerce Wallee please refer to the [wiki
 If you have an issue please use the [issue tracker](https://github.com/wallee-payment/woo-wallee/issues).
 
 == Changelog ==
+
+= 1.0.11 - January 30, 2018 =
+
+* Tweak - Only show payment method, if  customer entered full address
+* Fix - Email language if WooCommerce Multilingual is installed 
+* Fix - Javascript validation error display
 
 = 1.0.10 - January 24, 2018 =
 

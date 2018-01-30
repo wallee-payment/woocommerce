@@ -231,6 +231,9 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		if (isset($GLOBALS['_wc_wallee_calculating']) && $GLOBALS['_wc_wallee_calculating']) {
 			return true;
 		}
+		if(isset(WC()->customer) && !WC()->customer->get_calculated_shipping()){
+			return false;
+		}
 		
 		try {
 			$possible_methods = WC_Wallee_Service_Transaction::instance()->get_possible_payment_methods();

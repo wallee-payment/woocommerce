@@ -410,9 +410,14 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$address->setPostalState($order->get_shipping_state());
 		$address->setPostCode($this->fix_length($order->get_shipping_postcode(), 40));
 		$address->setStreet($this->fix_length(trim($order->get_shipping_address_1() . "\n" . $order->get_shipping_address_2()), 300));
+		$address->setEmailAddress($this->fix_length($this->get_order_email_address($order), 254));
 		
 		return $address;
 	}
+	
+	
+
+	
 
 	/**
 	 * Returns the current scustomer's email address.
@@ -574,6 +579,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$address->setPostalState($customer->get_shipping_state());
 		$address->setPostCode($this->fix_length($customer->get_shipping_postcode(), 40));
 		$address->setStreet($this->fix_length(trim($customer->get_shipping_address_1() . "\n" . $customer->get_shipping_address_2()), 300));
+		$address->setEmailAddress($this->fix_length($this->get_session_email_address(), 254));
 		
 		return $address;
 	}

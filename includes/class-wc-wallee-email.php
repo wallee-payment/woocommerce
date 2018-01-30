@@ -89,11 +89,45 @@ class WC_Wallee_Email {
 			'woocommerce_order_status_wallee-redirected_to_wallee-manual',
 			'woocommerce_order_status_wallee-manual_to_cancelled',
 			'woocommerce_order_status_wallee-waiting_to_cancelled',
-			'woocommerce_order_status_wallee-redirected_to_on-hold',
-			'woocommerce_order_status_wallee-redirected_to_processing',
 			'woocommerce_order_status_wallee-manual_to_processing',
 			'woocommerce_order_status_wallee-waiting_to_processing'
 		);
+		
+		if(class_exists('woocommerce_wpml')){
+			//Add hooks for WPML, for email translations
+			$notifications_all =  array(
+				'woocommerce_order_status_wallee-redirected_to_processing_notification',
+				'woocommerce_order_status_wallee-redirected_to_completed_notification',
+				'woocommerce_order_status_wallee-redirected_to_on-hold_notification',
+				'woocommerce_order_status_wallee-redirected_to_wallee-waiting_notification',
+				'woocommerce_order_status_wallee-redirected_to_wallee-manual_notification',
+			);
+			$notifications_customer = array(
+				'woocommerce_order_status_wallee-manual_to_processing_notification',
+				'woocommerce_order_status_wallee-waiting_to_processing_notification',
+				'woocommerce_order_status_on-hold_to_processing_notification',
+				'woocommerce_order_status_wallee-manual_to_cancelled_notification',
+				'woocommerce_order_status_wallee-waiting_to_cancelled_notifcation'
+			);
+			$wpmlInstance = woocommerce_wpml::instance();
+			$emailHandler = $wpmlInstance->emails;
+			foreach($notifications_all as $new_action){
+				add_action( $new_action, array(
+					$emailHandler,
+					'refresh_email_lang'
+				), 9 );
+				add_action( $new_action, array(
+					$emailHandler,
+					'new_order_admin_email'
+				), 9 );
+			}
+			foreach($notifications_customer as $new_action){
+				add_action( $new_action, array(
+					$emailHandler,
+					'refresh_email_lang'
+				), 9 );
+			}
+		}		
 		$actions = array_merge($actions, $to_add);
 		return $actions;
 	}

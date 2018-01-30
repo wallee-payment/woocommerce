@@ -306,7 +306,7 @@ final class SocketHttpClient implements IHttpClient {
 		}
 		$socket = $host . ':' . $port;
 
-		$filePointer = stream_socket_client($socket, $errno, $errstr, $apiClient->getConnectionTimeout(), STREAM_CLIENT_CONNECT,
+		$filePointer = @stream_socket_client($socket, $errno, $errstr, $apiClient->getConnectionTimeout(), STREAM_CLIENT_CONNECT,
 				$this->createStreamContext($apiClient, $request));
 
 		if ($filePointer === false) {
