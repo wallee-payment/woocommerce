@@ -231,7 +231,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		if (isset($GLOBALS['_wc_wallee_calculating']) && $GLOBALS['_wc_wallee_calculating']) {
 			return true;
 		}
-		if(isset(WC()->customer) && !WC()->customer->get_calculated_shipping()){
+		
+		if((isset(WC()->customer) && !WC()->customer->get_calculated_shipping()) || (isset($_POST['has_full_address']) && $_POST['has_full_address'] == 'false')){
 			return false;
 		}
 		
@@ -264,16 +265,6 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function payment_fields(){
-		wp_enqueue_script('wallee-remote-checkout-js', WC_Wallee_Service_Transaction::instance()->get_javascript_url(), array(
-			'jquery' 
-		), null, true);
-		
-		wp_enqueue_script('wallee-checkout-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/frontend/checkout.js', 
-				array(
-					'jquery',
-					'wallee-remote-checkout-js' 
-				), null, true);
-		
 		parent::payment_fields();
 		?>
 		

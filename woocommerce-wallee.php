@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with Wallee
- * Version: 1.0.11
+ * Version: 1.0.12
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -33,7 +33,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.0.11';
+		private $version = '1.0.12';
 		
 		/**
 		 * The single instance of the class.
@@ -134,7 +134,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 			));
 			add_action('wp_enqueue_scripts', array(
 				$this,
-				'enqueue_device_id_script' 
+				'enqueue_javascript_script' 
 			));
 			add_filter('script_loader_tag', array(
 				$this,
@@ -247,7 +247,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 			return $tag;
 		}
 
-		public function enqueue_device_id_script(){
+		public function enqueue_javascript_script(){
 			if(is_woocommerce() || is_cart() || is_checkout()){
 				$unique_id = $_COOKIE['wc_wallee_device_id'];
 				$space_id = get_option('wc_wallee_space_id');
@@ -255,6 +255,21 @@ if (!class_exists('WooCommerce_Wallee')) {
 						$space_id. '/payment/device.js?sessionIdentifier=' .
 						$unique_id;
 				wp_enqueue_script('wallee-device-id-js', $script_url, array(), null, false);
+			}
+			if(is_checkout()){
+				try{
+					wp_enqueue_script('wallee-remote-checkout-js', WC_Wallee_Service_Transaction::instance()->get_javascript_url(), array(
+						'jquery'
+					), null, true);
+					
+					wp_enqueue_script('wallee-checkout-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/frontend/checkout.js',
+							array(
+								'jquery',
+								'wallee-remote-checkout-js'
+							), null, true);
+				}
+				catch(Exception $e){}
+				
 			}
 		}
 
@@ -322,6 +337,9 @@ if (!class_exists('WooCommerce_Wallee')) {
 
 		public function modify_form_fields_args($arguments, $key, $value = null){
 			if ($key == 'billing_email') {
+				$arguments['class'][] = 'address-field';
+			}
+			if ($key == 'billing_phone') {
 				$arguments['class'][] = 'address-field';
 			}
 			if ($key == 'billing_first_name') {

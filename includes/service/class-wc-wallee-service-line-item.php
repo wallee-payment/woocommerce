@@ -351,7 +351,12 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
-			$amount_including_tax = $backend_items[$item_id]['completion_total'] + array_sum($backend_items[$item_id]['completion_tax']);
+			$tax = 0;
+			if(isset($backend_items[$item_id]['completion_tax'])){
+				$tax = array_sum($backend_items[$item_id]['completion_tax']);
+			}
+			
+			$amount_including_tax = $backend_items[$item_id]['completion_total'] + $tax;
 			
 			$line_item->setAmountIncludingTax($this->round_amount($amount_including_tax, $currency));
 			$quantity = 1;
@@ -399,7 +404,13 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			if (!isset($backend_items[$fee_id])) {
 				continue;
 			}
-			if ($backend_items[$fee_id]['completion_total'] + array_sum($backend_items[$fee_id]['completion_tax']) == 0) {
+			
+			$tax = 0;
+			if(isset($backend_items[$fee_id]['completion_tax'])){
+				$tax = array_sum($backend_items[$fee_id]['completion_tax']);
+			}
+			
+			if ($backend_items[$fee_id]['completion_total'] + $tax == 0) {
 				continue;
 			}
 			/**
@@ -408,7 +419,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
-			$amount_including_tax = $backend_items[$fee_id]['completion_total'] + array_sum($backend_items[$fee_id]['completion_tax']);
+			$amount_including_tax = $backend_items[$fee_id]['completion_total'] + $tax;
 			
 			$line_item->setAmountIncludingTax($this->round_amount($amount_including_tax, $currency));
 			$line_item->setName($fee->get_name());
@@ -453,7 +464,11 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			if (!isset($backend_items[$shipping_id])) {
 				continue;
 			}
-			if ($backend_items[$shipping_id]['completion_total'] + array_sum($backend_items[$shipping_id]['completion_tax']) == 0) {
+			$tax = 0;
+			if(isset($backend_items[$shipping_id]['completion_tax'])){
+				$tax = array_sum($backend_items[$shipping_id]['completion_tax']);
+			}
+			if ($backend_items[$shipping_id]['completion_total'] + $tax == 0) {
 				continue;
 			}
 			/**
@@ -462,7 +477,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
-			$amount_including_tax = $backend_items[$shipping_id]['completion_total'] + array_sum($backend_items[$shipping_id]['completion_tax']);
+			$amount_including_tax = $backend_items[$shipping_id]['completion_total'] + $tax;
 			
 			$line_item->setAmountIncludingTax($this->round_amount($amount_including_tax, $currency));
 			$line_item->setName($shipping->get_method_title());

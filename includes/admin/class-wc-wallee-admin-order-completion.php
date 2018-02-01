@@ -99,17 +99,21 @@ class WC_Wallee_Admin_Order_Completion {
 			$total_items_sum = 0;
 			foreach ($line_items as $item) {
 				
-				foreach ($item['completion_tax'] as $rate_id => $amount) {
-					
-					$percent = WC_Tax::get_rate_percent($rate_id);
-					$rate = rtrim($percent, '%');
-					
-					$tax_amount = $item['completion_total'] * $rate / 100;
-					if (wc_format_decimal($tax_amount, wc_get_price_decimals()) != wc_format_decimal($amount, wc_get_price_decimals())) {
-						throw new Exception(__('The tax rate can not be changed.', 'woocommerce-wallee'));
+				$tax = 0;
+				if(isset($item['completion_tax']) && is_array($item['completion_tax'])){
+					foreach ($item['completion_tax'] as $rate_id => $amount) {
+						
+						$percent = WC_Tax::get_rate_percent($rate_id);
+						$rate = rtrim($percent, '%');
+						
+						$tax_amount = $item['completion_total'] * $rate / 100;
+						if (wc_format_decimal($tax_amount, wc_get_price_decimals()) != wc_format_decimal($amount, wc_get_price_decimals())) {
+							throw new Exception(__('The tax rate can not be changed.', 'woocommerce-wallee'));
+						}
 					}
+					$tax = array_sum($item['completion_tax']);
 				}
-				$total_items_sum += $item['completion_total'] + array_sum($item['completion_tax']);
+				$total_items_sum += $item['completion_total'] + $tax;
 			}
 			
 			if (wc_format_decimal($completion_amount, wc_get_price_decimals()) != wc_format_decimal($total_items_sum, wc_get_price_decimals())) {

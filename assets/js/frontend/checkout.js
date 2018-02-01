@@ -3,6 +3,9 @@ jQuery(function($) {
     var wc_wallee_checkout = {
 	payment_methods : {},
 	validated : false,
+	update_sent : false,
+	form_data : '',
+	form_data_timer : null, 
 
 	init : function() {
 	    var parent = this;
@@ -19,6 +22,27 @@ jQuery(function($) {
 			}, this.payment_method_click);
 	    }
 	    this.register_ajax_prefilter();
+	    this.form_data_timer = setInterval(this.check_form_data_change.bind(this), 4000);
+	},
+	
+	check_form_data_change : function() {
+	    var $required_inputs =  $('form.checkout').find( '.address-field.validate-required' ).find('input, select');
+	    var current = '';
+	    if ( $required_inputs.length ) {
+		$required_inputs.each( function() {
+			if (! $( this ).is(':visible')) {
+			    	return;
+			}
+			current += $(this).attr('name') +"="+$(this).val()+"&";
+		});
+		old = this.form_data;
+		this.form_data = current;
+		if(current != old && !this.update_sent){
+		    $required_inputs.filter('.input-text').first().trigger('keydown');
+		}
+		this.update_sent = false;
+	    }
+	    
 	},
 
 	payment_method_click : function(event) {
@@ -67,7 +91,6 @@ jQuery(function($) {
 		item.css('left', '');
 		form.css('position', '');
 		form.css('left', '');
-		item.slideDown(250);
 	    }
 	},
 
@@ -96,6 +119,15 @@ jQuery(function($) {
 			    };
 			}
 		   });
+	    $.ajaxPrefilter(
+		    function(options, originalOptions, jqXHR) {
+			var target = wc_checkout_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'update_order_review' );
+			if (options.url == target){
+			    self.update_sent = true;
+			}
+			
+		    });
+
 	},
 
 	is_supported_method : function(method_id) {
@@ -146,6 +178,7 @@ jQuery(function($) {
 	    form.off('checkout_place_order_' + method_id + '.wallee').on(
 		    'checkout_place_order_' + method_id + '.wallee',
 		    function() {
+			clearInterval(self.form_data_timer);
 			if (!self.validated) {
 			    form.block({
 				message : null,
@@ -182,6 +215,7 @@ jQuery(function($) {
 	    } else {
 		var form = $('form.checkout');
 		form.unblock();
+		this.form_data_timer = setInterval(this.check_form_data_change.bind(this),3000);
 		if (validation_result.errors) {
 		    this.submit_error(validation_result.errors);
 		} else {
