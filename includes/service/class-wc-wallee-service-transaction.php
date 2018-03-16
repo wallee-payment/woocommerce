@@ -626,6 +626,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		if ($current == 0) {
 			return null;
 		}
+		
 		return $current;
 	}
 

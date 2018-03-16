@@ -13,10 +13,10 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	protected $tokens = array();
 	private $wallee_payment_method_configuration_id;
 	private $wallee_payment_method_configuration = null;
-	private $translated_title = null;
-	private $translated_description = null;
-	private $show_description = true;
-	private $show_icon = true;
+	private $wallee_translated_title = null;
+	private $wallee_translated_description = null;
+	private $wallee_show_description = 'yes';
+	private $wallee_show_icon = 'yes';
 
 	public function __construct(WC_Wallee_Entity_Method_Configuration $method){
 		$this->wallee_payment_method_configuration_id = $method->get_id();
@@ -31,8 +31,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		$this->title = $method->get_configuration_name();
 		$this->description = "";
 		
-		$this->translated_title = $method->get_title();
-		$this->translated_description = $method->get_description();
+		$this->wallee_translated_title = $method->get_title();
+		$this->wallee_translated_description = $method->get_description();
 		$this->supports = array(
 			'products',
 			'refunds' 
@@ -44,8 +44,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		
 		// Define user set variables.
 		$this->enabled = $this->get_option('enabled');
-		$this->show_description = $this->get_option('show_description');
-		$this->show_icon = $this->get_option('show_icon');
+		$this->wallee_show_description = $this->get_option('show_description');
+		$this->wallee_show_icon = $this->get_option('show_icon');
 		
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array(
 			$this,
@@ -73,7 +73,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 */
 	public function get_title(){
 		$title = $this->title;
-		$translated = WC_Wallee_Helper::instance()->translate($this->translated_title);
+		$translated = WC_Wallee_Helper::instance()->translate($this->wallee_translated_title);
 		if ($translated !== null) {
 			$title = $translated;
 		}
@@ -87,8 +87,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 */
 	public function get_description(){
 		$description = "";
-		if ($this->show_description == 'yes') {
-			$translated = WC_Wallee_Helper::instance()->translate($this->translated_description);
+		if ($this->wallee_show_description == 'yes') {
+			$translated = WC_Wallee_Helper::instance()->translate($this->wallee_translated_description);
 			if ($translated !== null) {
 				$description = $translated;
 			}
@@ -102,7 +102,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 */
 	public function get_icon(){
 		$icon = "";
-		if ($this->show_icon == 'yes') {
+		if ($this->wallee_show_icon == 'yes') {
 			$space_id = $this->get_payment_method_configuration()->get_space_id();
 			$space_view_id = get_option('wc_wallee_space_view_id');
 			$language = WC_Wallee_Helper::instance()->get_cleaned_locale();
@@ -227,11 +227,12 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		if(is_admin() ) {
 			return $this->get_payment_method_configuration()->get_state() ==  WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
 		}
+		
 		//The gateways are always available during order total caluclation, as other plugins could need them.
 		if (isset($GLOBALS['_wc_wallee_calculating']) && $GLOBALS['_wc_wallee_calculating']) {
 			return true;
 		}
-		
+	
 		if((isset(WC()->customer) && !WC()->customer->get_calculated_shipping()) || (isset($_POST['has_full_address']) && $_POST['has_full_address'] == 'false')){
 			return false;
 		}

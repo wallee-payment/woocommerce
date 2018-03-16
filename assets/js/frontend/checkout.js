@@ -83,10 +83,12 @@ jQuery(function($) {
 		item.css('position', 'absolute');
 		item.css('left', '-100000px');
 	    } else if (this.payment_methods[method_id]['height'] == 0) {
+		item.find("p").css("margin-bottom", 0);
 		form.css('position', 'absolute');
 		form.css('left', '-100000px');
 
 	    } else {
+		item.find("p").css("margin-bottom", "");
 		item.css('position', '');
 		item.css('left', '');
 		form.css('position', '');

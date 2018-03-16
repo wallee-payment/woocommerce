@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with Wallee
- * Version: 1.0.12
+ * Version: 1.0.13
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -33,7 +33,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.0.12';
+		private $version = '1.0.13';
 		
 		/**
 		 * The single instance of the class.
@@ -256,20 +256,19 @@ if (!class_exists('WooCommerce_Wallee')) {
 						$unique_id;
 				wp_enqueue_script('wallee-device-id-js', $script_url, array(), null, false);
 			}
-			if(is_checkout()){
+			if(is_checkout() && !is_wc_endpoint_url( 'order-received')){
 				try{
 					wp_enqueue_script('wallee-remote-checkout-js', WC_Wallee_Service_Transaction::instance()->get_javascript_url(), array(
 						'jquery'
 					), null, true);
-					
 					wp_enqueue_script('wallee-checkout-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/frontend/checkout.js',
 							array(
 								'jquery',
 								'wallee-remote-checkout-js'
 							), null, true);
 				}
-				catch(Exception $e){}
-				
+				catch(Exception $e){
+				}
 			}
 		}
 
@@ -364,10 +363,13 @@ if (!class_exists('WooCommerce_Wallee')) {
 				parse_str($arguments, $post_data);
 			}
 			
+			
 			WC()->customer->set_props(
 					array(
 						'billing_first_name' => isset($post_data['billing_first_name']) ? wp_unslash($post_data['billing_first_name']) : null,
-						'billing_last_name' => isset($post_data['billing_last_name']) ? wp_unslash($post_data['billing_last_name']) : null 
+						'billing_last_name' => isset($post_data['billing_last_name']) ? wp_unslash($post_data['billing_last_name']) : null,
+						'billing_phone' => isset($post_data['billing_phone']) ? wp_unslash($post_data['billing_phone']) : null,
+						'billing_email' => isset($post_data['billing_email']) ? wp_unslash($post_data['billing_email']) : null
 					));
 			
 			if (wc_ship_to_billing_address_only() || !isset($post_data['ship_to_different_address']) || $post_data['ship_to_different_address'] == '0') {

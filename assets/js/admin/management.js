@@ -150,7 +150,7 @@ jQuery(function($) {
 			$(this).closest('td.line_tax').find(
 				'input.refund_line_tax').data(
 				'wallee-initial-tax', $(this).val());
-		    })
+		    });
 
 	    $('#woocommerce-order-items').find('input.refund_line_tax').prop(
 		    'readonly', true);
@@ -201,7 +201,6 @@ jQuery(function($) {
 						woocommerce_admin.mon_decimal_point);
 
 				$(this).val(formated);
-
 			    });
 	},
 

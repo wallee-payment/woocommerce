@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.12
+Stable tag: 1.0.13
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -11,16 +11,133 @@ Accept payments in WooCommerce with Wallee.
 
 == Description ==
 
+Website: [www.wallee.com](https://www.wallee.com)
+
+wallee is an e-commerce hub that simplifies the payment process for merchants. We offer a standardized API to 
+connect to your local payment service provider. New payment methods and additional payment processors can be 
+added with the help of wallee just with a click.
+
+The WooCommerce plugin offers an easy and convenient way to accept credit cards and all 
+other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout 
+and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but 
+the look and feel can be changed according the merchants needs. 
+
 This plugin will add support for all Wallee payments methods to your WooCommerce webshop.
 To use this extension, a wallee account is required. Sign up on [wallee.com](https://app-wallee.com/user/signup).
 
+
 = Features = 
 
-* Support for all available Wallee payment methods
-* Edit title, description for every payment method
-* Download invoices and packing slips
-* Refunds
-* WordPress Multisite support
+However, wallee is not only a payment provider we are also a payment platform that connects your systems and simplifies your processes: 
+
+* We are able to connect to your bank to simplify reconciliation. 
+* We can connect to your Slack channel to report payment issues or simply send you an email
+* We can take over the dunning process for you if you want to provide invoices
+* We create the PDF invoices, packing slips and send them to your customers if you like (via E-Mail or postal services).
+* We have a mobile SDKs for Android & iOS if you want to connect other channels
+* Invoices and dunning processes can be created
+* better conversion as integrated payment pages lead to a direct checkout in your shop without redirection
+* reasonable packages for small, medium and bigger shops
+* scale into new markets with a click. Payment methods can be activated easily
+
+= PAYMENT METHODS = 
+
+* Alipay Global
+* Bank Transfer
+* Credit / Debit Card
+  * American Express
+  * Bancontact
+  * China Union Pay
+  * Dankort
+  * Diners Club
+  * Discover
+  * JCB
+  * Maestro
+  * MasterCard
+  * PostFinance Card
+  * Visa
+  * Visa Electron
+* Direct Debit (SEPA)
+* Direct Debit (UK)
+* EPS
+* Giropay
+* iDeal
+* Invoice
+* MasterPass
+* Online Banking
+  * Aktia
+  * Ålandsbanken 
+  * Belfius Direct Net
+  * Citadele
+  * Danske Bank
+  * DNB Bank
+  * Handelsbanken
+  * ING HomePay
+  * KBC
+  * Krediidipank
+  * LHV Pank
+  * Nordea
+  * OP-Pohjola
+  * POP Pankki
+  * PostFinance E-Finance
+  * Säästöpankki
+  * SEB
+  * S-Pankki
+  * Swedbank
+* POLi
+* Paybox
+* Paydirekt
+* Paylib
+* PayPal
+* paysafecard
+* Przelewy24
+* QIWI
+* SOFORT Banking
+* Skrill
+* TWINT
+* Tenpay
+* Trustly
+
+= SUPPORTED PAYMENT SERVICE PROVIDERS =
+
+* Adyen
+* Alipay Global
+* Authipay
+* Barclaycard ePDQ DirectLink
+* Barclaycard ePDQ E-Commerce
+* Braintree
+* Computop
+* ConCardis PayEngine DirectLink
+* Concardis PayEngine E-Commerce
+* Datatrans
+* E-PAY
+* EMS eCommerce
+* FirstData Connect
+* FirstData TeleCash
+* Heidelpay Payment Platform
+* ISR (orange inpayment slip)
+* Ingenico ePayments DirectLink
+* Ingencio ePayments E-Commerce
+* InterCard
+* KBC PayPage DirectLink
+* KBC PayPage E-Commerce
+* Mercanet 2.0
+* mPAY24
+* Open Payment Platform
+* PayUnity.CONNECT
+* Paydirekt
+* Payone
+* PayPal
+* PostFinance E-Payment DirectLink
+* PostFinance E-Payment E-Commerce
+* PowerPay
+* SOFORT Banking
+* Saferpay
+* Sage Pay
+* Sips 2.0
+* SlimPay
+* Sogenactif 2.0
+* Trustly
 
 == Installation ==
 
@@ -57,68 +174,9 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 == Changelog ==
 
-= 1.0.12 - January 31, 2018 =
+= 1.0.13 - March 16, 2018 =
 
-* Fix - Javascript not always included during checkout
-* Fix - Issue with different browsers autofill feature
-
-= 1.0.11 - January 30, 2018 =
-
-* Tweak - Only show payment method, if customer entered full address
-* Fix - Email language if WooCommerce Multilingual is installed 
-* Fix - Javascript validation error display
-
-= 1.0.10 - January 24, 2018 =
-
-* Fix - First and last name not updated correctly during checkout
-* Dev - Updated to Wallee SDK 1.1.2
-
-= 1.0.9 - December 08, 2017 =
-
-* Fix - Payment Method Image not updating
-* Fix - Improved exception handling in checkout
-
-= 1.0.8 - December 04, 2017 =
-
-* Fix - Webhook not updated correctly
-
-= 1.0.7 - December 01, 2017 =
-
-* Fix - Order status transitions after manual task
-* Dev - Updated to Wallee SDK 1.1.1
-
-= 1.0.6 - November 22, 2017 =
-
-* Fix - Order completion not updating correctly
-
-= 1.0.5 - November 16, 2017 =
-
-* Fix - Woocommerce order emails not send 
-* Fix - Settings page not loading
-
-= 1.0.4 - November 08, 2017 =
-
-* Fix - Fatal Error in Widgets Page
-
-= 1.0.3 - October 20, 2017 =
-
-* Fix - Javascript issue with IE11
-* Fix - Removed include of none existing CSS file
-* Tweak - Improved language code resolving
-
-= 1.0.2 - August 31, 2017 =
-
-* Fix - Javascript Issues with Firefox/IE
-
-= 1.0.1 - July 28, 2017 =
-
-* Featue - Added document download buttons to order overview
-
-= 1.0.0 - July 1, 2017 =
-
-* Initial release.
-
-
-
+* Tweak - Improved Styling
+* Tweak - Renamed private variables to avoid issue with other plugins  
 
  
