@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * WC Wallee Admin class
+ * WC Wallee Admin Transaction class
  */
 class WC_Wallee_Admin_Transaction {
 
@@ -29,8 +29,11 @@ class WC_Wallee_Admin_Transaction {
 			return;
 		}
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+		if ($transaction_info->get_id() == null) {
+		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_newest_by_mapped_order_id($order->get_id());
+		}
 		if ($transaction_info->get_id() != null) {
-			add_meta_box('woocommerce-order-wallee-transaction', __('Wallee Transaction', 'woocommerc-wallee'), 
+			add_meta_box('woocommerce-order-wallee-transaction', 'wallee '.__('Transaction', 'woocommerc-wallee'), 
 					array(
 						__CLASS__,
 						'output' 
@@ -55,7 +58,10 @@ class WC_Wallee_Admin_Transaction {
 		
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		if ($transaction_info->get_id() == null) {
-			return;
+		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_newest_by_mapped_order_id($order->get_id());
+		    if ($transaction_info->get_id() == null) {
+			 return;
+		    }
 		}
 		$labels_by_group = self::get_grouped_charge_attempt_labels($transaction_info);
 		?>
@@ -100,7 +106,7 @@ class WC_Wallee_Admin_Transaction {
 						<td class="value"><strong> <a
 								href="<?php echo self::get_transaction_url($transaction_info) ?>"
 								target="_blank">
-    					<?php _e('View in Wallee', 'woocommerce-wallee') ?>
+    					<?php _e('View', 'woocommerce-wallee') ?>
     				</a>
 						</strong></td>
 					</tr>
@@ -145,17 +151,17 @@ class WC_Wallee_Admin_Transaction {
 	 */
 	protected static function get_transaction_state(WC_Wallee_Entity_Transaction_Info $transaction_info){
 		switch ($transaction_info->get_state()) {
-			case \Wallee\Sdk\Model\TransactionState::AUTHORIZED:
+		    case \Wallee\Sdk\Model\TransactionState::AUTHORIZED:
 				return __('Authorized', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\TransactionState::COMPLETED:
+		    case \Wallee\Sdk\Model\TransactionState::COMPLETED:
 				return __('Completed', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\TransactionState::CONFIRMED:
+		    case \Wallee\Sdk\Model\TransactionState::CONFIRMED:
 				return __('Confirmed', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\TransactionState::DECLINE:
+		    case \Wallee\Sdk\Model\TransactionState::DECLINE:
 				return __('Decline', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\TransactionState::FAILED:
+		    case \Wallee\Sdk\Model\TransactionState::FAILED:
 				return __('Failed', 'woocommerce-wallee');
-			case \Wallee\Sdk\Model\TransactionState::FULFILL:
+		    case \Wallee\Sdk\Model\TransactionState::FULFILL:
 				return __('Fulfill', 'woocommerce-wallee');
 			case \Wallee\Sdk\Model\TransactionState::PENDING:
 				return __('Pending', 'woocommerce-wallee');
@@ -174,7 +180,7 @@ class WC_Wallee_Admin_Transaction {
 	 * @return string
 	 */
 	protected static function get_transaction_url(WC_Wallee_Entity_Transaction_Info $info){
-		return WC_Wallee_Helper::instance()->get_base_gateway_url() . '/s/' . $info->get_space_id() . '/payment/transaction/view/' .
+	    return WC_Wallee_Helper::instance()->get_base_gateway_url() . '/s/' . $info->get_space_id() . '/payment/transaction/view/' .
 				 $info->get_transaction_id();
 	}
 
@@ -185,8 +191,8 @@ class WC_Wallee_Admin_Transaction {
 	 */
 	protected static function get_grouped_charge_attempt_labels(WC_Wallee_Entity_Transaction_Info $info){
 		try {
-			$label_description_provider = WC_Wallee_Provider_Label_Description::instance();
-			$label_description_group_provider = WC_Wallee_Provider_Label_Description_Group::instance();
+		    $label_description_provider = WC_Wallee_Provider_Label_Description::instance();
+		    $label_description_group_provider = WC_Wallee_Provider_Label_Description_Group::instance();
 			
 			$labels_by_group_id = array();
 			foreach ($info->get_labels() as $descriptor_id => $value) {

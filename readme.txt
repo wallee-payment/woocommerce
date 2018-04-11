@@ -1,32 +1,32 @@
-=== WooCommerce Wallee ===
+=== WooCommerce wallee ===
 Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.13
+Stable tag: 1.1.0
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
-Accept payments in WooCommerce with Wallee.
+Accept payments in WooCommerce with wallee.
 
 == Description ==
 
-Website: [www.wallee.com](https://www.wallee.com)
-
-wallee is an e-commerce hub that simplifies the payment process for merchants. We offer a standardized API to 
-connect to your local payment service provider. New payment methods and additional payment processors can be 
-added with the help of wallee just with a click.
+Website: [https://www.wallee.com](https://www.wallee.com)
 
 The WooCommerce plugin offers an easy and convenient way to accept credit cards and all 
 other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout 
 and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but 
 the look and feel can be changed according the merchants needs. 
 
-This plugin will add support for all Wallee payments methods to your WooCommerce webshop.
-To use this extension, a wallee account is required. Sign up on [wallee.com](https://app-wallee.com/user/signup).
+This plugin will add support for all wallee payments methods to your WooCommerce webshop.
+To use this extension, a wallee account is required. Sign up on [wallee](https://app-wallee.com/user/signup).
 
 
 = Features = 
+
+wallee is an e-commerce hub that simplifies the payment process for merchants. We offer a standardized API to 
+connect to your local payment service provider. New payment methods and additional payment processors can be 
+added with the help of wallee just with a click.
 
 However, wallee is not only a payment provider we are also a payment platform that connects your systems and simplifies your processes: 
 
@@ -149,24 +149,24 @@ However, wallee is not only a payment provider we are also a payment platform th
 
 = Automatic installation =
 
-1. Install the plugin via Plugins -> New plugin. Search for 'Woocommerce Wallee'.
-2. Activate the 'WooCommerce Wallee' plugin through the 'Plugins' menu in WordPress
-3. Set your Wallee credentials at WooCommerce -> Settings -> Wallee (or use the *Settings* link in the Plugins overview)
+1. Install the plugin via Plugins -> New plugin. Search for 'Woocommerce wallee'.
+2. Activate the 'WooCommerce wallee' plugin through the 'Plugins' menu in WordPress
+3. Set your wallee credentials at WooCommerce -> Settings -> wallee (or use the *Settings* link in the Plugins overview)
 4. You're done, the active payment methods should be visible in the checkout of your webshop.
 
 = Manual installation =
 
 1. Unpack the downloaded package.
-2. Upload the directory 'woo-wallee' to the `/wp-content/plugins/` directory
-3. Activate the 'WooCommerce Wallee' plugin through the 'Plugins' menu in WordPress
-4. Set your Wallee credentials at WooCommerce -> Settings -> Wallee (or use the *Settings* link in the Plugins overview)
+2. Upload the directory to the `/wp-content/plugins/` directory
+3. Activate the 'WooCommerce wallee' plugin through the 'Plugins' menu in WordPress
+4. Set your wallee credentials at WooCommerce -> Settings -> wallee (or use the *Settings* link in the Plugins overview)
 5. You're done, the active payment methods should be visible in the checkout of your webshop.
 
 == Frequently Asked Questions ==
 
 = Where can I find documentation? =
 
-For help setting up and configuring WooCommerce Wallee please refer to the [wiki](https://github.com/wallee-payment/woo-wallee/wiki).
+For help setting up and configuring WooCommerce wallee please refer to the [wiki](https://github.com/wallee-payment/woo-wallee/wiki).
 
 = Where can I report issues? =
 
@@ -174,9 +174,10 @@ If you have an issue please use the [issue tracker](https://github.com/wallee-pa
 
 == Changelog ==
 
-= 1.0.13 - March 16, 2018 =
-
-* Tweak - Improved Styling
-* Tweak - Renamed private variables to avoid issue with other plugins  
-
  
+= 1.1.0 - April 11, 2018 =
+
+* Fix - Order Pay process
+* Tweak - Additional Hooks to use with other plugins
+* Dev - Internal Structure Changes
+* Dev - Updated to wallee SDK 1.1.6

@@ -34,15 +34,15 @@ class WC_Wallee_Entity_Completion_Job extends WC_Wallee_Entity_Abstract {
 
 	protected static function get_field_definition(){
 		return array(
-			'completion_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
-			'items' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'restock' => WC_Wallee_Entity_Resource_Type::BOOLEAN,
-			'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT 
+		    'completion_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
+		    'items' => WC_Wallee_Entity_Resource_Type::OBJECT,
+		    'restock' => WC_Wallee_Entity_Resource_Type::BOOLEAN,
+		    'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT 
 		
 		);
 	}

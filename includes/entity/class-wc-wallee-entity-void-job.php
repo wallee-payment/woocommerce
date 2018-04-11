@@ -29,13 +29,13 @@ class WC_Wallee_Entity_Void_Job extends WC_Wallee_Entity_Abstract {
 
 	protected static function get_field_definition(){
 		return array(
-			'void_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'restock' => WC_Wallee_Entity_Resource_Type::BOOLEAN,
-			'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT 
+		    'void_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'restock' => WC_Wallee_Entity_Resource_Type::BOOLEAN,
+		    'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT 
 		
 		);
 	}

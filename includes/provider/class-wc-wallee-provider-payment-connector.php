@@ -29,7 +29,7 @@ class WC_Wallee_Provider_Payment_Connector extends WC_Wallee_Provider_Abstract {
 	}
 
 	protected function fetch_data(){
-		$connector_service = new \Wallee\Sdk\Service\PaymentConnectorService(WC_Wallee_Helper::instance()->get_api_client());
+	    $connector_service = new \Wallee\Sdk\Service\PaymentConnectorService(WC_Wallee_Helper::instance()->get_api_client());
 		return $connector_service->all();
 	}
 

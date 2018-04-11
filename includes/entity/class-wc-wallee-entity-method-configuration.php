@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * This entity holds data about a Wallee payment method.
+ * This entity holds data about a wallee payment method.
  * 
  * @method int get_id()
  * @method string get_state()
@@ -30,13 +30,13 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 
 	protected static function get_field_definition(){
 		return array(
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'configuration_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'configuration_name' => WC_Wallee_Entity_Resource_Type::STRING,
-			'title' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'description' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'image' => WC_Wallee_Entity_Resource_Type::STRING 
+		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'configuration_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'configuration_name' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'title' => WC_Wallee_Entity_Resource_Type::OBJECT,
+		    'description' => WC_Wallee_Entity_Resource_Type::OBJECT,
+		    'image' => WC_Wallee_Entity_Resource_Type::STRING 
 		
 		);
 	}

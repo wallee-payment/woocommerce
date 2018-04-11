@@ -13,8 +13,8 @@ class WC_Wallee_Webhook_Method_Configuration extends WC_Wallee_Webhook_Abstract 
 	 *
 	 * @param WC_Wallee_Webhook_Request $request
 	 */
-	public function process(WC_Wallee_Webhook_Request $request){
-		$payment_method_configuration_service = WC_Wallee_Service_Method_Configuration::instance();
+    public function process(WC_Wallee_Webhook_Request $request){
+        $payment_method_configuration_service = WC_Wallee_Service_Method_Configuration::instance();
 		$payment_method_configuration_service->synchronize();
 	}
 }

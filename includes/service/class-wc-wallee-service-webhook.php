@@ -27,71 +27,71 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 * Constructor to register the webhook entites.
 	 */
 	public function __construct(){
-		$this->webhook_entities[1487165678181] = new WC_Wallee_Webhook_Entity(1487165678181, 'Manual Task', 
+	    $this->webhook_entities[1487165678181] = new WC_Wallee_Webhook_Entity(1487165678181, 'Manual Task', 
 				array(
-					\Wallee\Sdk\Model\ManualTaskState::DONE,
-					\Wallee\Sdk\Model\ManualTaskState::EXPIRED,
-					\Wallee\Sdk\Model\ManualTaskState::OPEN 
+				    \Wallee\Sdk\Model\ManualTaskState::DONE,
+				    \Wallee\Sdk\Model\ManualTaskState::EXPIRED,
+				    \Wallee\Sdk\Model\ManualTaskState::OPEN 
 				), 'WC_Wallee_Webhook_Manual_Task');
-		$this->webhook_entities[1472041857405] = new WC_Wallee_Webhook_Entity(1472041857405, 'Payment Method Configuration', 
+	    $this->webhook_entities[1472041857405] = new WC_Wallee_Webhook_Entity(1472041857405, 'Payment Method Configuration', 
 				array(
-					\Wallee\Sdk\Model\CreationEntityState::ACTIVE,
-					\Wallee\Sdk\Model\CreationEntityState::DELETED,
-					\Wallee\Sdk\Model\CreationEntityState::DELETING,
-					\Wallee\Sdk\Model\CreationEntityState::INACTIVE 
+				    \Wallee\Sdk\Model\CreationEntityState::ACTIVE,
+				    \Wallee\Sdk\Model\CreationEntityState::DELETED,
+				    \Wallee\Sdk\Model\CreationEntityState::DELETING,
+				    \Wallee\Sdk\Model\CreationEntityState::INACTIVE 
 				), 'WC_Wallee_Webhook_Method_Configuration', true);
-		$this->webhook_entities[1472041829003] = new WC_Wallee_Webhook_Entity(1472041829003, 'Transaction', 
+	    $this->webhook_entities[1472041829003] = new WC_Wallee_Webhook_Entity(1472041829003, 'Transaction', 
 				array(
-					\Wallee\Sdk\Model\TransactionState::CONFIRMED,
-					\Wallee\Sdk\Model\TransactionState::AUTHORIZED,
-					\Wallee\Sdk\Model\TransactionState::DECLINE,
-					\Wallee\Sdk\Model\TransactionState::FAILED,
-					\Wallee\Sdk\Model\TransactionState::FULFILL,
-					\Wallee\Sdk\Model\TransactionState::VOIDED,
-					\Wallee\Sdk\Model\TransactionState::COMPLETED,
-					\Wallee\Sdk\Model\TransactionState::PROCESSING 
+				    \Wallee\Sdk\Model\TransactionState::CONFIRMED,
+				    \Wallee\Sdk\Model\TransactionState::AUTHORIZED,
+				    \Wallee\Sdk\Model\TransactionState::DECLINE,
+				    \Wallee\Sdk\Model\TransactionState::FAILED,
+				    \Wallee\Sdk\Model\TransactionState::FULFILL,
+				    \Wallee\Sdk\Model\TransactionState::VOIDED,
+				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+				    \Wallee\Sdk\Model\TransactionState::PROCESSING 
 				), 'WC_Wallee_Webhook_Transaction');
-		$this->webhook_entities[1472041819799] = new WC_Wallee_Webhook_Entity(1472041819799, 'Delivery Indication', 
+	    $this->webhook_entities[1472041819799] = new WC_Wallee_Webhook_Entity(1472041819799, 'Delivery Indication', 
 				array(
-					\Wallee\Sdk\Model\DeliveryIndicationState::MANUAL_CHECK_REQUIRED 
+				    \Wallee\Sdk\Model\DeliveryIndicationState::MANUAL_CHECK_REQUIRED 
 				), 'WC_Wallee_Webhook_Delivery_Indication');
 		
-		$this->webhook_entities[1472041831364] = new WC_Wallee_Webhook_Entity(1472041831364, 'Transaction Completion', 
+	    $this->webhook_entities[1472041831364] = new WC_Wallee_Webhook_Entity(1472041831364, 'Transaction Completion', 
 				array(
-					\Wallee\Sdk\Model\TransactionCompletionState::FAILED,
-					\Wallee\Sdk\Model\TransactionCompletionState::SUCCESSFUL 
+				    \Wallee\Sdk\Model\TransactionCompletionState::FAILED,
+				    \Wallee\Sdk\Model\TransactionCompletionState::SUCCESSFUL 
 				), 'WC_Wallee_Webhook_Transaction_Completion');
 		
-		$this->webhook_entities[1472041867364] = new WC_Wallee_Webhook_Entity(1472041867364, 'Transaction Void', 
+	    $this->webhook_entities[1472041867364] = new WC_Wallee_Webhook_Entity(1472041867364, 'Transaction Void', 
 				array(
-					\Wallee\Sdk\Model\TransactionVoidState::FAILED,
-					\Wallee\Sdk\Model\TransactionVoidState::SUCCESSFUL 
+				    \Wallee\Sdk\Model\TransactionVoidState::FAILED,
+				    \Wallee\Sdk\Model\TransactionVoidState::SUCCESSFUL 
 				), 'WC_Wallee_Webhook_Transaction_Void');
 		
-		$this->webhook_entities[1472041839405] = new WC_Wallee_Webhook_Entity(1472041839405, 'Refund', 
+	    $this->webhook_entities[1472041839405] = new WC_Wallee_Webhook_Entity(1472041839405, 'Refund', 
 				array(
-					\Wallee\Sdk\Model\RefundState::FAILED,
-					\Wallee\Sdk\Model\RefundState::SUCCESSFUL 
+				    \Wallee\Sdk\Model\RefundState::FAILED,
+				    \Wallee\Sdk\Model\RefundState::SUCCESSFUL 
 				), 'WC_Wallee_Webhook_Refund');
-		$this->webhook_entities[1472041806455] = new WC_Wallee_Webhook_Entity(1472041806455, 'Token', 
+	    $this->webhook_entities[1472041806455] = new WC_Wallee_Webhook_Entity(1472041806455, 'Token', 
 				array(
-					\Wallee\Sdk\Model\CreationEntityState::ACTIVE,
-					\Wallee\Sdk\Model\CreationEntityState::DELETED,
-					\Wallee\Sdk\Model\CreationEntityState::DELETING,
-					\Wallee\Sdk\Model\CreationEntityState::INACTIVE 
+				    \Wallee\Sdk\Model\CreationEntityState::ACTIVE,
+				    \Wallee\Sdk\Model\CreationEntityState::DELETED,
+				    \Wallee\Sdk\Model\CreationEntityState::DELETING,
+				    \Wallee\Sdk\Model\CreationEntityState::INACTIVE 
 				), 'WC_Wallee_Webhook_Token');
-		$this->webhook_entities[1472041811051] = new WC_Wallee_Webhook_Entity(1472041811051, 'Token Version', 
+	    $this->webhook_entities[1472041811051] = new WC_Wallee_Webhook_Entity(1472041811051, 'Token Version', 
 				array(
-					\Wallee\Sdk\Model\TokenVersionState::ACTIVE,
-					\Wallee\Sdk\Model\TokenVersionState::OBSOLETE 
+				    \Wallee\Sdk\Model\TokenVersionState::ACTIVE,
+				    \Wallee\Sdk\Model\TokenVersionState::OBSOLETE 
 				), 'WC_Wallee_Webhook_Token_Version');
 	}
 
 	/**
-	 * Installs the necessary webhooks in Wallee.
+	 * Installs the necessary webhooks in wallee.
 	 */
 	public function install(){
-		$space_id = get_option('wc_wallee_space_id');
+	    $space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 		if (!empty($space_id)) {
 			$webhook_url = $this->get_webhook_url($space_id);
 			if ($webhook_url == null) {
@@ -133,7 +133,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\WebhookListenerCreate
 	 */
 	protected function create_webhook_listener(WC_Wallee_Webhook_Entity $entity, $space_id, \Wallee\Sdk\Model\WebhookUrl $webhook_url){
-		$webhook_listener = new \Wallee\Sdk\Model\WebhookListenerCreate();
+	    $webhook_listener = new \Wallee\Sdk\Model\WebhookListenerCreate();
 		$webhook_listener->setEntity($entity->get_id());
 		$webhook_listener->setEntityStates($entity->get_states());
 		$webhook_listener->setName('Woocommerce ' . $entity->get_name());
@@ -151,12 +151,12 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\WebhookListener[]
 	 */
 	protected function get_webhook_listeners($space_id, \Wallee\Sdk\Model\WebhookUrl $webhook_url){
-		$query = new \Wallee\Sdk\Model\EntityQuery();
-		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
+	    $query = new \Wallee\Sdk\Model\EntityQuery();
+	    $filter = new \Wallee\Sdk\Model\EntityQueryFilter();
+	    $filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
 		$filter->setChildren(
 				array(
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\CreationEntityState::ACTIVE),
+				    $this->create_entity_filter('state', \Wallee\Sdk\Model\CreationEntityState::ACTIVE),
 					$this->create_entity_filter('url.id', $webhook_url->getId()) 
 				));
 		$query->setFilter($filter);
@@ -170,7 +170,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\WebhookUrlCreate
 	 */
 	protected function create_webhook_url($space_id){
-		$webhook_url = new \Wallee\Sdk\Model\WebhookUrlCreate();
+	    $webhook_url = new \Wallee\Sdk\Model\WebhookUrlCreate();
 		$webhook_url->setUrl($this->get_url());
 		$webhook_url->setState(\Wallee\Sdk\Model\CreationEntityState::ACTIVE);
 		$webhook_url->setName('Woocommerce');
@@ -184,12 +184,12 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\WebhookUrl
 	 */
 	protected function get_webhook_url($space_id){
-		$query = new \Wallee\Sdk\Model\EntityQuery();
-		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
+	    $query = new \Wallee\Sdk\Model\EntityQuery();
+	    $filter = new \Wallee\Sdk\Model\EntityQueryFilter();
+	    $filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::_AND);
 		$filter->setChildren(
 				array(
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\CreationEntityState::ACTIVE),
+				    $this->create_entity_filter('state', \Wallee\Sdk\Model\CreationEntityState::ACTIVE),
 					$this->create_entity_filter('url', $this->get_url())
 				));
 		$query->setFilter($filter);
@@ -219,7 +219,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_webhook_listener_service(){
 		if ($this->webhook_listener_service == null) {
-			$this->webhook_listener_service = new \Wallee\Sdk\Service\WebhookListenerService(WC_Wallee_Helper::instance()->get_api_client());
+		    $this->webhook_listener_service = new \Wallee\Sdk\Service\WebhookListenerService(WC_Wallee_Helper::instance()->get_api_client());
 		}
 		return $this->webhook_listener_service;
 	}
@@ -231,7 +231,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_webhook_url_service(){
 		if ($this->webhook_url_service == null) {
-			$this->webhook_url_service = new \Wallee\Sdk\Service\WebhookUrlService(WC_Wallee_Helper::instance()->get_api_client());
+		    $this->webhook_url_service = new \Wallee\Sdk\Service\WebhookUrlService(WC_Wallee_Helper::instance()->get_api_client());
 		}
 		return $this->webhook_url_service;
 	}

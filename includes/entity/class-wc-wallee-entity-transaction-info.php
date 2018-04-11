@@ -31,6 +31,8 @@ if (!defined('ABSPATH')) {
  * @method void set_connector_id(int $id)
  * @method int get_order_id()
  * @method void set_order_id(int $id)
+ * @method int get_order_mapping_id()
+ * @method void set_order_mapping_id(int $id)
  * @method void set_failure_reason(map[string,string] $reasons)
  *  
  */
@@ -38,20 +40,21 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 
 	protected static function get_field_definition(){
 		return array(
-			'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'space_view_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'language' => WC_Wallee_Entity_Resource_Type::STRING,
-			'currency' => WC_Wallee_Entity_Resource_Type::STRING,
-			'authorization_amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
-			'image' => WC_Wallee_Entity_Resource_Type::STRING,
-			'labels' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'locked_at' => WC_Wallee_Entity_Resource_Type::DATETIME 
+		    'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'space_view_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'language' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'currency' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'authorization_amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
+		    'image' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'labels' => WC_Wallee_Entity_Resource_Type::OBJECT,
+		    'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'order_mapping_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT,
+		    'locked_at' => WC_Wallee_Entity_Resource_Type::DATETIME 
 		);
 	}
 
@@ -92,5 +95,16 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 			return new self($result);
 		}
 		return new self();
+	}
+	
+	
+	public static function load_newest_by_mapped_order_id($order_id){
+	    global $wpdb;
+	    $result = $wpdb->get_row(
+	        $wpdb->prepare("SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE order_mapping_id = %d ORDER BY id DESC", $order_id), ARRAY_A);
+	    if ($result !== null) {
+	        return new self($result);
+	    }
+	    return new self();
 	}
 }

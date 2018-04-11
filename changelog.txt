@@ -1,9 +1,15 @@
-== Changelog ==
+= 1.0.0 - July 1, 2017 =
 
-= 1.0.12 - January 31, 2018 =
+* Initial release.
 
-* Fix - Javascript not always included during checkout
-* Fix - Issue with different browsers autofill feature
+= 1.0.1 - July 28, 2017 =
+
+* Featue - Added document download buttons to order overview
+
+= 1.0.10 - January 24, 2018 =
+
+* Fix - First and last name not updated correctly during checkout
+* Dev - Updated to wallee SDK 1.1.2
 
 = 1.0.11 - January 30, 2018 =
 
@@ -11,37 +17,19 @@
 * Fix - Email language if WooCommerce Multilingual is installed 
 * Fix - Javascript validation error display
 
-= 1.0.10 - January 24, 2018 =
+= 1.0.12 - January 31, 2018 =
 
-* Fix - First and last name not updated correctly during checkout
-* Dev - Updated to Wallee SDK 1.1.2
+* Fix - Javascript not always included during checkout
+* Fix - Issue with different browsers autofill feature
 
-= 1.0.9 - December 08, 2017 =
+= 1.0.13 - March 16, 2018 =
 
-* Fix - Payment Method Image not updating
-* Fix - Improved exception handling in checkout
+* Tweak - Improved Styling
+* Tweak - Renamed private variables to avoid issue with other plugins
 
-= 1.0.8 - December 04, 2017 =
+= 1.0.2 - August 31, 2017 =
 
-* Fix - Webhook not updated correctly
-
-= 1.0.7 - December 01, 2017 =
-
-* Fix - Order status transitions after manual task
-* Dev - Updated to Wallee SDK 1.1.1
-
-= 1.0.6 - November 22, 2017 =
-
-* Fix - Order completion not updating correctly
-
-= 1.0.5 - November 16, 2017 =
-
-* Fix - Woocommerce order emails not send 
-* Fix - Settings page not loading
-
-= 1.0.4 - November 08, 2017 =
-
-* Fix - Fatal Error in Widgets Page
+* Fix - Javascript Issues with Firefox/IE
 
 = 1.0.3 - October 20, 2017 =
 
@@ -49,19 +37,37 @@
 * Fix - Removed include of none existing CSS file
 * Tweak - Improved language code resolving
 
-= 1.0.2 - August 31, 2017 =
+= 1.0.4 - November 08, 2017 =
 
-* Fix - Javascript Issues with Firefox/IE
+* Fix - Fatal Error in Widgets Page
 
-= 1.0.1 - July 28, 2017 =
+= 1.0.5 - November 16, 2017 =
 
-* Featue - Added document download buttons to order overview
+* Fix - Woocommerce order emails not send 
+* Fix - Settings page not loading
 
-= 1.0.0 - July 1, 2017 =
+= 1.0.6 - November 22, 2017 =
 
-* Initial release.
+* Fix - Order completion not updating correctly
 
+= 1.0.7 - December 01, 2017 =
 
+* Fix - Order status transitions after manual task
+* Dev - Updated to wallee SDK 1.1.1
 
+= 1.0.8 - December 04, 2017 =
 
- 
+* Fix - Webhook not updated correctly
+
+= 1.0.9 - December 08, 2017 =
+
+* Fix - Payment Method Image not updating
+* Fix - Improved exception handling in checkout
+
+= 1.1.0 - April 11, 2018 =
+
+* Fix - Order Pay process
+* Tweak - Additional Hooks to use with other plugins
+* Dev - Internal Structure Changes
+* Dev - Updated to wallee SDK 1.1.6
+

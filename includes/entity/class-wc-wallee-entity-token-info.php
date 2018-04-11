@@ -27,13 +27,13 @@ class WC_Wallee_Entity_Token_Info extends WC_Wallee_Entity_Abstract {
 
 	protected static function get_field_definition(){
 		return array(
-			'token_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'name' => WC_Wallee_Entity_Resource_Type::STRING,
-			'customer_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER 
+		    'token_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'name' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'customer_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER 
 		);
 	}
 

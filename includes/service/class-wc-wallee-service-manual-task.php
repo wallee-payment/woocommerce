@@ -27,10 +27,10 @@ class WC_Wallee_Service_Manual_Task extends WC_Wallee_Service_Abstract {
 		$number_of_manual_tasks = 0;
 		$manual_task_service = new \Wallee\Sdk\Service\ManualTaskService(WC_Wallee_Helper::instance()->get_api_client());
 		
-		$space_id = get_option('wc_wallee_space_id');
+		$space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 		if (!empty($space_id)) {
 			$number_of_manual_tasks = $manual_task_service->count($space_id, 
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\ManualTaskState::OPEN));
+			    $this->create_entity_filter('state', \Wallee\Sdk\Model\ManualTaskState::OPEN));
 			update_option(self::CONFIG_KEY, $number_of_manual_tasks);
 		}
 		

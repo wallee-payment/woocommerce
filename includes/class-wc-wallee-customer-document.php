@@ -33,15 +33,15 @@ class WC_Wallee_Customer_Document {
 		}
 		$packing = false;
 		$invoice = false;
-		if (get_option('wc_wallee_customer_invoice') == 'yes' && in_array($transaction_info->get_state(),
+		if (get_option(WooCommerce_Wallee::CK_CUSTOMER_INVOICE) == 'yes' && in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\TransactionState::COMPLETED,
-					\Wallee\Sdk\Model\TransactionState::FULFILL,
-					\Wallee\Sdk\Model\TransactionState::DECLINE 
+				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+				    \Wallee\Sdk\Model\TransactionState::FULFILL,
+				    \Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			$invoice = true;
 		}
-		if (get_option('wc_wallee_customer_packing') == 'yes' && $transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
+		if (get_option(WooCommerce_Wallee::CK_CUSTOMER_PACKING) == 'yes' && $transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
 			$packing = true;
 		}
 		if ($invoice || $packing) {
@@ -126,13 +126,13 @@ class WC_Wallee_Customer_Document {
 			
 			switch ($action) {
 				case 'download_invoice':
-					if (get_option('wc_wallee_customer_invoice') != 'yes') {
+				    if (get_option(WooCommerce_Wallee::CK_CUSTOMER_INVOICE) != 'yes') {
 						wp_die('Access denied');
 					}
 					WC_Wallee_Download_Helper::download_invoice($order_id);
 					break;
 				case 'download_packing':
-					if (get_option('wc_wallee_customer_packing') != 'yes') {
+				    if (get_option(WooCommerce_Wallee::CK_CUSTOMER_PACKING) != 'yes') {
 						wp_die('Access denied');
 					}
 					WC_Wallee_Download_Helper::download_packing_slip($order_id);

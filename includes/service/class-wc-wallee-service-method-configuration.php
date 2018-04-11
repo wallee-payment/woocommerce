@@ -13,9 +13,9 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	 *
 	 * @param \Wallee\Sdk\Model\PaymentMethodConfiguration $configuration
 	 */
-	public function update_data(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
+    public function update_data(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
 		/* @var WC_Wallee_Entity_Method_Configuration $entity */
-		$entity = WC_Wallee_Entity_Method_Configuration::load_by_configuration($configuration->getLinkedSpaceId(), $configuration->getId());
+        $entity = WC_Wallee_Entity_Method_Configuration::load_by_configuration($configuration->getLinkedSpaceId(), $configuration->getId());
 		if ($entity->get_id() !== null && $this->has_changed($configuration, $entity)) {
 			$entity->set_configuration_name($configuration->getName());
 			$entity->set_title($configuration->getResolvedTitle());
@@ -27,9 +27,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	}
 
 	private function has_changed(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration, WC_Wallee_Entity_Method_Configuration $entity){
-		
-
-		
+			
 		if($this->get_configuration_state($configuration) != $entity->get_state()){
 			return true;
 		}		
@@ -49,23 +47,23 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	}
 
 	/**
-	 * Synchronizes the payment method configurations from Wallee.
+	 * Synchronizes the payment method configurations from wallee.
 	 */
 	public function synchronize(){
 		$existing_found = array();
-		$space_id = get_option('wc_wallee_space_id');
+		$space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 		
 		$existing_configurations = WC_Wallee_Entity_Method_Configuration::load_all();
 		
 		if (!empty($space_id)) {
-			$payment_method_configuration_service = new \Wallee\Sdk\Service\PaymentMethodConfigurationService(
-					WC_Wallee_Helper::instance()->get_api_client());
+		    $payment_method_configuration_service = new \Wallee\Sdk\Service\PaymentMethodConfigurationService(
+		        WC_Wallee_Helper::instance()->get_api_client());
 			$configurations = $payment_method_configuration_service->search($space_id, 
-					new \Wallee\Sdk\Model\EntityQuery());
+			    new \Wallee\Sdk\Model\EntityQuery());
 					
 			foreach ($configurations as $configuration) {
 				/* @var WC_Wallee_Entity_Method_Configuration $method */
-				$method = WC_Wallee_Entity_Method_Configuration::load_by_configuration($space_id, $configuration->getId());
+			    $method = WC_Wallee_Entity_Method_Configuration::load_by_configuration($space_id, $configuration->getId());
 				if ($method->get_id() !== null) {
 					$existing_found[] = $method->get_id();
 				}
@@ -83,7 +81,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 		}
 		foreach ($existing_configurations as $existing_configuration) {
 			if (!in_array($existing_configuration->get_id(), $existing_found)) {
-				$existing_configuration->set_state(WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN);
+			    $existing_configuration->set_state(WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN);
 				$existing_configuration->save();
 			}
 		}
@@ -99,7 +97,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	 */
 	protected function get_payment_method($id){
 		/* @var WC_Wallee_Provider_Payment_Method */
-		$method_provider = WC_Wallee_Provider_Payment_Method::instance();
+	    $method_provider = WC_Wallee_Provider_Payment_Method::instance();
 		return $method_provider->find($id);
 	}
 
@@ -111,12 +109,12 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	 */
 	protected function get_configuration_state(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
 		switch ($configuration->getState()) {
-			case \Wallee\Sdk\Model\CreationEntityState::ACTIVE:
-				return WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
-			case \Wallee\Sdk\Model\CreationEntityState::INACTIVE:
-				return WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE;
+		    case \Wallee\Sdk\Model\CreationEntityState::ACTIVE:
+		        return WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
+		    case \Wallee\Sdk\Model\CreationEntityState::INACTIVE:
+		        return WC_Wallee_Entity_Method_Configuration::STATE_INACTIVE;
 			default:
-				return WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN;
+			    return WC_Wallee_Entity_Method_Configuration::STATE_HIDDEN;
 		}
 	}
 }

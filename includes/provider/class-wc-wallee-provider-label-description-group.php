@@ -31,7 +31,7 @@ class WC_Wallee_Provider_Label_Description_Group extends WC_Wallee_Provider_Abst
 	}
 
 	protected function fetch_data(){
-		$label_description_group_service = new \Wallee\Sdk\Service\LabelDescriptionGroupService(WC_Wallee_Helper::instance()->get_api_client());
+	    $label_description_group_service = new \Wallee\Sdk\Service\LabelDescriptionGroupService(WC_Wallee_Helper::instance()->get_api_client());
 		return $label_description_group_service->all();
 	}
 

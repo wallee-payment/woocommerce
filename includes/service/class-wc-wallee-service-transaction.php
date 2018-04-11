@@ -1,10 +1,12 @@
 <?php
+use Wallee\Sdk\Model\Transaction;
+
 if (!defined('ABSPATH')) {
 	exit(); // Exit if accessed directly.
 }
 
 /**
- * This service provides functions to deal with Wallee transactions.
+ * This service provides functions to deal with wallee transactions.
  */
 class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	
@@ -43,7 +45,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_service(){
 		if ($this->transaction_service === null) {
-			$this->transaction_service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
+		    $this->transaction_service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
 		}
 		return $this->transaction_service;
 	}
@@ -55,7 +57,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_charge_attempt_service(){
 		if ($this->charge_attempt_service === null) {
-			$this->charge_attempt_service = new \Wallee\Sdk\Service\ChargeAttemptService(WC_Wallee_Helper::instance()->get_api_client());
+		    $this->charge_attempt_service = new \Wallee\Sdk\Service\ChargeAttemptService(WC_Wallee_Helper::instance()->get_api_client());
 		}
 		return $this->charge_attempt_service;
 	}
@@ -72,7 +74,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$start_time = microtime(true);
 		while (true) {
 			
-			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 			if (in_array($transaction_info->get_state(), $states)) {
 				return true;
 			}
@@ -85,7 +87,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	}
 
 	/**
-	 * Returns the URL to Wallee's JavaScript library that is necessary to display the payment form.
+	 * Returns the URL to wallee's JavaScript library that is necessary to display the payment form.
 	 *
 	 * @return string
 	 */
@@ -120,7 +122,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$filter->setChildren(
 				array(
 					$this->create_entity_filter('charge.transaction.id', $transaction_id),
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\ChargeAttemptState::FAILED) 
+				    $this->create_entity_filter('state', \Wallee\Sdk\Model\ChargeAttemptState::FAILED) 
 				));
 		$query->setFilter($filter);
 		$query->setOrderBys(array(
@@ -145,7 +147,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\TransactionLineItemVersion
 	 */
 	public function update_line_items($space_id, $transaction_id, $line_items){
-		$update_request = new \Wallee\Sdk\Model\TransactionLineItemUpdateRequest();
+	    $update_request = new \Wallee\Sdk\Model\TransactionLineItemUpdateRequest();
 		$update_request->setTransactionId($transaction_id);
 		$update_request->setNewLineItems($line_items);
 		return $this->get_transaction_service()->updateTransactionLineItems($space_id, $update_request);
@@ -159,10 +161,16 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return WC_Wallee_Entity_Transaction_Info
 	 */
 	public function update_transaction_info(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
-		$info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($transaction->getLinkedSpaceId(), $transaction->getId());
+	    $info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($transaction->getLinkedSpaceId(), $transaction->getId());
 		$info->set_transaction_id($transaction->getId());
 		$info->set_authorization_amount($transaction->getAuthorizationAmount());
-		$info->set_order_id($order->get_id());
+		if ($transaction->getState() == \Wallee\Sdk\Model\TransactionState::FAILED){
+		    $info->set_order_id(null);
+		}
+		else{
+		    $info->set_order_id($order->get_id());
+		}
+		$info->set_order_mapping_id($order->get_id());
 		$info->set_state($transaction->getState());
 		$info->set_space_id($transaction->getLinkedSpaceId());
 		$info->set_space_view_id($transaction->getSpaceViewId());
@@ -176,12 +184,13 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$info->set_image($this->get_resource_path($this->get_payment_method_image($transaction, $order)));
 		$info->set_labels($this->get_transaction_labels($transaction));
 		if ($transaction->getState() == \Wallee\Sdk\Model\TransactionState::FAILED ||
-				 $transaction->getState() == \Wallee\Sdk\Model\TransactionState::DECLINE) {
+		    $transaction->getState() == \Wallee\Sdk\Model\TransactionState::DECLINE) {
 			$failed_charge_attempt = $this->get_failed_charge_attempt($transaction->getLinkedSpaceId(), $transaction->getId());
 			if ($failed_charge_attempt != null && $failed_charge_attempt->getFailureReason() != null) {
 				$info->set_failure_reason($failed_charge_attempt->getFailureReason()->getDescription());
 			}
 		}
+		$info = apply_filters('wc_wallee_update_transaction_info', $info, $transaction, $order);
 		$info->save();
 		return $info;
 	}
@@ -220,7 +229,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$filter->setChildren(
 				array(
 					$this->create_entity_filter('charge.transaction.id', $transaction->getId()),
-					$this->create_entity_filter('state', \Wallee\Sdk\Model\ChargeAttemptState::SUCCESSFUL) 
+				    $this->create_entity_filter('state', \Wallee\Sdk\Model\ChargeAttemptState::SUCCESSFUL) 
 				));
 		$query->setFilter($filter);
 		$query->setNumberOfEntities(1);
@@ -260,20 +269,19 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\PaymentMethodConfiguration[]
 	 */
 	public function get_possible_payment_methods(){
-		$current_cart_id = WC_Wallee_Helper::instance()->get_current_cart_id();
-		
-		if (!isset(self::$possible_payment_method_cache[$current_cart_id]) || self::$possible_payment_method_cache[$current_cart_id] == null) {
-			$transaction = $this->get_transaction_from_session();
+	    
+	    $transaction = $this->get_transaction_from_session();
+	    		
+	    if (!isset(self::$possible_payment_method_cache[$transaction->getLinkedSpaceId().'-'.$transaction->getId()]) || self::$possible_payment_method_cache[$transaction->getLinkedSpaceId().'-'.$transaction->getId()] == null) {
 			$payment_methods = $this->get_transaction_service()->fetchPossiblePaymentMethods($transaction->getLinkedSpaceId(), $transaction->getId());
-			
-			$method_configuration_service = WC_Wallee_Service_Method_Configuration::instance();
+    		$method_configuration_service = WC_Wallee_Service_Method_Configuration::instance();
 			foreach ($payment_methods as $payment_method) {
 				$method_configuration_service->update_data($payment_method);
 			}
 			
-			self::$possible_payment_method_cache[$current_cart_id] = $payment_methods;
+			self::$possible_payment_method_cache[$transaction->getLinkedSpaceId().'-'.$transaction->getId()] = $payment_methods;
 		}
-		return self::$possible_payment_method_cache[$current_cart_id];
+		return self::$possible_payment_method_cache[$transaction->getLinkedSpaceId().'-'.$transaction->getId()];
 	}
 
 	/**
@@ -284,51 +292,26 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @param WC_Order $order
 	 * @return \Wallee\Sdk\Model\Transaction
 	 */
-	public function update_transaction($transaction_id, $space_id, WC_Order $order, $confirm = false){
-		$last = new \Wallee\Sdk\VersioningException();
+	public function confirm_transaction($transaction_id, $space_id, WC_Order $order){
+	    $last = new Exception('Unexpected Error');
 		for ($i = 0; $i < 5; $i++) {
 			try {
 				$transaction = $this->get_transaction_service()->read($space_id, $transaction_id);
 				if ($transaction->getState() != \Wallee\Sdk\Model\TransactionState::PENDING) {
-					return $this->create_transaction_by_order($space_id, $order);
+				    throw new Exception(__("The checkout expired, please try again", "woocommerce-wallee"));
 				}
 				$pending_transaction = new \Wallee\Sdk\Model\TransactionPending();
 				$pending_transaction->setId($transaction->getId());
 				$pending_transaction->setVersion($transaction->getVersion());
 				$this->assemble_order_transaction_data($order, $pending_transaction);
-				if ($confirm) {
-					return $this->get_transaction_service()->confirm($space_id, $pending_transaction);
-				}
-				else {
-					return $this->get_transaction_service()->update($space_id, $pending_transaction);
-				}
+				$pending_transaction = apply_filters('wc_wallee_modify_confirm_transaction', $pending_transaction, $order);
+				return $this->get_transaction_service()->confirm($space_id, $pending_transaction);
 			}
 			catch (\Wallee\Sdk\VersioningException $e) {
 				$last = $e;
 			}
 		}
 		throw $last;
-	}
-
-	/**
-	 * Creates a transaction for the given order.
-	 *
-	 * @param int $space_id
-	 * @param WC_Order $order
-	 * @return \Wallee\Sdk\Model\TransactionCreate
-	 */
-	protected function create_transaction_by_order($space_id, WC_Order $order){
-		$create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
-		$create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
-		$create_transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));
-		$create_transaction->setAutoConfirmationEnabled(false);
-		if(isset($_COOKIE['wc_wallee_device_id'])){
-			$create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);
-		}
-		$this->assemble_order_transaction_data($order, $create_transaction);		
-		$transaction = $this->get_transaction_service()->create($space_id, $create_transaction);
-		$this->store_transaction_ids_in_session($transaction);
-		return $transaction;
 	}
 
 	/**
@@ -345,31 +328,36 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$transaction->setCustomerId($this->get_customer_id());
 		$transaction->setLanguage(WC_Wallee_Helper::instance()->get_cleaned_locale());
 		$transaction->setShippingMethod($this->fix_length($order->get_shipping_method(), 200));
-		
-		$transaction->setLineItems(WC_Wallee_Service_Line_Item::instance()->get_items_from_order($order));
-		
 		$transaction->setMerchantReference($order->get_id());
 		$transaction->setInvoiceMerchantReference($this->fix_length($this->remove_non_ascii($order->get_order_number()), 100));
-		
-		$transaction->setSuccessUrl(
-				add_query_arg(
-						array(
-							'action' => 'success',
-							'order_key' => $order->get_order_key(),
-							'order_id' => $order->get_id(),
-							'wc-api' => 'wallee_return',
-							'utm_nooverride' => '1' 
-						), home_url('/')));
-		
-		$transaction->setFailedUrl(
-				add_query_arg(
-						array(
-							'action' => 'failure',
-							'order_key' => $order->get_order_key(),
-							'order_id' => $order->get_id(),
-							'wc-api' => 'wallee_return',
-							'utm_nooverride' => '1' 
-						), home_url('/')));
+		$this->set_order_line_items($order, $transaction);
+        $this->set_order_return_urls($order, $transaction);
+	}
+	
+	protected function set_order_return_urls(WC_Order $order, \Wallee\Sdk\Model\AbstractTransactionPending $transaction){
+	    $transaction->setSuccessUrl(
+	        add_query_arg(
+	            array(
+	                'action' => 'success',
+	                'order_key' => $order->get_order_key(),
+	                'order_id' => $order->get_id(),
+	                'wc-api' => 'wallee_return',
+	                'utm_nooverride' => '1'
+	            ), home_url('/')));
+	    
+	    $transaction->setFailedUrl(
+	        add_query_arg(
+	            array(
+	                'action' => 'failure',
+	                'order_key' => $order->get_order_key(),
+	                'order_id' => $order->get_id(),
+	                'wc-api' => 'wallee_return',
+	                'utm_nooverride' => '1'
+	            ), home_url('/')));
+	}
+	
+	protected function set_order_line_items(WC_Order $order, \Wallee\Sdk\Model\AbstractTransactionPending $transaction){
+	    $transaction->setLineItems(WC_Wallee_Service_Line_Item::instance()->get_items_from_order($order));
 	}
 
 	/**
@@ -379,7 +367,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\AddressCreate
 	 */
 	protected function get_order_billing_address(WC_order $order){
-		$address = new \Wallee\Sdk\Model\AddressCreate();
+	    $address = new \Wallee\Sdk\Model\AddressCreate();
 		$address->setCity($this->fix_length($order->get_billing_city(), 100));
 		$address->setCountry($order->get_billing_country());
 		$address->setFamilyName($this->fix_length($order->get_billing_last_name(), 100));
@@ -389,8 +377,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$address->setPostalState($order->get_billing_state());
 		$address->setPostCode($this->fix_length($order->get_billing_postcode(), 40));
 		$address->setStreet($this->fix_length(trim($order->get_billing_address_1() . "\n" . $order->get_billing_address_2()), 300));
-		$address->setEmailAddress($this->fix_length($this->get_order_email_address($order), 254));
-		
+		$address->setEmailAddress($this->fix_length($this->get_order_email_address($order), 254));		
 		return $address;
 	}
 
@@ -401,7 +388,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\AddressCreate
 	 */
 	protected function get_order_shipping_address(WC_order $order){
-		$address = new \Wallee\Sdk\Model\AddressCreate();
+	    $address = new \Wallee\Sdk\Model\AddressCreate();
 		$address->setCity($this->fix_length($order->get_shipping_city(), 100));
 		$address->setCountry($order->get_shipping_country());
 		$address->setFamilyName($this->fix_length($order->get_shipping_last_name(), 100));
@@ -415,10 +402,6 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		return $address;
 	}
 	
-	
-
-	
-
 	/**
 	 * Returns the current scustomer's email address.
 	 *
@@ -444,12 +427,43 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 *
 	 * @return \Wallee\Sdk\Model\Transaction
 	 */
-	public function get_transaction_from_session(){
-		$current_cart_id = WC_Wallee_Helper::instance()->get_current_cart_id();
+	protected function get_transaction_from_session(){
+	    if(is_wc_endpoint_url( 'order-pay' )){
+	        //We have to use the order and not the cart for this endpoint
+	        global $wp;
+	        $order = WC_Order_Factory::get_order($wp->query_vars['order-pay'] );
+	        if(!$order){
+	            throw new Exception("Invalid order provided");
+	        }
+	        if (!isset(self::$transaction_cache[$order->get_id()]) || self::$transaction_cache[$order->get_id()] == null) {
+    	        $existing_transaction = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+    	        if($existing_transaction->get_id() === null){
+    	            wc_transaction_query("start");
+    	            try{
+    	                WC_Wallee_Helper::instance()->lock_by_transaction_id($existing_transaction->get_space_id(), $existing_transaction->get_transaction_id());
+        	            $transaction = $this->create_transaction_by_order($order);
+        	            wc_transaction_query("commit");
+    	            }catch(Exception $e){
+                        wc_transaction_query("rollback");
+                        throw $e;
+    	            }
+    	        }
+    	        elseif($existing_transaction->get_state() == \Wallee\Sdk\Model\TransactionState::PENDING) {
+    	            $transaction = $this->load_and_update_transaction_for_order($order);
+    	        }
+    	        else{
+    	            throw new Exception('There is already a valid transaction associated with this order.');
+    	        }
+    	        self::$transaction_cache[$order->get_id()] = $transaction;
+	        }
+	        return self::$transaction_cache[$order->get_id()];
+        }
+	    
+	    $current_cart_id = WC_Wallee_Helper::instance()->get_current_cart_id();
 		if (!isset(self::$transaction_cache[$current_cart_id]) || self::$transaction_cache[$current_cart_id] == null) {
 			$session_handler = WC()->session;
-			$wallee_transaction_id = $session_handler->get('wallee_transaction_id', null);
-			if ($wallee_transaction_id === null) {
+			$transaction_id = $session_handler->get('wallee_transaction_id', null);
+			if ($transaction_id === null) {
 				$transaction = $this->create_transaction_from_session();
 			}
 			else {
@@ -461,6 +475,28 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		
 		return self::$transaction_cache[$current_cart_id];
 	}
+	
+	/**
+	 * Creates a transaction for the given order.
+	 *
+	 * @param WC_Order $order
+	 * @return \Wallee\Sdk\Model\TransactionCreate
+	 */
+	protected function create_transaction_by_order(WC_Order $order){
+	    $space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
+	    $create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
+	    $create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
+	    $create_transaction->setSpaceViewId(get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID));
+	    $create_transaction->setAutoConfirmationEnabled(false);
+	    if(isset($_COOKIE['wc_wallee_device_id'])){
+	        $create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);
+	    }
+	    $this->assemble_order_transaction_data($order, $create_transaction);
+	    $create_transaction = apply_filters('wc_wallee_modify_order_create_transaction', $create_transaction, $order);
+	    $transaction = $this->get_transaction_service()->create($space_id, $create_transaction);
+	    $this->update_transaction_info($transaction, $order);
+	    return $transaction;
+	}
 
 	/**
 	 * Creates a transaction for the given quote.
@@ -468,18 +504,44 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\TransactionCreate
 	 */
 	protected function create_transaction_from_session(){
-		$space_id = get_option('wc_wallee_space_id');
+	       
+	    $space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 		$create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
 		$create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
-		$create_transaction->setSpaceViewId(get_option('wc_wallee_space_view_id'));
+		$create_transaction->setSpaceViewId(get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID));
 		$create_transaction->setAutoConfirmationEnabled(false);
 		if(isset($_COOKIE['wc_wallee_device_id'])){
 			$create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);
 		}
 		$this->assemble_session_transaction_data($create_transaction);
+		$create_transaction = apply_filters('wc_wallee_modify_session_create_transaction', $create_transaction);
 		$transaction = $this->get_transaction_service()->create($space_id, $create_transaction);
 		$this->store_transaction_ids_in_session($transaction);
 		return $transaction;
+	}
+	
+	protected function load_and_update_transaction_for_order(WC_Order $order){
+	    $last = new \Wallee\Sdk\VersioningException();
+	    for ($i = 0; $i < 5; $i++) {
+	        try {
+	            $existing_transaction = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+	            $space_id = $existing_transaction->get_space_id();
+	            $transaction = $this->get_transaction($space_id, $existing_transaction->get_transaction_id());
+	            if ($transaction->getState() != \Wallee\Sdk\Model\TransactionState::PENDING) {
+	                return $this->create_transaction_by_order($order);
+	            }
+	            $pending_transaction = new \Wallee\Sdk\Model\TransactionPending();
+	            $pending_transaction->setId($transaction->getId());
+	            $pending_transaction->setVersion($transaction->getVersion());
+	            $this->assemble_order_transaction_data($order, $pending_transaction);
+	            $pending_transaction = apply_filters('wc_wallee_modify_order_pending_transaction', $pending_transaction, $order);
+	            return $this->get_transaction_service()->update($space_id, $pending_transaction);
+	        }
+	        catch (\Wallee\Sdk\VersioningException $e) {
+	            $last = $e;
+	        }
+	    }
+	    throw $last;
 	}
 
 	/**
@@ -490,22 +552,22 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\TransactionPending
 	 */
 	protected function load_and_update_transaction_from_session(){
-		$last = new \Wallee\Sdk\VersioningException();
+	    $last = new \Wallee\Sdk\VersioningException();
 		for ($i = 0; $i < 5; $i++) {
 			try {
 				$session_handler = WC()->session;
-				$wallee_space_id = $session_handler->get('wallee_space_id');
-				$wallee_transaction_id = $session_handler->get('wallee_transaction_id');
-				$transaction = $this->get_transaction($wallee_space_id, $wallee_transaction_id);
+				$space_id = $session_handler->get('wallee_space_id');
+				$transaction_id = $session_handler->get('wallee_transaction_id');
+				$transaction = $this->get_transaction($space_id, $transaction_id);
 				if ($transaction->getState() != \Wallee\Sdk\Model\TransactionState::PENDING) {
 					return $this->create_transaction_from_session();
 				}
-				
 				$pending_transaction = new \Wallee\Sdk\Model\TransactionPending();
 				$pending_transaction->setId($transaction->getId());
 				$pending_transaction->setVersion($transaction->getVersion());
 				$this->assemble_session_transaction_data($pending_transaction);
-				return $this->get_transaction_service()->update($wallee_space_id, $pending_transaction);
+				$pending_transaction = apply_filters('wc_wallee_modify_session_pending_transaction', $pending_transaction);
+				return $this->get_transaction_service()->update($space_id, $pending_transaction);
 			}
 			catch (\Wallee\Sdk\VersioningException $e) {
 				$last = $e;
@@ -527,10 +589,12 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		$transaction->setCustomerId($this->get_customer_id());
 		$transaction->setLanguage(WC_Wallee_Helper::instance()->get_cleaned_locale());
 		$transaction->setShippingMethod($this->fix_length($this->get_session_shipping_method_name(), 200));
-		
-		$transaction->setLineItems(WC_Wallee_Service_Line_Item::instance()->get_items_from_session());
-		
 		$transaction->setAllowedPaymentMethodConfigurations(array());
+		$this->set_session_line_items($transaction);
+	}
+	
+	protected function set_session_line_items(\Wallee\Sdk\Model\AbstractTransactionPending $transaction){
+	    $transaction->setLineItems(WC_Wallee_Service_Line_Item::instance()->get_items_from_session());
 	}
 
 	/**

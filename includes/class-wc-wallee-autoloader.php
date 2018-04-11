@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * This is the autoloader for wallee classes.
+ * This is the autoloader for WhitelabelName classes.
  */
 class WC_Wallee_Autoloader {
 	

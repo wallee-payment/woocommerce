@@ -40,13 +40,13 @@ class WC_Wallee_Admin {
 	/**
 	 * Include required core files used in admin and on the frontend.
 	 */
-	public function includes(){
-		require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-document.php');
-		require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-transaction.php');
-		require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-notices.php');
-		require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-order-completion.php');
-		require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-order-void.php');
-		require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-refund.php');
+	private function includes(){
+	    require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-document.php');
+	    require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-transaction.php');
+	    require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-notices.php');
+	    require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-order-completion.php');
+	    require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-order-void.php');
+	    require_once (WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin-refund.php');
 	}
 
 	private function init_hooks(){
@@ -65,23 +65,21 @@ class WC_Wallee_Admin {
 			'plugin_action_links' 
 		));
 		
-		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
-		
 		add_action('wc_wallee_settings_changed', array(
-			WC_Wallee_Service_Method_Configuration::instance(),
+		    WC_Wallee_Service_Method_Configuration::instance(),
 			'synchronize' 
 		));
 		add_action('wc_wallee_settings_changed', array(
-			WC_Wallee_Service_Webhook::instance(),
+		    WC_Wallee_Service_Webhook::instance(),
 			'install' 
 		));
 		add_action('wc_wallee_settings_changed', array(
-			WC_Wallee_Service_Manual_Task::instance(),
+		    WC_Wallee_Service_Manual_Task::instance(),
 			'update' 
 		));
 		add_filter('woocommerce_hidden_order_itemmeta', array(
 			$this,
-			'hide_wallee_unique_id_meta' 
+			'hide_order_unique_id_meta' 
 		), 10, 1);
 		
 		add_action('woocommerce_order_item_add_action_buttons', array(
@@ -109,7 +107,7 @@ class WC_Wallee_Admin {
 		if (!is_plugin_active('woocommerce/woocommerce.php'))
 		{
 			// Deactivate myself
-			deactivate_plugins(WC_WALLEE_PLUGIN_BASENAME);
+		    deactivate_plugins(WC_WALLEE_PLUGIN_BASENAME);
 			add_action('admin_notices', array(
 				'WC_Wallee_Admin_Notices',
 				'plugin_deactivated'
@@ -120,10 +118,10 @@ class WC_Wallee_Admin {
 	public function render_authorized_action_buttons(WC_Order $order){
 		$gateway = wc_get_payment_gateway_by_order($order);
 		if ($gateway instanceof WC_Wallee_Gateway) {
-			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
-			if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
-				if (WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction($transaction_info->get_space_id(), 
-						$transaction_info->get_transaction_id()) > 0 || WC_Wallee_Entity_Void_Job::count_running_void_for_transaction(
+		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+		    if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
+		        if (WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction($transaction_info->get_space_id(), 
+		            $transaction_info->get_transaction_id()) > 0 || WC_Wallee_Entity_Void_Job::count_running_void_for_transaction(
 						$transaction_info->get_space_id(), $transaction_info->get_transaction_id()) > 0) {
 					echo '<span class="wallee-action-in-progress">' . __('There is a completion/void in progress.', 'woocommerce-wallee') . '</span>';
 					echo '<button type="button" class="button wallee-update-order">' . __('Update', 'woocommerce-wallee') . '</button>';
@@ -159,8 +157,8 @@ class WC_Wallee_Admin {
 	}
 
 	public function enque_script_and_css(){
-		wp_enqueue_style('woocommerce-wallee-admin-styles', WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/admin.css');
-		wp_enqueue_script('wallee-admin-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/admin/management.js', 
+	    wp_enqueue_style('woocommerce-wallee-admin-styles', WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/admin.css');
+	    wp_enqueue_script('wallee-admin-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/admin/management.js', 
 				array(
 					'jquery',
 					'wc-admin-meta-boxes' 
@@ -173,7 +171,7 @@ class WC_Wallee_Admin {
 		wp_localize_script('wallee-admin-js', 'wallee_admin_js_params', $localize);
 	}
 
-	public function hide_wallee_unique_id_meta($arr){
+	public function hide_order_unique_id_meta($arr){
 		$arr[] = '_wallee_unique_line_item_id';
 		return $arr;
 	}
@@ -207,7 +205,7 @@ class WC_Wallee_Admin {
 	 * @return array
 	 */
 	public function add_settings($integrations){
-		$integrations[] = new WC_Wallee_Admin_Settings_Page();
+	    $integrations[] = new WC_Wallee_Admin_Settings_Page();
 		return $integrations;
 	}
 
@@ -220,31 +218,12 @@ class WC_Wallee_Admin {
 	public function plugin_action_links($links){
 		$action_links = array(
 			'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=wallee') . '" aria-label="' .
-					 esc_attr__('View WC Wallee settings', 'woocommerce-wallee') . '">' . esc_html__('Settings', 'woocommerce-wallee') . '</a>',
+					 esc_attr__('View settings', 'woocommerce-wallee') . '">' . esc_html__('Settings', 'woocommerce-wallee') . '</a>',
 		);
 		
 		return array_merge($action_links, $links);
 	}
 	
-	/**
-	 * Show row meta on the plugin screen.
-	 *
-	 * @param	mixed $links Plugin Row Meta
-	 * @param	mixed $file  Plugin Base file
-	 * @return	array
-	 */
-	public function plugin_row_meta( $links, $file ) {
-		if ( WC_WALLEE_PLUGIN_BASENAME == $file ) {
-			$row_meta = array(
-				'docs'    => '<a href="' . esc_url( apply_filters( 'wc_wallee_docs_url', 'https://github.com/wallee-payment/woo-wallee/wiki' ) ) . '" target="_blank" aria-label="' . esc_attr__( 'View Docs', 'woocommerce-wallee' ) . '">' . esc_html__( 'Docs', 'woocommerce-wallee' ) . '</a>',
-				'source_code'    => '<a href="' . esc_url( apply_filters( 'wc_wallee_source_url', 'https://github.com/wallee-payment/woo-wallee/' ) ) . '" target="_blank" aria-label="' . esc_attr__( 'View Source Code', 'woocommerce-wallee' ) . '">' . esc_html__( 'Source Code', 'woocommerce-wallee' ) . '</a>',
-			);
-			
-			return array_merge( $links, $row_meta );
-		}
-		
-		return (array) $links;
-	}
 }
 
 WC_Wallee_Admin::instance();

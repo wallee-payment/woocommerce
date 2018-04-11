@@ -33,14 +33,14 @@ class WC_Wallee_Entity_Refund_Job extends WC_Wallee_Entity_Abstract {
 
 	protected static function get_field_definition(){
 		return array(
-			'external_id' => WC_Wallee_Entity_Resource_Type::STRING,
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'wc_refund_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'refund' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT 
+		    'external_id' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'wc_refund_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'refund' => WC_Wallee_Entity_Resource_Type::OBJECT,
+		    'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT 
 		);
 	}
 

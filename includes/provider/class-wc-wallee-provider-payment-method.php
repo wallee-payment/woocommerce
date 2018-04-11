@@ -31,7 +31,7 @@ class WC_Wallee_Provider_Payment_Method extends WC_Wallee_Provider_Abstract {
 	}
 
 	protected function fetch_data(){
-		$method_service = new \Wallee\Sdk\Service\PaymentMethodService(WC_Wallee_Helper::instance()->get_api_client());
+	    $method_service = new \Wallee\Sdk\Service\PaymentMethodService(WC_Wallee_Helper::instance()->get_api_client());
 		return $method_service->all();
 	}
 

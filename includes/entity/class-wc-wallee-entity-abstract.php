@@ -11,9 +11,9 @@ abstract class WC_Wallee_Entity_Abstract {
 
 	protected static function get_base_fields(){
 		return array(
-			'id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'created_at' => WC_Wallee_Entity_Resource_Type::DATETIME,
-			'updated_at' => WC_Wallee_Entity_Resource_Type::DATETIME 
+		    'id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+		    'created_at' => WC_Wallee_Entity_Resource_Type::DATETIME,
+		    'updated_at' => WC_Wallee_Entity_Resource_Type::DATETIME 
 		);
 	}
 
@@ -60,25 +60,25 @@ abstract class WC_Wallee_Entity_Abstract {
 			if (isset($db_values[$key])) {
 				$value = $db_values[$key];
 				switch ($type) {
-					case WC_Wallee_Entity_Resource_Type::STRING:
+				    case WC_Wallee_Entity_Resource_Type::STRING:
 						//Do nothing
 						break;
-					case WC_Wallee_Entity_Resource_Type::BOOLEAN:
+				    case WC_Wallee_Entity_Resource_Type::BOOLEAN:
 						$value = $value === 'Y';
 						break;
-					case WC_Wallee_Entity_Resource_Type::INTEGER:
+				    case WC_Wallee_Entity_Resource_Type::INTEGER:
 						$value = intval($value);
 						break;
 					
-					case WC_Wallee_Entity_Resource_Type::DECIMAL:
+				    case WC_Wallee_Entity_Resource_Type::DECIMAL:
 						$value = (float) $value;
 						break;
 					
-					case WC_Wallee_Entity_Resource_Type::DATETIME:
+				    case WC_Wallee_Entity_Resource_Type::DATETIME:
 						$value = new DateTime($value);
 						break;
 					
-					case WC_Wallee_Entity_Resource_Type::OBJECT:
+				    case WC_Wallee_Entity_Resource_Type::OBJECT:
 						$value = unserialize($value);
 						break;
 					default:
@@ -95,31 +95,31 @@ abstract class WC_Wallee_Entity_Abstract {
 		foreach ($this->get_field_definition() as $key => $type) {
 			$value = $this->get_value($key);
 			switch ($type) {
-				case WC_Wallee_Entity_Resource_Type::STRING:
+			    case WC_Wallee_Entity_Resource_Type::STRING:
 					$type_array[] = "%s";
 					break;
 				
-				case WC_Wallee_Entity_Resource_Type::BOOLEAN:
+			    case WC_Wallee_Entity_Resource_Type::BOOLEAN:
 					$value = $value ? 'Y' : 'N';
 					$type_array[] = "%s";
 					break;
 				
-				case WC_Wallee_Entity_Resource_Type::INTEGER:
+			    case WC_Wallee_Entity_Resource_Type::INTEGER:
 					$type_array[] = "%d";
 					break;
 				
-				case WC_Wallee_Entity_Resource_Type::DATETIME:
+			    case WC_Wallee_Entity_Resource_Type::DATETIME:
 					if ($value instanceof DateTime) {
 						$value = $value->format('Y-m-d H:i:s');
 					}
 					$type_array[] = "%s";
 					break;
-				case WC_Wallee_Entity_Resource_Type::OBJECT:
+			    case WC_Wallee_Entity_Resource_Type::OBJECT:
 					$value = serialize($value);
 					$type_array[] = "%s";
 					break;
 				
-				case WC_Wallee_Entity_Resource_Type::DECIMAL:
+			    case WC_Wallee_Entity_Resource_Type::DECIMAL:
 					$value = number_format($value, 8, '.', '');
 					$type_array[] = "%s";
 					break;

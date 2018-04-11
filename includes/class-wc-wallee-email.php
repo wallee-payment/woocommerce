@@ -65,7 +65,7 @@ class WC_Wallee_Email {
 		if (isset($GLOBALS['_wallee_resend_email']) && $GLOBALS['_wallee_resend_email']) {
 			return $enabled;
 		}
-		$send = get_option("wc_wallee_shop_email", "yes");
+		$send = get_option(WooCommerce_Wallee::CK_SHOP_EMAIL, "yes");
 		if ($send != "yes") {
 			return false;
 		}

@@ -57,7 +57,7 @@ class WC_Wallee_Provider_Language extends WC_Wallee_Provider_Abstract {
 	}
 
 	protected function fetch_data(){
-		$language_service = new \Wallee\Sdk\Service\LanguageService(WC_Wallee_Helper::instance()->get_api_client());
+	    $language_service = new \Wallee\Sdk\Service\LanguageService(WC_Wallee_Helper::instance()->get_api_client());
 		return $language_service->all();
 	}
 

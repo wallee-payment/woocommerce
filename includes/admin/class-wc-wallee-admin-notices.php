@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * WC Wallee Admin class
+ * WC Wallee Admin Notices class
  */
 class WC_Wallee_Admin_Notices {
 
@@ -16,7 +16,7 @@ class WC_Wallee_Admin_Notices {
 	}
 
 	public static function manual_tasks_notices(){
-		$number_of_manual_tasks = WC_Wallee_Service_Manual_Task::instance()->get_number_of_manual_tasks();
+	    $number_of_manual_tasks = WC_Wallee_Service_Manual_Task::instance()->get_number_of_manual_tasks();
 		if ($number_of_manual_tasks == 0) {
 			return;
 		}
@@ -30,8 +30,8 @@ class WC_Wallee_Admin_Notices {
 	 * @return string
 	 */
 	protected static function get_manual_tasks_url(){
-		$manual_task_url = WC_Wallee_Helper::instance()->get_base_gateway_url();
-		$space_id = get_option('wc_wallee_space_id');
+	    $manual_task_url = WC_Wallee_Helper::instance()->get_base_gateway_url();
+	    $space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 		if (!empty($space_id)) {
 			$manual_task_url .= '/s/' . $space_id . '/manual-task/list';
 		}
@@ -40,11 +40,11 @@ class WC_Wallee_Admin_Notices {
 	}
 
 	public static function migration_failed_notices(){
-		require_once WC_WALLEE_ABSPATH.'views/admin-notices/migration-failed.php';
+	    require_once WC_WALLEE_ABSPATH.'views/admin-notices/migration-failed.php';
 	}
 	
 	public static function plugin_deactivated(){
-		require_once WC_WALLEE_ABSPATH.'views/admin-notices/plugin-deactivated.php';
+	    require_once WC_WALLEE_ABSPATH.'views/admin-notices/plugin-deactivated.php';
 	}
 }
 WC_Wallee_Admin_Notices::init();

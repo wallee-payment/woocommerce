@@ -13,14 +13,14 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 	 * @see WC_Wallee_Webhook_Order_Related_Abstract::load_entity()
 	 * @return \Wallee\Sdk\Model\TransactionCompletion
 	 */
-	protected function load_entity(WC_Wallee_Webhook_Request $request){
-		$completion_service = new \Wallee\Sdk\Service\TransactionCompletionService(WC_Wallee_Helper::instance()->get_api_client());
+    protected function load_entity(WC_Wallee_Webhook_Request $request){
+        $completion_service = new \Wallee\Sdk\Service\TransactionCompletionService(WC_Wallee_Helper::instance()->get_api_client());
 		return $completion_service->read($request->get_space_id(), $request->get_entity_id());
 	}
 
 	protected function get_order_id($completion){
 		/* @var \Wallee\Sdk\Model\TransactionCompletion $completion */
-		return $completion->getLineItemVersion()->getTransaction()->getMerchantReference();
+	    return WC_Wallee_Entity_Transaction_Info::load_by_transaction($completion->getLineItemVersion()->getTransaction()->getLinkedSpaceId(), $completion->getLineItemVersion()->getTransaction()->getId())->get_order_id();
 	}
 
 	protected function get_transaction_id($completion){
@@ -31,10 +31,10 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 	protected function process_order_related_inner(WC_Order $order, $completion){
 		/* @var \Wallee\Sdk\Model\TransactionCompletion $completion */
 		switch ($completion->getState()) {
-			case \Wallee\Sdk\Model\TransactionCompletionState::FAILED:
+		    case \Wallee\Sdk\Model\TransactionCompletionState::FAILED:
 				$this->failed($completion, $order);
 				break;
-			case \Wallee\Sdk\Model\TransactionCompletionState::SUCCESSFUL:
+		    case \Wallee\Sdk\Model\TransactionCompletionState::SUCCESSFUL:
 				$this->success($completion, $order);
 				break;
 			default:
@@ -44,11 +44,11 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 	}
 
 	protected function success(\Wallee\Sdk\Model\TransactionCompletion $completion, WC_Order $order){
-		$completion_job = WC_Wallee_Entity_Completion_Job::load_by_completion($completion->getLinkedSpaceId(), $completion->getId());
+	    $completion_job = WC_Wallee_Entity_Completion_Job::load_by_completion($completion->getLinkedSpaceId(), $completion->getId());
 		if (!$completion_job->get_id()) {
 			//We have no completion job with this id -> the server could not store the id of the completion after sending the request. (e.g. connection issue or crash)
 			//We only have on running completion which was not yet processed successfully and use it as it should be the one the webhook is for.
-			$completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($completion->getLinkedSpaceId(), 
+		    $completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($completion->getLinkedSpaceId(), 
 					$completion->getLinkedTransaction());
 			if (!$completion_job->get_id()) {
 				//completion not initated in shop backend ignore
@@ -170,9 +170,9 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 	}
 
 	protected function failed(\Wallee\Sdk\Model\TransactionCompletion $completion, WC_Order $order){
-		$completion_job = WC_Wallee_Entity_Completion_Job::load_by_completion($completion->getLinkedSpaceId(), $completion->getId());
+	    $completion_job = WC_Wallee_Entity_Completion_Job::load_by_completion($completion->getLinkedSpaceId(), $completion->getId());
 		if (!$completion_job->get_id()) {
-			$completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($completion->getLinkedSpaceId(), 
+		    $completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($completion->getLinkedSpaceId(), 
 					$completion->getLinkedTransaction());
 			if (!$completion_job->get_id()) {
 				return;

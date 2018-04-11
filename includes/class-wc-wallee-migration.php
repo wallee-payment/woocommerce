@@ -7,9 +7,13 @@ if (!defined('ABSPATH')) {
  * This class handles the database setup and migration.
  */
 class WC_Wallee_Migration {
+    
+    const CK_DB_VERSION = 'wc_wallee_db_version';
+    
 	private static $db_migrations = array(
-		'1.0.0' => 'wc_wallee_update_1_0_0_initialize', 
-		'1.0.1' => 'wc_wallee_update_1_0_1_image_url' 
+		'1.0.0' => 'update_1_0_0_initialize', 
+		'1.0.1' => 'update_1_0_1_image_url',
+	    '1.0.2' => 'update_1_0_2_order_allow_null',
 	);
 
 	/**
@@ -34,7 +38,7 @@ class WC_Wallee_Migration {
 		));
 	}
 
-	public static function install_wallee_db($networkwide){
+	public static function install_db($networkwide){
 		global $wpdb;
 		if (!is_blog_installed()) {
 			return;
@@ -54,13 +58,13 @@ class WC_Wallee_Migration {
 				$blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
 				foreach ($blog_ids as $blog_id) {
 					switch_to_blog($blog_id);
-					self::migrate_wallee_db();
+					self::migrate_db();
 				}
 				switch_to_blog($old_blog);
 				return;
 			}
 		}
-		self::migrate_wallee_db();
+		self::migrate_db();
 	}
 
 	
@@ -76,33 +80,33 @@ class WC_Wallee_Migration {
 		$errors = array();
 		
 		if ( version_compare( PHP_VERSION, WC_WALLEE_REQUIRED_PHP_VERSION, '<' ) ) {
-			$errors[] = sprintf(__("PHP %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_PHP_VERSION, PHP_VERSION);
+		    $errors[] = sprintf(__("PHP %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_PHP_VERSION, PHP_VERSION);
 		}
 		if ( version_compare( $wp_version, WC_WALLEE_REQUIRED_WP_VERSION, '<' ) ) {
-			$errors[] = sprintf(__("Wordpress %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WP_VERSION, $wp_version);
+		    $errors[] = sprintf(__("Wordpress %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WP_VERSION, $wp_version);
 			
 		}
 		
 		if (!is_plugin_active('woocommerce/woocommerce.php')){
-			$errors[] = sprintf(__("Woocommerce %s+ has to be active.", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION);
+		    $errors[] = sprintf(__("Woocommerce %s+ has to be active.", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION);
 		}
 		else{
 			$woocommerce_data = get_plugin_data(WP_PLUGIN_DIR .'/woocommerce/woocommerce.php', false, false);
 			
 			if (version_compare ($woocommerce_data['Version'] , WC_WALLEE_REQUIRED_WC_VERSION, '<')){
-				$errors[] = sprintf(__("Woocommerce %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION, $woocommerce_data['Version']);
+			    $errors[] = sprintf(__("Woocommerce %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION, $woocommerce_data['Version']);
 			}
 		}
 		
 		try{
-			\Wallee\Sdk\Http\HttpClientFactory::getClient();
+		    \Wallee\Sdk\Http\HttpClientFactory::getClient();
 		}
 		catch(Exception $e){
 			$errors[] = __("Install the PHP cUrl extension or ensure the 'stream_socket_client' function is available.");
 		}
 		
 		if(!empty($errors)){
-			$title = __('Could not activate plugin WooCommerce Wallee', 'woocommerce-wallee');
+			$title = __('Could not activate plugin', 'woocommerce-wallee').' WooCommerce wallee';
 			$message = '<h1><strong>'.$title.'</strong></h1><br/>'.
 					'<h3>'.__('Please check the following requirements before activating:', 'woocommerce-wallee').'</h3>'.
 					'<ul><li>'.
@@ -126,13 +130,13 @@ class WC_Wallee_Migration {
 		if (is_plugin_active_for_network('woo-wallee/woocommerce-wallee.php')) {
 			$old_blog = $wpdb->blogid;
 			switch_to_blog($blog_id);
-			self::migrate_wallee_db();
+			self::migrate_db();
 			switch_to_blog($old_blog);
 		}
 	}
 
-	private static function migrate_wallee_db(){
-		$current_version = get_option('wc_wallee_db_version', 0);
+	private static function migrate_db(){
+	    $current_version = get_option(self::CK_DB_VERSION, 0);
 		foreach (self::$db_migrations as $version => $function_name) {
 			if (version_compare($current_version, $version, '<')) {
 				
@@ -141,7 +145,7 @@ class WC_Wallee_Migration {
 					$function_name 
 				));
 				
-				update_option('wc_wallee_db_version', $version);
+				update_option(self::CK_DB_VERSION, $version);
 				$current_version = $version;
 			}
 		}
@@ -172,11 +176,11 @@ class WC_Wallee_Migration {
 	 */
 	public static function check_version(){
 		try {
-			$current_version = get_option('wc_wallee_db_version', 0);
+			$current_version = get_option(self::CK_DB_VERSION, 0);
 			$version_keys = array_keys(self::$db_migrations);
 			if (version_compare($current_version, '0', '>') && version_compare($current_version, end($version_keys), '<')) {
 				//We migrate the Db for all blogs
-				self::install_wallee_db(true);
+				self::install_db(true);
 			}
 		}
 		catch (Exception $e) {
@@ -236,7 +240,7 @@ class WC_Wallee_Migration {
 		return wp_kses_post($upgrade_notice);
 	}
 
-	public static function wc_wallee_update_1_0_0_initialize(){
+	public static function update_1_0_0_initialize(){
 		global $wpdb;
 		
 		$result = $wpdb->query(
@@ -378,7 +382,7 @@ class WC_Wallee_Migration {
 		}
 	}
 	
-	public static function wc_wallee_update_1_0_1_image_url(){
+	public static function update_1_0_1_image_url(){
 		global $wpdb;
 		$result = $wpdb->query(
 				"ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_method_configuration` CHANGE `image` `image` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
@@ -392,6 +396,30 @@ class WC_Wallee_Migration {
 		if ($result === false) {
 			throw new Exception($wpdb->last_error);
 		}
+	}
+	
+	public static function update_1_0_2_order_allow_null(){
+	    global $wpdb;
+	    $result = $wpdb->query(
+	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` CHANGE `order_id` `order_id` int(10) unsigned NULL DEFAULT NULL;");
+
+	    
+	    if ($result === false) {
+	        throw new Exception($wpdb->last_error);
+	    }
+	    $result = $wpdb->query(
+	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD `order_mapping_id` int(10) unsigned NULL AFTER order_id;");
+	    
+	    
+	    if ($result === false) {
+	        throw new Exception($wpdb->last_error);
+	    }
+	    $result = $wpdb->query(
+	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_token_info` CHANGE `customer_id` `customer_id` int(10) unsigned NULL DEFAULT NULL;");
+	    
+	    if ($result === false) {
+	        throw new Exception($wpdb->last_error);
+	    }
 	}
 }
 

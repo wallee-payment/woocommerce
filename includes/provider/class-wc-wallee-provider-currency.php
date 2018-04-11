@@ -31,7 +31,7 @@ class WC_Wallee_Provider_Currency extends WC_Wallee_Provider_Abstract {
 	}
 
 	protected function fetch_data(){
-		$currency_service = new \Wallee\Sdk\Service\CurrencyService(WC_Wallee_Helper::instance()->get_api_client());
+	    $currency_service = new \Wallee\Sdk\Service\CurrencyService(WC_Wallee_Helper::instance()->get_api_client());
 		return $currency_service->all();
 	}
 

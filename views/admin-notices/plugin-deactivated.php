@@ -1,1 +1,1 @@
-<div class="error"><p><?php _e('Woocommerce Wallee deactivated because it depends on WooCommerce.', 'woocoommerce-wallee'); ?></p></div>
+<div class="error"><p>WooCommerce wallee <?php _e('deactivated because it depends on WooCommerce.', 'woocoommerce-wallee'); ?></p></div>

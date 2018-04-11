@@ -49,7 +49,7 @@ class WC_Wallee_Unique_Id {
 		return $data;
 	}
 
-	public static function copy_unqiue_id_to_order_item(WC_Order_Item_Product $item, $cart_item_key, $values, WC_Order $order){
+	public static function copy_unqiue_id_to_order_item(WC_Order_Item_Product $item, $cart_item_key, $values, WC_Order $order = null){
 		//We do not the cart_item_key as it is deprecated
 		$unique_id = self::get_uuid();
 		
@@ -69,7 +69,7 @@ class WC_Wallee_Unique_Id {
 		return $rates;
 	}
 
-	public static function copy_unqiue_id_to_order_shipping(WC_Order_Item_Shipping $item, $package_key, $package, WC_Order $order){
+	public static function copy_unqiue_id_to_order_shipping(WC_Order_Item_Shipping $item, $package_key, $package, WC_Order $order = null){
 		
 		//If we do not have this value, the shipping rate was computed before the plugin was activated,
 		//this ensures the item has a unqiue id;
@@ -79,7 +79,7 @@ class WC_Wallee_Unique_Id {
 		return $item;
 	}
 
-	public static function copy_unqiue_id_to_order_fee(WC_Order_Item_Fee $item, $fee_key, $fee, WC_Order $order){
+	public static function copy_unqiue_id_to_order_fee(WC_Order_Item_Fee $item, $fee_key, $fee, WC_Order $order = null){
 		$unique_id = null;
 		if ($fee->amount < 0) {
 			$unique_id = 'discount-' . $fee->id;

@@ -4,13 +4,13 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * WC Wallee Admin class
+ * WC Wallee Admin Refund class
  */
 class WC_Wallee_Admin_Refund {
 	private static $refundable_states = array(
-		\Wallee\Sdk\Model\TransactionState::COMPLETED,
-		\Wallee\Sdk\Model\TransactionState::DECLINE,
-		\Wallee\Sdk\Model\TransactionState::FULFILL 
+	    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+	    \Wallee\Sdk\Model\TransactionState::DECLINE,
+	    \Wallee\Sdk\Model\TransactionState::FULFILL 
 	);
 
 	public static function init(){
@@ -42,12 +42,12 @@ class WC_Wallee_Admin_Refund {
 	public static function render_refund_button_state(WC_Order $order){
 		$gateway = wc_get_payment_gateway_by_order($order);
 		if ($gateway instanceof WC_Wallee_Gateway) {
-			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 			if (!in_array($transaction_info->get_state(), self::$refundable_states)) {
 				echo '<span id="wallee-remove-refund" style="dispaly:none;"></span>';
 			}
 			else {
-				$existing_refund_job = WC_Wallee_Entity_Refund_Job::load_running_refund_for_transaction($transaction_info->get_space_id(), 
+			    $existing_refund_job = WC_Wallee_Entity_Refund_Job::load_running_refund_for_transaction($transaction_info->get_space_id(), 
 						$transaction_info->get_transaction_id());
 				if ($existing_refund_job->get_id() > 0) {
 					echo '<span class="wallee-action-in-progress">' . __('There is a refund in progress.', 'woocommerce-wallee') . '</span>';
@@ -60,7 +60,7 @@ class WC_Wallee_Admin_Refund {
 	}
 
 	public static function render_refund_states($order_id){
-		$refunds = WC_Wallee_Entity_Refund_Job::load_refunds_for_order($order_id);
+	    $refunds = WC_Wallee_Entity_Refund_Job::load_refunds_for_order($order_id);
 		if (!empty($refunds)) {
 			echo '<tr style="display:none"><td>';
 			foreach ($refunds as $refund) {
@@ -85,7 +85,7 @@ class WC_Wallee_Admin_Refund {
 			wc_transaction_query("start");
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 			if (!$transaction_info->get_id()) {
-				throw new Exception(__('Could not load corresponding wallee transaction', 'woocommerce-wallee'));
+				throw new Exception(__('Could not load corresponding transaction', 'woocommerce-wallee'));
 			}
 			
 			WC_Wallee_Helper::instance()->lock_by_transaction_id($transaction_info->get_space_id(), $transaction_info->get_transaction_id());
@@ -94,8 +94,8 @@ class WC_Wallee_Admin_Refund {
 					$transaction_info->get_transaction_id()) > 0) {
 				throw new Exception(__('Please wait until the pending refund is processed.', 'woocommerce-wallee'));
 			}
-			$wallee_refund = $refund_service->create($order, $refund);
-			$refund_job = self::create_refund_job($order, $refund, $wallee_refund);
+			$refund_create = $refund_service->create($order, $refund);
+			$refund_job = self::create_refund_job($order, $refund, $refund_create);
 			$current_refund_job_id = $refund_job->get_id();
 			
 			$refund->add_meta_data('_wallee_refund_job_id', $refund_job->get_id());
@@ -123,18 +123,18 @@ class WC_Wallee_Admin_Refund {
 			return;
 		}
 		try {
-			$refund_service = WC_Wallee_Service_Refund::instance();
+		    $refund_service = WC_Wallee_Service_Refund::instance();
 			$executed_refund = $refund_service->refund($refund_job->get_space_id(), $refund_job->get_refund());
 			$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_SENT);
 			
 			if ($executed_refund->getState() == \Wallee\Sdk\Model\RefundState::PENDING) {
-				$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_PENDING);
+			    $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_PENDING);
 			}
 			$refund_job->save();
 			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
-			$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
+		    $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
 			$refund_job->save();
 			wc_transaction_query("commit");
 			throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woocommerce-wallee'), $e->getMessage()));
@@ -142,10 +142,8 @@ class WC_Wallee_Admin_Refund {
 	}
 
 	public static function update_for_order(WC_Order $order){
-		$space_id = $order->get_meta('_wallee_linked_space_id', true);
-		$transaction_id = $order->get_meta('_wallee_transaction_id', true);
-		
-		$refund_job = WC_Wallee_Entity_Refund_Job::load_running_refund_for_transaction($space_id, $transaction_id);
+	    $data = WC_Wallee_Helper::instance()->get_transaction_id_map_for_order($order);
+		$refund_job = WC_Wallee_Entity_Refund_Job::load_running_refund_for_transaction($data['space_id'], $data['transaction_id']);
 		
 		if ($refund_job->get_state() == WC_Wallee_Entity_Refund_Job::STATE_CREATED) {
 			self::send_refund($refund_job->get_id());
@@ -153,7 +151,7 @@ class WC_Wallee_Admin_Refund {
 	}
 
 	public static function update_refunds(){
-		$to_process = WC_Wallee_Entity_Refund_Job::load_not_sent_job_ids();
+	    $to_process = WC_Wallee_Entity_Refund_Job::load_not_sent_job_ids();
 		foreach ($to_process as $id) {
 			try {
 				self::send_refund($id);
@@ -170,18 +168,19 @@ class WC_Wallee_Admin_Refund {
 	 *
 	 * @param WC_Order $order
 	 * @param WC_Order_Refund $refund
-	 * @param \Wallee\Sdk\Model\RefundCreate $wallee_refund
+	 * @param \Wallee\Sdk\Model\RefundCreate $refund_create
 	 * @return WC_Wallee_Entity_Refund_Job
 	 */
-	private static function create_refund_job(WC_Order $order, WC_Order_Refund $refund, \Wallee\Sdk\Model\RefundCreate $wallee_refund){
-		$refund_job = new WC_Wallee_Entity_Refund_Job();
-		$refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_CREATED);
+	private static function create_refund_job(WC_Order $order, WC_Order_Refund $refund, \Wallee\Sdk\Model\RefundCreate $refund_create){
+	    $data = WC_Wallee_Helper::instance()->get_transaction_id_map_for_order($order);
+	    $refund_job = new WC_Wallee_Entity_Refund_Job();
+	    $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_CREATED);
 		$refund_job->set_wc_refund_id($refund->get_id());
 		$refund_job->set_order_id($order->get_id());
-		$refund_job->set_space_id($order->get_meta('_wallee_linked_space_id', true));
-		$refund_job->set_transaction_id($wallee_refund->getTransaction());
-		$refund_job->set_external_id($wallee_refund->getExternalId());
-		$refund_job->set_refund($wallee_refund);
+		$refund_job->set_space_id($data['space_id']);
+		$refund_job->set_transaction_id($refund_create->getTransaction());
+		$refund_job->set_external_id($refund_create->getExternalId());
+		$refund_job->set_refund($refund_create);
 		$refund_job->save();
 		return $refund_job;
 	}

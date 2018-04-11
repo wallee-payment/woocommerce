@@ -36,9 +36,9 @@ class WC_Wallee_Admin_Document {
 		}
 		if (in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\TransactionState::COMPLETED,
-					\Wallee\Sdk\Model\TransactionState::FULFILL,
-					\Wallee\Sdk\Model\TransactionState::DECLINE 
+				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+				    \Wallee\Sdk\Model\TransactionState::FULFILL,
+				    \Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			
 			$url = wp_nonce_url(
@@ -80,11 +80,11 @@ class WC_Wallee_Admin_Document {
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		if ($transaction_info->get_id() != null && in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\TransactionState::COMPLETED,
-					\Wallee\Sdk\Model\TransactionState::FULFILL,
-					\Wallee\Sdk\Model\TransactionState::DECLINE 
+				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+				    \Wallee\Sdk\Model\TransactionState::FULFILL,
+				    \Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
-			add_meta_box('woocommerce-order-wallee-documents', __('Wallee Documents', 'woocommerc-wallee'), array(
+			add_meta_box('woocommerce-order-wallee-documents', 'wallee ',__('Documents', 'woocommerc-wallee'), array(
 				__CLASS__,
 				'output' 
 			), 'shop_order', 'side', 'default');
@@ -112,9 +112,9 @@ class WC_Wallee_Admin_Document {
 		}
 		if (in_array($transaction_info->get_state(),
 				array(
-					\Wallee\Sdk\Model\TransactionState::COMPLETED,
-					\Wallee\Sdk\Model\TransactionState::FULFILL,
-					\Wallee\Sdk\Model\TransactionState::DECLINE 
+				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+				    \Wallee\Sdk\Model\TransactionState::FULFILL,
+				    \Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
 			
 			?>
@@ -169,7 +169,7 @@ class WC_Wallee_Admin_Document {
 		
 		// validate allowed user roles.
 		$user = wp_get_current_user();
-		$allowed_roles = apply_filters('wallee_allowed_roles_to_download_documents', array(
+		$allowed_roles = apply_filters('wc_wallee_allowed_roles_to_download_documents', array(
 			'administrator',
 			'shop_manager' 
 		));
@@ -181,15 +181,15 @@ class WC_Wallee_Admin_Document {
 		try {
 			switch ($action) {
 				case 'download_invoice':
-					WC_Wallee_Download_Helper::download_invoice($order_id);
+				    WC_Wallee_Download_Helper::download_invoice($order_id);
 					break;
 				case 'download_packing':
-					WC_Wallee_Download_Helper::download_packing_slip($order_id);
+				    WC_Wallee_Download_Helper::download_packing_slip($order_id);
 					break;
 			}
 		}
 		catch (Exception $e) {
-			wp_die(__('Could not fetch the document from Wallee.', 'woocommerce-wallee'));
+			wp_die(__('Could not fetch the document from'.' wallee.', 'woocommerce-wallee'));
 		}
 		if ($_GET['refer'] == 'edit') {
 			wp_redirect(add_query_arg(array(

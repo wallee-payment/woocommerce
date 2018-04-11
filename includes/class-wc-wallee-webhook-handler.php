@@ -8,9 +8,6 @@ if (!defined('ABSPATH')) {
  */
 class WC_Wallee_Webhook_Handler {
 	
-	
-	
-
 	public static function init(){
 		add_action('woocommerce_api_wallee_webhook', array(
 			__CLASS__,
@@ -31,15 +28,15 @@ class WC_Wallee_Webhook_Handler {
 	 * Process the webhook call.
 	 */
 	public static function process(){
-		$webhook_service = WC_Wallee_Service_Webhook::instance();
+	    $webhook_service = WC_Wallee_Service_Webhook::instance();
 		
 		$requestBody = trim(file_get_contents("php://input"));
 		set_error_handler(array(__CLASS__, 'handle_webhook_errors'));
 		try{
-			$request = new WC_Wallee_Webhook_Request(json_decode($requestBody));
+		    $request = new WC_Wallee_Webhook_Request(json_decode($requestBody));
 			$webhook_model = $webhook_service->get_webhook_entity_for_id($request->get_listener_entity_id());
 			if ($webhook_model === null) {
-				WooCommerce_Wallee::instance()->log(sprintf('Could not retrieve webhook model for listener entity id: %s', $request->get_listener_entity_id()), WC_Log_Levels::ERROR);
+			    WooCommerce_Wallee::instance()->log(sprintf('Could not retrieve webhook model for listener entity id: %s', $request->get_listener_entity_id()), WC_Log_Levels::ERROR);
 				status_header(500);
 				echo sprintf('Could not retrieve webhook model for listener entity id: %s', $request->get_listener_entity_id());
 				exit();
@@ -50,7 +47,7 @@ class WC_Wallee_Webhook_Handler {
 			$webhook_handler->process($request);
 		}
 		catch(Exception $e){
-			WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
+		    WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 			status_header(500);
 			echo sprintf($e->getMessage());
 			exit();

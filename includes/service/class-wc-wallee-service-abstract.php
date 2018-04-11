@@ -50,6 +50,9 @@ abstract class WC_Wallee_Service_Abstract {
 			return $resolved_url;
 		}
 		$index = strpos($resolved_url, 'resource/');
+		if($index === false){
+		    return $resolved_url;
+		}
 		return substr($resolved_url, $index + strlen('resource/'));
 	}
 
@@ -60,7 +63,7 @@ abstract class WC_Wallee_Service_Abstract {
 	 * @return number
 	 */
 	protected function get_currency_fraction_digits($currency_code){
-		return WC_Wallee_Helper::instance()->get_currency_fraction_digits($currency_code);
+	    return WC_Wallee_Helper::instance()->get_currency_fraction_digits($currency_code);
 	}
 
 	/**
@@ -83,8 +86,8 @@ abstract class WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\EntityQueryFilter
 	 */
 	protected function create_entity_filter($field_name, $value, $operator = \Wallee\Sdk\Model\CriteriaOperator::EQUALS){
-		$filter = new \Wallee\Sdk\Model\EntityQueryFilter();
-		$filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::LEAF);
+	    $filter = new \Wallee\Sdk\Model\EntityQueryFilter();
+	    $filter->setType(\Wallee\Sdk\Model\EntityQueryFilterType::LEAF);
 		$filter->setOperator($operator);
 		$filter->setFieldName($field_name);
 		$filter->setValue($value);
@@ -99,7 +102,7 @@ abstract class WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\EntityQueryOrderBy
 	 */
 	protected function create_entity_order_by($field_name, $sort_order = \Wallee\Sdk\Model\EntityQueryOrderByType::DESC){
-		$order_by = new \Wallee\Sdk\Model\EntityQueryOrderBy();
+	    $order_by = new \Wallee\Sdk\Model\EntityQueryOrderBy();
 		$order_by->setFieldName($field_name);
 		$order_by->setSorting($sort_order);
 		return $order_by;

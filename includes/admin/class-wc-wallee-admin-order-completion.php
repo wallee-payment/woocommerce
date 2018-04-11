@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * WC Wallee Admin class
+ * WC Wallee Admin Order Completion class
  */
 class WC_Wallee_Admin_Order_Completion {
 
@@ -33,8 +33,8 @@ class WC_Wallee_Admin_Order_Completion {
 	public static function render_execute_completion_button(WC_Order $order){
 		$gateway = wc_get_payment_gateway_by_order($order);
 		if ($gateway instanceof WC_Wallee_Gateway) {
-			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
-			if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
+		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+		    if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				echo '<button type="button" class="button wallee-completion-button action-wallee-completion-cancel" style="display:none">' .
 						 __('Cancel', 'woocommerce-wallee') . '</button>';
 				echo '<button type="button" class="button button-primary wallee-completion-button action-wallee-completion-execute" style="display:none">' .
@@ -123,7 +123,7 @@ class WC_Wallee_Admin_Order_Completion {
 			wc_transaction_query("start");
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
 			if (!$transaction_info->get_id()) {
-				throw new Exception(__('Could not load corresponding wallee transaction'));
+				throw new Exception(__('Could not load corresponding transaction'));
 			}
 			
 			WC_Wallee_Helper::instance()->lock_by_transaction_id($transaction_info->get_space_id(), $transaction_info->get_transaction_id());
@@ -193,16 +193,16 @@ class WC_Wallee_Admin_Order_Completion {
 			return;
 		}
 		try {
-			$line_items = WC_Wallee_Service_Line_Item::instance()->get_items_from_backend($completion_job->get_items(), $completion_job->get_amount(), 
+		    $line_items = WC_Wallee_Service_Line_Item::instance()->get_items_from_backend($completion_job->get_items(), $completion_job->get_amount(), 
 					WC_Order_Factory::get_order($completion_job->get_order_id()));
-			WC_Wallee_Service_Transaction::instance()->update_line_items($completion_job->get_space_id(), $completion_job->get_transaction_id(), 
+		    WC_Wallee_Service_Transaction::instance()->update_line_items($completion_job->get_space_id(), $completion_job->get_transaction_id(), 
 					$line_items);
-			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_ITEMS_UPDATED);
+		    $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_ITEMS_UPDATED);
 			$completion_job->save();
 			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
-			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
+		    $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
 			$completion_job->save();
 			wc_transaction_query("commit");
 			throw $e;
@@ -223,7 +223,7 @@ class WC_Wallee_Admin_Order_Completion {
 			return;
 		}
 		try {
-			$completion_service = new \Wallee\Sdk\Service\TransactionCompletionService(WC_Wallee_Helper::instance()->get_api_client());
+		    $completion_service = new \Wallee\Sdk\Service\TransactionCompletionService(WC_Wallee_Helper::instance()->get_api_client());
 			
 			$completion = $completion_service->completeOnline($completion_job->get_space_id(), 
 					$completion_job->get_transaction_id());
@@ -233,7 +233,7 @@ class WC_Wallee_Admin_Order_Completion {
 			wc_transaction_query("commit");
 		}
 		catch (Exception $e) {
-			$completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
+		    $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
 			$completion_job->save();
 			wc_transaction_query("commit");
 			throw $e;
@@ -241,10 +241,9 @@ class WC_Wallee_Admin_Order_Completion {
 	}
 
 	public static function update_for_order(WC_Order $order){
-		$space_id = $order->get_meta('_wallee_linked_space_id', true);
-		$transaction_id = $order->get_meta('_wallee_transaction_id', true);
-		
-		$completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($space_id, $transaction_id);
+	    $data = WC_Wallee_Helper::instance()->get_transaction_id_map_for_order($order);
+
+	    $completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($data['space_id'], $data['transaction_id']);
 		
 		if ($completion_job->get_state() == WC_Wallee_Entity_Completion_Job::STATE_CREATED) {
 			self::update_line_items($completion_job->get_id());
@@ -256,7 +255,7 @@ class WC_Wallee_Admin_Order_Completion {
 	}
 
 	public static function update_completions(){
-		$to_process = WC_Wallee_Entity_Completion_Job::load_not_sent_job_ids();
+	    $to_process = WC_Wallee_Entity_Completion_Job::load_not_sent_job_ids();
 		foreach ($to_process as $id) {
 			try {
 				self::update_line_items($id);

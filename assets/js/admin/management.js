@@ -5,36 +5,36 @@ jQuery(function($) {
 	init : function() {
 	    this.handle_refund_button();
 	    this.show_refund_states();
-	    $('#woocommerce-order-items').off('click.woocommerce-wallee');
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').off('click.woo-wallee');
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.wallee-completion-show', {
 			self : this
 		    }, this.show_completion);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.action-wallee-completion-cancel', {
 			self : this
 		    }, this.cancel_completion);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.action-wallee-completion-execute', {
 			self : this
 		    }, this.execute_completion);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.wallee-void-show', {
 			self : this
 		    }, this.show_void);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.action-wallee-void-cancel', {
 			self : this
 		    }, this.cancel_void);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.action-wallee-void-execute', {
 			self : this
 		    }, this.execute_void);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.wallee-update-order', {
 			self : this
 		    }, this.update_order);
-	    $('#woocommerce-order-items').on('click.woocommerce-wallee',
+	    $('#woocommerce-order-items').on('click.woo-wallee',
 		    'button.refund-items', {
 			self : this
 		    }, this.restrict_refund_inputs);

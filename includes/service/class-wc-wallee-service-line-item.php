@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * This service provides methods to handle manual tasks.
+ * This service provides methods to handle line items.
  */
 class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 
@@ -93,7 +93,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 	protected function create_fee_lines_items_from_session(WC_Cart $cart, $currency){
 		$fees = array();
 		foreach ($cart->get_fees() as $fee_key => $fee) {
-			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
+		    $line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
 			$amount_including_tax = $fee->amount + $fee->tax;
 			
@@ -113,11 +113,11 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			if ($amount_including_tax < 0) {
 				//There are plugins which create fees with a negative values (used as discounts)
-				$line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
+			    $line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
 				$line_item->setUniqueId('discount-' . $fee->id);
 			}
 			else {
-				$line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
+			    $line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
 				$line_item->setUniqueId('fee-' . $fee->id);
 			}
 			$fees[] = $this->clean_line_item($line_item);
@@ -179,11 +179,16 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\LineItemCreate[]
 	 */
 	public function get_items_from_order(WC_Order $order){
-		$items = $this->create_product_line_items_from_order($order);
-		$fees = $this->create_fee_lines_items_from_order($order);
-		$shipping = $this->create_shipping_line_items_from_order($order);
-		$combined = array_merge($items, $fees, $shipping);
-		return WC_Wallee_Helper::instance()->cleanup_line_items($combined, $order->get_total(), $order->get_currency());
+		$raw = $this->get_raw_items_from_order($order);
+		return WC_Wallee_Helper::instance()->cleanup_line_items($raw, $order->get_total(), $order->get_currency());
+	}
+	
+	public function get_raw_items_from_order(WC_Order $order){
+	    $items = $this->create_product_line_items_from_order($order);
+	    $fees = $this->create_fee_lines_items_from_order($order);
+	    $shipping = $this->create_shipping_line_items_from_order($order);
+	    $combined = array_merge($items, $fees, $shipping);
+	    return $combined;
 	}
 
 	/**
@@ -200,7 +205,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			 * @var WC_Order_Item_Product $item
 			 */
 			
-			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
+		    $line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
 			$amount_including_tax = $item->get_total() + $item->get_total_tax();
 			
@@ -250,7 +255,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			 * @var WC_Order_Item_Fee $fee
 			 */
 			
-			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
+		    $line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
 			$amount_including_tax = $fee->get_total() + $fee->get_total_tax();
 			
@@ -270,10 +275,10 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			if ($amount_including_tax < 0) {
 				//There are plugins which create fees with a negative values (used as discounts)
-				$line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
+			    $line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
 			}
 			else {
-				$line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
+			    $line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
 			}
 			
 			$line_item->setUniqueId($fee->get_meta('_wallee_unique_line_item_id', true));
@@ -298,7 +303,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			 * @var WC_Order_Item_Shipping $shipping
 			 */
 			
-			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
+		    $line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			
 			$amount_including_tax = $shipping->get_total() + $shipping->get_total_tax();
 			
@@ -437,10 +442,10 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			
 			if ($amount_including_tax < 0) {
 				//There are plugins which create fees with a negative values (used as discounts)
-				$line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
+			    $line_item->setType(\Wallee\Sdk\Model\LineItemType::DISCOUNT);
 			}
 			else {
-				$line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
+			    $line_item->setType(\Wallee\Sdk\Model\LineItemType::FEE);
 			}
 			
 			$line_item->setUniqueId($fee->get_meta('_wallee_unique_line_item_id', true));
@@ -509,7 +514,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 	 */
 	protected function clean_line_item(\Wallee\Sdk\Model\LineItemCreate $line_item){
 		$line_item->setSku($this->fix_length($line_item->getSku(), 200));
-		$line_item->setName($this->fix_length($line_item->getName(), 40));
+		$line_item->setName($this->fix_length($line_item->getName(), 150));
 		return $line_item;
 	}
 
@@ -517,7 +522,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 		$tax_rates = array();
 		
 		foreach ($rates_or_ids as $rate_id => $rate_info) {
-			$tax = new \Wallee\Sdk\Model\TaxCreate();
+		    $tax = new \Wallee\Sdk\Model\TaxCreate();
 			$tax->setTitle(WC_Tax::get_rate_label($rate_id));
 			$percent = WC_Tax::get_rate_percent($rate_id);
 			$number = rtrim($percent, '%');

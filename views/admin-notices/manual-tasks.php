@@ -16,6 +16,6 @@ if (!defined('ABSPATH')) {
 		?>
     	</p>
 	<p>
-		<a href="<?php echo $manual_taks_url?>" target="_blank"><?php _e('View in Wallee', 'woocommerce-wallee')?></a>
+		<a href="<?php echo $manual_taks_url?>" target="_blank"><?php _e('View', 'woocommerce-wallee')?></a>
 	</p>
 </div>

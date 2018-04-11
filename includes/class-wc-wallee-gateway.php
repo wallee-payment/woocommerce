@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('ABSPATH')) {
 	exit();
 }
@@ -11,19 +12,20 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	
 	//Contains a users saved tokens for this gateway.
 	protected $tokens = array();
-	private $wallee_payment_method_configuration_id;
-	private $wallee_payment_method_configuration = null;
-	private $wallee_translated_title = null;
-	private $wallee_translated_description = null;
-	private $wallee_show_description = 'yes';
-	private $wallee_show_icon = 'yes';
+	//We prefix out private variables as other plugins do strange things
+	private $wle_payment_method_configuration_id;
+	private $wle_payment_method_configuration = null;
+	private $wle_translated_title = null;
+	private $wle_translated_description = null;
+	private $wle_show_description = 'yes';
+	private $wle_show_icon = 'yes';
 
 	public function __construct(WC_Wallee_Entity_Method_Configuration $method){
-		$this->wallee_payment_method_configuration_id = $method->get_id();
+		$this->wle_payment_method_configuration_id = $method->get_id();
 		$this->id = 'wallee_' . $method->get_id();
 		$this->has_fields = false;
 		$this->method_title = $method->get_configuration_name();
-		$this->method_description = sprintf(__('The general settings for Wallee can be found <a href="%s" >here</a>', 'woocommerce-wallee'), 
+		$this->method_description = sprintf(__('The general settings can be found <a href="%s" >here</a>', 'woocommerce-wallee'), 
 				admin_url('admin.php?page=wc-settings&tab=wallee'));
 		$this->icon = $method->get_image();
 		
@@ -31,12 +33,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		$this->title = $method->get_configuration_name();
 		$this->description = "";
 		
-		$this->wallee_translated_title = $method->get_title();
-		$this->wallee_translated_description = $method->get_description();
-		$this->supports = array(
-			'products',
-			'refunds' 
-		);
+		$this->wle_translated_title = $method->get_title();
+		$this->wle_translated_description = $method->get_description();
 		
 		// Load the settings.
 		$this->init_form_fields();
@@ -44,13 +42,19 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		
 		// Define user set variables.
 		$this->enabled = $this->get_option('enabled');
-		$this->wallee_show_description = $this->get_option('show_description');
-		$this->wallee_show_icon = $this->get_option('show_icon');
+		$this->wle_show_description = $this->get_option('show_description');
+		$this->wle_show_icon = $this->get_option('show_icon');
 		
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array(
 			$this,
 			'process_admin_options' 
 		));
+		
+	
+		$this->supports = array(
+		    'products',
+		    'refunds'
+		);
 	}
 
 	/**
@@ -59,11 +63,11 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 * @return WC_Wallee_Entity_Method_Configuration
 	 */
 	public function get_payment_method_configuration(){
-		if ($this->wallee_payment_method_configuration === null) {
-			$this->wallee_payment_method_configuration = WC_Wallee_Entity_Method_Configuration::load_by_id(
-					$this->wallee_payment_method_configuration_id);
+		if ($this->wle_payment_method_configuration === null) {
+		    $this->wle_payment_method_configuration = WC_Wallee_Entity_Method_Configuration::load_by_id(
+					$this->wle_payment_method_configuration_id);
 		}
-		return $this->wallee_payment_method_configuration;
+		return $this->wle_payment_method_configuration;
 	}
 
 	/**
@@ -73,7 +77,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 */
 	public function get_title(){
 		$title = $this->title;
-		$translated = WC_Wallee_Helper::instance()->translate($this->wallee_translated_title);
+		$translated = WC_Wallee_Helper::instance()->translate($this->wle_translated_title);
 		if ($translated !== null) {
 			$title = $translated;
 		}
@@ -87,8 +91,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 */
 	public function get_description(){
 		$description = "";
-		if ($this->wallee_show_description == 'yes') {
-			$translated = WC_Wallee_Helper::instance()->translate($this->wallee_translated_description);
+		if ($this->wle_show_description == 'yes') {
+		    $translated = WC_Wallee_Helper::instance()->translate($this->wle_translated_description);
 			if ($translated !== null) {
 				$description = $translated;
 			}
@@ -102,9 +106,9 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 */
 	public function get_icon(){
 		$icon = "";
-		if ($this->wallee_show_icon == 'yes') {
+		if ($this->wle_show_icon == 'yes') {
 			$space_id = $this->get_payment_method_configuration()->get_space_id();
-			$space_view_id = get_option('wc_wallee_space_view_id');
+			$space_view_id = get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID);
 			$language = WC_Wallee_Helper::instance()->get_cleaned_locale();
 			
 			$url = WC_Wallee_Helper::instance()->get_resource_url($this->icon, $language, $space_id, $space_view_id);
@@ -225,7 +229,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		//It is possbile this function is called in the wordpress admin section.
 		//There is not a cart, so all active methods are available
 		if(is_admin() ) {
-			return $this->get_payment_method_configuration()->get_state() ==  WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
+		    return $this->get_payment_method_configuration()->get_state() ==  WC_Wallee_Entity_Method_Configuration::STATE_ACTIVE;
 		}
 		
 		//The gateways are always available during order total caluclation, as other plugins could need them.
@@ -233,12 +237,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			return true;
 		}
 	
-		if((isset(WC()->customer) && !WC()->customer->get_calculated_shipping()) || (isset($_POST['has_full_address']) && $_POST['has_full_address'] == 'false')){
-			return false;
-		}
-		
 		try {
-			$possible_methods = WC_Wallee_Service_Transaction::instance()->get_possible_payment_methods();
+		    $possible_methods = WC_Wallee_Service_Transaction::instance()->get_possible_payment_methods();
 			$possible = false;
 			foreach ($possible_methods as $possible_method) {
 				if ($possible_method->getId() == $this->get_payment_method_configuration()->get_configuration_id()) {
@@ -251,6 +251,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			}
 		}
 		catch(Exception $e){
+		    WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::DEBUG);
 			return false;
 		}
 		return true;
@@ -266,6 +267,24 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	}
 
 	public function payment_fields(){
+	    try{
+	        wp_enqueue_script('wallee-remote-checkout-js', WC_Wallee_Service_Transaction::instance()->get_javascript_url(), array(
+	            'jquery'
+	        ), null, true);
+	        wp_enqueue_script('wallee-checkout-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/frontend/checkout.js',
+	            array(
+	                'jquery',
+	                'wallee-remote-checkout-js'
+	            ), null, true);
+	        $localize = array(
+	            'i18n_not_complete' => __('Please fill out all required fields.', 'woocommerce-wallee'),
+	        );
+	        wp_localize_script('wallee-checkout-js', 'wallee_js_params', $localize);
+	    }
+	    catch(Exception $e){
+	        $this->log($e->getMessage(), WC_Log_Levels::DEBUG);
+	    }
+	    
 		parent::payment_fields();
 		?>
 		
@@ -293,39 +312,67 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment($order_id){
+	    $is_order_pay_endpoint = apply_filters('wc_wallee_is_order_pay_endpoint', is_wc_endpoint_url( 'order-pay'), $order_id);
 		try {
+		    if($is_order_pay_endpoint){
+			    $existing = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
+			    $space_id = $existing->get_space_id();
+			    $transaction_id = $existing->get_transaction_id();
+			}
+			else{
+			    $session_handler = WC()->session;
+			    $space_id = $session_handler->get('wallee_space_id');
+			    $transaction_id = $session_handler->get('wallee_transaction_id');
+			    $existing = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
+			    if($existing->get_id() > 0 && $existing->get_state() != \Wallee\Sdk\Model\TransactionState::PENDING){
+			        WooCommerce_Wallee::instance()->add_notice(__('There was an issue, while processing your order. Please try again or use another payment method', 'woocommerce-wallee'), 'error');
+			        $order->update_status( 'failed' );
+			        WC()->session->set('reload_checkout', true);
+			        return array(
+			            'result' => 'failure'
+			        );
+			    }			    
+			}
+						
 			$order = wc_get_order($order_id);
-			$session_handler = WC()->session;
-			$wallee_space_id = $session_handler->get('wallee_space_id');
-			$wallee_transaction_id = $session_handler->get('wallee_transaction_id');
-			
 			$transaction_service = WC_Wallee_Service_Transaction::instance();
 			
-			$transaction = $transaction_service->update_transaction($wallee_transaction_id, $wallee_space_id, $order, true);
+			$transaction = $transaction_service->confirm_transaction($transaction_id, $space_id, $order);
 			$transaction_service->update_transaction_info($transaction, $order);
 			
-			$order->add_meta_data('_wallee_linked_space_id', $transaction->getLinkedSpaceId(), true);
-			$order->add_meta_data('_wallee_transaction_id', $transaction->getId(), true);
-			
-			$session_handler->set('order_awaiting_payment', false);
-			wc_maybe_reduce_stock_levels($order->get_id());
+			$order->add_meta_data('_wallee_linked_ids', array('sapce_id' =>  $transaction->getLinkedSpaceId(), 'transaction_id' => $transaction->getId()), false);
+			$order->delete_meta_data('_wc_wallee_restocked');
 			
 			$order->save();
-			
-			WC_Wallee_Helper::instance()->destroy_current_cart_id();
-			
-			return array(
-				'result' => 'success',
-				'wallee' => 'true' 
+			$result =array(
+			    'result' => 'success',
+			    'wallee' => 'true'
 			);
+			if($is_order_pay_endpoint){
+			    wp_send_json( $result );
+			    exit;
+			}
+			else{
+    			WC_Wallee_Helper::instance()->destroy_current_cart_id();
+    			return $result;
+			}
 		}
 		catch (Exception $e) {
 			$message = $e->getMessage();
 			$cleaned = preg_replace("/^\[[A-Fa-f\d\-]+\] /", "", $message);
 			WooCommerce_Wallee::instance()->add_notice($cleaned, 'error');
+			$order->update_status( 'failed' );
+			if($is_order_pay_endpoint){
+			    $result =array(
+			        'result' => 'failure',
+			        'reload' => 'true'
+			    );
+			    wp_send_json( $result );
+			    exit;
+			}
+			WC()->session->set('reload_checkout', true);
 			return array(
-				'result' => 'failure',
-				'reload' => 'true' 
+				'result' => 'failure'
 			);
 		}
 	}
@@ -354,7 +401,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		$order = WC_Order_Factory::get_order($order_id);
 		
 		try {
-			WC_Wallee_Admin_Refund::execute_refund($order, $refund);
+		    WC_Wallee_Admin_Refund::execute_refund($order, $refund);
 		}
 		catch (Exception $e) {
 			return new WP_Error('wallee_error', $e->getMessage());

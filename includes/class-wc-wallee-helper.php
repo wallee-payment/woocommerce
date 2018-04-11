@@ -30,14 +30,14 @@ class WC_Wallee_Helper {
 	 */
 	public function get_api_client(){
 		if ($this->api_client === null) {
-			$user_id = get_option('wc_wallee_application_user_id');
-			$user_key = get_option('wc_wallee_application_user_key');
+		    $user_id = get_option(WooCommerce_Wallee::CK_APP_USER_ID);
+		    $user_key = get_option(WooCommerce_Wallee::CK_APP_USER_KEY);
 			if (!empty($user_id) && !empty($user_key)) {
-				$this->api_client = new \Wallee\Sdk\ApiClient($user_id, $user_key);
+			    $this->api_client = new \Wallee\Sdk\ApiClient($user_id, $user_key);
 				$this->api_client->setBasePath($this->get_base_gateway_url() . '/api');
 			}
 			else {
-				throw new Exception(__('The Wallee API user data are incomplete.', 'woocommerce-wallee'));
+				throw new Exception(__('The API access data is incomplete.', 'woocommerce-wallee'));
 			}
 		}
 		return $this->api_client;
@@ -54,7 +54,7 @@ class WC_Wallee_Helper {
 	 * @return string
 	 */
 	public function get_base_gateway_url(){
-		return get_option('wc_wallee_base_gateway_url', 'https://app-wallee.com');
+		return get_option('wc_wallee_base_gateway_url', 'https://app-wallee.com/');
 	}
 
 	/**
@@ -74,7 +74,7 @@ class WC_Wallee_Helper {
 		
 		try {
 			/* @var WC_Wallee_Provider_Language $language_provider */
-			$language_provider = WC_Wallee_Provider_Language::instance();
+		    $language_provider = WC_Wallee_Provider_Language::instance();
 			$primary_language = $language_provider->find_primary($language);
 			if ($primary_language && isset($translated_string[$primary_language->getIetfCode()])) {
 				return $translated_string[$primary_language->getIetfCode()];
@@ -124,7 +124,7 @@ class WC_Wallee_Helper {
 	 */
 	public function get_currency_fraction_digits($currency_code){
 		/* @var WC_Wallee_Provider_Currency $currency_provider */
-		$currency_provider = WC_Wallee_Provider_Currency::instance();
+	    $currency_provider = WC_Wallee_Provider_Currency::instance();
 		$currency = $currency_provider->find($currency_code);
 		if ($currency) {
 			return $currency->getFractionDigits();
@@ -160,7 +160,7 @@ class WC_Wallee_Helper {
 		$effective_sum = $this->round_amount($this->get_total_amount_including_tax($line_items), $currency);
 		$diff = $this->round_amount($expected_sum, $currency) - $effective_sum;
 		if ($diff != 0) {
-			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
+		    $line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			$line_item->setAmountIncludingTax($this->round_amount($diff, $currency));
 			$line_item->setName(__('Rounding Adjustment', 'woocommerce-wallee'));
 			$line_item->setQuantity(1);
@@ -229,12 +229,29 @@ class WC_Wallee_Helper {
 	private function round_amount($amount, $currency_code){
 		return round($amount, $this->get_currency_fraction_digits($currency_code));
 	}
+	
+	public function get_transaction_id_map_for_order(WC_Order $order){
+	    $meta_data = $order->get_meta('_wallee_linked_ids', false);
+	    if(empty($meta_data)){
+	        //Old system
+	        $space_id = $order->get_meta('_wallee_linked_space_id', true);
+	        $transaction_id = $order->get_meta('_wallee_transaction_id', true);
+	        return array('space_id' => $space_id, 'transaction_id' => $transaction_id);
+	    }
+	    foreach($meta_data as $data){
+	        $info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($data['space_id'], $data['transaction_id']);
+	        if($info->get_id !== null && $info->get_state() != \Wallee\Sdk\Model\TransactionState::FAILED){
+	            return $data;
+	        }
+	    }
+	    return array();
+	}
 
 	public function get_current_cart_id(){
 		$session_handler = WC()->session;
 		$current_cart_id = $session_handler->get('wallee_current_cart_id', null);
 		if ($current_cart_id === null) {
-			$current_cart_id = hash('sha256', rand());
+		    $current_cart_id = WC_Wallee_Unique_Id::get_uuid();
 			$session_handler->set('wallee_current_cart_id', $current_cart_id);
 		}
 		return $current_cart_id;
@@ -245,16 +262,18 @@ class WC_Wallee_Helper {
 		$session_handler->set('wallee_current_cart_id', null);
 	}
 
-	public function maybe_restock_items_for_cancelled_order(WC_Order $order){
+	public function maybe_restock_items_for_order(WC_Order $order){
 		$restocked = $order->get_meta('_wc_wallee_restocked', true);
-		if (apply_filters('wc_wallee_cancelled_payment_restock', !$restocked, $order)) {
-			$this->restock_items_for_cancelled_order($order);
+		$reduced = get_post_meta($order->get_id(), '_order_stock_reduced',true);
+		if (apply_filters('wc_wallee_order_restock', !$restocked && $reduced == 'yes', $order)) {
+		    $this->restock_items_for_order($order);
+		    delete_post_meta($order->get_id(), '_order_stock_reduced');
 			$order->add_meta_data('_wc_wallee_restocked', true, true);
 			$order->save();
 		}
 	}
 
-	protected function restock_items_for_cancelled_order(WC_Order $order){
+	protected function restock_items_for_order(WC_Order $order){
 		if ('yes' === get_option('woocommerce_manage_stock') && $order && apply_filters('wc_wallee_can_increase_order_stock', true, $order) &&
 				 sizeof($order->get_items()) > 0) {
 			foreach ($order->get_items() as $item) {
@@ -311,14 +330,14 @@ class WC_Wallee_Helper {
 		$language = false;
 		if(strlen($languageString) >= 5){
 			//We assume it was a long ietf code, check if it exists
-			$language = WC_Wallee_Provider_Language::instance()->find($languageString);
+		    $language = WC_Wallee_Provider_Language::instance()->find($languageString);
 			//Get first part of IETF and try to resolve as ISO
 			if(strpos($languageString, '-') !== false){
 				$languageString = substr($languageString, 0, strpos($languageString, '-'));
 			}
 		}
 		if(!$language){
-			$language = WC_Wallee_Provider_Language::instance()->find_by_iso_code(strtolower($languageString));
+		    $language = WC_Wallee_Provider_Language::instance()->find_by_iso_code(strtolower($languageString));
 		}
 		//We did not find anything, so fall back
 		if(!$language){

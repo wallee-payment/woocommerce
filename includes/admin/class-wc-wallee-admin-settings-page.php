@@ -13,7 +13,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	 */
 	public function __construct(){
 		$this->id = 'wallee';
-		$this->label = __('Wallee', 'woocommerce-wallee');
+		$this->label = 'wallee';
 		
 		add_filter('woocommerce_settings_tabs_array', array(
 			$this,
@@ -35,7 +35,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	}
 
 	public function add_settings_tab($settings_tabs){
-		$settings_tabs[$this->id] = __('Wallee', 'woocommerce-wallee');
+		$settings_tabs[$this->id] = 'wallee';
 		return $settings_tabs;
 	}
 
@@ -50,19 +50,19 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	}
 
 	public function update_settings(){
-		WC_Wallee_Helper::instance()->reset_api_client();
-		$user_id = get_option('wc_wallee_application_user_id');
-		$user_key = get_option('wc_wallee_application_user_key');
+	    WC_Wallee_Helper::instance()->reset_api_client();
+	    $user_id = get_option(WooCommerce_Wallee::CK_APP_USER_ID);
+	    $user_key = get_option(WooCommerce_Wallee::CK_APP_USER_KEY);
 		if (!empty($user_id) && !empty($user_key)) {
 			try {
 				do_action('wc_wallee_settings_changed');
 				$this->delete_provider_transients();
 			}
 			catch (Exception $e) {
-				WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
-				WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
+			    WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
+			    WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 				WC_Admin_Settings::add_error(
-						__('Could not fetch configuration from Wallee. Please check your credentials and save again.', 'woocommerce-wallee'));
+						__('Could not fetch configuration. Please check your credentials and save again.', 'woocommerce-wallee'));
 			}
 		}
 		
@@ -93,8 +93,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => __('General', 'woocommerce-wallee'),
 				'desc' => sprintf(
-						__('To use this extension, a wallee account is required. Sign up on <a href="%s" target="_blank">wallee.com</a>.<br />You can find more information on how to retrieve the required information <a href="%s" target="_blank">here</a>.',
-								'woocommerce-wallee'), 'https://app-wallee.com/user/signup', 'https://github.com/wallee-payment/woo-wallee/wiki/Getting-Started#prerequisites'),
+						__('To use this extension, a wallee account is required. Sign up <a href="%s" target="_blank">here</a>.',
+								'woocommerce-wallee'), 'https://app-wallee.com/user/signup'),
 				'type' => 'title',
 				'id' => 'general_options' 
 			),
@@ -102,7 +102,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => __('User Id', 'woocommerce-wallee'),
 				'desc_tip' => __('The Application User needs to have full permissions in the space this shop is linked to.', 'woocommerce-wallee'),
-				'id' => 'wc_wallee_application_user_id',
+			    'id' => WooCommerce_Wallee::CK_APP_USER_ID,
 				'type' => 'text',
 				'css' => 'min-width:300px;',
 				'desc' => __('(required)', 'woocommerce-wallee') 
@@ -110,7 +110,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			
 			array(
 				'title' => __('Application Key', 'woocommerce-wallee'),
-				'id' => 'wc_wallee_application_user_key',
+			    'id' => WooCommerce_Wallee::CK_APP_USER_KEY,
 				'type' => 'password',
 				'css' => 'min-width:300px;',
 				'desc' => __('(required)', 'woocommerce-wallee') 
@@ -118,7 +118,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			
 			array(
 				'title' => __('Space Id', 'woocommerce-wallee'),
-				'id' => 'wc_wallee_space_id',
+			    'id' => WooCommerce_Wallee::CK_SPACE_ID,
 				'type' => 'text',
 				'css' => 'min-width:300px;',
 				'desc' => __('(required)', 'woocommerce-wallee') 
@@ -126,7 +126,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			
 			array(
 				'title' => __('Space View Id', 'woocommerce-wallee'),
-				'id' => 'wc_wallee_space_view_id',
+			    'id' => WooCommerce_Wallee::CK_SPACE_VIEW_ID,
 				'type' => 'text',
 				'css' => 'min-width:300px;' 
 			),
@@ -145,7 +145,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => __('Send Order Email', 'woocommerce-wallee'),
 				'desc' => __("Send the Woocommerce's order email.", 'woocommerce-wallee'),
-				'id' => 'wc_wallee_shop_email',
+			    'id' => WooCommerce_Wallee::CK_SHOP_EMAIL,
 				'type' => 'checkbox',
 				'default' => 'yes',
 				'css' => 'min-width:300px;' 
@@ -165,7 +165,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => __('Invoice Download', 'woocommerce-wallee'),
 				'desc' => __("Allow customer's to download the invoice.", 'woocommerce-wallee'),
-				'id' => 'wc_wallee_customer_invoice',
+			    'id' => WooCommerce_Wallee::CK_CUSTOMER_INVOICE,
 				'type' => 'checkbox',
 				'default' => 'yes',
 				'css' => 'min-width:300px;' 
@@ -173,7 +173,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => __('Packing Slip Download', 'woocommerce-wallee'),
 				'desc' => __("Allow customer's to download the packing slip.", 'woocommerce-wallee'),
-				'id' => 'wc_wallee_customer_packing',
+			    'id' => WooCommerce_Wallee::CK_CUSTOMER_PACKING,
 				'type' => 'checkbox',
 				'default' => 'yes',
 				'css' => 'min-width:300px;' 
