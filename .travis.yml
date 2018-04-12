@@ -6,8 +6,9 @@ before_deploy:
       mkdir build;
       mkdir build/src;
       rsync -r --exclude 'build' --exclude '.git' --exclude '.travis.yml' --exclude 'README.md' . build/src;
-      perl -plne 'print "$ENV{'FEATURES'}" if(/== Installation ==/);' build/src/readme.txt | tee build/src/readme.txt;
-      perl -plne 'print "$ENV{'FAQ_ENTRIES'}" if(/== Changelog ==/);' build/src/readme.txt | tee build/src/readme.txt;
+      perl -plne 'print "$ENV{'FEATURES'}" if(/== Installation ==/); print "$ENV{'FAQ_ENTRIES'}" if(/== Changelog ==/);' build/src/readme.txt > build/src/readme_mod.txt;
+      rm build/src/readme.txt;
+      mv build/src/readme_mod.txt build/src/readme.txt;
       mkdir build/$WORDPRESS_ORG_SLUG;
       rsync -r build/src/ build/$WORDPRESS_ORG_SLUG/;
       cd build;
@@ -29,8 +30,8 @@ deploy:
     on:
       tags: true
       repo: wallee-payment/woocommerce
+    skip_cleanup: true
     slug: $WORDPRESS_ORG_SLUG
     username: $WORDPRESS_ORG_USERNAME
     password: $WORDPRESS_ORG_PASSWORD
     build_dir: build/src
-
