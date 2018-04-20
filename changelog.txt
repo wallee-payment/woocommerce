@@ -71,3 +71,7 @@
 * Dev - Internal Structure Changes
 * Dev - Updated to wallee SDK 1.1.6
 
+= 1.1.1 - April 20, 2018 =
+
+* Fix - Issue in Checkout Javascript
+

@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -49,9 +49,6 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 == Changelog ==
 
  
-= 1.1.0 - April 11, 2018 =
+= 1.1.1 - April 20, 2018 =
 
-* Fix - Order Pay process
-* Tweak - Additional Hooks to use with other plugins
-* Dev - Internal Structure Changes
-* Dev - Updated to wallee SDK 1.1.6
+* Fix - Issue in Checkout Javascript

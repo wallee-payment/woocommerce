@@ -166,6 +166,14 @@ jQuery(function($) {
 		    }
 		    var self = this;
 		    
+		    $(this.checkout_form_identifier).block({
+				message : null,
+				overlayCSS : {
+				    background : '#fff',
+				    opacity : 0.6
+				}
+		    });	
+		    
 		    //Create visible div and add iframe to it. otherwise some browsers have issues reporting the correct height
 		    var tmp_container_id = 'tmp-'+container_id;
 		    $('<div>').attr('id', tmp_container_id).appendTo('body');
@@ -185,6 +193,10 @@ jQuery(function($) {
 				self.payment_methods[method_id]['height'] = height;
 				self.handle_description_for_empty_iframe(method_id)
 			    });
+		    
+		    this.payment_methods[method_id].handler.setInitializeCallback(function(){
+		    	$(self.checkout_form_identifier).unblock();
+		    });
 	
 		    this.payment_methods[method_id].handler
 			    .create(self.payment_methods[method_id].container_id);
@@ -203,7 +215,7 @@ jQuery(function($) {
 			else{
 			 	var form = $(this.checkout_form_identifier);
 			    form.off('checkout_place_order_' + method_id + '.wallee').on(
-				    'checkout_place_order_' + method_id + '.wallee', function(){self.process_submit(method_id);});
+				    'checkout_place_order_' + method_id + '.wallee', function(){return self.process_submit(method_id);});
 			}
 		},
 		
