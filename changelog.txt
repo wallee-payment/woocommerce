@@ -75,3 +75,8 @@
 
 * Fix - Issue in Checkout Javascript
 
+= 1.1.2 - May 22, 2018 =
+
+* Fix - Issue with refunds
+* Tweak- Improved error messages for configuration issues
+

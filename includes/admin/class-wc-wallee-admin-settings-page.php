@@ -2,7 +2,14 @@
 if (!defined('ABSPATH')) {
 	exit();
 }
-
+/**
+ * wallee WooCommerce
+ *
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ *
+ * @author customweb GmbH (http://www.customweb.com/)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
 /**
  * Adds Wallee settings to WooCommerce Settings Tabs
  */
@@ -54,16 +61,49 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	    $user_id = get_option(WooCommerce_Wallee::CK_APP_USER_ID);
 	    $user_key = get_option(WooCommerce_Wallee::CK_APP_USER_KEY);
 		if (!empty($user_id) && !empty($user_key)) {
-			try {
-				do_action('wc_wallee_settings_changed');
-				$this->delete_provider_transients();
-			}
-			catch (Exception $e) {
-			    WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
-			    WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
-				WC_Admin_Settings::add_error(
-						__('Could not fetch configuration. Please check your credentials and save again.', 'woocommerce-wallee'));
-			}
+		    $error = '';
+		    try{
+		        WC_Wallee_Service_Method_Configuration::instance()->synchronize();
+		    }
+		    catch (Exception $e) {
+		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
+		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
+		        $error .= ' '. 
+		            __('Could not update payment method configuration.', 'woocommerce-wallee');
+		    }
+		    try{
+		        WC_Wallee_Service_Webhook::instance()->install();
+		    }
+		    catch (Exception $e) {
+		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
+		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
+		        $error .= ' '.
+		            __('Could not install webhooks, please check the feature is active for your space.', 'woocommerce-wallee');
+		    }
+		    try{
+		        WC_Wallee_Service_Manual_Task::instance()->update();
+		    }
+		    catch (Exception $e) {
+		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
+		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
+		        $error .= ' '.
+		            __('Could not update the manual task list.', 'woocommerce-wallee');
+		    }
+		    try {
+		        do_action('wc_wallee_settings_changed');
+		    }
+		    catch (Exception $e) {
+		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
+		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
+		        $error .= ' '. $e->getMessage();
+		    }
+		    if(!empty($error)){
+		        $error .=
+		            __('Please check your credentials.', 'woocommerce-wallee') .' '.$error;
+		        WC_Admin_Settings::add_error($error);
+		        
+		    }			
+			$this->delete_provider_transients();
 		}
 		
 	}

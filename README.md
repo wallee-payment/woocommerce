@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/wallee-payment/woocommerce.svg?branch=master)](https://travis-ci.org/wallee-payment/woocommerce)
 
-# Wallee Woocommerce
+# wallee Woocommerce
 This repository contains the wallee WooCommerce plugin that enables WooCommerce to process payments with [wallee](https://www.wallee.com).
 
 ##### To use this extension, a [wallee](https://www.wallee.com) account is required.

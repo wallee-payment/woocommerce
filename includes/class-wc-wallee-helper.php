@@ -2,7 +2,14 @@
 if (!defined('ABSPATH')) {
 	exit();
 }
-
+/**
+ * wallee WooCommerce
+ *
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ *
+ * @author customweb GmbH (http://www.customweb.com/)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
 /**
  * WC_Wallee_Helper Class.
  */
@@ -238,10 +245,15 @@ class WC_Wallee_Helper {
 	        $transaction_id = $order->get_meta('_wallee_transaction_id', true);
 	        return array('space_id' => $space_id, 'transaction_id' => $transaction_id);
 	    }
+	    
 	    foreach($meta_data as $data){
-	        $info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($data['space_id'], $data['transaction_id']);
-	        if($info->get_id !== null && $info->get_state() != \Wallee\Sdk\Model\TransactionState::FAILED){
-	            return $data;
+	        $values = $data->value;
+	        if(isset($values['sapce_id'])){
+	            $values['space_id'] = $values['sapce_id']; 
+	        }	        
+	        $info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($values['space_id'], $values['transaction_id']);
+	        if($info->get_id() !== null && $info->get_state() != \Wallee\Sdk\Model\TransactionState::FAILED){
+	            return $values;
 	        }
 	    }
 	    return array();

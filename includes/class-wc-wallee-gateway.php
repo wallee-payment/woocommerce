@@ -3,7 +3,14 @@
 if (!defined('ABSPATH')) {
 	exit();
 }
-
+/**
+ * wallee WooCommerce
+ *
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ *
+ * @author customweb GmbH (http://www.customweb.com/)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
 /**
  * This class implements the wallee gateways
  */
@@ -340,7 +347,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			$transaction = $transaction_service->confirm_transaction($transaction_id, $space_id, $order);
 			$transaction_service->update_transaction_info($transaction, $order);
 			
-			$order->add_meta_data('_wallee_linked_ids', array('sapce_id' =>  $transaction->getLinkedSpaceId(), 'transaction_id' => $transaction->getId()), false);
+			$order->add_meta_data('_wallee_linked_ids', array('space_id' =>  $transaction->getLinkedSpaceId(), 'transaction_id' => $transaction->getId()), false);
 			$order->delete_meta_data('_wc_wallee_restocked');
 			
 			$order->save();

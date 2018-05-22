@@ -1,3 +1,11 @@
+/**
+ * wallee WooCommerce
+ *
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ *
+ * @author customweb GmbH (http://www.customweb.com/)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
 /* Icons for status */
 @font-face {
   font-family: 'woocommerce-wallee';
@@ -53,6 +61,21 @@
 	color: #ffffff;
 	line-height: 1.4;
 	font-size: 75%;
+}
+
+.order-status.status-wallee-redirected{
+	
+}
+
+.order-status.status-wallee-waiting{
+	background-color: #f8e8a7;
+	color: #94790c;
+}
+
+.order-status.status-wallee-manual{
+	background-color: #f8bfa7;
+	color: #94340c;
+	
 }
 
 /* Invoice & PackingSlip Download */

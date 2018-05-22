@@ -2,9 +2,16 @@
 if (!defined('ABSPATH')) {
 	exit();
 }
-
 /**
- * SHows the document downloads buttons and handles the downloads in the order overview.
+ * wallee WooCommerce
+ *
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ *
+ * @author customweb GmbH (http://www.customweb.com/)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
+/**
+ * Shows the document downloads buttons and handles the downloads in the order overview.
  */
 class WC_Wallee_Admin_Document {
 
@@ -31,6 +38,7 @@ class WC_Wallee_Admin_Document {
 		$helper = WC_Wallee_Helper::instance();
 		
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+
 		if ($transaction_info->get_id() == null) {
 			return;
 		}
@@ -84,7 +92,7 @@ class WC_Wallee_Admin_Document {
 				    \Wallee\Sdk\Model\TransactionState::FULFILL,
 				    \Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
-			add_meta_box('woocommerce-order-wallee-documents', 'wallee ',__('Documents', 'woocommerc-wallee'), array(
+			add_meta_box('woocommerce-order-wallee-documents', 'wallee '.__('Documents', 'woocommerc-wallee'), array(
 				__CLASS__,
 				'output' 
 			), 'shop_order', 'side', 'default');

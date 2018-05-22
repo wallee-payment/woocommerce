@@ -2,7 +2,14 @@
 if (!defined('ABSPATH')) {
 	exit();
 }
-
+/**
+ * wallee WooCommerce
+ *
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ *
+ * @author customweb GmbH (http://www.customweb.com/)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
 /**
  * WC Wallee Admin class
  */
@@ -65,18 +72,6 @@ class WC_Wallee_Admin {
 			'plugin_action_links' 
 		));
 		
-		add_action('wc_wallee_settings_changed', array(
-		    WC_Wallee_Service_Method_Configuration::instance(),
-			'synchronize' 
-		));
-		add_action('wc_wallee_settings_changed', array(
-		    WC_Wallee_Service_Webhook::instance(),
-			'install' 
-		));
-		add_action('wc_wallee_settings_changed', array(
-		    WC_Wallee_Service_Manual_Task::instance(),
-			'update' 
-		));
 		add_filter('woocommerce_hidden_order_itemmeta', array(
 			$this,
 			'hide_order_unique_id_meta' 
