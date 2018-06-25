@@ -43,13 +43,13 @@ class WC_Wallee_Admin_Order_Completion {
 		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		    if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				echo '<button type="button" class="button wallee-completion-button action-wallee-completion-cancel" style="display:none">' .
-						 __('Cancel', 'woocommerce-wallee') . '</button>';
+						 __('Cancel', 'woo-wallee') . '</button>';
 				echo '<button type="button" class="button button-primary wallee-completion-button action-wallee-completion-execute" style="display:none">' .
-						 __('Execute Completion', 'woocommerce-wallee') . '</button>';
+						 __('Execute Completion', 'woo-wallee') . '</button>';
 				echo '<label for="completion_restock_not_completed_items" style="display:none">' .
-						 __('Restock not completed items', 'woocommerce-wallee') . '</label>';
+						 __('Restock not completed items', 'woo-wallee') . '</label>';
 				echo '<input type="checkbox" id="completion_restock_not_completed_items" name="restock_not_completed_items" checked="checked" style="display:none">';
-				echo '<label for="refund_amount" style="display:none">' . __('Completion Amount', 'woocommerce-wallee') . '</label>';
+				echo '<label for="refund_amount" style="display:none">' . __('Completion Amount', 'woo-wallee') . '</label>';
 			}
 		}
 	}
@@ -115,7 +115,7 @@ class WC_Wallee_Admin_Order_Completion {
 						
 						$tax_amount = $item['completion_total'] * $rate / 100;
 						if (wc_format_decimal($tax_amount, wc_get_price_decimals()) != wc_format_decimal($amount, wc_get_price_decimals())) {
-							throw new Exception(__('The tax rate can not be changed.', 'woocommerce-wallee'));
+							throw new Exception(__('The tax rate can not be changed.', 'woo-wallee'));
 						}
 					}
 					$tax = array_sum($item['completion_tax']);
@@ -124,7 +124,7 @@ class WC_Wallee_Admin_Order_Completion {
 			}
 			
 			if (wc_format_decimal($completion_amount, wc_get_price_decimals()) != wc_format_decimal($total_items_sum, wc_get_price_decimals())) {
-				throw new Exception(__('The line item total does not correspond to the total amount to complete.', 'woocommerce-wallee'));
+				throw new Exception(__('The line item total does not correspond to the total amount to complete.', 'woo-wallee'));
 			}
 			
 			wc_transaction_query("start");
@@ -138,16 +138,16 @@ class WC_Wallee_Admin_Order_Completion {
 					$transaction_info->get_transaction_id(), $transaction_info->get_space_id());
 			
 			if ($transaction_info->get_state() != \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
-				throw new Exception(__('The transaction is not in a state to be completed.', 'woocommerce-wallee'));
+				throw new Exception(__('The transaction is not in a state to be completed.', 'woo-wallee'));
 			}
 			
 			if (WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id()) > 0) {
-				throw new Exception(__('Please wait until the existing completion is processed.', 'woocommerce-wallee'));
+				throw new Exception(__('Please wait until the existing completion is processed.', 'woo-wallee'));
 			}
 			if (WC_Wallee_Entity_Void_Job::count_running_void_for_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id()) > 0) {
-				throw new Exception(__('There is a void in process. The order can not be completed.', 'woocommerce-wallee'));
+				throw new Exception(__('There is a void in process. The order can not be completed.', 'woo-wallee'));
 			}
 			
 			$completion_job = new WC_Wallee_Entity_Completion_Job();
@@ -176,7 +176,7 @@ class WC_Wallee_Admin_Order_Completion {
 			
 			wp_send_json_success(
 					array(
-						'message' => __('The completion is updated automatically once the result is available.', 'woocommerce-wallee') 
+						'message' => __('The completion is updated automatically once the result is available.', 'woo-wallee') 
 					));
 		}
 		catch (Exception $e) {
@@ -269,7 +269,7 @@ class WC_Wallee_Admin_Order_Completion {
 				self::send_completion($id);
 			}
 			catch (Exception $e) {
-				$message = sprintf(__('Error updating completion job with id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
+				$message = sprintf(__('Error updating completion job with id %d: %s', 'woo-wallee'), $id, $e->getMessage());
 				WooCommerce_Wallee::instance()->log($message, WC_Log_Levels::ERROR);
 			}
 		}

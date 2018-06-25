@@ -187,6 +187,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 				$transaction->getPaymentConnectorConfiguration() != null && $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration() !=
 						 null ? $transaction->getPaymentConnectorConfiguration()->getPaymentMethodConfiguration()->getPaymentMethod() : null);
 		$info->set_image($this->get_resource_path($this->get_payment_method_image($transaction, $order)));
+		$info->set_image_base($this->get_resource_base($this->get_payment_method_image($transaction, $order)));
 		$info->set_labels($this->get_transaction_labels($transaction));
 		if ($transaction->getState() == \Wallee\Sdk\Model\TransactionState::FAILED ||
 		    $transaction->getState() == \Wallee\Sdk\Model\TransactionState::DECLINE) {
@@ -258,7 +259,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		if ($transaction->getPaymentConnectorConfiguration() == null) {
 			$method_instance = wc_get_payment_gateway_by_order($order);
 			if ($method_instance != false && ($method_instance instanceof WC_Wallee_Gateway)) {
-				return $method_instance->get_payment_method_configuration()->get_image();
+			    return WC_Wallee_Helper::instance()->get_resource_url($method_instance->get_payment_method_configuration()->get_image_base(), $method_instance->get_payment_method_configuration()->get_image());
 			}
 			return null;
 		}
@@ -303,7 +304,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 			try {
 				$transaction = $this->get_transaction_service()->read($space_id, $transaction_id);
 				if ($transaction->getState() != \Wallee\Sdk\Model\TransactionState::PENDING) {
-				    throw new Exception(__("The checkout expired, please try again", "woocommerce-wallee"));
+				    throw new Exception(__("The checkout expired, please try again", "woo-wallee"));
 				}
 				$pending_transaction = new \Wallee\Sdk\Model\TransactionPending();
 				$pending_transaction->setId($transaction->getId());
@@ -491,7 +492,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	    $space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 	    $create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
 	    $create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
-	    $create_transaction->setSpaceViewId(get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID));
+	    $space_view_id = get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID, null);
+	    if(!empty($space_view_id)){
+	        $create_transaction->setSpaceViewId($space_view_id);
+	    }
 	    $create_transaction->setAutoConfirmationEnabled(false);
 	    if(isset($_COOKIE['wc_wallee_device_id'])){
 	        $create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);
@@ -513,7 +517,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	    $space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
 		$create_transaction = new \Wallee\Sdk\Model\TransactionCreate();
 		$create_transaction->setCustomersPresence(\Wallee\Sdk\Model\CustomersPresence::VIRTUAL_PRESENT);
-		$create_transaction->setSpaceViewId(get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID));
+		$space_view_id = get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID, null);
+		if(!empty($space_view_id)){
+		    $create_transaction->setSpaceViewId($space_view_id);
+		}
 		$create_transaction->setAutoConfirmationEnabled(false);
 		if(isset($_COOKIE['wc_wallee_device_id'])){
 			$create_transaction->setDeviceSessionIdentifier($_COOKIE['wc_wallee_device_id']);

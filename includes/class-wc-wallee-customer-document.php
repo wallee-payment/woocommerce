@@ -54,7 +54,7 @@ class WC_Wallee_Customer_Document {
 		if ($invoice || $packing) {
 			?>
 <section class="woocommerce-order-wallee-documents">
-	<h2><?php _e('Order Documents', 'woocommerce-wallee');?></h2>
+	<h2><?php _e('Order Documents', 'woo-wallee');?></h2>
 				 <?php if($invoice) :?>
 					<span><a
 		href="<?php
@@ -65,7 +65,7 @@ class WC_Wallee_Customer_Document {
 							'nonce' => wp_create_nonce('download_invoice') 
 						));
 				?>"
-		class="woocommerce-order-wallee-download woocommerce-order-wallee-download-invoice"><?php _e('Download Invoice', 'woocommerce-wallee')?></a></span>
+		class="woocommerce-order-wallee-download woocommerce-order-wallee-download-invoice"><?php _e('Download Invoice', 'woo-wallee')?></a></span>
 				<?php endif;?>
 				<?php if($packing) :?>
 				<span><a
@@ -77,7 +77,7 @@ class WC_Wallee_Customer_Document {
 							'nonce' => wp_create_nonce('download_packing') 
 						));
 				?>"
-		class="woocommerce-order-wallee-download woocommerce-order-wallee-download-packingslip"><?php _e('Download Packing Slip', 'woocommerce-wallee')?></a></span>
+		class="woocommerce-order-wallee-download woocommerce-order-wallee-download-packingslip"><?php _e('Download Packing Slip', 'woo-wallee')?></a></span>
 				<?php endif;?>
 				
 </section>
@@ -147,7 +147,7 @@ class WC_Wallee_Customer_Document {
 			}
 		}
 		catch (Exception $e) {
-			wc_add_notice(__('There was an error downloading the document.', 'woocommerce-wallee'), 'error');
+			wc_add_notice(__('There was an error downloading the document.', 'woo-wallee'), 'error');
 		}
 		wp_redirect(wc_get_endpoint_url('my-account/view-order', $order_id, wc_get_page_permalink('my-account')));
 		exit();

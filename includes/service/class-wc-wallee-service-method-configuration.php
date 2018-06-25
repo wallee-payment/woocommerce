@@ -28,6 +28,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 			$entity->set_title($configuration->getResolvedTitle());
 			$entity->set_description($configuration->getResolvedDescription());
 			$entity->set_image($this->get_resource_path($configuration->getResolvedImageUrl()));
+			$entity->set_image_base($this->get_resource_base($configuration->getResolvedImageUrl()));
 			$entity->set_state($this->get_configuration_state($configuration));
 			$entity->save();
 		}
@@ -49,7 +50,10 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 		}		
 		if ($this->get_resource_path($configuration->getResolvedImageUrl()) != $entity->get_image()) {
 			return true;
-		}		
+		}
+		if($this->get_resource_base($configuration->getResolvedImageUrl()) != $entity->get_image_base()){
+		    return true;
+		}
 		return false;
 	}
 
@@ -83,6 +87,7 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 				$method->set_description($configuration->getResolvedDescription());
 				
 				$method->set_image($this->get_resource_path($configuration->getResolvedImageUrl()));
+				$method->set_image_base($this->get_resource_base($configuration->getResolvedImageUrl()));
 				$method->save();
 			}
 		}

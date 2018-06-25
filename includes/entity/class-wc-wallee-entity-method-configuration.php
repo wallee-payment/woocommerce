@@ -28,6 +28,8 @@ if (!defined('ABSPATH')) {
  * @method void set_description(string[] $description)
  * @method string get_image()
  * @method void set_image(string $image)
+ * @method string get_image_base()
+ * @method void set_image_base(string $image_base)
  * 
  */
 class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
@@ -43,7 +45,8 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 		    'configuration_name' => WC_Wallee_Entity_Resource_Type::STRING,
 		    'title' => WC_Wallee_Entity_Resource_Type::OBJECT,
 		    'description' => WC_Wallee_Entity_Resource_Type::OBJECT,
-		    'image' => WC_Wallee_Entity_Resource_Type::STRING 
+		    'image' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'image_base' => WC_Wallee_Entity_Resource_Type::STRING,
 		
 		);
 	}

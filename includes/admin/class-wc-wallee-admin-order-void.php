@@ -43,10 +43,10 @@ class WC_Wallee_Admin_Order_Void {
 		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		    if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
 				echo '<button type="button" class="button wallee-void-button action-wallee-void-cancel" style="display:none">' .
-						 __('Cancel', 'woocommerce-wallee') . '</button>';
+						 __('Cancel', 'woo-wallee') . '</button>';
 				echo '<button type="button" class="button button-primary wallee-void-button action-wallee-void-execute" style="display:none">' .
-						 __('Execute Void', 'woocommerce-wallee') . '</button>';
-				echo '<label for="restock_voided_items" style="display:none">' . __('Restock items', 'woocommerce-wallee') . '</label>';
+						 __('Execute Void', 'woo-wallee') . '</button>';
+				echo '<label for="restock_voided_items" style="display:none">' . __('Restock items', 'woo-wallee') . '</label>';
 				echo '<input type="checkbox" id="restock_voided_items" name="restock_voided_items" checked="checked" style="display:none">';
 			}
 		}
@@ -80,16 +80,16 @@ class WC_Wallee_Admin_Order_Void {
 					$transaction_info->get_transaction_id(), $transaction_info->get_space_id());
 			
 			if ($transaction_info->get_state() != \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
-				throw new Exception(__('The transaction is not in a state to be voided.', 'woocommerce-wallee'));
+				throw new Exception(__('The transaction is not in a state to be voided.', 'woo-wallee'));
 			}
 			
 			if (WC_Wallee_Entity_Void_Job::count_running_void_for_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id()) > 0) {
-				throw new Exception(__('Please wait until the existing void is processed.', 'woocommerce-wallee'));
+				throw new Exception(__('Please wait until the existing void is processed.', 'woo-wallee'));
 			}
 			if (WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id()) > 0) {
-				throw new Exception(__('There is a completion in process. The order can not be voided.', 'woocommerce-wallee'));
+				throw new Exception(__('There is a completion in process. The order can not be voided.', 'woo-wallee'));
 			}
 			
 			$void_job = new WC_Wallee_Entity_Void_Job();
@@ -114,7 +114,7 @@ class WC_Wallee_Admin_Order_Void {
 			self::send_void($current_void_id);
 			wp_send_json_success(
 					array(
-						'message' => __('The transaction is updated automatically once the result is available.', 'woocommerce-wallee') 
+						'message' => __('The transaction is updated automatically once the result is available.', 'woo-wallee') 
 					));
 		}
 		catch (Exception $e) {
@@ -170,7 +170,7 @@ class WC_Wallee_Admin_Order_Void {
 				self::send_void($id);
 			}
 			catch (Exception $e) {
-				$message = sprintf(__('Error updating void job with id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
+				$message = sprintf(__('Error updating void job with id %d: %s', 'woo-wallee'), $id, $e->getMessage());
 				WooCommerce_Wallee::instance()->log($message, WC_Log_Levels::ERROR);
 			}
 		}

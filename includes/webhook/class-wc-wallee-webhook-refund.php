@@ -57,6 +57,14 @@ class WC_Wallee_Webhook_Refund extends WC_Wallee_Webhook_Order_Related_Abstract 
 				$refund_job->set_failure_reason($refund->getFailureReason()->getDescription());
 			}
 			$refund_job->save();
+			$refunds = $order->get_refunds();
+			foreach($refunds as $wc_refund){
+			    if($wc_refund->get_meta('_wallee_refund_job_id', true) == $refund_job->get_id()){
+			        $wc_refund->set_status("failed");
+			        $wc_refund->save();
+			        break;
+			    }			    
+			}
 		}
 	}
 
@@ -65,8 +73,15 @@ class WC_Wallee_Webhook_Refund extends WC_Wallee_Webhook_Order_Related_Abstract 
 		
 		if ($refund_job->get_id()) {
 		    $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_SUCCESS);
-			
 			$refund_job->save();
+			$refunds = $order->get_refunds();
+			foreach($refunds as $wc_refund){
+			    if($wc_refund->get_meta('_wallee_refund_job_id', true) == $refund_job->get_id()){
+			        $wc_refund->set_status("completed");
+			        $wc_refund->save();
+			        break;
+			    }
+			}
 		}
 	}
 }

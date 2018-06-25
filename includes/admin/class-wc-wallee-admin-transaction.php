@@ -40,7 +40,7 @@ class WC_Wallee_Admin_Transaction {
 		    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_newest_by_mapped_order_id($order->get_id());
 		}
 		if ($transaction_info->get_id() != null) {
-			add_meta_box('woocommerce-order-wallee-transaction', 'wallee '.__('Transaction', 'woocommerc-wallee'), 
+			add_meta_box('woocommerce-order-wallee-transaction', __('wallee Transaction', 'woocommerc-wallee'), 
 					array(
 						__CLASS__,
 						'output' 
@@ -76,12 +76,12 @@ class WC_Wallee_Admin_Transaction {
 	<div class="wallee-transaction-data-column-container">
 		<div class="wallee-transaction-column">
 			<p>
-				<strong><?php _e('General Details', 'woocommerce-wallee'); ?></strong>
+				<strong><?php _e('General Details', 'woo-wallee'); ?></strong>
 			</p>
 			<table class="form-list" style="margin-bottom: 20px;">
 				<tbody>
 					<tr>
-						<td class="label"><label><?php _e('Payment Method', 'woocommerce-wallee') ?></label></td>
+						<td class="label"><label><?php _e('Payment Method', 'woo-wallee') ?></label></td>
 						<td class="value"><strong><?php echo $method->get_payment_method_configuration()->get_configuration_name() ?></strong>
 						</td>
 					</tr>
@@ -89,31 +89,31 @@ class WC_Wallee_Admin_Transaction {
 				 <tr>
 						<td class="label"></td>
 						<td class="value"><img
-							src="<?php echo $helper->get_resource_url($transaction_info->get_image(), $transaction_info->get_language(), $transaction_info->get_space_id(), $transaction_info->get_space_view_id()) ?>"
+							src="<?php echo $helper->get_resource_url($transaction_info->get_image_base(), $transaction_info->get_image(), $transaction_info->get_language(), $transaction_info->get_space_id(), $transaction_info->get_space_view_id()) ?>"
 							width="50" /><br /></td>
 					</tr>
 			<?php endif; ?>
     			<tr>
-						<td class="label"><label><?php  _e('Transaction State', 'woocommerce-wallee') ?></label></td>
+						<td class="label"><label><?php  _e('Transaction State', 'woo-wallee') ?></label></td>
 						<td class="value"><strong><?php echo self::get_transaction_state($transaction_info);?></strong></td>
 					</tr>
 			
             <?php if ($transaction_info->get_failure_reason() != null):?>
             	<tr>
-						<td class="label"><label><?php _e('Failure Reason', 'woocommerce-wallee') ?></label></td>
+						<td class="label"><label><?php _e('Failure Reason', 'woo-wallee') ?></label></td>
 						<td class="value"><strong><?php echo $transaction_info->get_failure_reason()?></strong></td>
 					</tr>
             <?php endif; ?>
             	<tr>
-						<td class="label"><label><?php _e('Authorization Amount', 'woocommerce-wallee') ?></label></td>
+						<td class="label"><label><?php _e('Authorization Amount', 'woo-wallee') ?></label></td>
 						<td class="value"><strong><?php echo  wc_price( $transaction_info->get_authorization_amount(), array( 'currency' => $transaction_info->get_currency()) )?></strong></td>
 					</tr>
 					<tr>
-						<td class="label"><label><?php _e('Transaction', 'woocommerce-wallee') ?></label></td>
+						<td class="label"><label><?php _e('Transaction', 'woo-wallee') ?></label></td>
 						<td class="value"><strong> <a
 								href="<?php echo self::get_transaction_url($transaction_info) ?>"
 								target="_blank">
-    					<?php _e('View', 'woocommerce-wallee') ?>
+    					<?php _e('View in wallee', 'woo-wallee') ?>
     				</a>
 						</strong></td>
 					</tr>
@@ -159,25 +159,25 @@ class WC_Wallee_Admin_Transaction {
 	protected static function get_transaction_state(WC_Wallee_Entity_Transaction_Info $transaction_info){
 		switch ($transaction_info->get_state()) {
 		    case \Wallee\Sdk\Model\TransactionState::AUTHORIZED:
-				return __('Authorized', 'woocommerce-wallee');
+				return __('Authorized', 'woo-wallee');
 		    case \Wallee\Sdk\Model\TransactionState::COMPLETED:
-				return __('Completed', 'woocommerce-wallee');
+				return __('Completed', 'woo-wallee');
 		    case \Wallee\Sdk\Model\TransactionState::CONFIRMED:
-				return __('Confirmed', 'woocommerce-wallee');
+				return __('Confirmed', 'woo-wallee');
 		    case \Wallee\Sdk\Model\TransactionState::DECLINE:
-				return __('Decline', 'woocommerce-wallee');
+				return __('Decline', 'woo-wallee');
 		    case \Wallee\Sdk\Model\TransactionState::FAILED:
-				return __('Failed', 'woocommerce-wallee');
+				return __('Failed', 'woo-wallee');
 		    case \Wallee\Sdk\Model\TransactionState::FULFILL:
-				return __('Fulfill', 'woocommerce-wallee');
+				return __('Fulfill', 'woo-wallee');
 			case \Wallee\Sdk\Model\TransactionState::PENDING:
-				return __('Pending', 'woocommerce-wallee');
+				return __('Pending', 'woo-wallee');
 			case \Wallee\Sdk\Model\TransactionState::PROCESSING:
-				return __('Processing', 'woocommerce-wallee');
+				return __('Processing', 'woo-wallee');
 			case \Wallee\Sdk\Model\TransactionState::VOIDED:
-				return __('Voided', 'woocommerce-wallee');
+				return __('Voided', 'woo-wallee');
 			default:
-				return __('Unknown State', 'woocommerce-wallee');
+				return __('Unknown State', 'woo-wallee');
 		}
 	}
 

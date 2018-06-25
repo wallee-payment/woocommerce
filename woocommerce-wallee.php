@@ -2,18 +2,18 @@
 /**
  * Plugin Name: WooCommerce wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
- * Description: Process WooCommerce payments with wallee
- * Version: 1.1.2
+ * Description: Process WooCommerce payments with wallee.
+ * Version: 1.1.3
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
  * Author URI: https://www.customweb.com
- * Requires at least: 4.4
- * Tested up to: 4.9
+ * Requires at least: 4.6
+ * Tested up to: 4.9.6
  * WC requires at least: 3.0.0
- * WC tested up to: 3.3.4
+ * WC tested up to: 3.4.3
  *
- * Text Domain: woocommerce-wallee
+ * Text Domain: woo-wallee
  * Domain Path: /languages/
  *
  */
@@ -43,7 +43,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.1.2';
+		private $version = '1.1.3';
 		
 		/**
 		 * The single instance of the class.
@@ -89,7 +89,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 			$this->define('WC_WALLEE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 			$this->define('WC_WALLEE_VERSION', $this->version);
 			$this->define('WC_WALLEE_REQUIRED_PHP_VERSION', '5.6');
-			$this->define('WC_WALLEE_REQUIRED_WP_VERSION', '4.4');
+			$this->define('WC_WALLEE_REQUIRED_WP_VERSION', '4.6');
 			$this->define('WC_WALLEE_REQUIRED_WC_VERSION', '3.0');
 		}
 
@@ -158,13 +158,14 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
 		 *
 		 * Locales found in:
-		 *      - WP_LANG_DIR/woocommerce-wallee/woocommerce-wallee-LOCALE.mo
+		 *      - WP_LANG_DIR/woo-wallee/woo-wallee-LOCALE.mo
 		 */
 		public function load_plugin_textdomain(){
-			$locale = apply_filters('plugin_locale', get_locale(), 'woocommerce-wallee');
+		    $locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		    $locale = apply_filters('plugin_locale', $locale, 'woo-wallee');
 			
-			load_textdomain('woocommerce-wallee', WP_LANG_DIR . '/woocommerce-wallee/woocommerce-wallee' . $locale . '.mo');
-			load_plugin_textdomain('woocommerce-wallee', false, plugin_basename(dirname(__FILE__)) . '/languages');
+			load_textdomain('woo-wallee', WP_LANG_DIR . '/woo-wallee/woo-wallee' . $locale . '.mo');
+			load_plugin_textdomain('woo-wallee', false, plugin_basename(dirname(__FILE__)) . '/languages');
 		}
 
 		/**
@@ -405,7 +406,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 			}
 			
 			$this->logger->log($level, $message, array(
-				'source' => 'woocommerce-wallee' 
+				'source' => 'woo-wallee' 
 			));
 			
 			if (defined('WP_DEBUG') && WP_DEBUG) {

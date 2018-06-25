@@ -26,15 +26,18 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	private $wle_translated_description = null;
 	private $wle_show_description = 'yes';
 	private $wle_show_icon = 'yes';
+	private $wle_image = null;
+	
 
 	public function __construct(WC_Wallee_Entity_Method_Configuration $method){
 		$this->wle_payment_method_configuration_id = $method->get_id();
 		$this->id = 'wallee_' . $method->get_id();
 		$this->has_fields = false;
 		$this->method_title = $method->get_configuration_name();
-		$this->method_description = sprintf(__('The general settings can be found <a href="%s" >here</a>', 'woocommerce-wallee'), 
-				admin_url('admin.php?page=wc-settings&tab=wallee'));
-		$this->icon = $method->get_image();
+		$this->method_description = WC_Wallee_Helper::instance()->translate($method->get_description());
+		$this->wle_image = $method->get_image();
+		$this->wle_image_base = $method->get_image_base();
+		$this->icon = WC_Wallee_Helper::instance()->get_resource_url($this->wle_image, $this->wle_image_base);
 		
 		//We set the title and description here, as some plugin access the variables directly.
 		$this->title = $method->get_configuration_name();
@@ -118,7 +121,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			$space_view_id = get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID);
 			$language = WC_Wallee_Helper::instance()->get_cleaned_locale();
 			
-			$url = WC_Wallee_Helper::instance()->get_resource_url($this->icon, $language, $space_id, $space_view_id);
+			$url = WC_Wallee_Helper::instance()->get_resource_url($this->wle_image_base, $this->wle_image, $language, $space_id, $space_view_id);
 			$icon = '<img src="' . WC_HTTPS::force_https_url($url) . '" alt="' . esc_attr($this->get_title()) . '" width="35px" />';
 		}
 		
@@ -133,35 +136,35 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			'enabled' => array(
 				'title' => __('Enable/Disable', 'woocommerce'),
 				'type' => 'checkbox',
-				'label' => sprintf(__('Enable %s', 'woocommerce-wallee'), $this->method_title),
+				'label' => sprintf(__('Enable %s', 'woo-wallee'), $this->method_title),
 				'default' => 'yes' 
 			),
 			'title_value' => array(
 				'title' => __('Title', 'woocommerce'),
 				'type' => 'info',
 				'value' => $this->get_title(),
-				'description' => __('This controls the title which the user sees during checkout.', 'woocommerce') 
+				'description' => __('This controls the title which the user sees during checkout.', 'woo-wallee') 
 			),
 			'description_value' => array(
 				'title' => __('Description', 'woocommerce'),
 				'type' => 'info',
-				'value' => !empty($this->get_description()) ? $this->get_description() : __('[not set]', 'woocommerce-wallee'),
-				'description' => __('Payment method description that the customer will see on your checkout.', 'woocommerce') 
+				'value' => !empty($this->get_description()) ? $this->get_description() : __('[not set]', 'woo-wallee'),
+				'description' => __('Payment method description that the customer will see on your checkout.', 'woo-wallee') 
 			),
 			'show_description' => array(
-				'title' => __('Show description', 'woocommerce-wallee'),
+				'title' => __('Show description', 'woo-wallee'),
 				'type' => 'checkbox',
-				'label' => __('Yes', 'woocommerce-wallee'),
+				'label' => __('Yes', 'woo-wallee'),
 				'default' => 'yes',
-				'description' => __("Show the payment method's description on the checkout page.", 'woocommerce'),
+				'description' => __("Show the payment method's description on the checkout page.", 'woo-wallee'),
 				'desc_tip' => true 
 			),
 			'show_icon' => array(
-				'title' => __('Show method image', 'woocommerce-wallee'),
+				'title' => __('Show method image', 'woo-wallee'),
 				'type' => 'checkbox',
-				'label' => __('Yes', 'woocommerce-wallee'),
+				'label' => __('Yes', 'woo-wallee'),
 				'default' => 'yes',
-				'description' => __("Show the payment method's image on the checkout page.", 'woocommerce'),
+				'description' => __("Show the payment method's image on the checkout page.", 'woo-wallee'),
 				'desc_tip' => true 
 			) 
 		);
@@ -284,7 +287,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	                'wallee-remote-checkout-js'
 	            ), null, true);
 	        $localize = array(
-	            'i18n_not_complete' => __('Please fill out all required fields.', 'woocommerce-wallee'),
+	            'i18n_not_complete' => __('Please fill out all required fields.', 'woo-wallee'),
 	        );
 	        wp_localize_script('wallee-checkout-js', 'wallee_js_params', $localize);
 	    }
@@ -332,7 +335,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			    $transaction_id = $session_handler->get('wallee_transaction_id');
 			    $existing = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
 			    if($existing->get_id() > 0 && $existing->get_state() != \Wallee\Sdk\Model\TransactionState::PENDING){
-			        WooCommerce_Wallee::instance()->add_notice(__('There was an issue, while processing your order. Please try again or use another payment method', 'woocommerce-wallee'), 'error');
+			        WooCommerce_Wallee::instance()->add_notice(__('There was an issue, while processing your order. Please try again or use another payment method.', 'woo-wallee'), 'error');
 			        $order->update_status( 'failed' );
 			        WC()->session->set('reload_checkout', true);
 			        return array(
@@ -399,7 +402,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		global $wpdb;
 		
 		if (!isset($GLOBALS['wallee_refund_id'])) {
-			return new WP_Error('wallee_error', __('There was a problem creating the refund.', 'woocommerce-wallee'));
+			return new WP_Error('wallee_error', __('There was a problem creating the refund.', 'woo-wallee'));
 		}
 		/**
 		 * @var WC_Order_Refund $refund
@@ -413,6 +416,21 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		catch (Exception $e) {
 			return new WP_Error('wallee_error', $e->getMessage());
 		}
+		
+		$refund_job_id =  $refund->get_meta('_wallee_refund_job_id', true);
+		
+		$wait = 0;
+		while($wait < 5){
+		    $refund_job = WC_Wallee_Entity_Refund_Job::load_by_id($refund_job_id);
+		    if($refund_job->get_state() == WC_Wallee_Entity_Refund_Job::STATE_FAILURE){
+		        return new WP_Error('wallee_error', $refund_job->get_failure_reason());
+		    }
+		    elseif ($refund_job->get_state() == WC_Wallee_Entity_Refund_Job::STATE_SUCCESS){
+		        return true;
+		    }
+		    $wait++;
+		    sleep(1);
+		}		
 		return true;
 	}
 }

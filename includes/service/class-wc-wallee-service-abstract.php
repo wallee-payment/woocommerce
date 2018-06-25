@@ -62,6 +62,14 @@ abstract class WC_Wallee_Service_Abstract {
 		}
 		return substr($resolved_url, $index + strlen('resource/'));
 	}
+	
+	protected function get_resource_base($resolved_url){
+	    if(empty($resolved_url)){
+	        return $resolved_url;
+	    }
+	    $parts = parse_url($resolved_url);
+	    return $parts['scheme']."://".$parts['host']."/";
+	}
 
 	/**
 	 * Returns the fraction digits for the given currency.

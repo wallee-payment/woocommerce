@@ -12,5 +12,5 @@ if (!defined('ABSPATH')) {
  */
 ?>
 <div class="error notice">
-	<p><?php _e( 'There was an issue executing the migration for ', 'woocommerce-wallee' ); ?> WooCommerce wallee.</p>
+	<p><?php _e( 'There was an issue executing the migration for WooCommerce wallee.', 'woo-wallee' ); ?></p>
 </div>

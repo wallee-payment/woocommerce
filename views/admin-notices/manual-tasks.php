@@ -14,16 +14,10 @@ if (!defined('ABSPATH')) {
 
 <div class="error notice">
 	<p><?php
-		
-		if ($number_of_manual_tasks == 1) {
-			_e('There is a manual task that needs your attention.', 'woocommerce-wallee');
-		}
-		else {
-			echo sprintf(__('There are %s manual tasks that need your attention', 'woocommerce-wallee'), $number_of_manual_tasks);
-		}
+		echo _n('There is a manual task that needs your attention.', 'There are %s manual tasks that need your attention', $number_of_manual_tasks, 'woo-wallee');
 		?>
     	</p>
 	<p>
-		<a href="<?php echo $manual_taks_url?>" target="_blank"><?php _e('View', 'woocommerce-wallee')?></a>
+		<a href="<?php echo $manual_taks_url?>" target="_blank"><?php _e('View', 'woo-wallee')?></a>
 	</p>
 </div>

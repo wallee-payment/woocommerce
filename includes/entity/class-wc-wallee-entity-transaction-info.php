@@ -30,6 +30,8 @@ if (!defined('ABSPATH')) {
  * @method void set_authorization_amount(float $amount)
  * @method string get_image()
  * @method void set_image(string $image)
+ * @method string get_image_base()
+ * @method void set_image_base(string $image_base)
  * @method object get_labels()
  * @method void set_labels(map[string,string] $labels)
  * @method int get_payment_method_id()
@@ -55,6 +57,7 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 		    'currency' => WC_Wallee_Entity_Resource_Type::STRING,
 		    'authorization_amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
 		    'image' => WC_Wallee_Entity_Resource_Type::STRING,
+		    'image_base' => WC_Wallee_Entity_Resource_Type::STRING,
 		    'labels' => WC_Wallee_Entity_Resource_Type::OBJECT,
 		    'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
 		    'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,

@@ -87,7 +87,7 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 						$old_stock = $new_stock - $changed_qty;
 						
 						$order->add_order_note(
-								sprintf(__('%1$s stock increased from %2$s to %3$s.', 'woocommerce-wallee'), $item_name, $old_stock, $new_stock));
+								sprintf(__('%1$s stock increased from %2$s to %3$s.', 'woo-wallee'), $item_name, $old_stock, $new_stock));
 						do_action('wc_wallee_restock_not_completed_item', $product->get_id(), $old_stock, $new_stock, $order, $product);
 					}
 				}

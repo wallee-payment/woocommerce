@@ -41,10 +41,10 @@ class WC_Wallee_Helper {
 		    $user_key = get_option(WooCommerce_Wallee::CK_APP_USER_KEY);
 			if (!empty($user_id) && !empty($user_key)) {
 			    $this->api_client = new \Wallee\Sdk\ApiClient($user_id, $user_key);
-				$this->api_client->setBasePath($this->get_base_gateway_url() . '/api');
+				$this->api_client->setBasePath(rtrim($this->get_base_gateway_url(), '/') . '/api');
 			}
 			else {
-				throw new Exception(__('The API access data is incomplete.', 'woocommerce-wallee'));
+				throw new Exception(__('The API access data is incomplete.', 'woo-wallee'));
 			}
 		}
 		return $this->api_client;
@@ -105,8 +105,16 @@ class WC_Wallee_Helper {
 	 * @param int $spaceViewId
 	 * @return string
 	 */
-	public function get_resource_url($path, $language = null, $space_id = null, $space_view_id = null){
-		$url = $this->get_base_gateway_url();
+	public function get_resource_url($base, $path, $language = null, $space_id = null, $space_view_id = null){
+	    
+	    if(empty($base)){
+	        $url = $this->get_base_gateway_url();
+	    }
+	    else{
+	        $url = $base;
+	    }
+	    $url = rtrim($url, '/');
+	    
 		if (!empty($language)) {
 			$url .= '/' . str_replace('_', '-', $language);
 		}
@@ -169,7 +177,7 @@ class WC_Wallee_Helper {
 		if ($diff != 0) {
 		    $line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			$line_item->setAmountIncludingTax($this->round_amount($diff, $currency));
-			$line_item->setName(__('Rounding Adjustment', 'woocommerce-wallee'));
+			$line_item->setName(__('Rounding Adjustment', 'woo-wallee'));
 			$line_item->setQuantity(1);
 			$line_item->setSku('rounding-adjustment');
 			$line_item->setType($diff < 0 ? \Wallee\Sdk\Model\LineItemType::DISCOUNT : \Wallee\Sdk\Model\LineItemType::FEE);
@@ -297,7 +305,7 @@ class WC_Wallee_Helper {
 					if (!is_wp_error($new_stock)) {
 						/* translators: 1: item name 2: old stock quantity 3: new stock quantity */
 						$order->add_order_note(
-								sprintf(__('%1$s stock increased from %2$s to %3$s.', 'woocommerce-wallee'), $item_name, $new_stock - $qty, 
+								sprintf(__('%1$s stock increased from %2$s to %3$s.', 'woo-wallee'), $item_name, $new_stock - $qty, 
 										$new_stock));
 					}
 				}

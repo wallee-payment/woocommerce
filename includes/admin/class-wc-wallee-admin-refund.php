@@ -57,8 +57,8 @@ class WC_Wallee_Admin_Refund {
 			    $existing_refund_job = WC_Wallee_Entity_Refund_Job::load_running_refund_for_transaction($transaction_info->get_space_id(), 
 						$transaction_info->get_transaction_id());
 				if ($existing_refund_job->get_id() > 0) {
-					echo '<span class="wallee-action-in-progress">' . __('There is a refund in progress.', 'woocommerce-wallee') . '</span>';
-					echo '<button type="button" class="button wallee-update-order">' . __('Update', 'woocommerce-wallee') . '</button>';
+					echo '<span class="wallee-action-in-progress">' . __('There is a refund in progress.', 'woo-wallee') . '</span>';
+					echo '<button type="button" class="button wallee-update-order">' . __('Update', 'woo-wallee') . '</button>';
 					echo '<span id="wallee-remove-refund" style="dispaly:none;"></span>';
 				}
 				echo '<span id="wallee-refund-restrictions" style="display:none;"></span>';
@@ -92,20 +92,21 @@ class WC_Wallee_Admin_Refund {
 			wc_transaction_query("start");
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 			if (!$transaction_info->get_id()) {
-				throw new Exception(__('Could not load corresponding transaction', 'woocommerce-wallee'));
+				throw new Exception(__('Could not load corresponding transaction', 'woo-wallee'));
 			}
 			
 			WC_Wallee_Helper::instance()->lock_by_transaction_id($transaction_info->get_space_id(), $transaction_info->get_transaction_id());
 			
 			if (WC_Wallee_Entity_Refund_Job::count_running_refund_for_transaction($transaction_info->get_space_id(), 
 					$transaction_info->get_transaction_id()) > 0) {
-				throw new Exception(__('Please wait until the pending refund is processed.', 'woocommerce-wallee'));
+				throw new Exception(__('Please wait until the pending refund is processed.', 'woo-wallee'));
 			}
 			$refund_create = $refund_service->create($order, $refund);
 			$refund_job = self::create_refund_job($order, $refund, $refund_create);
 			$current_refund_job_id = $refund_job->get_id();
 			
 			$refund->add_meta_data('_wallee_refund_job_id', $refund_job->get_id());
+			$refund->set_status("pending");
 			$refund->save();
 			wc_transaction_query("commit");
 		}
@@ -144,7 +145,7 @@ class WC_Wallee_Admin_Refund {
 		    $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
 			$refund_job->save();
 			wc_transaction_query("commit");
-			throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woocommerce-wallee'), $e->getMessage()));
+			throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woo-wallee'), $e->getMessage()));
 		}
 	}
 
@@ -164,7 +165,7 @@ class WC_Wallee_Admin_Refund {
 				self::send_refund($id);
 			}
 			catch (Exception $e) {
-				$message = sprintf(__('Error updating refund job with id %d: %s', 'woocommerce-wallee'), $id, $e->getMessage());
+				$message = sprintf(__('Error updating refund job with id %d: %s', 'woo-wallee'), $id, $e->getMessage());
 				WooCommerce_Wallee::instance()->log($message, WC_Log_Levels::ERROR);
 			}
 		}

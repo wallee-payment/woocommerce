@@ -118,12 +118,12 @@ class WC_Wallee_Admin {
 		        if (WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction($transaction_info->get_space_id(), 
 		            $transaction_info->get_transaction_id()) > 0 || WC_Wallee_Entity_Void_Job::count_running_void_for_transaction(
 						$transaction_info->get_space_id(), $transaction_info->get_transaction_id()) > 0) {
-					echo '<span class="wallee-action-in-progress">' . __('There is a completion/void in progress.', 'woocommerce-wallee') . '</span>';
-					echo '<button type="button" class="button wallee-update-order">' . __('Update', 'woocommerce-wallee') . '</button>';
+					echo '<span class="wallee-action-in-progress">' . __('There is a completion/void in progress.', 'woo-wallee') . '</span>';
+					echo '<button type="button" class="button wallee-update-order">' . __('Update', 'woo-wallee') . '</button>';
 				}
 				else {
-					echo '<button type="button" class="button wallee-void-show">' . __('Void', 'woocommerce-wallee') . '</button>';
-					echo '<button type="button" class="button button-primary wallee-completion-show">' . __('Completion', 'woocommerce-wallee') .
+					echo '<button type="button" class="button wallee-void-show">' . __('Void', 'woo-wallee') . '</button>';
+					echo '<button type="button" class="button button-primary wallee-completion-show">' . __('Completion', 'woo-wallee') .
 							 '</button>';
 				}
 			}
@@ -152,7 +152,7 @@ class WC_Wallee_Admin {
 	}
 
 	public function enque_script_and_css(){
-	    wp_enqueue_style('woocommerce-wallee-admin-styles', WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/admin.css');
+	    wp_enqueue_style('woo-wallee-admin-styles', WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/admin.css');
 	    wp_enqueue_script('wallee-admin-js', WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/admin/management.js', 
 				array(
 					'jquery',
@@ -160,8 +160,8 @@ class WC_Wallee_Admin {
 				), null, false);
 		
 		$localize = array(
-			'i18n_do_void' => __('Are you sure you wish to process this void? This action cannot be undone.', 'woocommerce-wallee'),
-			'i18n_do_completion' => __('Are you sure you wish to process this completion? This action cannot be undone.', 'woocommerce-wallee') 
+			'i18n_do_void' => __('Are you sure you wish to process this void? This action cannot be undone.', 'woo-wallee'),
+			'i18n_do_completion' => __('Are you sure you wish to process this completion? This action cannot be undone.', 'woo-wallee') 
 		);
 		wp_localize_script('wallee-admin-js', 'wallee_admin_js_params', $localize);
 	}
@@ -213,7 +213,7 @@ class WC_Wallee_Admin {
 	public function plugin_action_links($links){
 		$action_links = array(
 			'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=wallee') . '" aria-label="' .
-					 esc_attr__('View settings', 'woocommerce-wallee') . '">' . esc_html__('Settings', 'woocommerce-wallee') . '</a>',
+                    esc_attr__('View Settings', 'woo-wallee') . '">' . esc_html__('Settings', 'woo-wallee') . '</a>'
 		);
 		
 		return array_merge($action_links, $links);

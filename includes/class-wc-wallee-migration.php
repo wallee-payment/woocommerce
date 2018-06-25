@@ -21,6 +21,7 @@ class WC_Wallee_Migration {
 		'1.0.0' => 'update_1_0_0_initialize', 
 		'1.0.1' => 'update_1_0_1_image_url',
 	    '1.0.2' => 'update_1_0_2_order_allow_null',
+	    '1.0.3' => 'update_1_0_3_image_domain',
 	);
 
 	/**
@@ -43,6 +44,7 @@ class WC_Wallee_Migration {
 			__CLASS__,
 			'in_plugin_update_message' 
 		));
+		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 	}
 
 	public static function install_db($networkwide){
@@ -87,21 +89,21 @@ class WC_Wallee_Migration {
 		$errors = array();
 		
 		if ( version_compare( PHP_VERSION, WC_WALLEE_REQUIRED_PHP_VERSION, '<' ) ) {
-		    $errors[] = sprintf(__("PHP %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_PHP_VERSION, PHP_VERSION);
+		    $errors[] = sprintf(__("PHP %s+ is required. (You're running version %s)", "woo-wallee"), WC_WALLEE_REQUIRED_PHP_VERSION, PHP_VERSION);
 		}
 		if ( version_compare( $wp_version, WC_WALLEE_REQUIRED_WP_VERSION, '<' ) ) {
-		    $errors[] = sprintf(__("Wordpress %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WP_VERSION, $wp_version);
+		    $errors[] = sprintf(__("Wordpress %s+ is required. (You're running version %s)", "woo-wallee"), WC_WALLEE_REQUIRED_WP_VERSION, $wp_version);
 			
 		}
 		
 		if (!is_plugin_active('woocommerce/woocommerce.php')){
-		    $errors[] = sprintf(__("Woocommerce %s+ has to be active.", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION);
+		    $errors[] = sprintf(__("Woocommerce %s+ has to be active.", "woo-wallee"), WC_WALLEE_REQUIRED_WC_VERSION);
 		}
 		else{
 			$woocommerce_data = get_plugin_data(WP_PLUGIN_DIR .'/woocommerce/woocommerce.php', false, false);
 			
 			if (version_compare ($woocommerce_data['Version'] , WC_WALLEE_REQUIRED_WC_VERSION, '<')){
-			    $errors[] = sprintf(__("Woocommerce %s+ is required. (You're running version %s)", "woocommerce-wallee"), WC_WALLEE_REQUIRED_WC_VERSION, $woocommerce_data['Version']);
+			    $errors[] = sprintf(__("Woocommerce %s+ is required. (You're running version %s)", "woo-wallee"), WC_WALLEE_REQUIRED_WC_VERSION, $woocommerce_data['Version']);
 			}
 		}
 		
@@ -113,9 +115,9 @@ class WC_Wallee_Migration {
 		}
 		
 		if(!empty($errors)){
-			$title = __('Could not activate plugin', 'woocommerce-wallee').' WooCommerce wallee';
+			$title = __('Could not activate plugin WooCommerce wallee.', 'woo-wallee');
 			$message = '<h1><strong>'.$title.'</strong></h1><br/>'.
-					'<h3>'.__('Please check the following requirements before activating:', 'woocommerce-wallee').'</h3>'.
+					'<h3>'.__('Please check the following requirements before activating:', 'woo-wallee').'</h3>'.
 					'<ul><li>'.
 					implode('</li><li>', $errors).
 					'</li></ul>';
@@ -246,6 +248,27 @@ class WC_Wallee_Migration {
 		
 		return wp_kses_post($upgrade_notice);
 	}
+	
+	
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @param   mixed $links Plugin Row Meta.
+	 * @param   mixed $file  Plugin Base file.
+	 * @return  array
+	 */
+	public static function plugin_row_meta( $links, $file ) {
+	    if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
+	        $row_meta = array(
+	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.3/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
+	        );
+	        
+	        return array_merge( $links, $row_meta );
+	    }
+	    
+	    return (array) $links;
+	}
+	
 
 	public static function update_1_0_0_initialize(){
 		global $wpdb;
@@ -423,6 +446,25 @@ class WC_Wallee_Migration {
 	    }
 	    $result = $wpdb->query(
 	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_token_info` CHANGE `customer_id` `customer_id` int(10) unsigned NULL DEFAULT NULL;");
+	    
+	    if ($result === false) {
+	        throw new Exception($wpdb->last_error);
+	    }
+	}
+	
+	public static function update_1_0_3_image_domain(){
+	    global $wpdb;
+	    //ADD [COLUMN] column_name column_definition [FIRST|AFTER existing_column];
+	    $result = $wpdb->query(
+	        
+	        
+	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_method_configuration` ADD COLUMN `image_base` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER image;");
+	    if ($result === false) {
+	        throw new Exception($wpdb->last_error);
+	    }
+	    
+	    $result = $wpdb->query(
+	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD COLUMN `image_base` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER image;");
 	    
 	    if ($result === false) {
 	        throw new Exception($wpdb->last_error);

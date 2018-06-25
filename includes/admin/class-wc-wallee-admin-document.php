@@ -56,7 +56,7 @@ class WC_Wallee_Admin_Document {
 								'refer' => 'overview',
 								'wallee_admin' => 'download_invoice' 
 							), admin_url('post.php')), 'download_invoice', 'nonce');
-			$title = esc_attr(__('Invoice', 'woocommerce-wallee'));
+			$title = esc_attr(__('Invoice', 'woo-wallee'));
 			printf('<a class="button tips wallee-button-download-invoice" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
 		}
 		if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
@@ -67,7 +67,7 @@ class WC_Wallee_Admin_Document {
 								'refer' => 'overview',
 								'wallee_admin' => 'download_packing' 
 							), admin_url('post.php')), 'download_packing', 'nonce');
-			$title = esc_attr(__('Packing Slip', 'woocommerce-wallee'));
+			$title = esc_attr(__('Packing Slip', 'woo-wallee'));
 			printf('<a class="button tips wallee-button-download-packingslip" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
 		}
 	}
@@ -92,7 +92,7 @@ class WC_Wallee_Admin_Document {
 				    \Wallee\Sdk\Model\TransactionState::FULFILL,
 				    \Wallee\Sdk\Model\TransactionState::DECLINE 
 				))) {
-			add_meta_box('woocommerce-order-wallee-documents', 'wallee '.__('Documents', 'woocommerc-wallee'), array(
+			add_meta_box('woocommerce-order-wallee-documents', __('wallee Documents', 'woo-wallee'), array(
 				__CLASS__,
 				'output' 
 			), 'shop_order', 'side', 'default');
@@ -138,7 +138,7 @@ class WC_Wallee_Admin_Document {
 								'wallee_admin' => 'download_invoice' 
 							), admin_url('post.php')), 'download_invoice', 'nonce');
 			?>"
-		class="wallee-admin-download wallee-admin-download-invoice button"><?php _e('Invoice', 'woocommerce-wallee')?></a></li>				
+		class="wallee-admin-download wallee-admin-download-invoice button"><?php _e('Invoice', 'woo-wallee')?></a></li>				
 
 					<?php if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL): ?>
 						<li><a
@@ -152,7 +152,7 @@ class WC_Wallee_Admin_Document {
 									'wallee_admin' => 'download_packing' 
 								), admin_url('post.php')), 'download_packing', 'nonce');
 				?>"
-		class="wallee-admin-download wallee-admin-download-packingslip button"><?php _e('Packing Slip', 'woocommerce-wallee')?></a></li>
+		class="wallee-admin-download wallee-admin-download-packingslip button"><?php _e('Packing Slip', 'woo-wallee')?></a></li>
 					<?php endif;?>
 					</ul>
 <?php
@@ -197,7 +197,7 @@ class WC_Wallee_Admin_Document {
 			}
 		}
 		catch (Exception $e) {
-			wp_die(__('Could not fetch the document from'.' wallee.', 'woocommerce-wallee'));
+		    wp_die(__('Could not fetch the document from wallee.' , 'woo-wallee'));
 		}
 		if ($_GET['refer'] == 'edit') {
 			wp_redirect(add_query_arg(array(
