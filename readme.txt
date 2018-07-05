@@ -1,9 +1,9 @@
 === WooCommerce wallee ===
 Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
-Requires at least: 4.4
+Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.3/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.4/docs/en/documentation.html).
 
 == Installation ==
 
@@ -52,9 +52,6 @@ Additional documentation for this plugin is available [here](https://plugin-docu
 == Changelog ==
 
  
-= 1.1.3 - June 19, 2018 =
+= 1.1.4 - July 05, 2018 =
 
-* Fix - Method image not always loading
-* Fix - Text domain
-* Fix - Refund status update
-* Localization - Added german translations
+* Tweak - Webhook processing

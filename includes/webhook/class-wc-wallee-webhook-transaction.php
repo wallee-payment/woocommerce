@@ -54,18 +54,14 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 					$this->failed($transaction, $order);
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::FULFILL:
-					if (!$order->get_meta("_wallee_authorized", true)) {
-						$this->authorize($transaction, $order);
-					}
+					$this->authorize($transaction, $order);				
 					$this->fulfill($transaction, $order);
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::VOIDED:
 					$this->voided($transaction, $order);
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::COMPLETED:
-			        if (!$order->get_meta("_wallee_authorized", true)) {
-			            $this->authorize($transaction, $order);
-			        }
+			        $this->authorize($transaction, $order);
 					$this->waiting($transaction, $order);
 					break;
 				default:
@@ -85,14 +81,16 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	}
 
 	protected function authorize(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
-	    do_action('wc_wallee_authorized', $transaction , $order);
-		$status = apply_filters('wc_wallee_authorized_status', 'on-hold', $order);
-		$order->add_meta_data("_wallee_authorized", "true", true);
-		$order->update_status($status);
-		
-		if (isset(WC()->cart)) {
-			WC()->cart->empty_cart();
-		}
+	    if (!$order->get_meta("_wallee_authorized", true)) {
+    	    do_action('wc_wallee_authorized', $transaction , $order);
+    		$status = apply_filters('wc_wallee_authorized_status', 'on-hold', $order);
+    		$order->add_meta_data("_wallee_authorized", "true", true);
+    		$order->update_status($status);
+    		
+    		if (isset(WC()->cart)) {
+    			WC()->cart->empty_cart();
+    		}
+	    }
 	}
 
 	protected function waiting(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
