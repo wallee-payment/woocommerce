@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce WhiteLabelName\n"
+"Project-Id-Version: WooCommerce wallee\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 10:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -50,7 +50,7 @@ msgid "Woocommerce %s+ is required. (You're running version %s)"
 msgstr ""
 
 #: includes/class-wc-wallee-migration.php:118
-msgid "Could not activate plugin WooCommerce WhiteLabelName."
+msgid "Could not activate plugin WooCommerce wallee."
 msgstr ""
 
 #: includes/class-wc-wallee-migration.php:120
@@ -149,7 +149,7 @@ msgid "wallee Documents"
 msgstr ""
 
 #: includes/admin/class-wc-wallee-admin-document.php:200
-msgid "Could not fetch the document from WhiteLabelName."
+msgid "Could not fetch the document from wallee."
 msgstr ""
 
 #: includes/admin/class-wc-wallee-admin.php:121
@@ -312,7 +312,7 @@ msgid "Transaction"
 msgstr ""
 
 #: includes/admin/class-wc-wallee-admin-transaction.php:116
-msgid "View in WhiteLabelName"
+msgid "View in wallee"
 msgstr ""
 
 #: includes/admin/class-wc-wallee-admin-transaction.php:162
@@ -457,25 +457,33 @@ msgstr ""
 msgid "The checkout expired, please try again"
 msgstr ""
 
-#: views/admin-notices/manual-tasks.php:17
-#, php-format
+#: views/admin-notices/manual-tasks.php:18
 msgid "There is a manual task that needs your attention."
+msgstr ""
+
+#: views/admin-notices/manual-tasks.php:21
+#, php-format
+msgid "There is %s manual task that needs your attention."
 msgid_plural "There are %s manual tasks that need your attention"
 msgstr[0] ""
 msgstr[1] ""
 
-#: views/admin-notices/manual-tasks.php:21
+#: views/admin-notices/manual-tasks.php:26
 msgid "View"
 msgstr ""
 
 #: views/admin-notices/migration-failed.php:15
-msgid "There was an issue executing the migration for WooCommerce WhiteLabelName."
+msgid "There was an issue executing the migration for WooCommerce wallee."
+msgstr ""
+
+#: views/admin-notices/plugin-deactivated.php:14
+msgid "WooCommerce wallee deactivated because it depends on WooCommerce."
 msgstr ""
 
 #. Name of the plugin
-msgid "WooCommerce WhiteLabelName"
+msgid "WooCommerce wallee"
 msgstr ""
 
 #. Description of the plugin
-msgid "Process WooCommerce payments with WhiteLabelName."
+msgid "Process WooCommerce payments with wallee."
 msgstr ""

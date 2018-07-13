@@ -14,7 +14,12 @@ if (!defined('ABSPATH')) {
 
 <div class="error notice">
 	<p><?php
-		echo _n('There is a manual task that needs your attention.', 'There are %s manual tasks that need your attention', $number_of_manual_tasks, 'woo-wallee');
+    	if($number_of_manual_tasks == 1){
+    	    _e('There is a manual task that needs your attention.', 'woo-wallee');
+    	}
+    	else{
+    	   echo  sprintf(_n('There is %s manual task that needs your attention.', 'There are %s manual tasks that need your attention', $number_of_manual_tasks, 'woo-wallee'), $number_of_manual_tasks);
+    	}
 		?>
     	</p>
 	<p>

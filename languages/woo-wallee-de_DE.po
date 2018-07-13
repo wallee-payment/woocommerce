@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce WhiteLabelName\n"
+"Project-Id-Version: WooCommerce wallee\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 10:08+0000\n"
 "PO-Revision-Date: 2018-06-25 10:59+0000\n"
@@ -49,8 +49,8 @@ msgid "Woocommerce %s+ is required. (You're running version %s)"
 msgstr "Woocommerce %s+ wird benötigt. (Du verwendest Version %s)"
 
 #: includes/class-wc-wallee-migration.php:118
-msgid "Could not activate plugin WooCommerce WhiteLabelName."
-msgstr "Das Plugin WooCommerce WhiteLabelName konnte nicht aktiviert werden."
+msgid "Could not activate plugin WooCommerce wallee."
+msgstr "Das Plugin WooCommerce wallee konnte nicht aktiviert werden."
 
 #: includes/class-wc-wallee-migration.php:120
 msgid "Please check the following requirements before activating:"
@@ -151,7 +151,7 @@ msgid "wallee Documents"
 msgstr "wallee Dokumente"
 
 #: includes/admin/class-wc-wallee-admin-document.php:200
-msgid "Could not fetch the document from WhiteLabelName."
+msgid "Could not fetch the document from wallee."
 msgstr "Das Dokument konnte nicht abgeholt werden."
 
 #: includes/admin/class-wc-wallee-admin.php:121
@@ -332,8 +332,8 @@ msgid "Transaction"
 msgstr "Transaktion"
 
 #: includes/admin/class-wc-wallee-admin-transaction.php:116
-msgid "View in WhiteLabelName"
-msgstr "Ansicht in WhiteLabelName"
+msgid "View in wallee"
+msgstr "Ansicht in wallee"
 
 #: includes/admin/class-wc-wallee-admin-transaction.php:162
 msgid "Authorized"
@@ -486,26 +486,34 @@ msgstr ""
 msgid "The checkout expired, please try again"
 msgstr "Der Checkout ist abgelaufen, bitte versuchen Sie es erneut."
 
-#: views/admin-notices/manual-tasks.php:17
-#, php-format
+#: views/admin-notices/manual-tasks.php:18
 msgid "There is a manual task that needs your attention."
-msgid_plural "There are %s manual tasks that need your attention"
-msgstr[0] "Ein manueller Task benötigt Ihre Aufmerksamkeit."
-msgstr[1] "%s manuelle Tasks benötigen Ihre Aufmerksamkeit."
+msgstr "Ein manueller Task benötigt Ihre Aufmerksamkeit."
 
 #: views/admin-notices/manual-tasks.php:21
+#, php-format
+msgid "There is %s manual task that needs your attention."
+msgid_plural "There are %s manual tasks that need your attention"
+msgstr[0] "%s manueller Task benötigt Ihre Aufmerksamkeit."
+msgstr[1] "%s manuelle Tasks benötigen Ihre Aufmerksamkeit."
+
+#: views/admin-notices/manual-tasks.php:26
 msgid "View"
 msgstr "Ansicht"
 
 #: views/admin-notices/migration-failed.php:15
-msgid "There was an issue executing the migration for WooCommerce WhiteLabelName."
+msgid "There was an issue executing the migration for WooCommerce wallee."
 msgstr ""
-"Es gab ein Problem bei der Ausführung der Migration für WooCommerce WhiteLabelName."
+"Es gab ein Problem bei der Ausführung der Migration für WooCommerce wallee."
+
+#: views/admin-notices/plugin-deactivated.php:14
+msgid "WooCommerce wallee deactivated because it depends on WooCommerce."
+msgstr "WooCommerce wallee wurde deaktiviert, weil es von WooCommerce abhängig ist."
 
 #. Name of the plugin
-msgid "WooCommerce WhiteLabelName"
-msgstr "WooCommerce WhiteLabelName"
+msgid "WooCommerce wallee"
+msgstr "WooCommerce wallee"
 
 #. Description of the plugin
-msgid "Process WooCommerce payments with WhiteLabelName."
-msgstr "Verarbeiten Sie WooCommerce-Zahlungen mit WhiteLabelName."
+msgid "Process WooCommerce payments with wallee."
+msgstr "Verarbeiten Sie WooCommerce-Zahlungen mit wallee."

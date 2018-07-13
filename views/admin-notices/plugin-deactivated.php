@@ -11,4 +11,4 @@ if (!defined('ABSPATH')) {
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 ?>
-<div class="error"><p>WooCommerce wallee <?php _e('deactivated because it depends on WooCommerce.', 'woocoommerce-wallee'); ?></p></div>
+<div class="error"><p><?php _e('WooCommerce wallee deactivated because it depends on WooCommerce.', 'woo-wallee'); ?></p></div>
