@@ -145,7 +145,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.5/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.6/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -159,10 +159,18 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'type' => 'title',
 				'id' => 'general_options' 
 			),
+		    
+		    array(
+		        'title' => __('Space Id', 'woo-wallee'),
+		        'id' => WooCommerce_Wallee::CK_SPACE_ID,
+		        'type' => 'text',
+		        'css' => 'min-width:300px;',
+		        'desc' => __('(required)', 'woo-wallee')
+		    ),
 			
 			array(
 				'title' => __('User Id', 'woo-wallee'),
-				'desc_tip' => __('The Application User needs to have full permissions in the space this shop is linked to.', 'woo-wallee'),
+				'desc_tip' => __('The user needs to have full permissions in the space this shop is linked to.', 'woo-wallee'),
 			    'id' => WooCommerce_Wallee::CK_APP_USER_ID,
 				'type' => 'text',
 				'css' => 'min-width:300px;',
@@ -170,17 +178,9 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			),
 			
 			array(
-				'title' => __('Application Key', 'woo-wallee'),
+				'title' => __('Authentication Key', 'woo-wallee'),
 			    'id' => WooCommerce_Wallee::CK_APP_USER_KEY,
 				'type' => 'password',
-				'css' => 'min-width:300px;',
-				'desc' => __('(required)', 'woo-wallee') 
-			),
-			
-			array(
-				'title' => __('Space Id', 'woo-wallee'),
-			    'id' => WooCommerce_Wallee::CK_SPACE_ID,
-				'type' => 'text',
 				'css' => 'min-width:300px;',
 				'desc' => __('(required)', 'woo-wallee') 
 			),
