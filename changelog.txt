@@ -100,3 +100,7 @@
 * Tweak - Updated settings page
 * Dev - Updated to wallee SDK 1.1.8
 
+= 1.1.7 - July 19, 2018 =
+
+* Dev - Updated to wallee SDK 1.1.9
+
