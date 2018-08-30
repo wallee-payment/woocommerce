@@ -145,7 +145,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.8/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.9/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -184,14 +184,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'css' => 'min-width:300px;',
 				'desc' => __('(required)', 'woo-wallee') 
 			),
-			
-			array(
-				'title' => __('Space View Id', 'woo-wallee'),
-			    'id' => WooCommerce_Wallee::CK_SPACE_VIEW_ID,
-				'type' => 'text',
-				'css' => 'min-width:300px;' 
-			),
-			
+						
 			array(
 				'type' => 'sectionend',
 				'id' => 'general_options' 
@@ -243,7 +236,26 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'type' => 'sectionend',
 				'id' => 'document_options' 
-			) 
+			) ,
+		    
+		    array(
+		        'title' => __('Space View Options', 'woo-wallee'),
+		        'type' => 'title',
+		        'id' => 'space_view_options'
+		    ),
+		   
+		    array(
+		        'title' => __('Space View Id', 'woo-wallee'),
+		        'desc_tip' => __('The Space View Id allows to control the styling of the payment form and the payment page within the space.', 'woo-wallee'),
+		        'id' => WooCommerce_Wallee::CK_SPACE_VIEW_ID,
+		        'type' => 'text',
+		        'css' => 'min-width:300px;'
+		    ),
+		    
+		    array(
+		        'type' => 'sectionend',
+		        'id' => 'space_view_options'
+		    ) 
 		
 		);
 		
