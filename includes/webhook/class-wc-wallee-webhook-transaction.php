@@ -86,7 +86,6 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
     		$status = apply_filters('wc_wallee_authorized_status', 'on-hold', $order);
     		$order->add_meta_data("_wallee_authorized", "true", true);
     		$order->update_status($status);
-    		
     		if (isset(WC()->cart)) {
     			WC()->cart->empty_cart();
     		}
@@ -97,8 +96,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		if (!$order->get_meta('_wallee_manual_check', true)) {
 		    do_action('wc_wallee_completed', $transaction , $order);
 			$status = apply_filters('wc_wallee_completed_status', 'wallee-waiting', $order);
-			$order->update_status($status);
-			
+			$order->update_status($status);			
 		}
 	}
 
