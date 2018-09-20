@@ -145,10 +145,24 @@ class WC_Wallee_Admin_Order_Void {
 			$void_job->save();
 			wc_transaction_query("commit");
 		}
+    	catch (\Wallee\Sdk\ApiException $e) {
+           if ($e->getResponseObject() instanceof \Wallee\Sdk\Model\ClientError) {
+               $void_job->set_state(WC_Wallee_Entity_Void_Job::STATE_DONE);
+               $void_job->save();
+               wc_transaction_query("commit");
+               
+           }
+           else{
+               $void_job->save();
+               wc_transaction_query("commit");
+               WooCommerce_Wallee::instance()->log('Error sending void. '.$e->getMessage(), WC_Log_Levels::INFO);
+               throw $e;
+           }
+    	}
 		catch (Exception $e) {
-		    $void_job->set_state(WC_Wallee_Entity_Void_Job::STATE_DONE);
 			$void_job->save();
 			wc_transaction_query("commit");
+			WooCommerce_Wallee::instance()->log('Error sending void. '.$e->getMessage(), WC_Log_Levels::INFO);
 			throw $e;
 		}
 	}

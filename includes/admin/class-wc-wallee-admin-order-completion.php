@@ -208,10 +208,23 @@ class WC_Wallee_Admin_Order_Completion {
 			$completion_job->save();
 			wc_transaction_query("commit");
 		}
+		catch (\Wallee\Sdk\ApiException $e) {
+		    if ($e->getResponseObject() instanceof \Wallee\Sdk\Model\ClientError) {
+		        $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
+		        $completion_job->save();
+		        wc_transaction_query("commit");
+		    }
+		    else{
+		        $completion_job->save();
+		        wc_transaction_query("commit");
+		        WooCommerce_Wallee::instance()->log('Error updating line items. '.$e->getMessage(), WC_Log_Levels::INFO);
+		        throw $e;
+		    }
+		}
 		catch (Exception $e) {
-		    $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
 			$completion_job->save();
 			wc_transaction_query("commit");
+			WooCommerce_Wallee::instance()->log('Error updating line items. '.$e->getMessage(), WC_Log_Levels::INFO);
 			throw $e;
 		}
 	}
@@ -239,10 +252,23 @@ class WC_Wallee_Admin_Order_Completion {
 			$completion_job->save();
 			wc_transaction_query("commit");
 		}
+		catch (\Wallee\Sdk\ApiException $e) {
+    		if ($e->getResponseObject() instanceof \Wallee\Sdk\Model\ClientError) {
+    		    $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
+    		    $completion_job->save();
+    		    wc_transaction_query("commit");    		    
+    		}
+    		else{
+    		    $completion_job->save();
+    		    wc_transaction_query("commit");
+    		    WooCommerce_Wallee::instance()->log('Error sending completion. '.$e->getMessage(), WC_Log_Levels::INFO);
+    		    throw $e;
+    		}
+		}
 		catch (Exception $e) {
-		    $completion_job->set_state(WC_Wallee_Entity_Completion_Job::STATE_DONE);
 			$completion_job->save();
 			wc_transaction_query("commit");
+			WooCommerce_Wallee::instance()->log('Error sending completion. '.$e->getMessage(), WC_Log_Levels::INFO);
 			throw $e;
 		}
 	}

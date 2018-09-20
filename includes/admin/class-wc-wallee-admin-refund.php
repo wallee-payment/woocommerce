@@ -141,10 +141,23 @@ class WC_Wallee_Admin_Refund {
 			$refund_job->save();
 			wc_transaction_query("commit");
 		}
+		catch (\Wallee\Sdk\ApiException $e) {
+		    if ($e->getResponseObject() instanceof \Wallee\Sdk\Model\ClientError) {
+		        $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
+		        $refund_job->save();
+		        wc_transaction_query("commit");
+		    }
+		    else{
+		        $refund_job->save();
+		        wc_transaction_query("commit");
+		        WooCommerce_Wallee::instance()->log('Error sending refund. '.$e->getMessage(), WC_Log_Levels::INFO);
+		        throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woo-wallee'), $e->getMessage()));
+		    }
+		}
 		catch (Exception $e) {
-		    $refund_job->set_state(WC_Wallee_Entity_Refund_Job::STATE_FAILURE);
 			$refund_job->save();
 			wc_transaction_query("commit");
+			WooCommerce_Wallee::instance()->log('Error sending refund. '.$e->getMessage(), WC_Log_Levels::INFO);
 			throw new Exception(sprintf(__('There has been an error while sending the refund to the gateway. Error: %s', 'woo-wallee'), $e->getMessage()));
 		}
 	}
