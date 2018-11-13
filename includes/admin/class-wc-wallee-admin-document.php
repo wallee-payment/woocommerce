@@ -57,7 +57,7 @@ class WC_Wallee_Admin_Document {
 								'wallee_admin' => 'download_invoice' 
 							), admin_url('post.php')), 'download_invoice', 'nonce');
 			$title = esc_attr(__('Invoice', 'woo-wallee'));
-			printf('<a class="button tips wallee-button-download-invoice" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
+			printf('<a class="button tips wallee-action-button  wallee-button-download-invoice" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
 		}
 		if ($transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::FULFILL) {
 			$url = wp_nonce_url(
@@ -68,7 +68,7 @@ class WC_Wallee_Admin_Document {
 								'wallee_admin' => 'download_packing' 
 							), admin_url('post.php')), 'download_packing', 'nonce');
 			$title = esc_attr(__('Packing Slip', 'woo-wallee'));
-			printf('<a class="button tips wallee-button-download-packingslip" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
+			printf('<a class="button tips wallee-action-button wallee-button-download-packingslip" href="%1s" data-tip="%2s">%2s</a>', $url, $title, $title);
 		}
 	}
 

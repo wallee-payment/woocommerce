@@ -95,6 +95,18 @@ class WC_Wallee_Admin {
 			$this,
 			'remove_not_wanted_order_actions'
 		), 10, 2);
+
+		add_action('woocommerce_after_edit_attribute_fields', array(
+		    $this,
+		    'display_attribute_options_edit'
+		), 10, 0);
+		
+		add_action('woocommerce_after_add_attribute_fields', array(
+		    $this,
+		    'display_attribute_options_add'
+		), 10, 0);
+		
+		
 	}
 	
 	public function handle_woocommerce_active(){
@@ -219,6 +231,45 @@ class WC_Wallee_Admin {
 		return array_merge($action_links, $links);
 	}
 	
+	
+	
+	public function store_attribute_options($product, $data_storage){
+	    global $wallee_attributes_options;
+	    if(!empty($wallee_attributes_options)){
+	        $product->add_meta_data('_wallee_attribute_options', $wallee_attributes_options, true);
+	    }	    
+	}
+	
+		
+	
+	public function display_attribute_options_edit(){
+	    
+	    $edit = absint( $_GET['edit'] );
+	    $checked = false;
+	    
+	    $attribute_options = WC_Wallee_Entity_Attribute_Options::load_by_attribute_id($edit);
+	    if($attribute_options->get_id() > 0 && $attribute_options->get_send()){
+	        $checked = true;
+	    }
+	    echo '<tr class="form-field form-required">
+					<th scope="row" valign="top">
+							<label for="wallee_attribute_option_send">'.esc_html__( 'Send attribute to wallee.', 'woo-wallee' ).'</label>
+					</th>
+						<td>
+								<input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1" '.checked( $checked, true, false).'/>
+								<p class="description">'.esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ).'</p>
+						</td>
+				</tr>';	    
+	}
+	
+	public function display_attribute_options_add(){
+	    echo '<div class="form-field">
+    				<label for="wallee_attribute_option_send"><input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1">'.esc_html__( 'Send attribute to wallee.', 'woo-wallee' ).'</label>
+       				<p class="description">'.esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ).'</p>
+    			</div>';
+	}
+	
+
 }
 
 WC_Wallee_Admin::instance();

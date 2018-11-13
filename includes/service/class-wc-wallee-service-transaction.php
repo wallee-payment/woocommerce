@@ -201,12 +201,20 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 		if ($transaction->getState() == \Wallee\Sdk\Model\TransactionState::FAILED ||
 		    $transaction->getState() == \Wallee\Sdk\Model\TransactionState::DECLINE) {
 			$failed_charge_attempt = $this->get_failed_charge_attempt($transaction->getLinkedSpaceId(), $transaction->getId());
-			if ($failed_charge_attempt != null && $failed_charge_attempt->getFailureReason() != null) {
-			    $info->set_failure_reason($failed_charge_attempt->getFailureReason()->getDescription());
+			if ($failed_charge_attempt != null) {
+			    if( $failed_charge_attempt->getFailureReason() != null) {
+			      $info->set_failure_reason($failed_charge_attempt->getFailureReason()->getDescription());
+			    }
+                $info->set_user_failure_message($failed_charge_attempt->getUserFailureMessage());
 			}
-			else if($transaction->getFailureReason() != null){
-			    $info->set_failure_reason($transaction->getFailureReason()->getDescription());
+			if($info->get_failure_reason() == null){
+			    if($transaction->getFailureReason() != null){
+			        $info->set_failure_reason($transaction->getFailureReason()->getDescription());
+			    }
 			}
+			if(empty($info->get_user_failure_message())){
+			    $info->set_user_failure_message($transaction->getUserFailureMessage());
+			}			
 		}
 		$info = apply_filters('wc_wallee_update_transaction_info', $info, $transaction, $order);
 		$info->save();
@@ -316,7 +324,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 			try {
 				$transaction = $this->get_transaction_service()->read($space_id, $transaction_id);
 				if ($transaction->getState() != \Wallee\Sdk\Model\TransactionState::PENDING) {
-				    throw new Exception(__("The checkout expired, please try again", "woo-wallee"));
+				    throw new Exception(__("The checkout expired, please try again.", "woo-wallee"));
 				}
 				$pending_transaction = new \Wallee\Sdk\Model\TransactionPending();
 				$pending_transaction->setId($transaction->getId());

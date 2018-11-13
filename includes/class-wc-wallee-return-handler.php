@@ -65,9 +65,13 @@ class WC_Wallee_Return_Handler {
 		), 5);
 		$transaction = WC_Wallee_Entity_Transaction_Info::load_newest_by_mapped_order_id($order->get_id());
 		
+		$user_message = $transaction->get_user_failure_message();
 		$failure_reason = $transaction->get_failure_reason();
-		if ($failure_reason !== null) {
-		    WooCommerce_Wallee::instance()->add_notice($failure_reason, 'error');
+		if(empty($user_message) && $failure_reason !== null){
+		    $user_message = $failure_reason;
+		}
+		if (!empty($user_message)) {
+		    WC()->session->set( 'wallee_failure_message', $user_message );
 		}
 		wp_redirect(wc_get_checkout_url());
 		exit();
