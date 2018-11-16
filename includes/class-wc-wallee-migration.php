@@ -53,12 +53,10 @@ class WC_Wallee_Migration {
 		if (!is_blog_installed()) {
 			return;
 		}
-		if (!defined('WC_WALLEE_INSTALLING')) {
-			define('WC_WALLEE_INSTALLING', true);
-		}
+		
+		wc_maybe_define_constant('WC_WALLEE_INSTALLING', true);
 		
 		self::check_requirements();
-		
 		
 		if (function_exists('is_multisite') && is_multisite()) {
 			// check if it is a network activation - if so, run the activation function for each blog id
@@ -261,7 +259,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 	    if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 	        $row_meta = array(
-	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.12/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
+	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.13/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
 	        );
 	        
 	        return array_merge( $links, $row_meta );
@@ -436,12 +434,15 @@ class WC_Wallee_Migration {
 	        throw new Exception($wpdb->last_error);
 	    }
 	    
-	    $result = $wpdb->query(
-	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD `order_mapping_id` int(10) unsigned NULL AFTER order_id;");
-	    if ($result === false) {
-	        throw new Exception($wpdb->last_error);
-	    }
 	    
+	    $result = $wpdb->query("SHOW COLUMNS FROM `{$wpdb->prefix}woocommerce_wallee_transaction_info` LIKE 'order_mapping_id'");
+	    if ($result == 0) {
+	        $result = $wpdb->query(
+	            "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD `order_mapping_id` int(10) unsigned NULL AFTER order_id;");
+	        if ($result === false) {
+	            throw new Exception($wpdb->last_error);
+	        }
+	    }	    
 	    $result = $wpdb->query(
 	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_token_info` CHANGE `customer_id` `customer_id` int(10) unsigned NULL DEFAULT NULL;");
 	    
@@ -452,36 +453,45 @@ class WC_Wallee_Migration {
 	
 	public static function update_1_0_3_image_domain(){
 	    global $wpdb;
-	    $result = $wpdb->query(        
-	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_method_configuration` ADD COLUMN `image_base` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER image;");
-	    if ($result === false) {
-	        throw new Exception($wpdb->last_error);
+	    
+	    $result = $wpdb->query("SHOW COLUMNS FROM `{$wpdb->prefix}woocommerce_wallee_method_configuration` LIKE 'image_base'");
+	    if ($result == 0) {
+	        $result = $wpdb->query(
+	            "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_method_configuration` ADD COLUMN `image_base` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER image;");
+	        if ($result === false) {
+	            throw new Exception($wpdb->last_error);
+	        }
 	    }
 	    
-	    $result = $wpdb->query(
-	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD COLUMN `image_base` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER image;");
-	    if ($result === false) {
-	        throw new Exception($wpdb->last_error);
+	    $result = $wpdb->query("SHOW COLUMNS FROM `{$wpdb->prefix}woocommerce_wallee_transaction_info` LIKE 'image_base'");
+	    if ($result == 0) {
+	        $result = $wpdb->query(
+	            "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD COLUMN `image_base` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER image;");
+	        if ($result === false) {
+	            throw new Exception($wpdb->last_error);
+	        }
 	    }
 	}
 	
 	public static function update_1_0_4_failure_msg_and_attribute(){
 	    global $wpdb;
-	    $result = $wpdb->query(
-	        "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD COLUMN `user_failure_message` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER failure_reason;");
-	    if ($result === false) {
-	        throw new Exception($wpdb->last_error);
+	    
+	    $result = $wpdb->query("SHOW COLUMNS FROM `{$wpdb->prefix}woocommerce_wallee_transaction_info` LIKE 'user_failure_message'");
+	    if ($result == 0) {
+	        $result = $wpdb->query(
+	            "ALTER TABLE `{$wpdb->prefix}woocommerce_wallee_transaction_info` ADD COLUMN `user_failure_message` VARCHAR(2047) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER failure_reason;");
+	        if ($result === false) {
+	            throw new Exception($wpdb->last_error);
+	        }
 	    }
+	    //Do not use foreign keys to reference attribute to cascade deletion, as some shop still run with MyISAM enginge as default.
 	    $result = $wpdb->query(
 	        "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}woocommerce_wallee_attribute_options(
 				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                 `attribute_id` bigint(20) UNSIGNED NOT NULL,
 				`send` varchar(1) COLLATE utf8_unicode_ci,
 				PRIMARY KEY (`id`),
-				UNIQUE `unq_attribute_id` (`attribute_id`),
-                FOREIGN KEY (attribute_id)
-                    REFERENCES {$wpdb->prefix}woocommerce_attribute_taxonomies (attribute_id)
-                    ON DELETE CASCADE
+				UNIQUE `unq_attribute_id` (`attribute_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
 	    if ($result === false) {
 	        throw new Exception($wpdb->last_error);
