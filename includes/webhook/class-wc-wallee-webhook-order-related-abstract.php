@@ -21,23 +21,19 @@ abstract class WC_Wallee_Webhook_Order_Related_Abstract extends WC_Wallee_Webhoo
 	 * @param WC_Wallee_Webhook_Request $request
 	 */
     public function process(WC_Wallee_Webhook_Request $request){
-		/**
-		 * @var wpdb $wpdb
-		 */
-		global $wpdb;
-		wc_transaction_query("start");
+
+        WC_Wallee_Helper::instance()->start_database_transaction();
 		$entity = $this->load_entity($request);
 		try {
+		    WC_Wallee_Helper::instance()->lock_by_transaction_id($request->get_space_id(), $this->get_transaction_id($entity));
 			$order = WC_Order_Factory::get_order($this->get_order_id($entity));
 			if ($order !== false && $order->get_id()) {
-				WC_Wallee_Helper::instance()->lock_by_transaction_id($request->get_space_id(), $this->get_transaction_id($entity));
-				$order = WC_Order_Factory::get_order($order->get_id());
 				$this->process_order_related_inner($order, $entity);
 			}
-			wc_transaction_query("commit");
+			WC_Wallee_Helper::instance()->commit_database_transaction();
 		}
 		catch (Exception $e) {
-			wc_transaction_query("rollback");
+		    WC_Wallee_Helper::instance()->rollback_database_transaction();
 			throw $e;
 		}
 	}

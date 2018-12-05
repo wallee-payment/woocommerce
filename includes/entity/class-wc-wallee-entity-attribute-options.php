@@ -40,7 +40,7 @@ class WC_Wallee_Entity_Attribute_Options extends WC_Wallee_Entity_Abstract {
 		return 'woocommerce_wallee_attribute_options';
 	}
 
-	protected function prepare_base_fields_for_storage($data_array, $type_array){
+	protected function prepare_base_fields_for_storage(&$data_array, &$type_array){
 
 	}
 	

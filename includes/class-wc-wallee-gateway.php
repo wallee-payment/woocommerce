@@ -352,8 +352,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			$transaction_service->update_transaction_info($transaction, $order);
 			
 			$order->add_meta_data('_wallee_linked_ids', array('space_id' =>  $transaction->getLinkedSpaceId(), 'transaction_id' => $transaction->getId()), false);
-			$order->delete_meta_data('_wc_wallee_restocked');
-			
+			$order->delete_meta_data('_wallee_confirmed');
 			$order->save();
 			
 			$result =array(
