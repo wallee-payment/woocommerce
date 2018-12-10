@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 1.1.14
+ * Version: 1.1.15
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -43,7 +43,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.1.14';
+		private $version = '1.1.15';
 		
 		/**
 		 * The single instance of the class.
@@ -241,6 +241,12 @@ if (!class_exists('WooCommerce_Wallee')) {
 			    $this,
 			    'woocommerce_rest_prepare_product_attribute'
 			), 10, 3);
+			
+			add_filter('woocommerce_germanized_send_instant_order_confirmation', array(
+			    $this,
+			    'germanized_send_instant_order_confirmation'
+			), 10, 2);
+			
 		}
 
 		public function register_order_statuses(){
@@ -618,6 +624,14 @@ if (!class_exists('WooCommerce_Wallee')) {
 		        $response->set_data($data);
 		    }
 		    return $response;
+		}
+		
+		public function germanized_send_instant_order_confirmation($send_mail, $order){
+		    $gateway = wc_get_payment_gateway_by_order($order);
+		    if ($gateway instanceof WC_Wallee_Gateway) {
+		        return false;
+		    }
+		    return $send_mail;
 		}
 	}
 }
