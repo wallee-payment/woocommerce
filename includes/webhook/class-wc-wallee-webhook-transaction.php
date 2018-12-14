@@ -78,9 +78,9 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	    if (!$order->get_meta("_wallee_confirmed", true) && !$order->get_meta("_wallee_authorized", true)){
     	    do_action('wc_wallee_confirmed', $transaction , $order);
     		$order->add_meta_data("_wallee_confirmed", "true", true);
-    		wc_maybe_reduce_stock_levels($order->get_id());
     		$status = apply_filters('wc_wallee_confirmed_status', 'wallee-redirected', $order);
     		$order->update_status($status);
+    		wc_maybe_reduce_stock_levels($order->get_id());
 	   }
 	}
 
@@ -106,17 +106,16 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 
 	protected function decline(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 	    do_action('wc_wallee_declined', $transaction , $order);
-	    wc_maybe_increase_stock_levels($order);
 		$status = apply_filters('wc_wallee_decline_status', 'cancelled', $order);
-		$order->update_status($status);		
+		$order->update_status($status);
+		WC_Wallee_Helper::instance()->maybe_restock_items_for_order($order);
 	}
 
 	protected function failed(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 	    do_action('wc_wallee_failed', $transaction , $order);
-	    wc_maybe_increase_stock_levels($order);
 		$status = apply_filters('wc_wallee_failed_status', 'failed', $order);
 		$order->update_status($status);
-		
+		WC_Wallee_Helper::instance()->maybe_restock_items_for_order($order);		
 	}
 
 	protected function fulfill(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
