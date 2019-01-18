@@ -49,9 +49,9 @@ class WC_Wallee_Return_Handler {
 		
 		$transaction_service->wait_for_transaction_state($order, 
 				array(
-				    \Wallee\Sdk\Model\TransactionState::CONFIRMED,
-				    \Wallee\Sdk\Model\TransactionState::PENDING,
-				    \Wallee\Sdk\Model\TransactionState::PROCESSING 
+				    \Wallee\Sdk\Model\TransactionState::AUTHORIZED,
+				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
+				    \Wallee\Sdk\Model\TransactionState::FULFILL,
 				), 5);
 		$gateway = wc_get_payment_gateway_by_order($order);
 		wp_redirect($gateway->get_return_url($order));
@@ -64,7 +64,9 @@ class WC_Wallee_Return_Handler {
 		    \Wallee\Sdk\Model\TransactionState::FAILED 
 		), 5);
 		$transaction = WC_Wallee_Entity_Transaction_Info::load_newest_by_mapped_order_id($order->get_id());
-		
+		if($transaction->get_state() ==  \Wallee\Sdk\Model\TransactionState::FAILED ){
+		    WC()->session->set( 'order_awaiting_payment', $order->get_id());
+		}		
 		$user_message = $transaction->get_user_failure_message();
 		$failure_reason = $transaction->get_failure_reason();
 		if(empty($user_message) && $failure_reason !== null){
@@ -73,7 +75,12 @@ class WC_Wallee_Return_Handler {
 		if (!empty($user_message)) {
 		    WC()->session->set( 'wallee_failure_message', $user_message );
 		}
-		wp_redirect(wc_get_checkout_url());
+		if($order->get_meta('_wallee_pay_for_order', true, 'edit')){
+		    wp_redirect($order->get_checkout_payment_url(false));
+		}
+		else{
+		    wp_redirect(wc_get_checkout_url());
+		}
 		exit();
 	}
 }

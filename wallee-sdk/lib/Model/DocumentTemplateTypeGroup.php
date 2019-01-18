@@ -24,21 +24,22 @@ namespace Wallee\Sdk\Model;
 use Wallee\Sdk\ValidationException;
 
 /**
- * AbstractApplicationUserUpdate model
+ * DocumentTemplateTypeGroup model
  *
  * @category    Class
+ * @description 
  * @package     Wallee\Sdk
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class AbstractApplicationUserUpdate  {
+class DocumentTemplateTypeGroup  {
 
 	/**
 	 * The original name of the model.
 	 *
 	 * @var string
 	 */
-	private static $swaggerModelName = 'Abstract.ApplicationUser.Update';
+	private static $swaggerModelName = 'DocumentTemplateTypeGroup';
 
 	/**
 	 * An array of property to type mappings. Used for (de)serialization.
@@ -46,9 +47,8 @@ class AbstractApplicationUserUpdate  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-		'name' => 'string',
-		'requestLimit' => 'int',
-		'state' => '\Wallee\Sdk\Model\CreationEntityState'	);
+		'id' => 'int',
+		'title' => 'map[string,string]'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -62,25 +62,18 @@ class AbstractApplicationUserUpdate  {
 	
 
 	/**
-	 * The user name is used to identify the application user in administrative interfaces.
-	 *
-	 * @var string
-	 */
-	private $name;
-
-	/**
-	 * The request limit defines the maximum number of API request accepted within 2 minutes. This limit can only be changed with special privileges.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
 	 * @var int
 	 */
-	private $requestLimit;
+	private $id;
 
 	/**
 	 * 
 	 *
-	 * @var \Wallee\Sdk\Model\CreationEntityState
+	 * @var map[string,string]
 	 */
-	private $state;
+	private $title;
 
 
 	/**
@@ -89,83 +82,54 @@ class AbstractApplicationUserUpdate  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['requestLimit'])) {
-			$this->setRequestLimit($data['requestLimit']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
+		if (isset($data['title'])) {
+			$this->setTitle($data['title']);
 		}
 	}
 
 
 	/**
-	 * Returns name.
+	 * Returns id.
 	 *
-	 * The user name is used to identify the application user in administrative interfaces.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * Sets name.
-	 *
-	 * @param string $name
-	 * @return AbstractApplicationUserUpdate
-	 */
-	public function setName($name) {
-		$this->name = $name;
-
-		return $this;
-	}
-
-	/**
-	 * Returns requestLimit.
-	 *
-	 * The request limit defines the maximum number of API request accepted within 2 minutes. This limit can only be changed with special privileges.
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
 	 *
 	 * @return int
 	 */
-	public function getRequestLimit() {
-		return $this->requestLimit;
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Sets requestLimit.
+	 * Sets id.
 	 *
-	 * @param int $requestLimit
-	 * @return AbstractApplicationUserUpdate
+	 * @param int $id
+	 * @return DocumentTemplateTypeGroup
 	 */
-	public function setRequestLimit($requestLimit) {
-		$this->requestLimit = $requestLimit;
+	protected function setId($id) {
+		$this->id = $id;
 
 		return $this;
 	}
 
 	/**
-	 * Returns state.
+	 * Returns title.
 	 *
 	 * 
 	 *
-	 * @return \Wallee\Sdk\Model\CreationEntityState
+	 * @return map[string,string]
 	 */
-	public function getState() {
-		return $this->state;
+	public function getTitle() {
+		return $this->title;
 	}
 
 	/**
-	 * Sets state.
+	 * Sets title.
 	 *
-	 * @param \Wallee\Sdk\Model\CreationEntityState $state
-	 * @return AbstractApplicationUserUpdate
+	 * @param map[string,string] $title
+	 * @return DocumentTemplateTypeGroup
 	 */
-	public function setState($state) {
-		$this->state = $state;
+	public function setTitle($title) {
+		$this->title = $title;
 
 		return $this;
 	}

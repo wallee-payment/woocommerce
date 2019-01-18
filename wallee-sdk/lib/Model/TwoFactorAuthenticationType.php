@@ -24,21 +24,22 @@ namespace Wallee\Sdk\Model;
 use Wallee\Sdk\ValidationException;
 
 /**
- * AbstractApplicationUserUpdate model
+ * TwoFactorAuthenticationType model
  *
  * @category    Class
+ * @description 
  * @package     Wallee\Sdk
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class AbstractApplicationUserUpdate  {
+class TwoFactorAuthenticationType  {
 
 	/**
 	 * The original name of the model.
 	 *
 	 * @var string
 	 */
-	private static $swaggerModelName = 'Abstract.ApplicationUser.Update';
+	private static $swaggerModelName = 'TwoFactorAuthenticationType';
 
 	/**
 	 * An array of property to type mappings. Used for (de)serialization.
@@ -46,9 +47,11 @@ class AbstractApplicationUserUpdate  {
 	 * @var string[]
 	 */
 	private static $swaggerTypes = array(
-		'name' => 'string',
-		'requestLimit' => 'int',
-		'state' => '\Wallee\Sdk\Model\CreationEntityState'	);
+		'description' => 'map[string,string]',
+		'feature' => 'int',
+		'icon' => 'string',
+		'id' => 'int',
+		'name' => 'map[string,string]'	);
 
 	/**
 	 * Returns an array of property to type mappings.
@@ -62,25 +65,39 @@ class AbstractApplicationUserUpdate  {
 	
 
 	/**
-	 * The user name is used to identify the application user in administrative interfaces.
+	 * 
 	 *
-	 * @var string
+	 * @var map[string,string]
 	 */
-	private $name;
-
-	/**
-	 * The request limit defines the maximum number of API request accepted within 2 minutes. This limit can only be changed with special privileges.
-	 *
-	 * @var int
-	 */
-	private $requestLimit;
+	private $description;
 
 	/**
 	 * 
 	 *
-	 * @var \Wallee\Sdk\Model\CreationEntityState
+	 * @var int
 	 */
-	private $state;
+	private $feature;
+
+	/**
+	 * 
+	 *
+	 * @var string
+	 */
+	private $icon;
+
+	/**
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @var int
+	 */
+	private $id;
+
+	/**
+	 * 
+	 *
+	 * @var map[string,string]
+	 */
+	private $name;
 
 
 	/**
@@ -89,24 +106,113 @@ class AbstractApplicationUserUpdate  {
 	 * @param mixed[] $data an associated array of property values initializing the model
 	 */
 	public function __construct(array $data = null) {
+		if (isset($data['description'])) {
+			$this->setDescription($data['description']);
+		}
 		if (isset($data['name'])) {
 			$this->setName($data['name']);
-		}
-		if (isset($data['requestLimit'])) {
-			$this->setRequestLimit($data['requestLimit']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
 		}
 	}
 
 
 	/**
-	 * Returns name.
+	 * Returns description.
 	 *
-	 * The user name is used to identify the application user in administrative interfaces.
+	 * 
+	 *
+	 * @return map[string,string]
+	 */
+	public function getDescription() {
+		return $this->description;
+	}
+
+	/**
+	 * Sets description.
+	 *
+	 * @param map[string,string] $description
+	 * @return TwoFactorAuthenticationType
+	 */
+	public function setDescription($description) {
+		$this->description = $description;
+
+		return $this;
+	}
+
+	/**
+	 * Returns feature.
+	 *
+	 * 
+	 *
+	 * @return int
+	 */
+	public function getFeature() {
+		return $this->feature;
+	}
+
+	/**
+	 * Sets feature.
+	 *
+	 * @param int $feature
+	 * @return TwoFactorAuthenticationType
+	 */
+	protected function setFeature($feature) {
+		$this->feature = $feature;
+
+		return $this;
+	}
+
+	/**
+	 * Returns icon.
+	 *
+	 * 
 	 *
 	 * @return string
+	 */
+	public function getIcon() {
+		return $this->icon;
+	}
+
+	/**
+	 * Sets icon.
+	 *
+	 * @param string $icon
+	 * @return TwoFactorAuthenticationType
+	 */
+	protected function setIcon($icon) {
+		$this->icon = $icon;
+
+		return $this;
+	}
+
+	/**
+	 * Returns id.
+	 *
+	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
+	 *
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * Sets id.
+	 *
+	 * @param int $id
+	 * @return TwoFactorAuthenticationType
+	 */
+	protected function setId($id) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Returns name.
+	 *
+	 * 
+	 *
+	 * @return map[string,string]
 	 */
 	public function getName() {
 		return $this->name;
@@ -115,57 +221,11 @@ class AbstractApplicationUserUpdate  {
 	/**
 	 * Sets name.
 	 *
-	 * @param string $name
-	 * @return AbstractApplicationUserUpdate
+	 * @param map[string,string] $name
+	 * @return TwoFactorAuthenticationType
 	 */
 	public function setName($name) {
 		$this->name = $name;
-
-		return $this;
-	}
-
-	/**
-	 * Returns requestLimit.
-	 *
-	 * The request limit defines the maximum number of API request accepted within 2 minutes. This limit can only be changed with special privileges.
-	 *
-	 * @return int
-	 */
-	public function getRequestLimit() {
-		return $this->requestLimit;
-	}
-
-	/**
-	 * Sets requestLimit.
-	 *
-	 * @param int $requestLimit
-	 * @return AbstractApplicationUserUpdate
-	 */
-	public function setRequestLimit($requestLimit) {
-		$this->requestLimit = $requestLimit;
-
-		return $this;
-	}
-
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\CreationEntityState
-	 */
-	public function getState() {
-		return $this->state;
-	}
-
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\CreationEntityState $state
-	 * @return AbstractApplicationUserUpdate
-	 */
-	public function setState($state) {
-		$this->state = $state;
 
 		return $this;
 	}
