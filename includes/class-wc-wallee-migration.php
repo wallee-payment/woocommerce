@@ -61,14 +61,13 @@ class WC_Wallee_Migration {
 		if (function_exists('is_multisite') && is_multisite()) {
 			// check if it is a network activation - if so, run the activation function for each blog id
 			if ($networkwide) {
-				$old_blog = $wpdb->blogid;
 				// Get all blog ids
 				$blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
 				foreach ($blog_ids as $blog_id) {
 					switch_to_blog($blog_id);
 					self::migrate_db();
+					restore_current_blog();
 				}
-				switch_to_blog($old_blog);
 				return;
 			}
 		}
@@ -136,10 +135,9 @@ class WC_Wallee_Migration {
 		global $wpdb;
 		
 		if (is_plugin_active_for_network('woo-wallee/woocommerce-wallee.php')) {
-			$old_blog = $wpdb->blogid;
 			switch_to_blog($blog_id);
 			self::migrate_db();
-			switch_to_blog($old_blog);
+			restore_current_blog();
 		}
 	}
 
@@ -259,7 +257,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 	    if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 	        $row_meta = array(
-	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.18/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
+	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.1.19/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
 	        );
 	        
 	        return array_merge( $links, $row_meta );
