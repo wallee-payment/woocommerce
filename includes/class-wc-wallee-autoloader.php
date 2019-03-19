@@ -84,6 +84,9 @@ class WC_Wallee_Autoloader {
 		elseif (strpos($class, 'wc_wallee_webhook') === 0) {
 			$path = $this->include_path . 'webhook/';
 		}
+		elseif (strpos($class, 'wc_wallee_exception') === 0) {
+		    $path = $this->include_path . 'exception/';
+		}
 		elseif (strpos($class, 'wc_wallee_admin') === 0) {
 			$path = $this->include_path . 'admin/';
 		}

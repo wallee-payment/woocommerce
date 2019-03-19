@@ -197,7 +197,9 @@ class WC_Wallee_Admin_Document {
 			}
 		}
 		catch (Exception $e) {
-		    wp_die(__('Could not fetch the document from wallee.' , 'woo-wallee'));
+		    $message = $e->getMessage();
+		    $cleaned = preg_replace("/^\[[A-Fa-f\d\-]+\] /", "", $message);
+		    wp_die(__('Could not fetch the document from wallee.', 'woo-wallee').' '.$cleaned);
 		}
 		if ($_GET['refer'] == 'edit') {
 			wp_redirect(add_query_arg(array(

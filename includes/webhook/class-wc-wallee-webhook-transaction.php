@@ -123,8 +123,9 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 
 	protected function fulfill(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
 	    do_action('wc_wallee_fulfill', $transaction , $order);
-		$order->payment_complete($transaction->getId());
-		//Sets the status to procesing or complete depending on items
+	    //Sets the status to procesing or complete depending on items
+	    $order->payment_complete($transaction->getId());
+		    
 	}
 
 	protected function voided(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
