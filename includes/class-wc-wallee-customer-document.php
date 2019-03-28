@@ -32,8 +32,6 @@ class WC_Wallee_Customer_Document {
 		if (!($method instanceof WC_Wallee_Gateway)) {
 			return;
 		}
-		$helper = WC_Wallee_Helper::instance();
-		
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
 		if ($transaction_info->get_id() == null) {
 			return;

@@ -471,8 +471,6 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 * @return boolean True or false based on success, or a WP_Error object.
 	 */
 	public function process_refund($order_id, $amount = null, $reason = ''){
-		global $wpdb;
-		
 		if (!isset($GLOBALS['wallee_refund_id'])) {
 			return new WP_Error('wallee_error', __('There was a problem creating the refund.', 'woo-wallee'));
 		}
