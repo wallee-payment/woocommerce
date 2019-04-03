@@ -77,10 +77,12 @@ class WC_Wallee_Return_Handler {
 		    WC()->session->set( 'wallee_failure_message', $user_message );
 		}
 		if($order->get_meta('_wallee_pay_for_order', true, 'edit')){
-		    wp_redirect($order->get_checkout_payment_url(false));
+		    $url = apply_filters('wc_wallee_pay_failure_url', $order->get_checkout_payment_url(false), $order);
+		    wp_redirect($url);
 		}
 		else{
-		    wp_redirect(wc_get_checkout_url());
+		    $url = apply_filters('wc_wallee_checkout_failure_url', wc_get_checkout_url(), $order);		
+		    wp_redirect($url);
 		}
 		exit();
 	}

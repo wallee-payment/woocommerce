@@ -529,6 +529,18 @@ msgstr[1] "%s manuelle Tasks benötigen Ihre Aufmerksamkeit."
 msgid "View"
 msgstr "Ansicht"
 
+#: views/admin-notices/round-subtotal-warning.php:15
+msgid ""
+"The wallee payment method are not available, if the taxes are rounded at "
+"subtotal level. Please disable the 'Round tax at subtotal level, instead of "
+"rounding per line' option in the tax settings to enable the wallee payment methods."
+msgstr ""
+"Die wallee Zahlungsmethoden sind nicht verfügbar, falls die Steuern "
+"auf der Ebene der Zwischensumme anstatt pro Position gerundet wird. "
+"Bitte deaktivieren Sie die 'Steuern auf der Ebene der Zwischensumme "
+"runden, statt pro Position zu runden' Option in den Mehrwertsteuer Kofiguration "
+"um die wallee Zahlungsmethoden zu ativieren."
+
 #: views/admin-notices/migration-failed.php:15
 msgid "There was an issue executing the migration for WooCommerce wallee."
 msgstr ""

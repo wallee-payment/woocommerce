@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 5.1.1
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.3/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.4/docs/en/documentation.html).
 
 == Installation ==
 
@@ -52,6 +52,7 @@ Additional documentation for this plugin is available [here](https://plugin-docu
 == Changelog ==
 
  
-= 1.2.3 - March 29, 2019 =
+= 1.2.4 - April 03, 2019 =
 
-* Fix - Method not always showing
+* Fix - Issue with checkout JS
+* Tweak - Show warning for tax rounding at subtotal level
