@@ -412,7 +412,6 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			
 			$order->add_meta_data('_wallee_pay_for_order', $is_order_pay_endpoint, true);
 			$order->add_meta_data('_wallee_gateway_id', $this->id, true);
-			$order->add_meta_data('_wallee_linked_ids', array('space_id' =>  $space_id, 'transaction_id' => $transaction_id), false);
 			$order->delete_meta_data('_wallee_confirmed');
 			$order->save();
 			

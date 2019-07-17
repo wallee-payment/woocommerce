@@ -249,32 +249,6 @@ class WC_Wallee_Helper
         return round($amount, $this->get_currency_fraction_digits($currency_code));
     }
 
-    public function get_transaction_id_map_for_order(WC_Order $order)
-    {
-        $meta_data = $order->get_meta('_wallee_linked_ids', false);
-        if (empty($meta_data)) {
-            // Old system
-            $space_id = $order->get_meta('_wallee_linked_space_id', true);
-            $transaction_id = $order->get_meta('_wallee_transaction_id', true);
-            return array(
-                'space_id' => $space_id,
-                'transaction_id' => $transaction_id
-            );
-        }
-        
-        foreach ($meta_data as $data) {
-            $values = $data->value;
-            if (isset($values['sapce_id'])) {
-                $values['space_id'] = $values['sapce_id'];
-            }
-            $info = WC_Wallee_Entity_Transaction_Info::load_by_transaction($values['space_id'], $values['transaction_id']);
-            if ($info->get_id() !== null && $info->get_state() != \Wallee\Sdk\Model\TransactionState::FAILED) {
-                return $values;
-            }
-        }
-        return array();
-    }
-
     public function get_current_cart_id()
     {
         $session_handler = WC()->session;

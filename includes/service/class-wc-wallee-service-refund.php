@@ -50,13 +50,15 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\RefundCreate
 	 */
 	public function create(WC_Order $order, WC_Order_Refund $refund){
-	    $data = WC_Wallee_Helper::instance()->get_transaction_id_map_for_order($order);
-	    $transaction = WC_Wallee_Service_Transaction::instance()->get_transaction($data['space_id'], $data['transaction_id']);
+	    
+	    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+	    $transaction = WC_Wallee_Service_Transaction::instance()->get_transaction($transaction_info->get_space_id(), $transaction_info->get_transaction_id());
 		
 		$reductions = $this->get_reductions($order, $refund);
 		$reductions = $this->fix_reductions($refund, $transaction, $reductions);
 		
 		$refund_create = new \Wallee\Sdk\Model\RefundCreate();
+		$refund_create->setMerchantReference($refund->get_id());
 		$refund_create->setExternalId(uniqid($refund->get_id() . '-'));
 		$refund_create->setReductions($reductions);
 		$refund_create->setTransaction($transaction->getId());

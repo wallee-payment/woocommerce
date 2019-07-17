@@ -163,9 +163,8 @@ class WC_Wallee_Admin_Order_Void {
 	}
 
 	public static function update_for_order(WC_Order $order){
-	    $data = WC_Wallee_Helper::instance()->get_transaction_id_map_for_order($order);
-	
-		$void_job = WC_Wallee_Entity_Void_Job::load_running_void_for_transaction($data['space_id'], $data['transaction_id']);
+	    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+	    $void_job = WC_Wallee_Entity_Void_Job::load_running_void_for_transaction($transaction_info->get_space_id(), $transaction_info->get_transaction_id());
 		
 		if ($void_job->get_state() == WC_Wallee_Entity_Void_Job::STATE_CREATED) {
 			self::send_void($void_job->get_id());

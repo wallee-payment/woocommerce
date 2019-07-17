@@ -269,9 +269,9 @@ class WC_Wallee_Admin_Order_Completion {
 	}
 
 	public static function update_for_order(WC_Order $order){
-	    $data = WC_Wallee_Helper::instance()->get_transaction_id_map_for_order($order);
-
-	    $completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($data['space_id'], $data['transaction_id']);
+	    
+	    $transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order->get_id());
+	    $completion_job = WC_Wallee_Entity_Completion_Job::load_running_completion_for_transaction($transaction_info->get_space_id(), $transaction_info->get_transaction_id());
 		
 		if ($completion_job->get_state() == WC_Wallee_Entity_Completion_Job::STATE_CREATED) {
 			self::update_line_items($completion_job->get_id());

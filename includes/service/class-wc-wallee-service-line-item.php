@@ -78,13 +78,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			$line_item->setTaxes($this->get_taxes(WC_Tax::get_rates($product->get_tax_class())));
 			
 			$line_item->setType(\Wallee\Sdk\Model\LineItemType::PRODUCT);
-			
-			$unique_id = hash('sha256', rand());
-			
-			if (isset($values['_wallee_unique_line_item_id'])) {
-				$unique_id = $values['_wallee_unique_line_item_id'];
-			}
-			$line_item->setUniqueId($unique_id);
+			$line_item->setUniqueId(WC_Wallee_Unique_Id::get_uuid());
 			
 			$attributes = $this->get_base_attributes($product->get_id());
 			foreach ($values['variation'] as $key => $value){
@@ -182,13 +176,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 				$line_item->setTaxes($this->get_taxes(WC_Tax::get_shipping_tax_rates()));
 				
 				$line_item->setType(\Wallee\Sdk\Model\LineItemType::SHIPPING);
-				$meta_data = $shipping_rate->get_meta_data();
-				$unique_id = hash('sha256', rand());
-				
-				if (isset($meta_data['_wallee_unique_line_item_id'])) {
-					$unique_id = $meta_data['_wallee_unique_line_item_id'];
-				}
-				$line_item->setUniqueId($unique_id);
+				$line_item->setUniqueId(WC_Wallee_Unique_Id::get_uuid());
 				
 				$shippings[] = apply_filters('wc_wallee_modify_line_item_shipping_session', $this->clean_line_item($line_item), $shipping_rate);
 			}

@@ -106,7 +106,6 @@ class WC_Wallee_Entity_Refund_Job extends WC_Wallee_Entity_Abstract {
 
 	public static function load_refunds_for_order($order_id){
 		global $wpdb;
-		//Returns empty array
 		$db_results = $wpdb->get_results(
 				$wpdb->prepare("SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE order_id = %d", $order_id), ARRAY_A);
 		$result = array();
@@ -120,8 +119,6 @@ class WC_Wallee_Entity_Refund_Job extends WC_Wallee_Entity_Abstract {
 
 	public static function load_not_sent_job_ids(){
 		global $wpdb;
-		//Returns empty array
-		
 		$time = new DateTime();
 		$time->sub(new DateInterval('PT10M'));
 		$db_results = $wpdb->get_results(
