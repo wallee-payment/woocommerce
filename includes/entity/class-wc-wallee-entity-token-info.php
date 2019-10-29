@@ -45,7 +45,7 @@ class WC_Wallee_Entity_Token_Info extends WC_Wallee_Entity_Abstract {
 	}
 
 	protected static function get_table_name(){
-		return 'woocommerce_wallee_transaction_info';
+		return 'woocommerce_wallee_token_info';
 	}
 
 	public static function load_by_token($space_id, $token_id){
