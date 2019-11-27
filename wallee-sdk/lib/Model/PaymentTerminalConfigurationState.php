@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,27 +17,42 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
-
-
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * TokenizationnMode model
+ * PaymentTerminalConfigurationState model
  *
  * @category    Class
- * @description The tokenization mode controls how the tokenization of payment information is applied on the transaction.
+ * @description 
  * @package     Wallee\Sdk
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class TokenizationnMode implements IEnum {
-
-	const FORCE_UPDATE = 'FORCE_UPDATE';
-	const FORCE_CREATION = 'FORCE_CREATION';
-	const FORCE_CREATION_WITH_ONE_CLICK_PAYMENT = 'FORCE_CREATION_WITH_ONE_CLICK_PAYMENT';
-	const ALLOW_ONE_CLICK_PAYMENT = 'ALLOW_ONE_CLICK_PAYMENT';
-	
-
-	
-
+class PaymentTerminalConfigurationState
+{
+    /**
+     * Possible values of this enum
+     */
+    const CREATE = 'CREATE';
+    const ACTIVE = 'ACTIVE';
+    const DELETING = 'DELETING';
+    const DELETED = 'DELETED';
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::CREATE,
+            self::ACTIVE,
+            self::DELETING,
+            self::DELETED,
+        ];
+    }
 }
+
+

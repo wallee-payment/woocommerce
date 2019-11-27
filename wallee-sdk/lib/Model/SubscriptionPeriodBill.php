@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionPeriodBill model
@@ -32,431 +32,587 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionPeriodBill  {
+class SubscriptionPeriodBill implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionPeriodBill';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionPeriodBill';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'createdOn' => '\DateTime',
-		'effectivePeriodEndDate' => '\DateTime',
-		'id' => 'int',
-		'language' => 'string',
-		'linkedSpaceId' => 'int',
-		'periodStartDate' => '\DateTime',
-		'plannedPeriodEndDate' => '\DateTime',
-		'plannedPurgeDate' => '\DateTime',
-		'state' => '\Wallee\Sdk\Model\SubscriptionPeriodBillState',
-		'subscriptionVersion' => '\Wallee\Sdk\Model\SubscriptionVersion',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'created_on' => '\DateTime',
+        'effective_period_end_date' => '\DateTime',
+        'id' => 'int',
+        'language' => 'string',
+        'linked_space_id' => 'int',
+        'period_start_date' => '\DateTime',
+        'planned_period_end_date' => '\DateTime',
+        'planned_purge_date' => '\DateTime',
+        'state' => '\Wallee\Sdk\Model\SubscriptionPeriodBillState',
+        'subscription_version' => '\Wallee\Sdk\Model\SubscriptionVersion',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'created_on' => 'date-time',
+        'effective_period_end_date' => 'date-time',
+        'id' => 'int64',
+        'language' => null,
+        'linked_space_id' => 'int64',
+        'period_start_date' => 'date-time',
+        'planned_period_end_date' => 'date-time',
+        'planned_purge_date' => 'date-time',
+        'state' => null,
+        'subscription_version' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'created_on' => 'createdOn',
+        'effective_period_end_date' => 'effectivePeriodEndDate',
+        'id' => 'id',
+        'language' => 'language',
+        'linked_space_id' => 'linkedSpaceId',
+        'period_start_date' => 'periodStartDate',
+        'planned_period_end_date' => 'plannedPeriodEndDate',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'state' => 'state',
+        'subscription_version' => 'subscriptionVersion',
+        'version' => 'version'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'created_on' => 'setCreatedOn',
+        'effective_period_end_date' => 'setEffectivePeriodEndDate',
+        'id' => 'setId',
+        'language' => 'setLanguage',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'period_start_date' => 'setPeriodStartDate',
+        'planned_period_end_date' => 'setPlannedPeriodEndDate',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'state' => 'setState',
+        'subscription_version' => 'setSubscriptionVersion',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $effectivePeriodEndDate;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'created_on' => 'getCreatedOn',
+        'effective_period_end_date' => 'getEffectivePeriodEndDate',
+        'id' => 'getId',
+        'language' => 'getLanguage',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'period_start_date' => 'getPeriodStartDate',
+        'planned_period_end_date' => 'getPlannedPeriodEndDate',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'state' => 'getState',
+        'subscription_version' => 'getSubscriptionVersion',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $language;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['effective_period_end_date'] = isset($data['effective_period_end_date']) ? $data['effective_period_end_date'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['language'] = isset($data['language']) ? $data['language'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['period_start_date'] = isset($data['period_start_date']) ? $data['period_start_date'] : null;
+        
+        $this->container['planned_period_end_date'] = isset($data['planned_period_end_date']) ? $data['planned_period_end_date'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+        $this->container['subscription_version'] = isset($data['subscription_version']) ? $data['subscription_version'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $periodStartDate;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPeriodEndDate;
+        return $invalidProperties;
+    }
 
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionPeriodBillState
-	 */
-	private $state;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionVersion
-	 */
-	private $subscriptionVersion;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-		if (isset($data['subscriptionVersion'])) {
-			$this->setSubscriptionVersion($data['subscriptionVersion']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns createdOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns effectivePeriodEndDate.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getEffectivePeriodEndDate() {
-		return $this->effectivePeriodEndDate;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets effectivePeriodEndDate.
-	 *
-	 * @param \DateTime $effectivePeriodEndDate
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setEffectivePeriodEndDate($effectivePeriodEndDate) {
-		$this->effectivePeriodEndDate = $effectivePeriodEndDate;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionPeriodBill
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on 
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
 
-	/**
-	 * Returns language.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets language.
-	 *
-	 * @param string $language
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setLanguage($language) {
-		$this->language = $language;
+    /**
+     * Gets effective_period_end_date
+     *
+     * @return \DateTime
+     */
+    public function getEffectivePeriodEndDate()
+    {
+        return $this->container['effective_period_end_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets effective_period_end_date
+     *
+     * @param \DateTime $effective_period_end_date 
+     *
+     * @return $this
+     */
+    public function setEffectivePeriodEndDate($effective_period_end_date)
+    {
+        $this->container['effective_period_end_date'] = $effective_period_end_date;
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns periodStartDate.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getPeriodStartDate() {
-		return $this->periodStartDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets periodStartDate.
-	 *
-	 * @param \DateTime $periodStartDate
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setPeriodStartDate($periodStartDate) {
-		$this->periodStartDate = $periodStartDate;
+    /**
+     * Gets language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets language
+     *
+     * @param string $language 
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
 
-	/**
-	 * Returns plannedPeriodEndDate.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPeriodEndDate() {
-		return $this->plannedPeriodEndDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plannedPeriodEndDate.
-	 *
-	 * @param \DateTime $plannedPeriodEndDate
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setPlannedPeriodEndDate($plannedPeriodEndDate) {
-		$this->plannedPeriodEndDate = $plannedPeriodEndDate;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return SubscriptionPeriodBill
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
+    /**
+     * Gets period_start_date
+     *
+     * @return \DateTime
+     */
+    public function getPeriodStartDate()
+    {
+        return $this->container['period_start_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets period_start_date
+     *
+     * @param \DateTime $period_start_date 
+     *
+     * @return $this
+     */
+    public function setPeriodStartDate($period_start_date)
+    {
+        $this->container['period_start_date'] = $period_start_date;
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionPeriodBillState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionPeriodBillState $state
-	 * @return SubscriptionPeriodBill
-	 */
-	public function setState($state) {
-		$this->state = $state;
+    /**
+     * Gets planned_period_end_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPeriodEndDate()
+    {
+        return $this->container['planned_period_end_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_period_end_date
+     *
+     * @param \DateTime $planned_period_end_date 
+     *
+     * @return $this
+     */
+    public function setPlannedPeriodEndDate($planned_period_end_date)
+    {
+        $this->container['planned_period_end_date'] = $planned_period_end_date;
 
-	/**
-	 * Returns subscriptionVersion.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionVersion
-	 */
-	public function getSubscriptionVersion() {
-		return $this->subscriptionVersion;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets subscriptionVersion.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionVersion $subscriptionVersion
-	 * @return SubscriptionPeriodBill
-	 */
-	public function setSubscriptionVersion($subscriptionVersion) {
-		$this->subscriptionVersion = $subscriptionVersion;
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionPeriodBill
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionPeriodBillState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionPeriodBillState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets subscription_version
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionVersion
+     */
+    public function getSubscriptionVersion()
+    {
+        return $this->container['subscription_version'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets subscription_version
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionVersion $subscription_version 
+     *
+     * @return $this
+     */
+    public function setSubscriptionVersion($subscription_version)
+    {
+        $this->container['subscription_version'] = $subscription_version;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

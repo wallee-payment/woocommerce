@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * InstallmentCalculatedPlan model
@@ -32,245 +32,395 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class InstallmentCalculatedPlan  {
+class InstallmentCalculatedPlan implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'InstallmentCalculatedPlan';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'InstallmentCalculatedPlan';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'configuration' => '\Wallee\Sdk\Model\InstallmentPlanConfiguration',
-		'paymentMethodConfigurations' => '\Wallee\Sdk\Model\PaymentMethodConfiguration[]',
-		'slices' => '\Wallee\Sdk\Model\InstallmentCalculatedSlice[]',
-		'totalAmount' => 'float',
-		'transaction' => '\Wallee\Sdk\Model\Transaction'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'configuration' => '\Wallee\Sdk\Model\InstallmentPlanConfiguration',
+        'payment_method_configurations' => '\Wallee\Sdk\Model\PaymentMethodConfiguration[]',
+        'slices' => '\Wallee\Sdk\Model\InstallmentCalculatedSlice[]',
+        'total_amount' => 'float',
+        'transaction' => '\Wallee\Sdk\Model\Transaction'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'configuration' => null,
+        'payment_method_configurations' => null,
+        'slices' => null,
+        'total_amount' => null,
+        'transaction' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'configuration' => 'configuration',
+        'payment_method_configurations' => 'paymentMethodConfigurations',
+        'slices' => 'slices',
+        'total_amount' => 'totalAmount',
+        'transaction' => 'transaction'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\InstallmentPlanConfiguration
-	 */
-	private $configuration;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'configuration' => 'setConfiguration',
+        'payment_method_configurations' => 'setPaymentMethodConfigurations',
+        'slices' => 'setSlices',
+        'total_amount' => 'setTotalAmount',
+        'transaction' => 'setTransaction'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\PaymentMethodConfiguration[]
-	 */
-	private $paymentMethodConfigurations;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'configuration' => 'getConfiguration',
+        'payment_method_configurations' => 'getPaymentMethodConfigurations',
+        'slices' => 'getSlices',
+        'total_amount' => 'getTotalAmount',
+        'transaction' => 'getTransaction'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\InstallmentCalculatedSlice[]
-	 */
-	private $slices;
+    
 
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $totalAmount;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\Transaction
-	 */
-	private $transaction;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['configuration'] = isset($data['configuration']) ? $data['configuration'] : null;
+        
+        $this->container['payment_method_configurations'] = isset($data['payment_method_configurations']) ? $data['payment_method_configurations'] : null;
+        
+        $this->container['slices'] = isset($data['slices']) ? $data['slices'] : null;
+        
+        $this->container['total_amount'] = isset($data['total_amount']) ? $data['total_amount'] : null;
+        
+        $this->container['transaction'] = isset($data['transaction']) ? $data['transaction'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['configuration'])) {
-			$this->setConfiguration($data['configuration']);
-		}
-		if (isset($data['paymentMethodConfigurations'])) {
-			$this->setPaymentMethodConfigurations($data['paymentMethodConfigurations']);
-		}
-		if (isset($data['slices'])) {
-			$this->setSlices($data['slices']);
-		}
-		if (isset($data['transaction'])) {
-			$this->setTransaction($data['transaction']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns configuration.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\InstallmentPlanConfiguration
-	 */
-	public function getConfiguration() {
-		return $this->configuration;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets configuration.
-	 *
-	 * @param \Wallee\Sdk\Model\InstallmentPlanConfiguration $configuration
-	 * @return InstallmentCalculatedPlan
-	 */
-	public function setConfiguration($configuration) {
-		$this->configuration = $configuration;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns paymentMethodConfigurations.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\PaymentMethodConfiguration[]
-	 */
-	public function getPaymentMethodConfigurations() {
-		return $this->paymentMethodConfigurations;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets paymentMethodConfigurations.
-	 *
-	 * @param \Wallee\Sdk\Model\PaymentMethodConfiguration[] $paymentMethodConfigurations
-	 * @return InstallmentCalculatedPlan
-	 */
-	public function setPaymentMethodConfigurations($paymentMethodConfigurations) {
-		$this->paymentMethodConfigurations = $paymentMethodConfigurations;
+    
 
-		return $this;
-	}
+    /**
+     * Gets configuration
+     *
+     * @return \Wallee\Sdk\Model\InstallmentPlanConfiguration
+     */
+    public function getConfiguration()
+    {
+        return $this->container['configuration'];
+    }
 
-	/**
-	 * Returns slices.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\InstallmentCalculatedSlice[]
-	 */
-	public function getSlices() {
-		return $this->slices;
-	}
+    /**
+     * Sets configuration
+     *
+     * @param \Wallee\Sdk\Model\InstallmentPlanConfiguration $configuration 
+     *
+     * @return $this
+     */
+    public function setConfiguration($configuration)
+    {
+        $this->container['configuration'] = $configuration;
 
-	/**
-	 * Sets slices.
-	 *
-	 * @param \Wallee\Sdk\Model\InstallmentCalculatedSlice[] $slices
-	 * @return InstallmentCalculatedPlan
-	 */
-	public function setSlices($slices) {
-		$this->slices = $slices;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets payment_method_configurations
+     *
+     * @return \Wallee\Sdk\Model\PaymentMethodConfiguration[]
+     */
+    public function getPaymentMethodConfigurations()
+    {
+        return $this->container['payment_method_configurations'];
+    }
 
-	/**
-	 * Returns totalAmount.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getTotalAmount() {
-		return $this->totalAmount;
-	}
+    /**
+     * Sets payment_method_configurations
+     *
+     * @param \Wallee\Sdk\Model\PaymentMethodConfiguration[] $payment_method_configurations 
+     *
+     * @return $this
+     */
+    public function setPaymentMethodConfigurations($payment_method_configurations)
+    {
+        $this->container['payment_method_configurations'] = $payment_method_configurations;
 
-	/**
-	 * Sets totalAmount.
-	 *
-	 * @param float $totalAmount
-	 * @return InstallmentCalculatedPlan
-	 */
-	protected function setTotalAmount($totalAmount) {
-		$this->totalAmount = $totalAmount;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets slices
+     *
+     * @return \Wallee\Sdk\Model\InstallmentCalculatedSlice[]
+     */
+    public function getSlices()
+    {
+        return $this->container['slices'];
+    }
 
-	/**
-	 * Returns transaction.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\Transaction
-	 */
-	public function getTransaction() {
-		return $this->transaction;
-	}
+    /**
+     * Sets slices
+     *
+     * @param \Wallee\Sdk\Model\InstallmentCalculatedSlice[] $slices 
+     *
+     * @return $this
+     */
+    public function setSlices($slices)
+    {
+        $this->container['slices'] = $slices;
 
-	/**
-	 * Sets transaction.
-	 *
-	 * @param \Wallee\Sdk\Model\Transaction $transaction
-	 * @return InstallmentCalculatedPlan
-	 */
-	public function setTransaction($transaction) {
-		$this->transaction = $transaction;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets total_amount
+     *
+     * @return float
+     */
+    public function getTotalAmount()
+    {
+        return $this->container['total_amount'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets total_amount
+     *
+     * @param float $total_amount 
+     *
+     * @return $this
+     */
+    public function setTotalAmount($total_amount)
+    {
+        $this->container['total_amount'] = $total_amount;
 
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets transaction
+     *
+     * @return \Wallee\Sdk\Model\Transaction
+     */
+    public function getTransaction()
+    {
+        return $this->container['transaction'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets transaction
+     *
+     * @param \Wallee\Sdk\Model\Transaction $transaction 
+     *
+     * @return $this
+     */
+    public function setTransaction($transaction)
+    {
+        $this->container['transaction'] = $transaction;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

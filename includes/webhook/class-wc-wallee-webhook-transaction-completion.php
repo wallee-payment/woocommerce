@@ -114,7 +114,7 @@ class WC_Wallee_Webhook_Transaction_Completion extends WC_Wallee_Webhook_Order_R
 				'total' => array(),
 				'subtotal' => array() 
 			);
-			foreach ($old_taxes['total'] as $id => $tax) {
+			foreach (array_keys($old_taxes['total']) as $id) {
 				$old_tax = $old_taxes['total'][$id];
 				$subtax = $old_taxes['subtotal'][$id];
 				if ($completed_items[$item_id]['completion_tax'][$id] != 0) {

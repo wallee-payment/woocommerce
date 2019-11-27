@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * ProductSetupFee model
@@ -32,415 +32,555 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class ProductSetupFee  {
+class ProductSetupFee implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'ProductSetupFee';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'ProductSetupFee';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'component' => '\Wallee\Sdk\Model\SubscriptionProductComponent',
-		'description' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
-		'id' => 'int',
-		'linkedSpaceId' => 'int',
-		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
-		'onDowngradeCreditedAmount' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
-		'onUpgradeCreditedAmount' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
-		'setupFee' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
-		'type' => '\Wallee\Sdk\Model\ProductFeeType',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'component' => '\Wallee\Sdk\Model\SubscriptionProductComponent',
+        'description' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
+        'id' => 'int',
+        'linked_space_id' => 'int',
+        'name' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
+        'on_downgrade_credited_amount' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
+        'on_upgrade_credited_amount' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
+        'setup_fee' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
+        'type' => '\Wallee\Sdk\Model\ProductFeeType',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'component' => null,
+        'description' => null,
+        'id' => 'int64',
+        'linked_space_id' => 'int64',
+        'name' => null,
+        'on_downgrade_credited_amount' => null,
+        'on_upgrade_credited_amount' => null,
+        'setup_fee' => null,
+        'type' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'component' => 'component',
+        'description' => 'description',
+        'id' => 'id',
+        'linked_space_id' => 'linkedSpaceId',
+        'name' => 'name',
+        'on_downgrade_credited_amount' => 'onDowngradeCreditedAmount',
+        'on_upgrade_credited_amount' => 'onUpgradeCreditedAmount',
+        'setup_fee' => 'setupFee',
+        'type' => 'type',
+        'version' => 'version'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProductComponent
-	 */
-	private $component;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'component' => 'setComponent',
+        'description' => 'setDescription',
+        'id' => 'setId',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'name' => 'setName',
+        'on_downgrade_credited_amount' => 'setOnDowngradeCreditedAmount',
+        'on_upgrade_credited_amount' => 'setOnUpgradeCreditedAmount',
+        'setup_fee' => 'setSetupFee',
+        'type' => 'setType',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	private $description;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'component' => 'getComponent',
+        'description' => 'getDescription',
+        'id' => 'getId',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'name' => 'getName',
+        'on_downgrade_credited_amount' => 'getOnDowngradeCreditedAmount',
+        'on_upgrade_credited_amount' => 'getOnUpgradeCreditedAmount',
+        'setup_fee' => 'getSetupFee',
+        'type' => 'getType',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	private $name;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['component'] = isset($data['component']) ? $data['component'] : null;
+        
+        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['on_downgrade_credited_amount'] = isset($data['on_downgrade_credited_amount']) ? $data['on_downgrade_credited_amount'] : null;
+        
+        $this->container['on_upgrade_credited_amount'] = isset($data['on_upgrade_credited_amount']) ? $data['on_upgrade_credited_amount'] : null;
+        
+        $this->container['setup_fee'] = isset($data['setup_fee']) ? $data['setup_fee'] : null;
+        
+        $this->container['type'] = isset($data['type']) ? $data['type'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * When the subscription is changed and the change is considered as a downgrade the amount defined by this property will be credited to the subscriber.
-	 *
-	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	private $onDowngradeCreditedAmount;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * When the subscription is changed and the change is considered as a upgrade the amount defined by this property will be credited to the subscriber.
-	 *
-	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	private $onUpgradeCreditedAmount;
+        return $invalidProperties;
+    }
 
-	/**
-	 * The setup fee is charged when the subscriber subscribes to this component. The setup fee is debited with the first charge for the subscriptions.
-	 *
-	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	private $setupFee;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\ProductFeeType
-	 */
-	private $type;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['component'])) {
-			$this->setComponent($data['component']);
-		}
-		if (isset($data['description'])) {
-			$this->setDescription($data['description']);
-		}
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['onDowngradeCreditedAmount'])) {
-			$this->setOnDowngradeCreditedAmount($data['onDowngradeCreditedAmount']);
-		}
-		if (isset($data['onUpgradeCreditedAmount'])) {
-			$this->setOnUpgradeCreditedAmount($data['onUpgradeCreditedAmount']);
-		}
-		if (isset($data['setupFee'])) {
-			$this->setSetupFee($data['setupFee']);
-		}
-		if (isset($data['type'])) {
-			$this->setType($data['type']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns component.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductComponent
-	 */
-	public function getComponent() {
-		return $this->component;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets component.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductComponent $component
-	 * @return ProductSetupFee
-	 */
-	public function setComponent($component) {
-		$this->component = $component;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns description.
-	 *
-	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets description.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedString $description
-	 * @return ProductSetupFee
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return ProductSetupFee
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Gets component
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProductComponent
+     */
+    public function getComponent()
+    {
+        return $this->container['component'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets component
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProductComponent $component 
+     *
+     * @return $this
+     */
+    public function setComponent($component)
+    {
+        $this->container['component'] = $component;
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return ProductSetupFee
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets description
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedString
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets description
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedString $description The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
 
-	/**
-	 * Returns name.
-	 *
-	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	public function getName() {
-		return $this->name;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets name.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedString $name
-	 * @return ProductSetupFee
-	 */
-	public function setName($name) {
-		$this->name = $name;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns onDowngradeCreditedAmount.
-	 *
-	 * When the subscription is changed and the change is considered as a downgrade the amount defined by this property will be credited to the subscriber.
-	 *
-	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	public function getOnDowngradeCreditedAmount() {
-		return $this->onDowngradeCreditedAmount;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets onDowngradeCreditedAmount.
-	 *
-	 * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $onDowngradeCreditedAmount
-	 * @return ProductSetupFee
-	 */
-	public function setOnDowngradeCreditedAmount($onDowngradeCreditedAmount) {
-		$this->onDowngradeCreditedAmount = $onDowngradeCreditedAmount;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns onUpgradeCreditedAmount.
-	 *
-	 * When the subscription is changed and the change is considered as a upgrade the amount defined by this property will be credited to the subscriber.
-	 *
-	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	public function getOnUpgradeCreditedAmount() {
-		return $this->onUpgradeCreditedAmount;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets onUpgradeCreditedAmount.
-	 *
-	 * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $onUpgradeCreditedAmount
-	 * @return ProductSetupFee
-	 */
-	public function setOnUpgradeCreditedAmount($onUpgradeCreditedAmount) {
-		$this->onUpgradeCreditedAmount = $onUpgradeCreditedAmount;
+    /**
+     * Gets name
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedString
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets name
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedString $name The name of the fee should describe for the subscriber in few words for what the fee is for.
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Returns setupFee.
-	 *
-	 * The setup fee is charged when the subscriber subscribes to this component. The setup fee is debited with the first charge for the subscriptions.
-	 *
-	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	public function getSetupFee() {
-		return $this->setupFee;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets setupFee.
-	 *
-	 * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $setupFee
-	 * @return ProductSetupFee
-	 */
-	public function setSetupFee($setupFee) {
-		$this->setupFee = $setupFee;
+    /**
+     * Gets on_downgrade_credited_amount
+     *
+     * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
+     */
+    public function getOnDowngradeCreditedAmount()
+    {
+        return $this->container['on_downgrade_credited_amount'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets on_downgrade_credited_amount
+     *
+     * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $on_downgrade_credited_amount When the subscription is changed and the change is considered as a downgrade the amount defined by this property will be credited to the subscriber.
+     *
+     * @return $this
+     */
+    public function setOnDowngradeCreditedAmount($on_downgrade_credited_amount)
+    {
+        $this->container['on_downgrade_credited_amount'] = $on_downgrade_credited_amount;
 
-	/**
-	 * Returns type.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\ProductFeeType
-	 */
-	public function getType() {
-		return $this->type;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets type.
-	 *
-	 * @param \Wallee\Sdk\Model\ProductFeeType $type
-	 * @return ProductSetupFee
-	 */
-	public function setType($type) {
-		$this->type = $type;
+    /**
+     * Gets on_upgrade_credited_amount
+     *
+     * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
+     */
+    public function getOnUpgradeCreditedAmount()
+    {
+        return $this->container['on_upgrade_credited_amount'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets on_upgrade_credited_amount
+     *
+     * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $on_upgrade_credited_amount When the subscription is changed and the change is considered as a upgrade the amount defined by this property will be credited to the subscriber.
+     *
+     * @return $this
+     */
+    public function setOnUpgradeCreditedAmount($on_upgrade_credited_amount)
+    {
+        $this->container['on_upgrade_credited_amount'] = $on_upgrade_credited_amount;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return ProductSetupFee
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets setup_fee
+     *
+     * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
+     */
+    public function getSetupFee()
+    {
+        return $this->container['setup_fee'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets setup_fee
+     *
+     * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $setup_fee The setup fee is charged when the subscriber subscribes to this component. The setup fee is debited with the first charge for the subscriptions.
+     *
+     * @return $this
+     */
+    public function setSetupFee($setup_fee)
+    {
+        $this->container['setup_fee'] = $setup_fee;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets type
+     *
+     * @return \Wallee\Sdk\Model\ProductFeeType
+     */
+    public function getType()
+    {
+        return $this->container['type'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets type
+     *
+     * @param \Wallee\Sdk\Model\ProductFeeType $type 
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->container['type'] = $type;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

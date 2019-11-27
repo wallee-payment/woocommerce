@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * Subscription model
@@ -32,592 +32,779 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class Subscription  {
-
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'Subscription';
-
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'affiliate' => '\Wallee\Sdk\Model\SubscriptionAffiliate',
-		'createdOn' => '\DateTime',
-		'description' => 'string',
-		'id' => 'int',
-		'initializedOn' => '\DateTime',
-		'language' => 'string',
-		'linkedSpaceId' => 'int',
-		'plannedPurgeDate' => '\DateTime',
-		'plannedTerminationDate' => '\DateTime',
-		'reference' => 'string',
-		'state' => '\Wallee\Sdk\Model\SubscriptionState',
-		'subscriber' => '\Wallee\Sdk\Model\Subscriber',
-		'terminatedOn' => '\DateTime',
-		'terminatingOn' => '\DateTime',
-		'token' => '\Wallee\Sdk\Model\Token',
-		'version' => 'int'	);
-
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
-
-	
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionAffiliate
-	 */
-	private $affiliate;
-
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $description;
-
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
-
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $initializedOn;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $language;
-
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
-
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
-
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedTerminationDate;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $reference;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionState
-	 */
-	private $state;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\Subscriber
-	 */
-	private $subscriber;
-
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $terminatedOn;
-
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $terminatingOn;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\Token
-	 */
-	private $token;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['affiliate'])) {
-			$this->setAffiliate($data['affiliate']);
-		}
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-		if (isset($data['subscriber'])) {
-			$this->setSubscriber($data['subscriber']);
-		}
-		if (isset($data['token'])) {
-			$this->setToken($data['token']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
-
-
-	/**
-	 * Returns affiliate.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionAffiliate
-	 */
-	public function getAffiliate() {
-		return $this->affiliate;
-	}
-
-	/**
-	 * Sets affiliate.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionAffiliate $affiliate
-	 * @return Subscription
-	 */
-	public function setAffiliate($affiliate) {
-		$this->affiliate = $affiliate;
-
-		return $this;
-	}
-
-	/**
-	 * Returns createdOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
-
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return Subscription
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns description.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
-
-	/**
-	 * Sets description.
-	 *
-	 * @param string $description
-	 * @return Subscription
-	 */
-	protected function setDescription($description) {
-		$this->description = $description;
-
-		return $this;
-	}
-
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
-
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return Subscription
-	 */
-	public function setId($id) {
-		$this->id = $id;
-
-		return $this;
-	}
-
-	/**
-	 * Returns initializedOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getInitializedOn() {
-		return $this->initializedOn;
-	}
-
-	/**
-	 * Sets initializedOn.
-	 *
-	 * @param \DateTime $initializedOn
-	 * @return Subscription
-	 */
-	protected function setInitializedOn($initializedOn) {
-		$this->initializedOn = $initializedOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns language.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
-
-	/**
-	 * Sets language.
-	 *
-	 * @param string $language
-	 * @return Subscription
-	 */
-	protected function setLanguage($language) {
-		$this->language = $language;
-
-		return $this;
-	}
-
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
-
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return Subscription
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
-
-		return $this;
-	}
-
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
-
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return Subscription
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
-
-		return $this;
-	}
-
-	/**
-	 * Returns plannedTerminationDate.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedTerminationDate() {
-		return $this->plannedTerminationDate;
-	}
-
-	/**
-	 * Sets plannedTerminationDate.
-	 *
-	 * @param \DateTime $plannedTerminationDate
-	 * @return Subscription
-	 */
-	protected function setPlannedTerminationDate($plannedTerminationDate) {
-		$this->plannedTerminationDate = $plannedTerminationDate;
-
-		return $this;
-	}
-
-	/**
-	 * Returns reference.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getReference() {
-		return $this->reference;
-	}
-
-	/**
-	 * Sets reference.
-	 *
-	 * @param string $reference
-	 * @return Subscription
-	 */
-	protected function setReference($reference) {
-		$this->reference = $reference;
-
-		return $this;
-	}
-
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionState
-	 */
-	public function getState() {
-		return $this->state;
-	}
-
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionState $state
-	 * @return Subscription
-	 */
-	public function setState($state) {
-		$this->state = $state;
-
-		return $this;
-	}
-
-	/**
-	 * Returns subscriber.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\Subscriber
-	 */
-	public function getSubscriber() {
-		return $this->subscriber;
-	}
-
-	/**
-	 * Sets subscriber.
-	 *
-	 * @param \Wallee\Sdk\Model\Subscriber $subscriber
-	 * @return Subscription
-	 */
-	public function setSubscriber($subscriber) {
-		$this->subscriber = $subscriber;
-
-		return $this;
-	}
-
-	/**
-	 * Returns terminatedOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getTerminatedOn() {
-		return $this->terminatedOn;
-	}
-
-	/**
-	 * Sets terminatedOn.
-	 *
-	 * @param \DateTime $terminatedOn
-	 * @return Subscription
-	 */
-	protected function setTerminatedOn($terminatedOn) {
-		$this->terminatedOn = $terminatedOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns terminatingOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getTerminatingOn() {
-		return $this->terminatingOn;
-	}
-
-	/**
-	 * Sets terminatingOn.
-	 *
-	 * @param \DateTime $terminatingOn
-	 * @return Subscription
-	 */
-	protected function setTerminatingOn($terminatingOn) {
-		$this->terminatingOn = $terminatingOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns token.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\Token
-	 */
-	public function getToken() {
-		return $this->token;
-	}
-
-	/**
-	 * Sets token.
-	 *
-	 * @param \Wallee\Sdk\Model\Token $token
-	 * @return Subscription
-	 */
-	public function setToken($token) {
-		$this->token = $token;
-
-		return $this;
-	}
-
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
-
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return Subscription
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
-
-		return $this;
-	}
-
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
-
-	}
-
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
-
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
-
+class Subscription implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
+
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'Subscription';
+
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'activated_on' => '\DateTime',
+        'affiliate' => '\Wallee\Sdk\Model\SubscriptionAffiliate',
+        'created_on' => '\DateTime',
+        'description' => 'string',
+        'id' => 'int',
+        'initialized_on' => '\DateTime',
+        'language' => 'string',
+        'linked_space_id' => 'int',
+        'planned_purge_date' => '\DateTime',
+        'planned_termination_date' => '\DateTime',
+        'reference' => 'string',
+        'state' => '\Wallee\Sdk\Model\SubscriptionState',
+        'subscriber' => '\Wallee\Sdk\Model\Subscriber',
+        'terminated_on' => '\DateTime',
+        'terminating_on' => '\DateTime',
+        'token' => '\Wallee\Sdk\Model\Token',
+        'version' => 'int'
+    ];
+
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'activated_on' => 'date-time',
+        'affiliate' => null,
+        'created_on' => 'date-time',
+        'description' => null,
+        'id' => 'int64',
+        'initialized_on' => 'date-time',
+        'language' => null,
+        'linked_space_id' => 'int64',
+        'planned_purge_date' => 'date-time',
+        'planned_termination_date' => 'date-time',
+        'reference' => null,
+        'state' => null,
+        'subscriber' => null,
+        'terminated_on' => 'date-time',
+        'terminating_on' => 'date-time',
+        'token' => null,
+        'version' => 'int32'
+    ];
+
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'activated_on' => 'activatedOn',
+        'affiliate' => 'affiliate',
+        'created_on' => 'createdOn',
+        'description' => 'description',
+        'id' => 'id',
+        'initialized_on' => 'initializedOn',
+        'language' => 'language',
+        'linked_space_id' => 'linkedSpaceId',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'planned_termination_date' => 'plannedTerminationDate',
+        'reference' => 'reference',
+        'state' => 'state',
+        'subscriber' => 'subscriber',
+        'terminated_on' => 'terminatedOn',
+        'terminating_on' => 'terminatingOn',
+        'token' => 'token',
+        'version' => 'version'
+    ];
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'activated_on' => 'setActivatedOn',
+        'affiliate' => 'setAffiliate',
+        'created_on' => 'setCreatedOn',
+        'description' => 'setDescription',
+        'id' => 'setId',
+        'initialized_on' => 'setInitializedOn',
+        'language' => 'setLanguage',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'planned_termination_date' => 'setPlannedTerminationDate',
+        'reference' => 'setReference',
+        'state' => 'setState',
+        'subscriber' => 'setSubscriber',
+        'terminated_on' => 'setTerminatedOn',
+        'terminating_on' => 'setTerminatingOn',
+        'token' => 'setToken',
+        'version' => 'setVersion'
+    ];
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'activated_on' => 'getActivatedOn',
+        'affiliate' => 'getAffiliate',
+        'created_on' => 'getCreatedOn',
+        'description' => 'getDescription',
+        'id' => 'getId',
+        'initialized_on' => 'getInitializedOn',
+        'language' => 'getLanguage',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'planned_termination_date' => 'getPlannedTerminationDate',
+        'reference' => 'getReference',
+        'state' => 'getState',
+        'subscriber' => 'getSubscriber',
+        'terminated_on' => 'getTerminatedOn',
+        'terminating_on' => 'getTerminatingOn',
+        'token' => 'getToken',
+        'version' => 'getVersion'
+    ];
+
+    
+
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['activated_on'] = isset($data['activated_on']) ? $data['activated_on'] : null;
+        
+        $this->container['affiliate'] = isset($data['affiliate']) ? $data['affiliate'] : null;
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['initialized_on'] = isset($data['initialized_on']) ? $data['initialized_on'] : null;
+        
+        $this->container['language'] = isset($data['language']) ? $data['language'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['planned_termination_date'] = isset($data['planned_termination_date']) ? $data['planned_termination_date'] : null;
+        
+        $this->container['reference'] = isset($data['reference']) ? $data['reference'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+        $this->container['subscriber'] = isset($data['subscriber']) ? $data['subscriber'] : null;
+        
+        $this->container['terminated_on'] = isset($data['terminated_on']) ? $data['terminated_on'] : null;
+        
+        $this->container['terminating_on'] = isset($data['terminating_on']) ? $data['terminating_on'] : null;
+        
+        $this->container['token'] = isset($data['token']) ? $data['token'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
+
+
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
+
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
+
+    
+
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
+
+    
+
+    /**
+     * Gets activated_on
+     *
+     * @return \DateTime
+     */
+    public function getActivatedOn()
+    {
+        return $this->container['activated_on'];
+    }
+
+    /**
+     * Sets activated_on
+     *
+     * @param \DateTime $activated_on 
+     *
+     * @return $this
+     */
+    public function setActivatedOn($activated_on)
+    {
+        $this->container['activated_on'] = $activated_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets affiliate
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionAffiliate
+     */
+    public function getAffiliate()
+    {
+        return $this->container['affiliate'];
+    }
+
+    /**
+     * Sets affiliate
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionAffiliate $affiliate 
+     *
+     * @return $this
+     */
+    public function setAffiliate($affiliate)
+    {
+        $this->container['affiliate'] = $affiliate;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
+
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on 
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
+
+    /**
+     * Sets description
+     *
+     * @param string $description 
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets initialized_on
+     *
+     * @return \DateTime
+     */
+    public function getInitializedOn()
+    {
+        return $this->container['initialized_on'];
+    }
+
+    /**
+     * Sets initialized_on
+     *
+     * @param \DateTime $initialized_on 
+     *
+     * @return $this
+     */
+    public function setInitializedOn($initialized_on)
+    {
+        $this->container['initialized_on'] = $initialized_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
+
+    /**
+     * Sets language
+     *
+     * @param string $language 
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
+
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
+
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets planned_termination_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedTerminationDate()
+    {
+        return $this->container['planned_termination_date'];
+    }
+
+    /**
+     * Sets planned_termination_date
+     *
+     * @param \DateTime $planned_termination_date 
+     *
+     * @return $this
+     */
+    public function setPlannedTerminationDate($planned_termination_date)
+    {
+        $this->container['planned_termination_date'] = $planned_termination_date;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->container['reference'];
+    }
+
+    /**
+     * Sets reference
+     *
+     * @param string $reference 
+     *
+     * @return $this
+     */
+    public function setReference($reference)
+    {
+        $this->container['reference'] = $reference;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
+
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets subscriber
+     *
+     * @return \Wallee\Sdk\Model\Subscriber
+     */
+    public function getSubscriber()
+    {
+        return $this->container['subscriber'];
+    }
+
+    /**
+     * Sets subscriber
+     *
+     * @param \Wallee\Sdk\Model\Subscriber $subscriber 
+     *
+     * @return $this
+     */
+    public function setSubscriber($subscriber)
+    {
+        $this->container['subscriber'] = $subscriber;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets terminated_on
+     *
+     * @return \DateTime
+     */
+    public function getTerminatedOn()
+    {
+        return $this->container['terminated_on'];
+    }
+
+    /**
+     * Sets terminated_on
+     *
+     * @param \DateTime $terminated_on 
+     *
+     * @return $this
+     */
+    public function setTerminatedOn($terminated_on)
+    {
+        $this->container['terminated_on'] = $terminated_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets terminating_on
+     *
+     * @return \DateTime
+     */
+    public function getTerminatingOn()
+    {
+        return $this->container['terminating_on'];
+    }
+
+    /**
+     * Sets terminating_on
+     *
+     * @param \DateTime $terminating_on 
+     *
+     * @return $this
+     */
+    public function setTerminatingOn($terminating_on)
+    {
+        $this->container['terminating_on'] = $terminating_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets token
+     *
+     * @return \Wallee\Sdk\Model\Token
+     */
+    public function getToken()
+    {
+        return $this->container['token'];
+    }
+
+    /**
+     * Sets token
+     *
+     * @param \Wallee\Sdk\Model\Token $token 
+     *
+     * @return $this
+     */
+    public function setToken($token)
+    {
+        $this->container['token'] = $token;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
+
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

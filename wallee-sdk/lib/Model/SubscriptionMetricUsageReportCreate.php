@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionMetricUsageReportCreate model
@@ -32,260 +32,407 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionMetricUsageReportCreate  {
+class SubscriptionMetricUsageReportCreate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionMetricUsageReport.Create';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionMetricUsageReport.Create';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'consumedUnits' => 'float',
-		'description' => 'string',
-		'externalId' => 'string',
-		'metric' => 'int',
-		'subscription' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'consumed_units' => 'float',
+        'description' => 'string',
+        'external_id' => 'string',
+        'metric' => 'int',
+        'subscription' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'consumed_units' => null,
+        'description' => null,
+        'external_id' => null,
+        'metric' => 'int64',
+        'subscription' => 'int64'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'consumed_units' => 'consumedUnits',
+        'description' => 'description',
+        'external_id' => 'externalId',
+        'metric' => 'metric',
+        'subscription' => 'subscription'
+    ];
 
-	/**
-	 * The consumed units describe the amount of resources consumed. Those consumed units will be billed in the next billing cycle.
-	 *
-	 * @var float
-	 */
-	private $consumedUnits;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'consumed_units' => 'setConsumedUnits',
+        'description' => 'setDescription',
+        'external_id' => 'setExternalId',
+        'metric' => 'setMetric',
+        'subscription' => 'setSubscription'
+    ];
 
-	/**
-	 * The metric usage report description describe the reported usage. This description may be shown to the end user.
-	 *
-	 * @var string
-	 */
-	private $description;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'consumed_units' => 'getConsumedUnits',
+        'description' => 'getDescription',
+        'external_id' => 'getExternalId',
+        'metric' => 'getMetric',
+        'subscription' => 'getSubscription'
+    ];
 
-	/**
-	 * The external id identifies the metric usage uniquely.
-	 *
-	 * @var string
-	 */
-	private $externalId;
+    
 
-	/**
-	 * The metric usage report is linked to the metric for which the usage should be recorded.
-	 *
-	 * @var int
-	 */
-	private $metric;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The subscription to which the usage is added to.
-	 *
-	 * @var int
-	 */
-	private $subscription;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['consumed_units'] = isset($data['consumed_units']) ? $data['consumed_units'] : null;
+        
+        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        
+        $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
+        
+        $this->container['metric'] = isset($data['metric']) ? $data['metric'] : null;
+        
+        $this->container['subscription'] = isset($data['subscription']) ? $data['subscription'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        if ($this->container['consumed_units'] === null) {
+            $invalidProperties[] = "'consumed_units' can't be null";
+        }
+        if ($this->container['external_id'] === null) {
+            $invalidProperties[] = "'external_id' can't be null";
+        }
+        if ($this->container['metric'] === null) {
+            $invalidProperties[] = "'metric' can't be null";
+        }
+        if ($this->container['subscription'] === null) {
+            $invalidProperties[] = "'subscription' can't be null";
+        }
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['consumedUnits'])) {
-			$this->setConsumedUnits($data['consumedUnits']);
-		}
-		if (isset($data['description'])) {
-			$this->setDescription($data['description']);
-		}
-		if (isset($data['externalId'])) {
-			$this->setExternalId($data['externalId']);
-		}
-		if (isset($data['metric'])) {
-			$this->setMetric($data['metric']);
-		}
-		if (isset($data['subscription'])) {
-			$this->setSubscription($data['subscription']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns consumedUnits.
-	 *
-	 * The consumed units describe the amount of resources consumed. Those consumed units will be billed in the next billing cycle.
-	 *
-	 * @return float
-	 */
-	public function getConsumedUnits() {
-		return $this->consumedUnits;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets consumedUnits.
-	 *
-	 * @param float $consumedUnits
-	 * @return SubscriptionMetricUsageReportCreate
-	 */
-	public function setConsumedUnits($consumedUnits) {
-		$this->consumedUnits = $consumedUnits;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns description.
-	 *
-	 * The metric usage report description describe the reported usage. This description may be shown to the end user.
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets description.
-	 *
-	 * @param string $description
-	 * @return SubscriptionMetricUsageReportCreate
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
+    
 
-		return $this;
-	}
+    /**
+     * Gets consumed_units
+     *
+     * @return float
+     */
+    public function getConsumedUnits()
+    {
+        return $this->container['consumed_units'];
+    }
 
-	/**
-	 * Returns externalId.
-	 *
-	 * The external id identifies the metric usage uniquely.
-	 *
-	 * @return string
-	 */
-	public function getExternalId() {
-		return $this->externalId;
-	}
+    /**
+     * Sets consumed_units
+     *
+     * @param float $consumed_units The consumed units describe the amount of resources consumed. Those consumed units will be billed in the next billing cycle.
+     *
+     * @return $this
+     */
+    public function setConsumedUnits($consumed_units)
+    {
+        $this->container['consumed_units'] = $consumed_units;
 
-	/**
-	 * Sets externalId.
-	 *
-	 * @param string $externalId
-	 * @return SubscriptionMetricUsageReportCreate
-	 */
-	public function setExternalId($externalId) {
-		$this->externalId = $externalId;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
 
-	/**
-	 * Returns metric.
-	 *
-	 * The metric usage report is linked to the metric for which the usage should be recorded.
-	 *
-	 * @return int
-	 */
-	public function getMetric() {
-		return $this->metric;
-	}
+    /**
+     * Sets description
+     *
+     * @param string $description The metric usage report description describe the reported usage. This description may be shown to the end user.
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
 
-	/**
-	 * Sets metric.
-	 *
-	 * @param int $metric
-	 * @return SubscriptionMetricUsageReportCreate
-	 */
-	public function setMetric($metric) {
-		$this->metric = $metric;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets external_id
+     *
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
 
-	/**
-	 * Returns subscription.
-	 *
-	 * The subscription to which the usage is added to.
-	 *
-	 * @return int
-	 */
-	public function getSubscription() {
-		return $this->subscription;
-	}
+    /**
+     * Sets external_id
+     *
+     * @param string $external_id The external id identifies the metric usage uniquely.
+     *
+     * @return $this
+     */
+    public function setExternalId($external_id)
+    {
+        $this->container['external_id'] = $external_id;
 
-	/**
-	 * Sets subscription.
-	 *
-	 * @param int $subscription
-	 * @return SubscriptionMetricUsageReportCreate
-	 */
-	public function setSubscription($subscription) {
-		$this->subscription = $subscription;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets metric
+     *
+     * @return int
+     */
+    public function getMetric()
+    {
+        return $this->container['metric'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets metric
+     *
+     * @param int $metric The metric usage report is linked to the metric for which the usage should be recorded.
+     *
+     * @return $this
+     */
+    public function setMetric($metric)
+    {
+        $this->container['metric'] = $metric;
 
-		if ($this->getConsumedUnits() === null) {
-			throw new ValidationException("'consumedUnits' can't be null", 'consumedUnits', $this);
-		}
-		if ($this->getExternalId() === null) {
-			throw new ValidationException("'externalId' can't be null", 'externalId', $this);
-		}
-		if ($this->getMetric() === null) {
-			throw new ValidationException("'metric' can't be null", 'metric', $this);
-		}
-		if ($this->getSubscription() === null) {
-			throw new ValidationException("'subscription' can't be null", 'subscription', $this);
-		}
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets subscription
+     *
+     * @return int
+     */
+    public function getSubscription()
+    {
+        return $this->container['subscription'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets subscription
+     *
+     * @param int $subscription The subscription to which the usage is added to.
+     *
+     * @return $this
+     */
+    public function setSubscription($subscription)
+    {
+        $this->container['subscription'] = $subscription;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

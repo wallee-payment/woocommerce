@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionProductVersionPending model
@@ -32,458 +32,593 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionProductVersionPending  {
+class SubscriptionProductVersionPending implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionProductVersion.Pending';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionProductVersion.Pending';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'id' => 'int',
-		'version' => 'int',
-		'billingCycle' => 'string',
-		'comment' => 'string',
-		'defaultCurrency' => 'string',
-		'enabledCurrencies' => 'string[]',
-		'minimalNumberOfPeriods' => 'int',
-		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
-		'numberOfNoticePeriods' => 'int',
-		'product' => 'int',
-		'state' => '\Wallee\Sdk\Model\SubscriptionProductVersionState'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'id' => 'int',
+        'version' => 'int',
+        'billing_cycle' => 'string',
+        'comment' => 'string',
+        'default_currency' => 'string',
+        'enabled_currencies' => 'string[]',
+        'minimal_number_of_periods' => 'int',
+        'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
+        'number_of_notice_periods' => 'int',
+        'product' => 'int',
+        'state' => '\Wallee\Sdk\Model\SubscriptionProductVersionState'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'id' => 'int64',
+        'version' => 'int64',
+        'billing_cycle' => null,
+        'comment' => null,
+        'default_currency' => null,
+        'enabled_currencies' => null,
+        'minimal_number_of_periods' => 'int32',
+        'name' => null,
+        'number_of_notice_periods' => 'int32',
+        'product' => 'int64',
+        'state' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'id' => 'id',
+        'version' => 'version',
+        'billing_cycle' => 'billingCycle',
+        'comment' => 'comment',
+        'default_currency' => 'defaultCurrency',
+        'enabled_currencies' => 'enabledCurrencies',
+        'minimal_number_of_periods' => 'minimalNumberOfPeriods',
+        'name' => 'name',
+        'number_of_notice_periods' => 'numberOfNoticePeriods',
+        'product' => 'product',
+        'state' => 'state'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'id' => 'setId',
+        'version' => 'setVersion',
+        'billing_cycle' => 'setBillingCycle',
+        'comment' => 'setComment',
+        'default_currency' => 'setDefaultCurrency',
+        'enabled_currencies' => 'setEnabledCurrencies',
+        'minimal_number_of_periods' => 'setMinimalNumberOfPeriods',
+        'name' => 'setName',
+        'number_of_notice_periods' => 'setNumberOfNoticePeriods',
+        'product' => 'setProduct',
+        'state' => 'setState'
+    ];
 
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'id' => 'getId',
+        'version' => 'getVersion',
+        'billing_cycle' => 'getBillingCycle',
+        'comment' => 'getComment',
+        'default_currency' => 'getDefaultCurrency',
+        'enabled_currencies' => 'getEnabledCurrencies',
+        'minimal_number_of_periods' => 'getMinimalNumberOfPeriods',
+        'name' => 'getName',
+        'number_of_notice_periods' => 'getNumberOfNoticePeriods',
+        'product' => 'getProduct',
+        'state' => 'getState'
+    ];
 
-	/**
-	 * The billing cycle determines the rhythm with which the subscriber is billed. The charging may have different rhythm.
-	 *
-	 * @var string
-	 */
-	private $billingCycle;
+    
 
-	/**
-	 * The comment allows to provide a internal comment for the version. It helps to document why a product was changed. The comment is not disclosed to the subscriber.
-	 *
-	 * @var string
-	 */
-	private $comment;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The default currency has to be used in all fees.
-	 *
-	 * @var string
-	 */
-	private $defaultCurrency;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+        $this->container['billing_cycle'] = isset($data['billing_cycle']) ? $data['billing_cycle'] : null;
+        
+        $this->container['comment'] = isset($data['comment']) ? $data['comment'] : null;
+        
+        $this->container['default_currency'] = isset($data['default_currency']) ? $data['default_currency'] : null;
+        
+        $this->container['enabled_currencies'] = isset($data['enabled_currencies']) ? $data['enabled_currencies'] : null;
+        
+        $this->container['minimal_number_of_periods'] = isset($data['minimal_number_of_periods']) ? $data['minimal_number_of_periods'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['number_of_notice_periods'] = isset($data['number_of_notice_periods']) ? $data['number_of_notice_periods'] : null;
+        
+        $this->container['product'] = isset($data['product']) ? $data['product'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+    }
 
-	/**
-	 * The currencies which are enabled can be selected to define component fees. Currencies which are not enabled cannot be used to define fees.
-	 *
-	 * @var string[]
-	 */
-	private $enabledCurrencies;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The minimal number of periods determines how long the subscription has to run before the subscription can be terminated.
-	 *
-	 * @var int
-	 */
-	private $minimalNumberOfPeriods;
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['version'] === null) {
+            $invalidProperties[] = "'version' can't be null";
+        }
+        return $invalidProperties;
+    }
 
-	/**
-	 * The product version name is the name of the product which is shown to the user for the version. When the visible product name should be changed for a particular product a new version has to be created which contains the new name of the product.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
-	 */
-	private $name;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * The number of notice periods determines the number of periods which need to be paid between the request to terminate the subscription and the final period.
-	 *
-	 * @var int
-	 */
-	private $numberOfNoticePeriods;
-
-	/**
-	 * Each product version is linked to a product.
-	 *
-	 * @var int
-	 */
-	private $product;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProductVersionState
-	 */
-	private $state;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-		if (isset($data['billingCycle'])) {
-			$this->setBillingCycle($data['billingCycle']);
-		}
-		if (isset($data['comment'])) {
-			$this->setComment($data['comment']);
-		}
-		if (isset($data['defaultCurrency'])) {
-			$this->setDefaultCurrency($data['defaultCurrency']);
-		}
-		if (isset($data['enabledCurrencies'])) {
-			$this->setEnabledCurrencies($data['enabledCurrencies']);
-		}
-		if (isset($data['minimalNumberOfPeriods'])) {
-			$this->setMinimalNumberOfPeriods($data['minimalNumberOfPeriods']);
-		}
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['numberOfNoticePeriods'])) {
-			$this->setNumberOfNoticePeriods($data['numberOfNoticePeriods']);
-		}
-		if (isset($data['product'])) {
-			$this->setProduct($data['product']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns billingCycle.
-	 *
-	 * The billing cycle determines the rhythm with which the subscriber is billed. The charging may have different rhythm.
-	 *
-	 * @return string
-	 */
-	public function getBillingCycle() {
-		return $this->billingCycle;
-	}
+    
 
-	/**
-	 * Sets billingCycle.
-	 *
-	 * @param string $billingCycle
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setBillingCycle($billingCycle) {
-		$this->billingCycle = $billingCycle;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns comment.
-	 *
-	 * The comment allows to provide a internal comment for the version. It helps to document why a product was changed. The comment is not disclosed to the subscriber.
-	 *
-	 * @return string
-	 */
-	public function getComment() {
-		return $this->comment;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets comment.
-	 *
-	 * @param string $comment
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setComment($comment) {
-		$this->comment = $comment;
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
 
-	/**
-	 * Returns defaultCurrency.
-	 *
-	 * The default currency has to be used in all fees.
-	 *
-	 * @return string
-	 */
-	public function getDefaultCurrency() {
-		return $this->defaultCurrency;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets defaultCurrency.
-	 *
-	 * @param string $defaultCurrency
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setDefaultCurrency($defaultCurrency) {
-		$this->defaultCurrency = $defaultCurrency;
+    /**
+     * Gets billing_cycle
+     *
+     * @return string
+     */
+    public function getBillingCycle()
+    {
+        return $this->container['billing_cycle'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets billing_cycle
+     *
+     * @param string $billing_cycle The billing cycle determines the rhythm with which the subscriber is billed. The charging may have different rhythm.
+     *
+     * @return $this
+     */
+    public function setBillingCycle($billing_cycle)
+    {
+        $this->container['billing_cycle'] = $billing_cycle;
 
-	/**
-	 * Returns enabledCurrencies.
-	 *
-	 * The currencies which are enabled can be selected to define component fees. Currencies which are not enabled cannot be used to define fees.
-	 *
-	 * @return string[]
-	 */
-	public function getEnabledCurrencies() {
-		return $this->enabledCurrencies;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets enabledCurrencies.
-	 *
-	 * @param string[] $enabledCurrencies
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setEnabledCurrencies($enabledCurrencies) {
-		$this->enabledCurrencies = $enabledCurrencies;
+    /**
+     * Gets comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->container['comment'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets comment
+     *
+     * @param string $comment The comment allows to provide a internal comment for the version. It helps to document why a product was changed. The comment is not disclosed to the subscriber.
+     *
+     * @return $this
+     */
+    public function setComment($comment)
+    {
+        $this->container['comment'] = $comment;
 
-	/**
-	 * Returns minimalNumberOfPeriods.
-	 *
-	 * The minimal number of periods determines how long the subscription has to run before the subscription can be terminated.
-	 *
-	 * @return int
-	 */
-	public function getMinimalNumberOfPeriods() {
-		return $this->minimalNumberOfPeriods;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets minimalNumberOfPeriods.
-	 *
-	 * @param int $minimalNumberOfPeriods
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setMinimalNumberOfPeriods($minimalNumberOfPeriods) {
-		$this->minimalNumberOfPeriods = $minimalNumberOfPeriods;
+    /**
+     * Gets default_currency
+     *
+     * @return string
+     */
+    public function getDefaultCurrency()
+    {
+        return $this->container['default_currency'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets default_currency
+     *
+     * @param string $default_currency The default currency has to be used in all fees.
+     *
+     * @return $this
+     */
+    public function setDefaultCurrency($default_currency)
+    {
+        $this->container['default_currency'] = $default_currency;
 
-	/**
-	 * Returns name.
-	 *
-	 * The product version name is the name of the product which is shown to the user for the version. When the visible product name should be changed for a particular product a new version has to be created which contains the new name of the product.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
-	 */
-	public function getName() {
-		return $this->name;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets name.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setName($name) {
-		$this->name = $name;
+    /**
+     * Gets enabled_currencies
+     *
+     * @return string[]
+     */
+    public function getEnabledCurrencies()
+    {
+        return $this->container['enabled_currencies'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets enabled_currencies
+     *
+     * @param string[] $enabled_currencies The currencies which are enabled can be selected to define component fees. Currencies which are not enabled cannot be used to define fees.
+     *
+     * @return $this
+     */
+    public function setEnabledCurrencies($enabled_currencies)
+    {
+        $this->container['enabled_currencies'] = $enabled_currencies;
 
-	/**
-	 * Returns numberOfNoticePeriods.
-	 *
-	 * The number of notice periods determines the number of periods which need to be paid between the request to terminate the subscription and the final period.
-	 *
-	 * @return int
-	 */
-	public function getNumberOfNoticePeriods() {
-		return $this->numberOfNoticePeriods;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets numberOfNoticePeriods.
-	 *
-	 * @param int $numberOfNoticePeriods
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setNumberOfNoticePeriods($numberOfNoticePeriods) {
-		$this->numberOfNoticePeriods = $numberOfNoticePeriods;
+    /**
+     * Gets minimal_number_of_periods
+     *
+     * @return int
+     */
+    public function getMinimalNumberOfPeriods()
+    {
+        return $this->container['minimal_number_of_periods'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets minimal_number_of_periods
+     *
+     * @param int $minimal_number_of_periods The minimal number of periods determines how long the subscription has to run before the subscription can be terminated.
+     *
+     * @return $this
+     */
+    public function setMinimalNumberOfPeriods($minimal_number_of_periods)
+    {
+        $this->container['minimal_number_of_periods'] = $minimal_number_of_periods;
 
-	/**
-	 * Returns product.
-	 *
-	 * Each product version is linked to a product.
-	 *
-	 * @return int
-	 */
-	public function getProduct() {
-		return $this->product;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets product.
-	 *
-	 * @param int $product
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setProduct($product) {
-		$this->product = $product;
+    /**
+     * Gets name
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets name
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name The product version name is the name of the product which is shown to the user for the version. When the visible product name should be changed for a particular product a new version has to be created which contains the new name of the product.
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductVersionState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductVersionState $state
-	 * @return SubscriptionProductVersionPending
-	 */
-	public function setState($state) {
-		$this->state = $state;
+    /**
+     * Gets number_of_notice_periods
+     *
+     * @return int
+     */
+    public function getNumberOfNoticePeriods()
+    {
+        return $this->container['number_of_notice_periods'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets number_of_notice_periods
+     *
+     * @param int $number_of_notice_periods The number of notice periods determines the number of periods which need to be paid between the request to terminate the subscription and the final period.
+     *
+     * @return $this
+     */
+    public function setNumberOfNoticePeriods($number_of_notice_periods)
+    {
+        $this->container['number_of_notice_periods'] = $number_of_notice_periods;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-		if ($this->getId() === null) {
-			throw new ValidationException("'id' can't be null", 'id', $this);
-		}
-		if ($this->getVersion() === null) {
-			throw new ValidationException("'version' can't be null", 'version', $this);
-		}
-	}
+    /**
+     * Gets product
+     *
+     * @return int
+     */
+    public function getProduct()
+    {
+        return $this->container['product'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets product
+     *
+     * @param int $product Each product version is linked to a product.
+     *
+     * @return $this
+     */
+    public function setProduct($product)
+    {
+        $this->container['product'] = $product;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProductVersionState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
 
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProductVersionState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

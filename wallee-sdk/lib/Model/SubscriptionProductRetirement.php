@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionProductRetirement model
@@ -32,307 +32,459 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionProductRetirement  {
+class SubscriptionProductRetirement implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionProductRetirement';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionProductRetirement';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'createdOn' => '\DateTime',
-		'id' => 'int',
-		'linkedSpaceId' => 'int',
-		'product' => '\Wallee\Sdk\Model\SubscriptionProduct',
-		'respectTerminiationPeriodsEnabled' => 'bool',
-		'targetProduct' => '\Wallee\Sdk\Model\SubscriptionProduct',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'created_on' => '\DateTime',
+        'id' => 'int',
+        'linked_space_id' => 'int',
+        'product' => '\Wallee\Sdk\Model\SubscriptionProduct',
+        'respect_terminiation_periods_enabled' => 'bool',
+        'target_product' => '\Wallee\Sdk\Model\SubscriptionProduct',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'created_on' => 'date-time',
+        'id' => 'int64',
+        'linked_space_id' => 'int64',
+        'product' => null,
+        'respect_terminiation_periods_enabled' => null,
+        'target_product' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'created_on' => 'createdOn',
+        'id' => 'id',
+        'linked_space_id' => 'linkedSpaceId',
+        'product' => 'product',
+        'respect_terminiation_periods_enabled' => 'respectTerminiationPeriodsEnabled',
+        'target_product' => 'targetProduct',
+        'version' => 'version'
+    ];
 
-	/**
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'created_on' => 'setCreatedOn',
+        'id' => 'setId',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'product' => 'setProduct',
+        'respect_terminiation_periods_enabled' => 'setRespectTerminiationPeriodsEnabled',
+        'target_product' => 'setTargetProduct',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'created_on' => 'getCreatedOn',
+        'id' => 'getId',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'product' => 'getProduct',
+        'respect_terminiation_periods_enabled' => 'getRespectTerminiationPeriodsEnabled',
+        'target_product' => 'getTargetProduct',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProduct
-	 */
-	private $product;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var bool
-	 */
-	private $respectTerminiationPeriodsEnabled;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['product'] = isset($data['product']) ? $data['product'] : null;
+        
+        $this->container['respect_terminiation_periods_enabled'] = isset($data['respect_terminiation_periods_enabled']) ? $data['respect_terminiation_periods_enabled'] : null;
+        
+        $this->container['target_product'] = isset($data['target_product']) ? $data['target_product'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProduct
-	 */
-	private $targetProduct;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
+        return $invalidProperties;
+    }
 
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['product'])) {
-			$this->setProduct($data['product']);
-		}
-		if (isset($data['targetProduct'])) {
-			$this->setTargetProduct($data['targetProduct']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns createdOn.
-	 *
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return SubscriptionProductRetirement
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionProductRetirement
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return SubscriptionProductRetirement
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on The created on date indicates the date on which the entity was stored into the database.
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
 
-	/**
-	 * Returns product.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProduct
-	 */
-	public function getProduct() {
-		return $this->product;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets product.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProduct $product
-	 * @return SubscriptionProductRetirement
-	 */
-	public function setProduct($product) {
-		$this->product = $product;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns respectTerminiationPeriodsEnabled.
-	 *
-	 * 
-	 *
-	 * @return bool
-	 */
-	public function getRespectTerminiationPeriodsEnabled() {
-		return $this->respectTerminiationPeriodsEnabled;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets respectTerminiationPeriodsEnabled.
-	 *
-	 * @param bool $respectTerminiationPeriodsEnabled
-	 * @return SubscriptionProductRetirement
-	 */
-	protected function setRespectTerminiationPeriodsEnabled($respectTerminiationPeriodsEnabled) {
-		$this->respectTerminiationPeriodsEnabled = $respectTerminiationPeriodsEnabled;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns targetProduct.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProduct
-	 */
-	public function getTargetProduct() {
-		return $this->targetProduct;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets targetProduct.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProduct $targetProduct
-	 * @return SubscriptionProductRetirement
-	 */
-	public function setTargetProduct($targetProduct) {
-		$this->targetProduct = $targetProduct;
+    /**
+     * Gets product
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProduct
+     */
+    public function getProduct()
+    {
+        return $this->container['product'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets product
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProduct $product 
+     *
+     * @return $this
+     */
+    public function setProduct($product)
+    {
+        $this->container['product'] = $product;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionProductRetirement
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets respect_terminiation_periods_enabled
+     *
+     * @return bool
+     */
+    public function getRespectTerminiationPeriodsEnabled()
+    {
+        return $this->container['respect_terminiation_periods_enabled'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets respect_terminiation_periods_enabled
+     *
+     * @param bool $respect_terminiation_periods_enabled 
+     *
+     * @return $this
+     */
+    public function setRespectTerminiationPeriodsEnabled($respect_terminiation_periods_enabled)
+    {
+        $this->container['respect_terminiation_periods_enabled'] = $respect_terminiation_periods_enabled;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets target_product
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProduct
+     */
+    public function getTargetProduct()
+    {
+        return $this->container['target_product'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets target_product
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProduct $target_product 
+     *
+     * @return $this
+     */
+    public function setTargetProduct($target_product)
+    {
+        $this->container['target_product'] = $target_product;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
-
-
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * InstallmentPaymentSliceState model
@@ -32,17 +30,35 @@ namespace Wallee\Sdk\Model;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class InstallmentPaymentSliceState implements IEnum {
-
-	const CREATE = 'CREATE';
-	const SCHEDULED = 'SCHEDULED';
-	const CANCELED = 'CANCELED';
-	const PREPARE_PROCESSING = 'PREPARE_PROCESSING';
-	const PROCESSING = 'PROCESSING';
-	const FAILED = 'FAILED';
-	const SUCCESSFUL = 'SUCCESSFUL';
-	
-
-	
-
+class InstallmentPaymentSliceState
+{
+    /**
+     * Possible values of this enum
+     */
+    const CREATE = 'CREATE';
+    const SCHEDULED = 'SCHEDULED';
+    const CANCELED = 'CANCELED';
+    const PREPARE_PROCESSING = 'PREPARE_PROCESSING';
+    const PROCESSING = 'PROCESSING';
+    const FAILED = 'FAILED';
+    const SUCCESSFUL = 'SUCCESSFUL';
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::CREATE,
+            self::SCHEDULED,
+            self::CANCELED,
+            self::PREPARE_PROCESSING,
+            self::PROCESSING,
+            self::FAILED,
+            self::SUCCESSFUL,
+        ];
+    }
 }
+
+

@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionProductVersionRetirementCreate model
@@ -32,183 +32,334 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionProductVersionRetirementCreate  {
+class SubscriptionProductVersionRetirementCreate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionProductVersionRetirement.Create';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionProductVersionRetirement.Create';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'productVersion' => 'int',
-		'respectTerminiationPeriodsEnabled' => 'bool',
-		'targetProduct' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'product_version' => 'int',
+        'respect_terminiation_periods_enabled' => 'bool',
+        'target_product' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'product_version' => 'int64',
+        'respect_terminiation_periods_enabled' => null,
+        'target_product' => 'int64'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'product_version' => 'productVersion',
+        'respect_terminiation_periods_enabled' => 'respectTerminiationPeriodsEnabled',
+        'target_product' => 'targetProduct'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $productVersion;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'product_version' => 'setProductVersion',
+        'respect_terminiation_periods_enabled' => 'setRespectTerminiationPeriodsEnabled',
+        'target_product' => 'setTargetProduct'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var bool
-	 */
-	private $respectTerminiationPeriodsEnabled;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'product_version' => 'getProductVersion',
+        'respect_terminiation_periods_enabled' => 'getRespectTerminiationPeriodsEnabled',
+        'target_product' => 'getTargetProduct'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $targetProduct;
+    
+
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['product_version'] = isset($data['product_version']) ? $data['product_version'] : null;
+        
+        $this->container['respect_terminiation_periods_enabled'] = isset($data['respect_terminiation_periods_enabled']) ? $data['respect_terminiation_periods_enabled'] : null;
+        
+        $this->container['target_product'] = isset($data['target_product']) ? $data['target_product'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        if ($this->container['product_version'] === null) {
+            $invalidProperties[] = "'product_version' can't be null";
+        }
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['productVersion'])) {
-			$this->setProductVersion($data['productVersion']);
-		}
-		if (isset($data['respectTerminiationPeriodsEnabled'])) {
-			$this->setRespectTerminiationPeriodsEnabled($data['respectTerminiationPeriodsEnabled']);
-		}
-		if (isset($data['targetProduct'])) {
-			$this->setTargetProduct($data['targetProduct']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns productVersion.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getProductVersion() {
-		return $this->productVersion;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets productVersion.
-	 *
-	 * @param int $productVersion
-	 * @return SubscriptionProductVersionRetirementCreate
-	 */
-	public function setProductVersion($productVersion) {
-		$this->productVersion = $productVersion;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns respectTerminiationPeriodsEnabled.
-	 *
-	 * 
-	 *
-	 * @return bool
-	 */
-	public function getRespectTerminiationPeriodsEnabled() {
-		return $this->respectTerminiationPeriodsEnabled;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets respectTerminiationPeriodsEnabled.
-	 *
-	 * @param bool $respectTerminiationPeriodsEnabled
-	 * @return SubscriptionProductVersionRetirementCreate
-	 */
-	public function setRespectTerminiationPeriodsEnabled($respectTerminiationPeriodsEnabled) {
-		$this->respectTerminiationPeriodsEnabled = $respectTerminiationPeriodsEnabled;
+    
 
-		return $this;
-	}
+    /**
+     * Gets product_version
+     *
+     * @return int
+     */
+    public function getProductVersion()
+    {
+        return $this->container['product_version'];
+    }
 
-	/**
-	 * Returns targetProduct.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getTargetProduct() {
-		return $this->targetProduct;
-	}
+    /**
+     * Sets product_version
+     *
+     * @param int $product_version 
+     *
+     * @return $this
+     */
+    public function setProductVersion($product_version)
+    {
+        $this->container['product_version'] = $product_version;
 
-	/**
-	 * Sets targetProduct.
-	 *
-	 * @param int $targetProduct
-	 * @return SubscriptionProductVersionRetirementCreate
-	 */
-	public function setTargetProduct($targetProduct) {
-		$this->targetProduct = $targetProduct;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets respect_terminiation_periods_enabled
+     *
+     * @return bool
+     */
+    public function getRespectTerminiationPeriodsEnabled()
+    {
+        return $this->container['respect_terminiation_periods_enabled'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets respect_terminiation_periods_enabled
+     *
+     * @param bool $respect_terminiation_periods_enabled 
+     *
+     * @return $this
+     */
+    public function setRespectTerminiationPeriodsEnabled($respect_terminiation_periods_enabled)
+    {
+        $this->container['respect_terminiation_periods_enabled'] = $respect_terminiation_periods_enabled;
 
-		if ($this->getProductVersion() === null) {
-			throw new ValidationException("'productVersion' can't be null", 'productVersion', $this);
-		}
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets target_product
+     *
+     * @return int
+     */
+    public function getTargetProduct()
+    {
+        return $this->container['target_product'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets target_product
+     *
+     * @param int $target_product 
+     *
+     * @return $this
+     */
+    public function setTargetProduct($target_product)
+    {
+        $this->container['target_product'] = $target_product;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

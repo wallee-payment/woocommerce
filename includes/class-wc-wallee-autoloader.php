@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 /**
- * This is the autoloader for WhitelabelName classes.
+ * This is the autoloader for wallee classes.
  */
 class WC_Wallee_Autoloader {
 	

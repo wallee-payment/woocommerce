@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
-
-
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * InstallmentPaymentState model
@@ -32,18 +30,37 @@ namespace Wallee\Sdk\Model;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class InstallmentPaymentState implements IEnum {
-
-	const CREATE = 'CREATE';
-	const CONFIRMED = 'CONFIRMED';
-	const AUTHORIZED = 'AUTHORIZED';
-	const REJECTED = 'REJECTED';
-	const COMPLETED = 'COMPLETED';
-	const RUNNING = 'RUNNING';
-	const DONE = 'DONE';
-	const DEFAULTED = 'DEFAULTED';
-	
-
-	
-
+class InstallmentPaymentState
+{
+    /**
+     * Possible values of this enum
+     */
+    const CREATE = 'CREATE';
+    const CONFIRMED = 'CONFIRMED';
+    const AUTHORIZED = 'AUTHORIZED';
+    const REJECTED = 'REJECTED';
+    const COMPLETED = 'COMPLETED';
+    const RUNNING = 'RUNNING';
+    const DONE = 'DONE';
+    const DEFAULTED = 'DEFAULTED';
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::CREATE,
+            self::CONFIRMED,
+            self::AUTHORIZED,
+            self::REJECTED,
+            self::COMPLETED,
+            self::RUNNING,
+            self::DONE,
+            self::DEFAULTED,
+        ];
+    }
 }
+
+

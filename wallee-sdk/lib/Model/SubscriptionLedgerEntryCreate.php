@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionLedgerEntryCreate model
@@ -32,297 +32,442 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionLedgerEntryCreate  {
+class SubscriptionLedgerEntryCreate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionLedgerEntry.Create';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionLedgerEntry.Create';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'amountIncludingTax' => 'float',
-		'externalId' => 'string',
-		'quantity' => 'float',
-		'subscriptionVersion' => 'int',
-		'taxes' => '\Wallee\Sdk\Model\TaxCreate[]',
-		'title' => 'string'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'amount_including_tax' => 'float',
+        'external_id' => 'string',
+        'quantity' => 'float',
+        'subscription_version' => 'int',
+        'taxes' => '\Wallee\Sdk\Model\TaxCreate[]',
+        'title' => 'string'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'amount_including_tax' => null,
+        'external_id' => null,
+        'quantity' => null,
+        'subscription_version' => 'int64',
+        'taxes' => null,
+        'title' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'amount_including_tax' => 'amountIncludingTax',
+        'external_id' => 'externalId',
+        'quantity' => 'quantity',
+        'subscription_version' => 'subscriptionVersion',
+        'taxes' => 'taxes',
+        'title' => 'title'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $amountIncludingTax;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'amount_including_tax' => 'setAmountIncludingTax',
+        'external_id' => 'setExternalId',
+        'quantity' => 'setQuantity',
+        'subscription_version' => 'setSubscriptionVersion',
+        'taxes' => 'setTaxes',
+        'title' => 'setTitle'
+    ];
 
-	/**
-	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
-	 *
-	 * @var string
-	 */
-	private $externalId;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'amount_including_tax' => 'getAmountIncludingTax',
+        'external_id' => 'getExternalId',
+        'quantity' => 'getQuantity',
+        'subscription_version' => 'getSubscriptionVersion',
+        'taxes' => 'getTaxes',
+        'title' => 'getTitle'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $quantity;
+    
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $subscriptionVersion;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\TaxCreate[]
-	 */
-	private $taxes;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['amount_including_tax'] = isset($data['amount_including_tax']) ? $data['amount_including_tax'] : null;
+        
+        $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
+        
+        $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
+        
+        $this->container['subscription_version'] = isset($data['subscription_version']) ? $data['subscription_version'] : null;
+        
+        $this->container['taxes'] = isset($data['taxes']) ? $data['taxes'] : null;
+        
+        $this->container['title'] = isset($data['title']) ? $data['title'] : null;
+        
+    }
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $title;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        if ($this->container['amount_including_tax'] === null) {
+            $invalidProperties[] = "'amount_including_tax' can't be null";
+        }
+        if ($this->container['external_id'] === null) {
+            $invalidProperties[] = "'external_id' can't be null";
+        }
+        if ($this->container['quantity'] === null) {
+            $invalidProperties[] = "'quantity' can't be null";
+        }
+        if ($this->container['subscription_version'] === null) {
+            $invalidProperties[] = "'subscription_version' can't be null";
+        }
+        if ($this->container['title'] === null) {
+            $invalidProperties[] = "'title' can't be null";
+        }
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['amountIncludingTax'])) {
-			$this->setAmountIncludingTax($data['amountIncludingTax']);
-		}
-		if (isset($data['externalId'])) {
-			$this->setExternalId($data['externalId']);
-		}
-		if (isset($data['quantity'])) {
-			$this->setQuantity($data['quantity']);
-		}
-		if (isset($data['subscriptionVersion'])) {
-			$this->setSubscriptionVersion($data['subscriptionVersion']);
-		}
-		if (isset($data['taxes'])) {
-			$this->setTaxes($data['taxes']);
-		}
-		if (isset($data['title'])) {
-			$this->setTitle($data['title']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns amountIncludingTax.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getAmountIncludingTax() {
-		return $this->amountIncludingTax;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets amountIncludingTax.
-	 *
-	 * @param float $amountIncludingTax
-	 * @return SubscriptionLedgerEntryCreate
-	 */
-	public function setAmountIncludingTax($amountIncludingTax) {
-		$this->amountIncludingTax = $amountIncludingTax;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns externalId.
-	 *
-	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
-	 *
-	 * @return string
-	 */
-	public function getExternalId() {
-		return $this->externalId;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets externalId.
-	 *
-	 * @param string $externalId
-	 * @return SubscriptionLedgerEntryCreate
-	 */
-	public function setExternalId($externalId) {
-		$this->externalId = $externalId;
+    
 
-		return $this;
-	}
+    /**
+     * Gets amount_including_tax
+     *
+     * @return float
+     */
+    public function getAmountIncludingTax()
+    {
+        return $this->container['amount_including_tax'];
+    }
 
-	/**
-	 * Returns quantity.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getQuantity() {
-		return $this->quantity;
-	}
+    /**
+     * Sets amount_including_tax
+     *
+     * @param float $amount_including_tax 
+     *
+     * @return $this
+     */
+    public function setAmountIncludingTax($amount_including_tax)
+    {
+        $this->container['amount_including_tax'] = $amount_including_tax;
 
-	/**
-	 * Sets quantity.
-	 *
-	 * @param float $quantity
-	 * @return SubscriptionLedgerEntryCreate
-	 */
-	public function setQuantity($quantity) {
-		$this->quantity = $quantity;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets external_id
+     *
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
 
-	/**
-	 * Returns subscriptionVersion.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getSubscriptionVersion() {
-		return $this->subscriptionVersion;
-	}
+    /**
+     * Sets external_id
+     *
+     * @param string $external_id The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
+     *
+     * @return $this
+     */
+    public function setExternalId($external_id)
+    {
+        $this->container['external_id'] = $external_id;
 
-	/**
-	 * Sets subscriptionVersion.
-	 *
-	 * @param int $subscriptionVersion
-	 * @return SubscriptionLedgerEntryCreate
-	 */
-	public function setSubscriptionVersion($subscriptionVersion) {
-		$this->subscriptionVersion = $subscriptionVersion;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets quantity
+     *
+     * @return float
+     */
+    public function getQuantity()
+    {
+        return $this->container['quantity'];
+    }
 
-	/**
-	 * Returns taxes.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\TaxCreate[]
-	 */
-	public function getTaxes() {
-		return $this->taxes;
-	}
+    /**
+     * Sets quantity
+     *
+     * @param float $quantity 
+     *
+     * @return $this
+     */
+    public function setQuantity($quantity)
+    {
+        $this->container['quantity'] = $quantity;
 
-	/**
-	 * Sets taxes.
-	 *
-	 * @param \Wallee\Sdk\Model\TaxCreate[] $taxes
-	 * @return SubscriptionLedgerEntryCreate
-	 */
-	public function setTaxes($taxes) {
-		$this->taxes = $taxes;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets subscription_version
+     *
+     * @return int
+     */
+    public function getSubscriptionVersion()
+    {
+        return $this->container['subscription_version'];
+    }
 
-	/**
-	 * Returns title.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * Sets subscription_version
+     *
+     * @param int $subscription_version 
+     *
+     * @return $this
+     */
+    public function setSubscriptionVersion($subscription_version)
+    {
+        $this->container['subscription_version'] = $subscription_version;
 
-	/**
-	 * Sets title.
-	 *
-	 * @param string $title
-	 * @return SubscriptionLedgerEntryCreate
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets taxes
+     *
+     * @return \Wallee\Sdk\Model\TaxCreate[]
+     */
+    public function getTaxes()
+    {
+        return $this->container['taxes'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets taxes
+     *
+     * @param \Wallee\Sdk\Model\TaxCreate[] $taxes 
+     *
+     * @return $this
+     */
+    public function setTaxes($taxes)
+    {
+        $this->container['taxes'] = $taxes;
 
-		if ($this->getAmountIncludingTax() === null) {
-			throw new ValidationException("'amountIncludingTax' can't be null", 'amountIncludingTax', $this);
-		}
-		if ($this->getExternalId() === null) {
-			throw new ValidationException("'externalId' can't be null", 'externalId', $this);
-		}
-		if ($this->getQuantity() === null) {
-			throw new ValidationException("'quantity' can't be null", 'quantity', $this);
-		}
-		if ($this->getSubscriptionVersion() === null) {
-			throw new ValidationException("'subscriptionVersion' can't be null", 'subscriptionVersion', $this);
-		}
-		if ($this->getTitle() === null) {
-			throw new ValidationException("'title' can't be null", 'title', $this);
-		}
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->container['title'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets title
+     *
+     * @param string $title 
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->container['title'] = $title;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

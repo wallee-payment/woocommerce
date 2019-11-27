@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
-namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+namespace Wallee\Sdk\Model;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionPending model
@@ -32,217 +30,333 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionPending extends SubscriptionUpdate  {
+class SubscriptionPending extends SubscriptionUpdate 
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'Subscription.Pending';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'Subscription.Pending';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'affiliate' => 'int',
-		'reference' => 'string',
-		'subscriber' => 'int',
-		'token' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'reference' => 'string',
+        'subscriber' => 'int',
+        'token' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'reference' => null,
+        'subscriber' => 'int64',
+        'token' => 'int64'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'reference' => 'reference',
+        'subscriber' => 'subscriber',
+        'token' => 'token'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $affiliate;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'reference' => 'setReference',
+        'subscriber' => 'setSubscriber',
+        'token' => 'setToken'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $reference;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'reference' => 'getReference',
+        'subscriber' => 'getSubscriber',
+        'token' => 'getToken'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $subscriber;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $token;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		parent::__construct($data);
-
-		if (isset($data['affiliate'])) {
-			$this->setAffiliate($data['affiliate']);
-		}
-		if (isset($data['reference'])) {
-			$this->setReference($data['reference']);
-		}
-		if (isset($data['subscriber'])) {
-			$this->setSubscriber($data['subscriber']);
-		}
-		if (isset($data['token'])) {
-			$this->setToken($data['token']);
-		}
-	}
+    
 
 
-	/**
-	 * Returns affiliate.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getAffiliate() {
-		return $this->affiliate;
-	}
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        parent::__construct($data);
 
-	/**
-	 * Sets affiliate.
-	 *
-	 * @param int $affiliate
-	 * @return SubscriptionPending
-	 */
-	public function setAffiliate($affiliate) {
-		$this->affiliate = $affiliate;
+        
+        $this->container['reference'] = isset($data['reference']) ? $data['reference'] : null;
+        
+        $this->container['subscriber'] = isset($data['subscriber']) ? $data['subscriber'] : null;
+        
+        $this->container['token'] = isset($data['token']) ? $data['token'] : null;
+        
+    }
 
-		return $this;
-	}
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = parent::listInvalidProperties();
 
-	/**
-	 * Returns reference.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getReference() {
-		return $this->reference;
-	}
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['version'] === null) {
+            $invalidProperties[] = "'version' can't be null";
+        }
+        return $invalidProperties;
+    }
 
-	/**
-	 * Sets reference.
-	 *
-	 * @param string $reference
-	 * @return SubscriptionPending
-	 */
-	public function setReference($reference) {
-		$this->reference = $reference;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes + parent::swaggerTypes();
+    }
 
-		return $this;
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats + parent::swaggerFormats();
+    }
 
-	/**
-	 * Returns subscriber.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getSubscriber() {
-		return $this->subscriber;
-	}
 
-	/**
-	 * Sets subscriber.
-	 *
-	 * @param int $subscriber
-	 * @return SubscriptionPending
-	 */
-	public function setSubscriber($subscriber) {
-		$this->subscriber = $subscriber;
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return parent::attributeMap() + self::$attributeMap;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return parent::setters() + self::$setters;
+    }
 
-	/**
-	 * Returns token.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getToken() {
-		return $this->token;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return parent::getters() + self::$getters;
+    }
 
-	/**
-	 * Sets token.
-	 *
-	 * @param int $token
-	 * @return SubscriptionPending
-	 */
-	public function setToken($token) {
-		$this->token = $token;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
-		parent::validate();
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	}
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->container['reference'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets reference
+     *
+     * @param string $reference 
+     *
+     * @return $this
+     */
+    public function setReference($reference)
+    {
+        $this->container['reference'] = $reference;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
 
+    /**
+     * Gets subscriber
+     *
+     * @return int
+     */
+    public function getSubscriber()
+    {
+        return $this->container['subscriber'];
+    }
+
+    /**
+     * Sets subscriber
+     *
+     * @param int $subscriber 
+     *
+     * @return $this
+     */
+    public function setSubscriber($subscriber)
+    {
+        $this->container['subscriber'] = $subscriber;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets token
+     *
+     * @return int
+     */
+    public function getToken()
+    {
+        return $this->container['token'];
+    }
+
+    /**
+     * Sets token
+     *
+     * @param int $token 
+     *
+     * @return $this
+     */
+    public function setToken($token)
+    {
+        $this->container['token'] = $token;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

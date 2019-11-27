@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * UnencryptedCardData model
@@ -32,202 +32,363 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class UnencryptedCardData  {
+class UnencryptedCardData implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'UnencryptedCardData';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'UnencryptedCardData';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'cardHolderName' => 'string',
-		'cardVerificationCode' => 'string',
-		'expiryDate' => 'string',
-		'primaryAccountNumber' => 'string'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'card_holder_name' => 'string',
+        'card_verification_code' => 'string',
+        'expiry_date' => 'string',
+        'primary_account_number' => 'string'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'card_holder_name' => null,
+        'card_verification_code' => null,
+        'expiry_date' => null,
+        'primary_account_number' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'card_holder_name' => 'cardHolderName',
+        'card_verification_code' => 'cardVerificationCode',
+        'expiry_date' => 'expiryDate',
+        'primary_account_number' => 'primaryAccountNumber'
+    ];
 
-	/**
-	 * The card holder name is the name printed onto the card. It identifies the person who owns the card.
-	 *
-	 * @var string
-	 */
-	private $cardHolderName;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'card_holder_name' => 'setCardHolderName',
+        'card_verification_code' => 'setCardVerificationCode',
+        'expiry_date' => 'setExpiryDate',
+        'primary_account_number' => 'setPrimaryAccountNumber'
+    ];
 
-	/**
-	 * The card verification code (CVC) is a 3 to 4 digit code typically printed on the back of the card. It helps to ensure that the card holder is authorizing the transaction. For card not-present transactions this field is optional.
-	 *
-	 * @var string
-	 */
-	private $cardVerificationCode;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'card_holder_name' => 'getCardHolderName',
+        'card_verification_code' => 'getCardVerificationCode',
+        'expiry_date' => 'getExpiryDate',
+        'primary_account_number' => 'getPrimaryAccountNumber'
+    ];
 
-	/**
-	 * The card expiry date indicates when the card expires. The format is the format yyyy-mm where yyyy is the year (e.g. 2019) and the mm is the month (e.g. 09).
-	 *
-	 * @var string
-	 */
-	private $expiryDate;
+    
 
-	/**
-	 * The primary account number (PAN) identifies the card. The number is numeric and typically printed on the front of the card.
-	 *
-	 * @var string
-	 */
-	private $primaryAccountNumber;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['card_holder_name'] = isset($data['card_holder_name']) ? $data['card_holder_name'] : null;
+        
+        $this->container['card_verification_code'] = isset($data['card_verification_code']) ? $data['card_verification_code'] : null;
+        
+        $this->container['expiry_date'] = isset($data['expiry_date']) ? $data['expiry_date'] : null;
+        
+        $this->container['primary_account_number'] = isset($data['primary_account_number']) ? $data['primary_account_number'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns cardHolderName.
-	 *
-	 * The card holder name is the name printed onto the card. It identifies the person who owns the card.
-	 *
-	 * @return string
-	 */
-	public function getCardHolderName() {
-		return $this->cardHolderName;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets cardHolderName.
-	 *
-	 * @param string $cardHolderName
-	 * @return UnencryptedCardData
-	 */
-	protected function setCardHolderName($cardHolderName) {
-		$this->cardHolderName = $cardHolderName;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns cardVerificationCode.
-	 *
-	 * The card verification code (CVC) is a 3 to 4 digit code typically printed on the back of the card. It helps to ensure that the card holder is authorizing the transaction. For card not-present transactions this field is optional.
-	 *
-	 * @return string
-	 */
-	public function getCardVerificationCode() {
-		return $this->cardVerificationCode;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets cardVerificationCode.
-	 *
-	 * @param string $cardVerificationCode
-	 * @return UnencryptedCardData
-	 */
-	protected function setCardVerificationCode($cardVerificationCode) {
-		$this->cardVerificationCode = $cardVerificationCode;
+    
 
-		return $this;
-	}
+    /**
+     * Gets card_holder_name
+     *
+     * @return string
+     */
+    public function getCardHolderName()
+    {
+        return $this->container['card_holder_name'];
+    }
 
-	/**
-	 * Returns expiryDate.
-	 *
-	 * The card expiry date indicates when the card expires. The format is the format yyyy-mm where yyyy is the year (e.g. 2019) and the mm is the month (e.g. 09).
-	 *
-	 * @return string
-	 */
-	public function getExpiryDate() {
-		return $this->expiryDate;
-	}
+    /**
+     * Sets card_holder_name
+     *
+     * @param string $card_holder_name The card holder name is the name printed onto the card. It identifies the person who owns the card.
+     *
+     * @return $this
+     */
+    public function setCardHolderName($card_holder_name)
+    {
+        $this->container['card_holder_name'] = $card_holder_name;
 
-	/**
-	 * Sets expiryDate.
-	 *
-	 * @param string $expiryDate
-	 * @return UnencryptedCardData
-	 */
-	protected function setExpiryDate($expiryDate) {
-		$this->expiryDate = $expiryDate;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets card_verification_code
+     *
+     * @return string
+     */
+    public function getCardVerificationCode()
+    {
+        return $this->container['card_verification_code'];
+    }
 
-	/**
-	 * Returns primaryAccountNumber.
-	 *
-	 * The primary account number (PAN) identifies the card. The number is numeric and typically printed on the front of the card.
-	 *
-	 * @return string
-	 */
-	public function getPrimaryAccountNumber() {
-		return $this->primaryAccountNumber;
-	}
+    /**
+     * Sets card_verification_code
+     *
+     * @param string $card_verification_code The card verification code (CVC) is a 3 to 4 digit code typically printed on the back of the card. It helps to ensure that the card holder is authorizing the transaction. For card not-present transactions this field is optional.
+     *
+     * @return $this
+     */
+    public function setCardVerificationCode($card_verification_code)
+    {
+        $this->container['card_verification_code'] = $card_verification_code;
 
-	/**
-	 * Sets primaryAccountNumber.
-	 *
-	 * @param string $primaryAccountNumber
-	 * @return UnencryptedCardData
-	 */
-	protected function setPrimaryAccountNumber($primaryAccountNumber) {
-		$this->primaryAccountNumber = $primaryAccountNumber;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets expiry_date
+     *
+     * @return string
+     */
+    public function getExpiryDate()
+    {
+        return $this->container['expiry_date'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets expiry_date
+     *
+     * @param string $expiry_date The card expiry date indicates when the card expires. The format is the format yyyy-mm where yyyy is the year (e.g. 2019) and the mm is the month (e.g. 09).
+     *
+     * @return $this
+     */
+    public function setExpiryDate($expiry_date)
+    {
+        $this->container['expiry_date'] = $expiry_date;
 
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets primary_account_number
+     *
+     * @return string
+     */
+    public function getPrimaryAccountNumber()
+    {
+        return $this->container['primary_account_number'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets primary_account_number
+     *
+     * @param string $primary_account_number The primary account number (PAN) identifies the card. The number is numeric and typically printed on the front of the card.
+     *
+     * @return $this
+     */
+    public function setPrimaryAccountNumber($primary_account_number)
+    {
+        $this->container['primary_account_number'] = $primary_account_number;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

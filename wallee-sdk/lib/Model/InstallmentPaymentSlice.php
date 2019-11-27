@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
-namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+namespace Wallee\Sdk\Model;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * InstallmentPaymentSlice model
@@ -32,341 +30,487 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class InstallmentPaymentSlice extends TransactionAwareEntity  {
+class InstallmentPaymentSlice extends TransactionAwareEntity 
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'InstallmentPaymentSlice';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'InstallmentPaymentSlice';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'chargeOn' => '\DateTime',
-		'createdOn' => '\DateTime',
-		'installmentPayment' => '\Wallee\Sdk\Model\InstallmentPayment',
-		'lineItems' => '\Wallee\Sdk\Model\LineItem[]',
-		'plannedPurgeDate' => '\DateTime',
-		'state' => '\Wallee\Sdk\Model\InstallmentPaymentSliceState',
-		'transaction' => '\Wallee\Sdk\Model\Transaction',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'charge_on' => '\DateTime',
+        'created_on' => '\DateTime',
+        'installment_payment' => '\Wallee\Sdk\Model\InstallmentPayment',
+        'line_items' => '\Wallee\Sdk\Model\LineItem[]',
+        'planned_purge_date' => '\DateTime',
+        'state' => '\Wallee\Sdk\Model\InstallmentPaymentSliceState',
+        'transaction' => '\Wallee\Sdk\Model\Transaction',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes + parent::swaggerTypes();
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'charge_on' => 'date-time',
+        'created_on' => 'date-time',
+        'installment_payment' => null,
+        'line_items' => null,
+        'planned_purge_date' => 'date-time',
+        'state' => null,
+        'transaction' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'charge_on' => 'chargeOn',
+        'created_on' => 'createdOn',
+        'installment_payment' => 'installmentPayment',
+        'line_items' => 'lineItems',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'state' => 'state',
+        'transaction' => 'transaction',
+        'version' => 'version'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $chargeOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'charge_on' => 'setChargeOn',
+        'created_on' => 'setCreatedOn',
+        'installment_payment' => 'setInstallmentPayment',
+        'line_items' => 'setLineItems',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'state' => 'setState',
+        'transaction' => 'setTransaction',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'charge_on' => 'getChargeOn',
+        'created_on' => 'getCreatedOn',
+        'installment_payment' => 'getInstallmentPayment',
+        'line_items' => 'getLineItems',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'state' => 'getState',
+        'transaction' => 'getTransaction',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\InstallmentPayment
-	 */
-	private $installmentPayment;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\LineItem[]
-	 */
-	private $lineItems;
-
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\InstallmentPaymentSliceState
-	 */
-	private $state;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\Transaction
-	 */
-	private $transaction;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		parent::__construct($data);
-
-		if (isset($data['installmentPayment'])) {
-			$this->setInstallmentPayment($data['installmentPayment']);
-		}
-		if (isset($data['lineItems'])) {
-			$this->setLineItems($data['lineItems']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-		if (isset($data['transaction'])) {
-			$this->setTransaction($data['transaction']);
-		}
-	}
+    
 
 
-	/**
-	 * Returns chargeOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getChargeOn() {
-		return $this->chargeOn;
-	}
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        parent::__construct($data);
 
-	/**
-	 * Sets chargeOn.
-	 *
-	 * @param \DateTime $chargeOn
-	 * @return InstallmentPaymentSlice
-	 */
-	protected function setChargeOn($chargeOn) {
-		$this->chargeOn = $chargeOn;
+        
+        $this->container['charge_on'] = isset($data['charge_on']) ? $data['charge_on'] : null;
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['installment_payment'] = isset($data['installment_payment']) ? $data['installment_payment'] : null;
+        
+        $this->container['line_items'] = isset($data['line_items']) ? $data['line_items'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+        $this->container['transaction'] = isset($data['transaction']) ? $data['transaction'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-		return $this;
-	}
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = parent::listInvalidProperties();
 
-	/**
-	 * Returns createdOn.
-	 *
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
+        return $invalidProperties;
+    }
 
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return InstallmentPaymentSlice
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes + parent::swaggerTypes();
+    }
 
-		return $this;
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats + parent::swaggerFormats();
+    }
 
-	/**
-	 * Returns installmentPayment.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\InstallmentPayment
-	 */
-	public function getInstallmentPayment() {
-		return $this->installmentPayment;
-	}
 
-	/**
-	 * Sets installmentPayment.
-	 *
-	 * @param \Wallee\Sdk\Model\InstallmentPayment $installmentPayment
-	 * @return InstallmentPaymentSlice
-	 */
-	public function setInstallmentPayment($installmentPayment) {
-		$this->installmentPayment = $installmentPayment;
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return parent::attributeMap() + self::$attributeMap;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return parent::setters() + self::$setters;
+    }
 
-	/**
-	 * Returns lineItems.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\LineItem[]
-	 */
-	public function getLineItems() {
-		return $this->lineItems;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return parent::getters() + self::$getters;
+    }
 
-	/**
-	 * Sets lineItems.
-	 *
-	 * @param \Wallee\Sdk\Model\LineItem[] $lineItems
-	 * @return InstallmentPaymentSlice
-	 */
-	public function setLineItems($lineItems) {
-		$this->lineItems = $lineItems;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return InstallmentPaymentSlice
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
+    
 
-		return $this;
-	}
+    /**
+     * Gets charge_on
+     *
+     * @return \DateTime
+     */
+    public function getChargeOn()
+    {
+        return $this->container['charge_on'];
+    }
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\InstallmentPaymentSliceState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+    /**
+     * Sets charge_on
+     *
+     * @param \DateTime $charge_on 
+     *
+     * @return $this
+     */
+    public function setChargeOn($charge_on)
+    {
+        $this->container['charge_on'] = $charge_on;
 
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\InstallmentPaymentSliceState $state
-	 * @return InstallmentPaymentSlice
-	 */
-	public function setState($state) {
-		$this->state = $state;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
 
-	/**
-	 * Returns transaction.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\Transaction
-	 */
-	public function getTransaction() {
-		return $this->transaction;
-	}
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on The created on date indicates the date on which the entity was stored into the database.
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
 
-	/**
-	 * Sets transaction.
-	 *
-	 * @param \Wallee\Sdk\Model\Transaction $transaction
-	 * @return InstallmentPaymentSlice
-	 */
-	public function setTransaction($transaction) {
-		$this->transaction = $transaction;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets installment_payment
+     *
+     * @return \Wallee\Sdk\Model\InstallmentPayment
+     */
+    public function getInstallmentPayment()
+    {
+        return $this->container['installment_payment'];
+    }
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+    /**
+     * Sets installment_payment
+     *
+     * @param \Wallee\Sdk\Model\InstallmentPayment $installment_payment 
+     *
+     * @return $this
+     */
+    public function setInstallmentPayment($installment_payment)
+    {
+        $this->container['installment_payment'] = $installment_payment;
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return InstallmentPaymentSlice
-	 */
-	protected function setVersion($version) {
-		$this->version = $version;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets line_items
+     *
+     * @return \Wallee\Sdk\Model\LineItem[]
+     */
+    public function getLineItems()
+    {
+        return $this->container['line_items'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
-		parent::validate();
+    /**
+     * Sets line_items
+     *
+     * @param \Wallee\Sdk\Model\LineItem[] $line_items 
+     *
+     * @return $this
+     */
+    public function setLineItems($line_items)
+    {
+        $this->container['line_items'] = $line_items;
 
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
 
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\InstallmentPaymentSliceState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
+
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\InstallmentPaymentSliceState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets transaction
+     *
+     * @return \Wallee\Sdk\Model\Transaction
+     */
+    public function getTransaction()
+    {
+        return $this->container['transaction'];
+    }
+
+    /**
+     * Sets transaction
+     *
+     * @param \Wallee\Sdk\Model\Transaction $transaction 
+     *
+     * @return $this
+     */
+    public function setTransaction($transaction)
+    {
+        $this->container['transaction'] = $transaction;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
+
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

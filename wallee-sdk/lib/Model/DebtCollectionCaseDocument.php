@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * DebtCollectionCaseDocument model
@@ -32,428 +32,587 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class DebtCollectionCaseDocument  {
+class DebtCollectionCaseDocument implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'DebtCollectionCaseDocument';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'DebtCollectionCaseDocument';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'createdOn' => '\DateTime',
-		'debtCollectionCase' => 'int',
-		'fileName' => 'string',
-		'id' => 'int',
-		'labels' => '\Wallee\Sdk\Model\Label[]',
-		'linkedSpaceId' => 'int',
-		'mimeType' => 'string',
-		'plannedPurgeDate' => '\DateTime',
-		'storageId' => 'string',
-		'uniqueId' => 'string',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'created_on' => '\DateTime',
+        'debt_collection_case' => 'int',
+        'file_name' => 'string',
+        'id' => 'int',
+        'labels' => '\Wallee\Sdk\Model\Label[]',
+        'linked_space_id' => 'int',
+        'mime_type' => 'string',
+        'planned_purge_date' => '\DateTime',
+        'storage_id' => 'string',
+        'unique_id' => 'string',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'created_on' => 'date-time',
+        'debt_collection_case' => 'int64',
+        'file_name' => null,
+        'id' => 'int64',
+        'labels' => null,
+        'linked_space_id' => 'int64',
+        'mime_type' => null,
+        'planned_purge_date' => 'date-time',
+        'storage_id' => null,
+        'unique_id' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'created_on' => 'createdOn',
+        'debt_collection_case' => 'debtCollectionCase',
+        'file_name' => 'fileName',
+        'id' => 'id',
+        'labels' => 'labels',
+        'linked_space_id' => 'linkedSpaceId',
+        'mime_type' => 'mimeType',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'storage_id' => 'storageId',
+        'unique_id' => 'uniqueId',
+        'version' => 'version'
+    ];
 
-	/**
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'created_on' => 'setCreatedOn',
+        'debt_collection_case' => 'setDebtCollectionCase',
+        'file_name' => 'setFileName',
+        'id' => 'setId',
+        'labels' => 'setLabels',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'mime_type' => 'setMimeType',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'storage_id' => 'setStorageId',
+        'unique_id' => 'setUniqueId',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $debtCollectionCase;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'created_on' => 'getCreatedOn',
+        'debt_collection_case' => 'getDebtCollectionCase',
+        'file_name' => 'getFileName',
+        'id' => 'getId',
+        'labels' => 'getLabels',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'mime_type' => 'getMimeType',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'storage_id' => 'getStorageId',
+        'unique_id' => 'getUniqueId',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $fileName;
+    
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\Label[]
-	 */
-	private $labels;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['debt_collection_case'] = isset($data['debt_collection_case']) ? $data['debt_collection_case'] : null;
+        
+        $this->container['file_name'] = isset($data['file_name']) ? $data['file_name'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['labels'] = isset($data['labels']) ? $data['labels'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['mime_type'] = isset($data['mime_type']) ? $data['mime_type'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['storage_id'] = isset($data['storage_id']) ? $data['storage_id'] : null;
+        
+        $this->container['unique_id'] = isset($data['unique_id']) ? $data['unique_id'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $mimeType;
+        return $invalidProperties;
+    }
 
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $storageId;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $uniqueId;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['labels'])) {
-			$this->setLabels($data['labels']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns createdOn.
-	 *
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns debtCollectionCase.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getDebtCollectionCase() {
-		return $this->debtCollectionCase;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets debtCollectionCase.
-	 *
-	 * @param int $debtCollectionCase
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setDebtCollectionCase($debtCollectionCase) {
-		$this->debtCollectionCase = $debtCollectionCase;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns fileName.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getFileName() {
-		return $this->fileName;
-	}
+    
 
-	/**
-	 * Sets fileName.
-	 *
-	 * @param string $fileName
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setFileName($fileName) {
-		$this->fileName = $fileName;
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on The created on date indicates the date on which the entity was stored into the database.
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return DebtCollectionCaseDocument
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Gets debt_collection_case
+     *
+     * @return int
+     */
+    public function getDebtCollectionCase()
+    {
+        return $this->container['debt_collection_case'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets debt_collection_case
+     *
+     * @param int $debt_collection_case 
+     *
+     * @return $this
+     */
+    public function setDebtCollectionCase($debt_collection_case)
+    {
+        $this->container['debt_collection_case'] = $debt_collection_case;
 
-	/**
-	 * Returns labels.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\Label[]
-	 */
-	public function getLabels() {
-		return $this->labels;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets labels.
-	 *
-	 * @param \Wallee\Sdk\Model\Label[] $labels
-	 * @return DebtCollectionCaseDocument
-	 */
-	public function setLabels($labels) {
-		$this->labels = $labels;
+    /**
+     * Gets file_name
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->container['file_name'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets file_name
+     *
+     * @param string $file_name 
+     *
+     * @return $this
+     */
+    public function setFileName($file_name)
+    {
+        $this->container['file_name'] = $file_name;
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns mimeType.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getMimeType() {
-		return $this->mimeType;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets mimeType.
-	 *
-	 * @param string $mimeType
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setMimeType($mimeType) {
-		$this->mimeType = $mimeType;
+    /**
+     * Gets labels
+     *
+     * @return \Wallee\Sdk\Model\Label[]
+     */
+    public function getLabels()
+    {
+        return $this->container['labels'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets labels
+     *
+     * @param \Wallee\Sdk\Model\Label[] $labels 
+     *
+     * @return $this
+     */
+    public function setLabels($labels)
+    {
+        $this->container['labels'] = $labels;
 
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns storageId.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getStorageId() {
-		return $this->storageId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets storageId.
-	 *
-	 * @param string $storageId
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setStorageId($storageId) {
-		$this->storageId = $storageId;
+    /**
+     * Gets mime_type
+     *
+     * @return string
+     */
+    public function getMimeType()
+    {
+        return $this->container['mime_type'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets mime_type
+     *
+     * @param string $mime_type 
+     *
+     * @return $this
+     */
+    public function setMimeType($mime_type)
+    {
+        $this->container['mime_type'] = $mime_type;
 
-	/**
-	 * Returns uniqueId.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getUniqueId() {
-		return $this->uniqueId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets uniqueId.
-	 *
-	 * @param string $uniqueId
-	 * @return DebtCollectionCaseDocument
-	 */
-	protected function setUniqueId($uniqueId) {
-		$this->uniqueId = $uniqueId;
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return DebtCollectionCaseDocument
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets storage_id
+     *
+     * @return string
+     */
+    public function getStorageId()
+    {
+        return $this->container['storage_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets storage_id
+     *
+     * @param string $storage_id 
+     *
+     * @return $this
+     */
+    public function setStorageId($storage_id)
+    {
+        $this->container['storage_id'] = $storage_id;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets unique_id
+     *
+     * @return string
+     */
+    public function getUniqueId()
+    {
+        return $this->container['unique_id'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets unique_id
+     *
+     * @param string $unique_id 
+     *
+     * @return $this
+     */
+    public function setUniqueId($unique_id)
+    {
+        $this->container['unique_id'] = $unique_id;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

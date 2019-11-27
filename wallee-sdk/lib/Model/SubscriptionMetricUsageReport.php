@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionMetricUsageReport model
@@ -32,425 +32,587 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionMetricUsageReport  {
+class SubscriptionMetricUsageReport implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionMetricUsageReport';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionMetricUsageReport';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'consumedUnits' => 'float',
-		'createdByUserId' => 'int',
-		'createdOn' => '\DateTime',
-		'description' => 'string',
-		'externalId' => 'string',
-		'id' => 'int',
-		'linkedSpaceId' => 'int',
-		'metric' => 'int',
-		'plannedPurgeDate' => '\DateTime',
-		'subscription' => 'int',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'consumed_units' => 'float',
+        'created_by_user_id' => 'int',
+        'created_on' => '\DateTime',
+        'description' => 'string',
+        'external_id' => 'string',
+        'id' => 'int',
+        'linked_space_id' => 'int',
+        'metric' => 'int',
+        'planned_purge_date' => '\DateTime',
+        'subscription' => 'int',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'consumed_units' => null,
+        'created_by_user_id' => 'int64',
+        'created_on' => 'date-time',
+        'description' => null,
+        'external_id' => null,
+        'id' => 'int64',
+        'linked_space_id' => 'int64',
+        'metric' => 'int64',
+        'planned_purge_date' => 'date-time',
+        'subscription' => 'int64',
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'consumed_units' => 'consumedUnits',
+        'created_by_user_id' => 'createdByUserId',
+        'created_on' => 'createdOn',
+        'description' => 'description',
+        'external_id' => 'externalId',
+        'id' => 'id',
+        'linked_space_id' => 'linkedSpaceId',
+        'metric' => 'metric',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'subscription' => 'subscription',
+        'version' => 'version'
+    ];
 
-	/**
-	 * The consumed units describe the amount of resources consumed. Those consumed units will be billed in the next billing cycle.
-	 *
-	 * @var float
-	 */
-	private $consumedUnits;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'consumed_units' => 'setConsumedUnits',
+        'created_by_user_id' => 'setCreatedByUserId',
+        'created_on' => 'setCreatedOn',
+        'description' => 'setDescription',
+        'external_id' => 'setExternalId',
+        'id' => 'setId',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'metric' => 'setMetric',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'subscription' => 'setSubscription',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $createdByUserId;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'consumed_units' => 'getConsumedUnits',
+        'created_by_user_id' => 'getCreatedByUserId',
+        'created_on' => 'getCreatedOn',
+        'description' => 'getDescription',
+        'external_id' => 'getExternalId',
+        'id' => 'getId',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'metric' => 'getMetric',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'subscription' => 'getSubscription',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
+    
 
-	/**
-	 * The metric usage report description describe the reported usage. This description may be shown to the end user.
-	 *
-	 * @var string
-	 */
-	private $description;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The external id identifies the metric usage uniquely.
-	 *
-	 * @var string
-	 */
-	private $externalId;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['consumed_units'] = isset($data['consumed_units']) ? $data['consumed_units'] : null;
+        
+        $this->container['created_by_user_id'] = isset($data['created_by_user_id']) ? $data['created_by_user_id'] : null;
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        
+        $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['metric'] = isset($data['metric']) ? $data['metric'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['subscription'] = isset($data['subscription']) ? $data['subscription'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+        return $invalidProperties;
+    }
 
-	/**
-	 * The metric usage report is linked to the metric for which the usage should be recorded.
-	 *
-	 * @var int
-	 */
-	private $metric;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
-
-	/**
-	 * The subscription to which the usage is added to.
-	 *
-	 * @var int
-	 */
-	private $subscription;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns consumedUnits.
-	 *
-	 * The consumed units describe the amount of resources consumed. Those consumed units will be billed in the next billing cycle.
-	 *
-	 * @return float
-	 */
-	public function getConsumedUnits() {
-		return $this->consumedUnits;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets consumedUnits.
-	 *
-	 * @param float $consumedUnits
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setConsumedUnits($consumedUnits) {
-		$this->consumedUnits = $consumedUnits;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns createdByUserId.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getCreatedByUserId() {
-		return $this->createdByUserId;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets createdByUserId.
-	 *
-	 * @param int $createdByUserId
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setCreatedByUserId($createdByUserId) {
-		$this->createdByUserId = $createdByUserId;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns createdOn.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
+    
 
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
+    /**
+     * Gets consumed_units
+     *
+     * @return float
+     */
+    public function getConsumedUnits()
+    {
+        return $this->container['consumed_units'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets consumed_units
+     *
+     * @param float $consumed_units The consumed units describe the amount of resources consumed. Those consumed units will be billed in the next billing cycle.
+     *
+     * @return $this
+     */
+    public function setConsumedUnits($consumed_units)
+    {
+        $this->container['consumed_units'] = $consumed_units;
 
-	/**
-	 * Returns description.
-	 *
-	 * The metric usage report description describe the reported usage. This description may be shown to the end user.
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets description.
-	 *
-	 * @param string $description
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setDescription($description) {
-		$this->description = $description;
+    /**
+     * Gets created_by_user_id
+     *
+     * @return int
+     */
+    public function getCreatedByUserId()
+    {
+        return $this->container['created_by_user_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets created_by_user_id
+     *
+     * @param int $created_by_user_id 
+     *
+     * @return $this
+     */
+    public function setCreatedByUserId($created_by_user_id)
+    {
+        $this->container['created_by_user_id'] = $created_by_user_id;
 
-	/**
-	 * Returns externalId.
-	 *
-	 * The external id identifies the metric usage uniquely.
-	 *
-	 * @return string
-	 */
-	public function getExternalId() {
-		return $this->externalId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets externalId.
-	 *
-	 * @param string $externalId
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setExternalId($externalId) {
-		$this->externalId = $externalId;
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on 
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionMetricUsageReport
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Gets description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets description
+     *
+     * @param string $description The metric usage report description describe the reported usage. This description may be shown to the end user.
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets external_id
+     *
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets external_id
+     *
+     * @param string $external_id The external id identifies the metric usage uniquely.
+     *
+     * @return $this
+     */
+    public function setExternalId($external_id)
+    {
+        $this->container['external_id'] = $external_id;
 
-	/**
-	 * Returns metric.
-	 *
-	 * The metric usage report is linked to the metric for which the usage should be recorded.
-	 *
-	 * @return int
-	 */
-	public function getMetric() {
-		return $this->metric;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets metric.
-	 *
-	 * @param int $metric
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setMetric($metric) {
-		$this->metric = $metric;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns subscription.
-	 *
-	 * The subscription to which the usage is added to.
-	 *
-	 * @return int
-	 */
-	public function getSubscription() {
-		return $this->subscription;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets subscription.
-	 *
-	 * @param int $subscription
-	 * @return SubscriptionMetricUsageReport
-	 */
-	protected function setSubscription($subscription) {
-		$this->subscription = $subscription;
+    /**
+     * Gets metric
+     *
+     * @return int
+     */
+    public function getMetric()
+    {
+        return $this->container['metric'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets metric
+     *
+     * @param int $metric The metric usage report is linked to the metric for which the usage should be recorded.
+     *
+     * @return $this
+     */
+    public function setMetric($metric)
+    {
+        $this->container['metric'] = $metric;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionMetricUsageReport
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets subscription
+     *
+     * @return int
+     */
+    public function getSubscription()
+    {
+        return $this->container['subscription'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets subscription
+     *
+     * @param int $subscription The subscription to which the usage is added to.
+     *
+     * @return $this
+     */
+    public function setSubscription($subscription)
+    {
+        $this->container['subscription'] = $subscription;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

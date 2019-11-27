@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionChangeRequest model
@@ -32,254 +32,436 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionChangeRequest  {
+class SubscriptionChangeRequest implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionChangeRequest';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionChangeRequest';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'currency' => 'string',
-		'product' => 'int',
-		'respectTerminationPeriod' => 'bool',
-		'selectedComponents' => '\Wallee\Sdk\Model\SubscriptionProductComponentReference[]',
-		'subscription' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'component_configurations' => '\Wallee\Sdk\Model\SubscriptionComponentReferenceConfiguration[]',
+        'currency' => 'string',
+        'product' => 'int',
+        'respect_termination_period' => 'bool',
+        'selected_components' => '\Wallee\Sdk\Model\SubscriptionProductComponentReference[]',
+        'subscription' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'component_configurations' => null,
+        'currency' => null,
+        'product' => 'int64',
+        'respect_termination_period' => null,
+        'selected_components' => null,
+        'subscription' => 'int64'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'component_configurations' => 'componentConfigurations',
+        'currency' => 'currency',
+        'product' => 'product',
+        'respect_termination_period' => 'respectTerminationPeriod',
+        'selected_components' => 'selectedComponents',
+        'subscription' => 'subscription'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $currency;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'component_configurations' => 'setComponentConfigurations',
+        'currency' => 'setCurrency',
+        'product' => 'setProduct',
+        'respect_termination_period' => 'setRespectTerminationPeriod',
+        'selected_components' => 'setSelectedComponents',
+        'subscription' => 'setSubscription'
+    ];
 
-	/**
-	 * The subscription has to be linked with a product.
-	 *
-	 * @var int
-	 */
-	private $product;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'component_configurations' => 'getComponentConfigurations',
+        'currency' => 'getCurrency',
+        'product' => 'getProduct',
+        'respect_termination_period' => 'getRespectTerminationPeriod',
+        'selected_components' => 'getSelectedComponents',
+        'subscription' => 'getSubscription'
+    ];
 
-	/**
-	 * The subscription version may be retired. The respect termination period controls whether the termination period configured on the product version should be respected or if the operation should take effect immediately.
-	 *
-	 * @var bool
-	 */
-	private $respectTerminationPeriod;
+    
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProductComponentReference[]
-	 */
-	private $selectedComponents;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $subscription;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['component_configurations'] = isset($data['component_configurations']) ? $data['component_configurations'] : null;
+        
+        $this->container['currency'] = isset($data['currency']) ? $data['currency'] : null;
+        
+        $this->container['product'] = isset($data['product']) ? $data['product'] : null;
+        
+        $this->container['respect_termination_period'] = isset($data['respect_termination_period']) ? $data['respect_termination_period'] : null;
+        
+        $this->container['selected_components'] = isset($data['selected_components']) ? $data['selected_components'] : null;
+        
+        $this->container['subscription'] = isset($data['subscription']) ? $data['subscription'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        if ($this->container['currency'] === null) {
+            $invalidProperties[] = "'currency' can't be null";
+        }
+        if ($this->container['product'] === null) {
+            $invalidProperties[] = "'product' can't be null";
+        }
+        if ($this->container['subscription'] === null) {
+            $invalidProperties[] = "'subscription' can't be null";
+        }
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['currency'])) {
-			$this->setCurrency($data['currency']);
-		}
-		if (isset($data['product'])) {
-			$this->setProduct($data['product']);
-		}
-		if (isset($data['respectTerminationPeriod'])) {
-			$this->setRespectTerminationPeriod($data['respectTerminationPeriod']);
-		}
-		if (isset($data['selectedComponents'])) {
-			$this->setSelectedComponents($data['selectedComponents']);
-		}
-		if (isset($data['subscription'])) {
-			$this->setSubscription($data['subscription']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns currency.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getCurrency() {
-		return $this->currency;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets currency.
-	 *
-	 * @param string $currency
-	 * @return SubscriptionChangeRequest
-	 */
-	public function setCurrency($currency) {
-		$this->currency = $currency;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns product.
-	 *
-	 * The subscription has to be linked with a product.
-	 *
-	 * @return int
-	 */
-	public function getProduct() {
-		return $this->product;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets product.
-	 *
-	 * @param int $product
-	 * @return SubscriptionChangeRequest
-	 */
-	public function setProduct($product) {
-		$this->product = $product;
+    
 
-		return $this;
-	}
+    /**
+     * Gets component_configurations
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionComponentReferenceConfiguration[]
+     */
+    public function getComponentConfigurations()
+    {
+        return $this->container['component_configurations'];
+    }
 
-	/**
-	 * Returns respectTerminationPeriod.
-	 *
-	 * The subscription version may be retired. The respect termination period controls whether the termination period configured on the product version should be respected or if the operation should take effect immediately.
-	 *
-	 * @return bool
-	 */
-	public function getRespectTerminationPeriod() {
-		return $this->respectTerminationPeriod;
-	}
+    /**
+     * Sets component_configurations
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionComponentReferenceConfiguration[] $component_configurations 
+     *
+     * @return $this
+     */
+    public function setComponentConfigurations($component_configurations)
+    {
+        $this->container['component_configurations'] = $component_configurations;
 
-	/**
-	 * Sets respectTerminationPeriod.
-	 *
-	 * @param bool $respectTerminationPeriod
-	 * @return SubscriptionChangeRequest
-	 */
-	public function setRespectTerminationPeriod($respectTerminationPeriod) {
-		$this->respectTerminationPeriod = $respectTerminationPeriod;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->container['currency'];
+    }
 
-	/**
-	 * Returns selectedComponents.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductComponentReference[]
-	 */
-	public function getSelectedComponents() {
-		return $this->selectedComponents;
-	}
+    /**
+     * Sets currency
+     *
+     * @param string $currency 
+     *
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->container['currency'] = $currency;
 
-	/**
-	 * Sets selectedComponents.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductComponentReference[] $selectedComponents
-	 * @return SubscriptionChangeRequest
-	 */
-	public function setSelectedComponents($selectedComponents) {
-		$this->selectedComponents = $selectedComponents;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets product
+     *
+     * @return int
+     */
+    public function getProduct()
+    {
+        return $this->container['product'];
+    }
 
-	/**
-	 * Returns subscription.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getSubscription() {
-		return $this->subscription;
-	}
+    /**
+     * Sets product
+     *
+     * @param int $product The subscription has to be linked with a product.
+     *
+     * @return $this
+     */
+    public function setProduct($product)
+    {
+        $this->container['product'] = $product;
 
-	/**
-	 * Sets subscription.
-	 *
-	 * @param int $subscription
-	 * @return SubscriptionChangeRequest
-	 */
-	public function setSubscription($subscription) {
-		$this->subscription = $subscription;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets respect_termination_period
+     *
+     * @return bool
+     */
+    public function getRespectTerminationPeriod()
+    {
+        return $this->container['respect_termination_period'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets respect_termination_period
+     *
+     * @param bool $respect_termination_period The subscription version may be retired. The respect termination period controls whether the termination period configured on the product version should be respected or if the operation should take effect immediately.
+     *
+     * @return $this
+     */
+    public function setRespectTerminationPeriod($respect_termination_period)
+    {
+        $this->container['respect_termination_period'] = $respect_termination_period;
 
-		if ($this->getCurrency() === null) {
-			throw new ValidationException("'currency' can't be null", 'currency', $this);
-		}
-		if ($this->getProduct() === null) {
-			throw new ValidationException("'product' can't be null", 'product', $this);
-		}
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets selected_components
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProductComponentReference[]
+     */
+    public function getSelectedComponents()
+    {
+        return $this->container['selected_components'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets selected_components
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProductComponentReference[] $selected_components 
+     *
+     * @return $this
+     */
+    public function setSelectedComponents($selected_components)
+    {
+        $this->container['selected_components'] = $selected_components;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
 
+    /**
+     * Gets subscription
+     *
+     * @return int
+     */
+    public function getSubscription()
+    {
+        return $this->container['subscription'];
+    }
+
+    /**
+     * Sets subscription
+     *
+     * @param int $subscription 
+     *
+     * @return $this
+     */
+    public function setSubscription($subscription)
+    {
+        $this->container['subscription'] = $subscription;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionProductComponentGroupUpdate model
@@ -32,288 +32,433 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionProductComponentGroupUpdate  {
+class SubscriptionProductComponentGroupUpdate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionProductComponentGroup.Update';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionProductComponentGroup.Update';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'id' => 'int',
-		'version' => 'int',
-		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
-		'optional' => 'bool',
-		'productVersion' => 'int',
-		'sortOrder' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'id' => 'int',
+        'version' => 'int',
+        'name' => '\Wallee\Sdk\Model\DatabaseTranslatedStringCreate',
+        'optional' => 'bool',
+        'product_version' => 'int',
+        'sort_order' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'id' => 'int64',
+        'version' => 'int64',
+        'name' => null,
+        'optional' => null,
+        'product_version' => 'int64',
+        'sort_order' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'id' => 'id',
+        'version' => 'version',
+        'name' => 'name',
+        'optional' => 'optional',
+        'product_version' => 'productVersion',
+        'sort_order' => 'sortOrder'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'id' => 'setId',
+        'version' => 'setVersion',
+        'name' => 'setName',
+        'optional' => 'setOptional',
+        'product_version' => 'setProductVersion',
+        'sort_order' => 'setSortOrder'
+    ];
 
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'id' => 'getId',
+        'version' => 'getVersion',
+        'name' => 'getName',
+        'optional' => 'getOptional',
+        'product_version' => 'getProductVersion',
+        'sort_order' => 'getSortOrder'
+    ];
 
-	/**
-	 * The component group name will be shown when the components are selected. This can be visible to the subscriber.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
-	 */
-	private $name;
+    
 
-	/**
-	 * The component group can be optional. This means no component has to be selected by the subscriber.
-	 *
-	 * @var bool
-	 */
-	private $optional;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $productVersion;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['optional'] = isset($data['optional']) ? $data['optional'] : null;
+        
+        $this->container['product_version'] = isset($data['product_version']) ? $data['product_version'] : null;
+        
+        $this->container['sort_order'] = isset($data['sort_order']) ? $data['sort_order'] : null;
+        
+    }
 
-	/**
-	 * The sort order controls in which order the component group is listed. The sort order is used to order the component groups in ascending order.
-	 *
-	 * @var int
-	 */
-	private $sortOrder;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['version'] === null) {
+            $invalidProperties[] = "'version' can't be null";
+        }
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['optional'])) {
-			$this->setOptional($data['optional']);
-		}
-		if (isset($data['productVersion'])) {
-			$this->setProductVersion($data['productVersion']);
-		}
-		if (isset($data['sortOrder'])) {
-			$this->setSortOrder($data['sortOrder']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionProductComponentGroupUpdate
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionProductComponentGroupUpdate
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    
 
-		return $this;
-	}
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-	/**
-	 * Returns name.
-	 *
-	 * The component group name will be shown when the components are selected. This can be visible to the subscriber.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Sets name.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name
-	 * @return SubscriptionProductComponentGroupUpdate
-	 */
-	public function setName($name) {
-		$this->name = $name;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
-	/**
-	 * Returns optional.
-	 *
-	 * The component group can be optional. This means no component has to be selected by the subscriber.
-	 *
-	 * @return bool
-	 */
-	public function getOptional() {
-		return $this->optional;
-	}
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
 
-	/**
-	 * Sets optional.
-	 *
-	 * @param bool $optional
-	 * @return SubscriptionProductComponentGroupUpdate
-	 */
-	public function setOptional($optional) {
-		$this->optional = $optional;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets name
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedStringCreate
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-	/**
-	 * Returns productVersion.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getProductVersion() {
-		return $this->productVersion;
-	}
+    /**
+     * Sets name
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedStringCreate $name The component group name will be shown when the components are selected. This can be visible to the subscriber.
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Sets productVersion.
-	 *
-	 * @param int $productVersion
-	 * @return SubscriptionProductComponentGroupUpdate
-	 */
-	public function setProductVersion($productVersion) {
-		$this->productVersion = $productVersion;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets optional
+     *
+     * @return bool
+     */
+    public function getOptional()
+    {
+        return $this->container['optional'];
+    }
 
-	/**
-	 * Returns sortOrder.
-	 *
-	 * The sort order controls in which order the component group is listed. The sort order is used to order the component groups in ascending order.
-	 *
-	 * @return int
-	 */
-	public function getSortOrder() {
-		return $this->sortOrder;
-	}
+    /**
+     * Sets optional
+     *
+     * @param bool $optional The component group can be optional. This means no component has to be selected by the subscriber.
+     *
+     * @return $this
+     */
+    public function setOptional($optional)
+    {
+        $this->container['optional'] = $optional;
 
-	/**
-	 * Sets sortOrder.
-	 *
-	 * @param int $sortOrder
-	 * @return SubscriptionProductComponentGroupUpdate
-	 */
-	public function setSortOrder($sortOrder) {
-		$this->sortOrder = $sortOrder;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets product_version
+     *
+     * @return int
+     */
+    public function getProductVersion()
+    {
+        return $this->container['product_version'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets product_version
+     *
+     * @param int $product_version 
+     *
+     * @return $this
+     */
+    public function setProductVersion($product_version)
+    {
+        $this->container['product_version'] = $product_version;
 
-		if ($this->getId() === null) {
-			throw new ValidationException("'id' can't be null", 'id', $this);
-		}
-		if ($this->getVersion() === null) {
-			throw new ValidationException("'version' can't be null", 'version', $this);
-		}
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets sort_order
+     *
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->container['sort_order'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets sort_order
+     *
+     * @param int $sort_order The sort order controls in which order the component group is listed. The sort order is used to order the component groups in ascending order.
+     *
+     * @return $this
+     */
+    public function setSortOrder($sort_order)
+    {
+        $this->container['sort_order'] = $sort_order;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

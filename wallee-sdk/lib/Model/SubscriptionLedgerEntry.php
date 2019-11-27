@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionLedgerEntry model
@@ -32,586 +32,747 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionLedgerEntry  {
-
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionLedgerEntry';
-
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'aggregatedTaxRate' => 'float',
-		'amountExcludingTax' => 'float',
-		'amountIncludingTax' => 'float',
-		'createdBy' => 'int',
-		'createdOn' => '\DateTime',
-		'externalId' => 'string',
-		'id' => 'int',
-		'linkedSpaceId' => 'int',
-		'plannedPurgeDate' => '\DateTime',
-		'quantity' => 'float',
-		'state' => '\Wallee\Sdk\Model\SubscriptionLedgerEntryState',
-		'subscriptionVersion' => 'int',
-		'taxAmount' => 'float',
-		'taxes' => '\Wallee\Sdk\Model\Tax[]',
-		'title' => 'string',
-		'version' => 'int'	);
-
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
-
-	
-
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $aggregatedTaxRate;
-
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $amountExcludingTax;
-
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $amountIncludingTax;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $createdBy;
-
-	/**
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @var \DateTime
-	 */
-	private $createdOn;
-
-	/**
-	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
-	 *
-	 * @var string
-	 */
-	private $externalId;
-
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
-
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
-
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
-
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $quantity;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionLedgerEntryState
-	 */
-	private $state;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $subscriptionVersion;
-
-	/**
-	 * 
-	 *
-	 * @var float
-	 */
-	private $taxAmount;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\Tax[]
-	 */
-	private $taxes;
-
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $title;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-		if (isset($data['taxes'])) {
-			$this->setTaxes($data['taxes']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
-
-
-	/**
-	 * Returns aggregatedTaxRate.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getAggregatedTaxRate() {
-		return $this->aggregatedTaxRate;
-	}
-
-	/**
-	 * Sets aggregatedTaxRate.
-	 *
-	 * @param float $aggregatedTaxRate
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setAggregatedTaxRate($aggregatedTaxRate) {
-		$this->aggregatedTaxRate = $aggregatedTaxRate;
-
-		return $this;
-	}
-
-	/**
-	 * Returns amountExcludingTax.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getAmountExcludingTax() {
-		return $this->amountExcludingTax;
-	}
-
-	/**
-	 * Sets amountExcludingTax.
-	 *
-	 * @param float $amountExcludingTax
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setAmountExcludingTax($amountExcludingTax) {
-		$this->amountExcludingTax = $amountExcludingTax;
-
-		return $this;
-	}
-
-	/**
-	 * Returns amountIncludingTax.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getAmountIncludingTax() {
-		return $this->amountIncludingTax;
-	}
-
-	/**
-	 * Sets amountIncludingTax.
-	 *
-	 * @param float $amountIncludingTax
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setAmountIncludingTax($amountIncludingTax) {
-		$this->amountIncludingTax = $amountIncludingTax;
-
-		return $this;
-	}
-
-	/**
-	 * Returns createdBy.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getCreatedBy() {
-		return $this->createdBy;
-	}
-
-	/**
-	 * Sets createdBy.
-	 *
-	 * @param int $createdBy
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setCreatedBy($createdBy) {
-		$this->createdBy = $createdBy;
-
-		return $this;
-	}
-
-	/**
-	 * Returns createdOn.
-	 *
-	 * The created on date indicates the date on which the entity was stored into the database.
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreatedOn() {
-		return $this->createdOn;
-	}
-
-	/**
-	 * Sets createdOn.
-	 *
-	 * @param \DateTime $createdOn
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setCreatedOn($createdOn) {
-		$this->createdOn = $createdOn;
-
-		return $this;
-	}
-
-	/**
-	 * Returns externalId.
-	 *
-	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
-	 *
-	 * @return string
-	 */
-	public function getExternalId() {
-		return $this->externalId;
-	}
-
-	/**
-	 * Sets externalId.
-	 *
-	 * @param string $externalId
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setExternalId($externalId) {
-		$this->externalId = $externalId;
-
-		return $this;
-	}
-
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
-
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriptionLedgerEntry
-	 */
-	public function setId($id) {
-		$this->id = $id;
-
-		return $this;
-	}
-
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
-
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
-
-		return $this;
-	}
-
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
-
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
-
-		return $this;
-	}
-
-	/**
-	 * Returns quantity.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getQuantity() {
-		return $this->quantity;
-	}
-
-	/**
-	 * Sets quantity.
-	 *
-	 * @param float $quantity
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setQuantity($quantity) {
-		$this->quantity = $quantity;
-
-		return $this;
-	}
-
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionLedgerEntryState
-	 */
-	public function getState() {
-		return $this->state;
-	}
-
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionLedgerEntryState $state
-	 * @return SubscriptionLedgerEntry
-	 */
-	public function setState($state) {
-		$this->state = $state;
-
-		return $this;
-	}
-
-	/**
-	 * Returns subscriptionVersion.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getSubscriptionVersion() {
-		return $this->subscriptionVersion;
-	}
-
-	/**
-	 * Sets subscriptionVersion.
-	 *
-	 * @param int $subscriptionVersion
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setSubscriptionVersion($subscriptionVersion) {
-		$this->subscriptionVersion = $subscriptionVersion;
-
-		return $this;
-	}
-
-	/**
-	 * Returns taxAmount.
-	 *
-	 * 
-	 *
-	 * @return float
-	 */
-	public function getTaxAmount() {
-		return $this->taxAmount;
-	}
-
-	/**
-	 * Sets taxAmount.
-	 *
-	 * @param float $taxAmount
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setTaxAmount($taxAmount) {
-		$this->taxAmount = $taxAmount;
-
-		return $this;
-	}
-
-	/**
-	 * Returns taxes.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\Tax[]
-	 */
-	public function getTaxes() {
-		return $this->taxes;
-	}
-
-	/**
-	 * Sets taxes.
-	 *
-	 * @param \Wallee\Sdk\Model\Tax[] $taxes
-	 * @return SubscriptionLedgerEntry
-	 */
-	public function setTaxes($taxes) {
-		$this->taxes = $taxes;
-
-		return $this;
-	}
-
-	/**
-	 * Returns title.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
-
-	/**
-	 * Sets title.
-	 *
-	 * @param string $title
-	 * @return SubscriptionLedgerEntry
-	 */
-	protected function setTitle($title) {
-		$this->title = $title;
-
-		return $this;
-	}
-
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
-
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriptionLedgerEntry
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
-
-		return $this;
-	}
-
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
-
-	}
-
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
-
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
-
+class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
+
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionLedgerEntry';
+
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'aggregated_tax_rate' => 'float',
+        'amount_excluding_tax' => 'float',
+        'amount_including_tax' => 'float',
+        'created_by' => 'int',
+        'created_on' => '\DateTime',
+        'external_id' => 'string',
+        'id' => 'int',
+        'linked_space_id' => 'int',
+        'planned_purge_date' => '\DateTime',
+        'quantity' => 'float',
+        'state' => '\Wallee\Sdk\Model\SubscriptionLedgerEntryState',
+        'subscription_version' => 'int',
+        'tax_amount' => 'float',
+        'taxes' => '\Wallee\Sdk\Model\Tax[]',
+        'title' => 'string',
+        'version' => 'int'
+    ];
+
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'aggregated_tax_rate' => null,
+        'amount_excluding_tax' => null,
+        'amount_including_tax' => null,
+        'created_by' => 'int64',
+        'created_on' => 'date-time',
+        'external_id' => null,
+        'id' => 'int64',
+        'linked_space_id' => 'int64',
+        'planned_purge_date' => 'date-time',
+        'quantity' => null,
+        'state' => null,
+        'subscription_version' => 'int64',
+        'tax_amount' => null,
+        'taxes' => null,
+        'title' => null,
+        'version' => 'int32'
+    ];
+
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'aggregated_tax_rate' => 'aggregatedTaxRate',
+        'amount_excluding_tax' => 'amountExcludingTax',
+        'amount_including_tax' => 'amountIncludingTax',
+        'created_by' => 'createdBy',
+        'created_on' => 'createdOn',
+        'external_id' => 'externalId',
+        'id' => 'id',
+        'linked_space_id' => 'linkedSpaceId',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'quantity' => 'quantity',
+        'state' => 'state',
+        'subscription_version' => 'subscriptionVersion',
+        'tax_amount' => 'taxAmount',
+        'taxes' => 'taxes',
+        'title' => 'title',
+        'version' => 'version'
+    ];
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'aggregated_tax_rate' => 'setAggregatedTaxRate',
+        'amount_excluding_tax' => 'setAmountExcludingTax',
+        'amount_including_tax' => 'setAmountIncludingTax',
+        'created_by' => 'setCreatedBy',
+        'created_on' => 'setCreatedOn',
+        'external_id' => 'setExternalId',
+        'id' => 'setId',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'quantity' => 'setQuantity',
+        'state' => 'setState',
+        'subscription_version' => 'setSubscriptionVersion',
+        'tax_amount' => 'setTaxAmount',
+        'taxes' => 'setTaxes',
+        'title' => 'setTitle',
+        'version' => 'setVersion'
+    ];
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'aggregated_tax_rate' => 'getAggregatedTaxRate',
+        'amount_excluding_tax' => 'getAmountExcludingTax',
+        'amount_including_tax' => 'getAmountIncludingTax',
+        'created_by' => 'getCreatedBy',
+        'created_on' => 'getCreatedOn',
+        'external_id' => 'getExternalId',
+        'id' => 'getId',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'quantity' => 'getQuantity',
+        'state' => 'getState',
+        'subscription_version' => 'getSubscriptionVersion',
+        'tax_amount' => 'getTaxAmount',
+        'taxes' => 'getTaxes',
+        'title' => 'getTitle',
+        'version' => 'getVersion'
+    ];
+
+    
+
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
+
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['aggregated_tax_rate'] = isset($data['aggregated_tax_rate']) ? $data['aggregated_tax_rate'] : null;
+        
+        $this->container['amount_excluding_tax'] = isset($data['amount_excluding_tax']) ? $data['amount_excluding_tax'] : null;
+        
+        $this->container['amount_including_tax'] = isset($data['amount_including_tax']) ? $data['amount_including_tax'] : null;
+        
+        $this->container['created_by'] = isset($data['created_by']) ? $data['created_by'] : null;
+        
+        $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+        $this->container['subscription_version'] = isset($data['subscription_version']) ? $data['subscription_version'] : null;
+        
+        $this->container['tax_amount'] = isset($data['tax_amount']) ? $data['tax_amount'] : null;
+        
+        $this->container['taxes'] = isset($data['taxes']) ? $data['taxes'] : null;
+        
+        $this->container['title'] = isset($data['title']) ? $data['title'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
+
+
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
+
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
+
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
+
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
+
+    
+
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
+
+    
+
+    /**
+     * Gets aggregated_tax_rate
+     *
+     * @return float
+     */
+    public function getAggregatedTaxRate()
+    {
+        return $this->container['aggregated_tax_rate'];
+    }
+
+    /**
+     * Sets aggregated_tax_rate
+     *
+     * @param float $aggregated_tax_rate 
+     *
+     * @return $this
+     */
+    public function setAggregatedTaxRate($aggregated_tax_rate)
+    {
+        $this->container['aggregated_tax_rate'] = $aggregated_tax_rate;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets amount_excluding_tax
+     *
+     * @return float
+     */
+    public function getAmountExcludingTax()
+    {
+        return $this->container['amount_excluding_tax'];
+    }
+
+    /**
+     * Sets amount_excluding_tax
+     *
+     * @param float $amount_excluding_tax 
+     *
+     * @return $this
+     */
+    public function setAmountExcludingTax($amount_excluding_tax)
+    {
+        $this->container['amount_excluding_tax'] = $amount_excluding_tax;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets amount_including_tax
+     *
+     * @return float
+     */
+    public function getAmountIncludingTax()
+    {
+        return $this->container['amount_including_tax'];
+    }
+
+    /**
+     * Sets amount_including_tax
+     *
+     * @param float $amount_including_tax 
+     *
+     * @return $this
+     */
+    public function setAmountIncludingTax($amount_including_tax)
+    {
+        $this->container['amount_including_tax'] = $amount_including_tax;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets created_by
+     *
+     * @return int
+     */
+    public function getCreatedBy()
+    {
+        return $this->container['created_by'];
+    }
+
+    /**
+     * Sets created_by
+     *
+     * @param int $created_by 
+     *
+     * @return $this
+     */
+    public function setCreatedBy($created_by)
+    {
+        $this->container['created_by'] = $created_by;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets created_on
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->container['created_on'];
+    }
+
+    /**
+     * Sets created_on
+     *
+     * @param \DateTime $created_on The created on date indicates the date on which the entity was stored into the database.
+     *
+     * @return $this
+     */
+    public function setCreatedOn($created_on)
+    {
+        $this->container['created_on'] = $created_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets external_id
+     *
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
+
+    /**
+     * Sets external_id
+     *
+     * @param string $external_id The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
+     *
+     * @return $this
+     */
+    public function setExternalId($external_id)
+    {
+        $this->container['external_id'] = $external_id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
+
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
+
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets quantity
+     *
+     * @return float
+     */
+    public function getQuantity()
+    {
+        return $this->container['quantity'];
+    }
+
+    /**
+     * Sets quantity
+     *
+     * @param float $quantity 
+     *
+     * @return $this
+     */
+    public function setQuantity($quantity)
+    {
+        $this->container['quantity'] = $quantity;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionLedgerEntryState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
+
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionLedgerEntryState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets subscription_version
+     *
+     * @return int
+     */
+    public function getSubscriptionVersion()
+    {
+        return $this->container['subscription_version'];
+    }
+
+    /**
+     * Sets subscription_version
+     *
+     * @param int $subscription_version 
+     *
+     * @return $this
+     */
+    public function setSubscriptionVersion($subscription_version)
+    {
+        $this->container['subscription_version'] = $subscription_version;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets tax_amount
+     *
+     * @return float
+     */
+    public function getTaxAmount()
+    {
+        return $this->container['tax_amount'];
+    }
+
+    /**
+     * Sets tax_amount
+     *
+     * @param float $tax_amount 
+     *
+     * @return $this
+     */
+    public function setTaxAmount($tax_amount)
+    {
+        $this->container['tax_amount'] = $tax_amount;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets taxes
+     *
+     * @return \Wallee\Sdk\Model\Tax[]
+     */
+    public function getTaxes()
+    {
+        return $this->container['taxes'];
+    }
+
+    /**
+     * Sets taxes
+     *
+     * @param \Wallee\Sdk\Model\Tax[] $taxes 
+     *
+     * @return $this
+     */
+    public function setTaxes($taxes)
+    {
+        $this->container['taxes'] = $taxes;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->container['title'];
+    }
+
+    /**
+     * Sets title
+     *
+     * @param string $title 
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->container['title'] = $title;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
+
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

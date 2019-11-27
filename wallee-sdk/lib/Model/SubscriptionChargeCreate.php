@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionChargeCreate model
@@ -32,325 +32,468 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionChargeCreate  {
+class SubscriptionChargeCreate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'SubscriptionCharge.Create';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'SubscriptionCharge.Create';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'externalId' => 'string',
-		'failedUrl' => 'string',
-		'plannedExecutionDate' => '\DateTime',
-		'processingType' => '\Wallee\Sdk\Model\SubscriptionChargeProcessingType',
-		'reference' => 'string',
-		'subscription' => 'int',
-		'successUrl' => 'string'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'external_id' => 'string',
+        'failed_url' => 'string',
+        'planned_execution_date' => '\DateTime',
+        'processing_type' => '\Wallee\Sdk\Model\SubscriptionChargeProcessingType',
+        'reference' => 'string',
+        'subscription' => 'int',
+        'success_url' => 'string'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'external_id' => null,
+        'failed_url' => null,
+        'planned_execution_date' => 'date-time',
+        'processing_type' => null,
+        'reference' => null,
+        'subscription' => 'int64',
+        'success_url' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'external_id' => 'externalId',
+        'failed_url' => 'failedUrl',
+        'planned_execution_date' => 'plannedExecutionDate',
+        'processing_type' => 'processingType',
+        'reference' => 'reference',
+        'subscription' => 'subscription',
+        'success_url' => 'successUrl'
+    ];
 
-	/**
-	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
-	 *
-	 * @var string
-	 */
-	private $externalId;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'external_id' => 'setExternalId',
+        'failed_url' => 'setFailedUrl',
+        'planned_execution_date' => 'setPlannedExecutionDate',
+        'processing_type' => 'setProcessingType',
+        'reference' => 'setReference',
+        'subscription' => 'setSubscription',
+        'success_url' => 'setSuccessUrl'
+    ];
 
-	/**
-	 * The user will be redirected to failed URL when the transaction could not be authorized or completed. In case no failed URL is specified a default failed page will be displayed.
-	 *
-	 * @var string
-	 */
-	private $failedUrl;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'external_id' => 'getExternalId',
+        'failed_url' => 'getFailedUrl',
+        'planned_execution_date' => 'getPlannedExecutionDate',
+        'processing_type' => 'getProcessingType',
+        'reference' => 'getReference',
+        'subscription' => 'getSubscription',
+        'success_url' => 'getSuccessUrl'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedExecutionDate;
+    
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionChargeProcessingType
-	 */
-	private $processingType;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $reference;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
+        
+        $this->container['failed_url'] = isset($data['failed_url']) ? $data['failed_url'] : null;
+        
+        $this->container['planned_execution_date'] = isset($data['planned_execution_date']) ? $data['planned_execution_date'] : null;
+        
+        $this->container['processing_type'] = isset($data['processing_type']) ? $data['processing_type'] : null;
+        
+        $this->container['reference'] = isset($data['reference']) ? $data['reference'] : null;
+        
+        $this->container['subscription'] = isset($data['subscription']) ? $data['subscription'] : null;
+        
+        $this->container['success_url'] = isset($data['success_url']) ? $data['success_url'] : null;
+        
+    }
 
-	/**
-	 * The field subscription indicates the subscription to which the charge belongs to.
-	 *
-	 * @var int
-	 */
-	private $subscription;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The user will be redirected to success URL when the transaction could be authorized or completed. In case no success URL is specified a default success page will be displayed.
-	 *
-	 * @var string
-	 */
-	private $successUrl;
+        if ($this->container['external_id'] === null) {
+            $invalidProperties[] = "'external_id' can't be null";
+        }
+        if ($this->container['processing_type'] === null) {
+            $invalidProperties[] = "'processing_type' can't be null";
+        }
+        if ($this->container['subscription'] === null) {
+            $invalidProperties[] = "'subscription' can't be null";
+        }
+        return $invalidProperties;
+    }
 
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['externalId'])) {
-			$this->setExternalId($data['externalId']);
-		}
-		if (isset($data['failedUrl'])) {
-			$this->setFailedUrl($data['failedUrl']);
-		}
-		if (isset($data['plannedExecutionDate'])) {
-			$this->setPlannedExecutionDate($data['plannedExecutionDate']);
-		}
-		if (isset($data['processingType'])) {
-			$this->setProcessingType($data['processingType']);
-		}
-		if (isset($data['reference'])) {
-			$this->setReference($data['reference']);
-		}
-		if (isset($data['subscription'])) {
-			$this->setSubscription($data['subscription']);
-		}
-		if (isset($data['successUrl'])) {
-			$this->setSuccessUrl($data['successUrl']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns externalId.
-	 *
-	 * The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
-	 *
-	 * @return string
-	 */
-	public function getExternalId() {
-		return $this->externalId;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets externalId.
-	 *
-	 * @param string $externalId
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setExternalId($externalId) {
-		$this->externalId = $externalId;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns failedUrl.
-	 *
-	 * The user will be redirected to failed URL when the transaction could not be authorized or completed. In case no failed URL is specified a default failed page will be displayed.
-	 *
-	 * @return string
-	 */
-	public function getFailedUrl() {
-		return $this->failedUrl;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets failedUrl.
-	 *
-	 * @param string $failedUrl
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setFailedUrl($failedUrl) {
-		$this->failedUrl = $failedUrl;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns plannedExecutionDate.
-	 *
-	 * 
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedExecutionDate() {
-		return $this->plannedExecutionDate;
-	}
+    
 
-	/**
-	 * Sets plannedExecutionDate.
-	 *
-	 * @param \DateTime $plannedExecutionDate
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setPlannedExecutionDate($plannedExecutionDate) {
-		$this->plannedExecutionDate = $plannedExecutionDate;
+    /**
+     * Gets external_id
+     *
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets external_id
+     *
+     * @param string $external_id The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
+     *
+     * @return $this
+     */
+    public function setExternalId($external_id)
+    {
+        $this->container['external_id'] = $external_id;
 
-	/**
-	 * Returns processingType.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionChargeProcessingType
-	 */
-	public function getProcessingType() {
-		return $this->processingType;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets processingType.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionChargeProcessingType $processingType
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setProcessingType($processingType) {
-		$this->processingType = $processingType;
+    /**
+     * Gets failed_url
+     *
+     * @return string
+     */
+    public function getFailedUrl()
+    {
+        return $this->container['failed_url'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets failed_url
+     *
+     * @param string $failed_url The user will be redirected to failed URL when the transaction could not be authorized or completed. In case no failed URL is specified a default failed page will be displayed.
+     *
+     * @return $this
+     */
+    public function setFailedUrl($failed_url)
+    {
+        $this->container['failed_url'] = $failed_url;
 
-	/**
-	 * Returns reference.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getReference() {
-		return $this->reference;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets reference.
-	 *
-	 * @param string $reference
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setReference($reference) {
-		$this->reference = $reference;
+    /**
+     * Gets planned_execution_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedExecutionDate()
+    {
+        return $this->container['planned_execution_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_execution_date
+     *
+     * @param \DateTime $planned_execution_date 
+     *
+     * @return $this
+     */
+    public function setPlannedExecutionDate($planned_execution_date)
+    {
+        $this->container['planned_execution_date'] = $planned_execution_date;
 
-	/**
-	 * Returns subscription.
-	 *
-	 * The field subscription indicates the subscription to which the charge belongs to.
-	 *
-	 * @return int
-	 */
-	public function getSubscription() {
-		return $this->subscription;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets subscription.
-	 *
-	 * @param int $subscription
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setSubscription($subscription) {
-		$this->subscription = $subscription;
+    /**
+     * Gets processing_type
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionChargeProcessingType
+     */
+    public function getProcessingType()
+    {
+        return $this->container['processing_type'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets processing_type
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionChargeProcessingType $processing_type 
+     *
+     * @return $this
+     */
+    public function setProcessingType($processing_type)
+    {
+        $this->container['processing_type'] = $processing_type;
 
-	/**
-	 * Returns successUrl.
-	 *
-	 * The user will be redirected to success URL when the transaction could be authorized or completed. In case no success URL is specified a default success page will be displayed.
-	 *
-	 * @return string
-	 */
-	public function getSuccessUrl() {
-		return $this->successUrl;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets successUrl.
-	 *
-	 * @param string $successUrl
-	 * @return SubscriptionChargeCreate
-	 */
-	public function setSuccessUrl($successUrl) {
-		$this->successUrl = $successUrl;
+    /**
+     * Gets reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->container['reference'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets reference
+     *
+     * @param string $reference 
+     *
+     * @return $this
+     */
+    public function setReference($reference)
+    {
+        $this->container['reference'] = $reference;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-		if ($this->getExternalId() === null) {
-			throw new ValidationException("'externalId' can't be null", 'externalId', $this);
-		}
-		if ($this->getProcessingType() === null) {
-			throw new ValidationException("'processingType' can't be null", 'processingType', $this);
-		}
-		if ($this->getSubscription() === null) {
-			throw new ValidationException("'subscription' can't be null", 'subscription', $this);
-		}
-	}
+    /**
+     * Gets subscription
+     *
+     * @return int
+     */
+    public function getSubscription()
+    {
+        return $this->container['subscription'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets subscription
+     *
+     * @param int $subscription The field subscription indicates the subscription to which the charge belongs to.
+     *
+     * @return $this
+     */
+    public function setSubscription($subscription)
+    {
+        $this->container['subscription'] = $subscription;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets success_url
+     *
+     * @return string
+     */
+    public function getSuccessUrl()
+    {
+        return $this->container['success_url'];
+    }
 
+    /**
+     * Sets success_url
+     *
+     * @param string $success_url The user will be redirected to success URL when the transaction could be authorized or completed. In case no success URL is specified a default success page will be displayed.
+     *
+     * @return $this
+     */
+    public function setSuccessUrl($success_url)
+    {
+        $this->container['success_url'] = $success_url;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

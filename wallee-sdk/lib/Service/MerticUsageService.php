@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +17,14 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Service;
 
 use Wallee\Sdk\ApiClient;
 use Wallee\Sdk\ApiException;
 use Wallee\Sdk\ApiResponse;
 use Wallee\Sdk\Http\HttpRequest;
+use Wallee\Sdk\ObjectSerializer;
 
 /**
  * MerticUsageService service
@@ -49,7 +49,7 @@ class MerticUsageService {
 	 * @param ApiClient $apiClient the api client
 	 */
 	public function __construct(ApiClient $apiClient) {
-		if ($apiClient == null) {
+		if (is_null($apiClient)) {
 			throw new \InvalidArgumentException('The api client is required.');
 		}
 
@@ -71,7 +71,7 @@ class MerticUsageService {
 	 *
 	 * Calculate
 	 *
-	 * @param int $spaceId  (required)
+	 * @param int $space_id  (required)
 	 * @param \DateTime $start The start date from which on the consumed units should be returned from. (required)
 	 * @param \DateTime $end The end date to which the consumed units should be returned to. The end date is not included in the result. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -79,8 +79,8 @@ class MerticUsageService {
 	 * @throws \Wallee\Sdk\Http\ConnectionException
 	 * @return \Wallee\Sdk\Model\MetricUsage[]
 	 */
-	public function calculate($spaceId, $start, $end) {
-		return $this->calculateWithHttpInfo($spaceId, $start, $end)->getData();
+	public function calculate($space_id, $start, $end) {
+		return $this->calculateWithHttpInfo($space_id, $start, $end)->getData();
 	}
 
 	/**
@@ -88,7 +88,7 @@ class MerticUsageService {
 	 *
 	 * Calculate
 	 *
-	 * @param int $spaceId  (required)
+	 * @param int $space_id  (required)
 	 * @param \DateTime $start The start date from which on the consumed units should be returned from. (required)
 	 * @param \DateTime $end The end date to which the consumed units should be returned to. The end date is not included in the result. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -96,46 +96,46 @@ class MerticUsageService {
 	 * @throws \Wallee\Sdk\Http\ConnectionException
 	 * @return ApiResponse
 	 */
-	public function calculateWithHttpInfo($spaceId, $start, $end) {
-		// verify the required parameter 'spaceId' is set
-		if ($spaceId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $spaceId when calling calculate');
+	public function calculateWithHttpInfo($space_id, $start, $end) {
+		// verify the required parameter 'space_id' is set
+		if (is_null($space_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $space_id when calling calculate');
 		}
 		// verify the required parameter 'start' is set
-		if ($start === null) {
+		if (is_null($start)) {
 			throw new \InvalidArgumentException('Missing the required parameter $start when calling calculate');
 		}
 		// verify the required parameter 'end' is set
-		if ($end === null) {
+		if (is_null($end)) {
 			throw new \InvalidArgumentException('Missing the required parameter $end when calling calculate');
 		}
 		// header params
-		$headerParams = array();
-		$headerAccept = $this->apiClient->selectHeaderAccept(array('application/json;charset=utf-8'));
-		if ($headerAccept !== null) {
+		$headerParams = [];
+		$headerAccept = $this->apiClient->selectHeaderAccept(['application/json;charset=utf-8']);
+		if (!is_null($headerAccept)) {
 			$headerParams[HttpRequest::HEADER_KEY_ACCEPT] = $headerAccept;
 		}
-		$headerParams[HttpRequest::HEADER_KEY_CONTENT_TYPE] = $this->apiClient->selectHeaderContentType(array('*/*'));
+		$headerParams[HttpRequest::HEADER_KEY_CONTENT_TYPE] = $this->apiClient->selectHeaderContentType(['*/*']);
 
 		// query params
-		$queryParams = array();
-		if ($spaceId !== null) {
-			$queryParams['spaceId'] = $this->apiClient->getSerializer()->toQueryValue($spaceId);
+		$queryParams = [];
+		if (!is_null($space_id)) {
+			$queryParams['spaceId'] = $this->apiClient->getSerializer()->toQueryValue($space_id);
 		}
-		if ($start !== null) {
+		if (!is_null($start)) {
 			$queryParams['start'] = $this->apiClient->getSerializer()->toQueryValue($start);
 		}
-		if ($end !== null) {
+		if (!is_null($end)) {
 			$queryParams['end'] = $this->apiClient->getSerializer()->toQueryValue($end);
 		}
 
 		// path params
-		$resourcePath = "/mertic-usage/calculate";
+		$resourcePath = '/mertic-usage/calculate';
 		// default format to json
-		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$resourcePath = str_replace('{format}', 'json', $resourcePath);
 
 		// form params
-		$formParams = array();
+		$formParams = [];
 		
 		// for model (json/xml)
 		$httpBody = '';
@@ -158,20 +158,31 @@ class MerticUsageService {
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\MetricUsage[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
-				case 200:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\MetricUsage[]', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 442:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ClientError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 542:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ServerError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\MetricUsage[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 442:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ClientError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 542:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ServerError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
 			}
-
 			throw $e;
 		}
 	}

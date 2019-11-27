@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
-
-
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionState model
@@ -32,17 +30,35 @@ namespace Wallee\Sdk\Model;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionState implements IEnum {
-
-	const PENDING = 'PENDING';
-	const INITIALIZING = 'INITIALIZING';
-	const FAILED = 'FAILED';
-	const ACTIVE = 'ACTIVE';
-	const SUSPENDED = 'SUSPENDED';
-	const TERMINATING = 'TERMINATING';
-	const TERMINATED = 'TERMINATED';
-	
-
-	
-
+class SubscriptionState
+{
+    /**
+     * Possible values of this enum
+     */
+    const PENDING = 'PENDING';
+    const INITIALIZING = 'INITIALIZING';
+    const FAILED = 'FAILED';
+    const ACTIVE = 'ACTIVE';
+    const SUSPENDED = 'SUSPENDED';
+    const TERMINATING = 'TERMINATING';
+    const TERMINATED = 'TERMINATED';
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::PENDING,
+            self::INITIALIZING,
+            self::FAILED,
+            self::ACTIVE,
+            self::SUSPENDED,
+            self::TERMINATING,
+            self::TERMINATED,
+        ];
+    }
 }
+
+

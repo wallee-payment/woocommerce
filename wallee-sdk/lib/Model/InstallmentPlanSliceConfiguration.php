@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * InstallmentPlanSliceConfiguration model
@@ -32,403 +32,555 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class InstallmentPlanSliceConfiguration  {
+class InstallmentPlanSliceConfiguration implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'InstallmentPlanSliceConfiguration';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'InstallmentPlanSliceConfiguration';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'id' => 'int',
-		'lineItemTitle' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
-		'linkedSpaceId' => 'int',
-		'period' => 'string',
-		'plan' => '\Wallee\Sdk\Model\InstallmentPlanConfiguration',
-		'plannedPurgeDate' => '\DateTime',
-		'priority' => 'int',
-		'proportion' => 'float',
-		'state' => '\Wallee\Sdk\Model\CreationEntityState',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'id' => 'int',
+        'line_item_title' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
+        'linked_space_id' => 'int',
+        'period' => 'string',
+        'plan' => '\Wallee\Sdk\Model\InstallmentPlanConfiguration',
+        'planned_purge_date' => '\DateTime',
+        'priority' => 'int',
+        'proportion' => 'float',
+        'state' => '\Wallee\Sdk\Model\CreationEntityState',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'id' => 'int64',
+        'line_item_title' => null,
+        'linked_space_id' => 'int64',
+        'period' => null,
+        'plan' => null,
+        'planned_purge_date' => 'date-time',
+        'priority' => 'int32',
+        'proportion' => null,
+        'state' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'id' => 'id',
+        'line_item_title' => 'lineItemTitle',
+        'linked_space_id' => 'linkedSpaceId',
+        'period' => 'period',
+        'plan' => 'plan',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'priority' => 'priority',
+        'proportion' => 'proportion',
+        'state' => 'state',
+        'version' => 'version'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'id' => 'setId',
+        'line_item_title' => 'setLineItemTitle',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'period' => 'setPeriod',
+        'plan' => 'setPlan',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'priority' => 'setPriority',
+        'proportion' => 'setProportion',
+        'state' => 'setState',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * The title of this slices line items. The title is visible to the buyer.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	private $lineItemTitle;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'id' => 'getId',
+        'line_item_title' => 'getLineItemTitle',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'period' => 'getPeriod',
+        'plan' => 'getPlan',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'priority' => 'getPriority',
+        'proportion' => 'getProportion',
+        'state' => 'getState',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    
 
-	/**
-	 * The period defines how much time passes between the last slice and this slice. The charge is triggered at the end of the period. When the slice should be charged immediately the period needs to be zero.
-	 *
-	 * @var string
-	 */
-	private $period;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The installment plan this slice belongs to.
-	 *
-	 * @var \Wallee\Sdk\Model\InstallmentPlanConfiguration
-	 */
-	private $plan;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['line_item_title'] = isset($data['line_item_title']) ? $data['line_item_title'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['period'] = isset($data['period']) ? $data['period'] : null;
+        
+        $this->container['plan'] = isset($data['plan']) ? $data['plan'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['priority'] = isset($data['priority']) ? $data['priority'] : null;
+        
+        $this->container['proportion'] = isset($data['proportion']) ? $data['proportion'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The priority controls in which order the slices are applied. The lower the value the higher the precedence.
-	 *
-	 * @var int
-	 */
-	private $priority;
+        return $invalidProperties;
+    }
 
-	/**
-	 * The proportion defines how much of the total installment payment has to be paid in this slice. The value is summed up with the other slices and the ratio of all proportions compared to proportion of this slice determines how much the buyer has to pay in this slice.
-	 *
-	 * @var float
-	 */
-	private $proportion;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\CreationEntityState
-	 */
-	private $state;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['lineItemTitle'])) {
-			$this->setLineItemTitle($data['lineItemTitle']);
-		}
-		if (isset($data['plan'])) {
-			$this->setPlan($data['plan']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns lineItemTitle.
-	 *
-	 * The title of this slices line items. The title is visible to the buyer.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	public function getLineItemTitle() {
-		return $this->lineItemTitle;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets lineItemTitle.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedString $lineItemTitle
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	public function setLineItemTitle($lineItemTitle) {
-		$this->lineItemTitle = $lineItemTitle;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns period.
-	 *
-	 * The period defines how much time passes between the last slice and this slice. The charge is triggered at the end of the period. When the slice should be charged immediately the period needs to be zero.
-	 *
-	 * @return string
-	 */
-	public function getPeriod() {
-		return $this->period;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets period.
-	 *
-	 * @param string $period
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	protected function setPeriod($period) {
-		$this->period = $period;
+    /**
+     * Gets line_item_title
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedString
+     */
+    public function getLineItemTitle()
+    {
+        return $this->container['line_item_title'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets line_item_title
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedString $line_item_title The title of this slices line items. The title is visible to the buyer.
+     *
+     * @return $this
+     */
+    public function setLineItemTitle($line_item_title)
+    {
+        $this->container['line_item_title'] = $line_item_title;
 
-	/**
-	 * Returns plan.
-	 *
-	 * The installment plan this slice belongs to.
-	 *
-	 * @return \Wallee\Sdk\Model\InstallmentPlanConfiguration
-	 */
-	public function getPlan() {
-		return $this->plan;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plan.
-	 *
-	 * @param \Wallee\Sdk\Model\InstallmentPlanConfiguration $plan
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	public function setPlan($plan) {
-		$this->plan = $plan;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
+    /**
+     * Gets period
+     *
+     * @return string
+     */
+    public function getPeriod()
+    {
+        return $this->container['period'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets period
+     *
+     * @param string $period The period defines how much time passes between the last slice and this slice. The charge is triggered at the end of the period. When the slice should be charged immediately the period needs to be zero.
+     *
+     * @return $this
+     */
+    public function setPeriod($period)
+    {
+        $this->container['period'] = $period;
 
-	/**
-	 * Returns priority.
-	 *
-	 * The priority controls in which order the slices are applied. The lower the value the higher the precedence.
-	 *
-	 * @return int
-	 */
-	public function getPriority() {
-		return $this->priority;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets priority.
-	 *
-	 * @param int $priority
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	protected function setPriority($priority) {
-		$this->priority = $priority;
+    /**
+     * Gets plan
+     *
+     * @return \Wallee\Sdk\Model\InstallmentPlanConfiguration
+     */
+    public function getPlan()
+    {
+        return $this->container['plan'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets plan
+     *
+     * @param \Wallee\Sdk\Model\InstallmentPlanConfiguration $plan The installment plan this slice belongs to.
+     *
+     * @return $this
+     */
+    public function setPlan($plan)
+    {
+        $this->container['plan'] = $plan;
 
-	/**
-	 * Returns proportion.
-	 *
-	 * The proportion defines how much of the total installment payment has to be paid in this slice. The value is summed up with the other slices and the ratio of all proportions compared to proportion of this slice determines how much the buyer has to pay in this slice.
-	 *
-	 * @return float
-	 */
-	public function getProportion() {
-		return $this->proportion;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets proportion.
-	 *
-	 * @param float $proportion
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	protected function setProportion($proportion) {
-		$this->proportion = $proportion;
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\CreationEntityState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\CreationEntityState $state
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	public function setState($state) {
-		$this->state = $state;
+    /**
+     * Gets priority
+     *
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->container['priority'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets priority
+     *
+     * @param int $priority The priority controls in which order the slices are applied. The lower the value the higher the precedence.
+     *
+     * @return $this
+     */
+    public function setPriority($priority)
+    {
+        $this->container['priority'] = $priority;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return InstallmentPlanSliceConfiguration
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets proportion
+     *
+     * @return float
+     */
+    public function getProportion()
+    {
+        return $this->container['proportion'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets proportion
+     *
+     * @param float $proportion The proportion defines how much of the total installment payment has to be paid in this slice. The value is summed up with the other slices and the ratio of all proportions compared to proportion of this slice determines how much the buyer has to pay in this slice.
+     *
+     * @return $this
+     */
+    public function setProportion($proportion)
+    {
+        $this->container['proportion'] = $proportion;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\CreationEntityState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\CreationEntityState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

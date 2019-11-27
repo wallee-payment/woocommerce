@@ -37,12 +37,25 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	private $transaction_service;
 	
 	/**
+	 * The transaction iframe service.
+	 *
+	 * @var \Wallee\Sdk\Service\TransactionIframeService
+	 */
+	private $transaction_iframe_service;
+	/**
+	 * The transaction payment page service.
+	 *
+	 * @var \Wallee\Sdk\Service\TransactionPaymentPageService
+	 */
+	private $transaction_payment_page_service;
+	
+	/**
 	 * The charge attempt API service.
 	 * 
 	 * @var \Wallee\Sdk\Service\ChargeAttemptService
 	 */
 	private $charge_attempt_service;
-
+	
 	/**
 	 * Returns the transaction API service.
 	 *
@@ -50,11 +63,35 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_service(){
 		if ($this->transaction_service === null) {
-		    $this->transaction_service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
+			$this->transaction_service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
 		}
 		return $this->transaction_service;
 	}
-
+	
+	/**
+	 * Returns the transaction iframe service.
+	 *
+	 * @return \Wallee\Sdk\Service\TransactionIframeService
+	 */
+	protected function get_transaction_iframe_service(){
+		if ($this->transaction_iframe_service === null) {
+			$this->transaction_iframe_service = new \Wallee\Sdk\Service\TransactionIframeService(WC_Wallee_Helper::instance()->get_api_client());
+		}
+		return $this->transaction_iframe_service;
+	}
+	
+	/**
+	 * Returns the transaction payment page service.
+	 *
+	 * @return \Wallee\Sdk\Service\TransactionPaymentPageService
+	 */
+	protected function get_transaction_payment_page_service(){
+		if ($this->transaction_payment_page_service === null) {
+			$this->transaction_payment_page_service = new \Wallee\Sdk\Service\TransactionPaymentPageService(WC_Wallee_Helper::instance()->get_api_client());
+		}
+		return $this->transaction_payment_page_service;
+	}
+	
 	/**
 	 * Returns the charge attempt API service.
 	 *
@@ -93,7 +130,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 
 	
 	public function get_javascript_url_for_transaction(\Wallee\Sdk\Model\Transaction $transaction){
-	    return $this->get_transaction_service()->buildJavaScriptUrl($transaction->getLinkedSpaceId(), $transaction->getId());
+	    return $this->get_transaction_iframe_service()->javascriptUrl($transaction->getLinkedSpaceId(), $transaction->getId());
 	}
 	
 	
@@ -103,7 +140,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return string
 	 */
 	public function get_payment_page_url($space_id, $transaction_id){
-	    return $this->get_transaction_service()->buildPaymentPageUrl($space_id, $transaction_id);
+	    return $this->get_transaction_payment_page_service()->paymentPageUrl($space_id, $transaction_id);
 	}
 
 	/**
@@ -314,7 +351,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	        } catch(WC_Wallee_Exception_Invalid_Transaction_Amount $e){
 	            self::$possible_payment_method_cache[$current_cart_id] = array();
 	            throw $e;
-	        } catch (\WhitelabelMachineName\Sdk\ApiException $e) {
+	        } catch (\Wallee\Sdk\ApiException $e) {
 	            self::$possible_payment_method_cache[$current_cart_id] = array();
 	            throw $e;
 	        }
@@ -349,7 +386,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	        } catch(WC_Wallee_Exception_Invalid_Transaction_Amount $e){
 	            self::$possible_payment_method_cache[$order->get_id()] = array();
 	            throw $e;
-	        } catch (\WhitelabelMachineName\Sdk\ApiException $e) {
+	        } catch (\Wallee\Sdk\ApiException $e) {
 	            self::$possible_payment_method_cache[$order->get_id()] = array();
 	            throw $e;
 	        }

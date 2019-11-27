@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
-
-
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionSuspensionReason model
@@ -32,13 +30,27 @@ namespace Wallee\Sdk\Model;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionSuspensionReason implements IEnum {
-
-	const FAILED_CHARGE = 'FAILED_CHARGE';
-	const SUBSCRIBER_INITIATED_REFUND = 'SUBSCRIBER_INITIATED_REFUND';
-	const MANUAL = 'MANUAL';
-	
-
-	
-
+class SubscriptionSuspensionReason
+{
+    /**
+     * Possible values of this enum
+     */
+    const FAILED_CHARGE = 'FAILED_CHARGE';
+    const SUBSCRIBER_INITIATED_REFUND = 'SUBSCRIBER_INITIATED_REFUND';
+    const MANUAL = 'MANUAL';
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::FAILED_CHARGE,
+            self::SUBSCRIBER_INITIATED_REFUND,
+            self::MANUAL,
+        ];
+    }
 }
+
+

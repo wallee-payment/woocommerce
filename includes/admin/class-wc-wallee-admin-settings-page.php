@@ -108,26 +108,10 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		        WC_Admin_Settings::add_error($error);
 		        
 		    }			
-			$this->delete_provider_transients();
+		    WC_Wallee_Helper::instance()->delete_provider_transients();
 		}
 		
 	}
-	
-
-	private function delete_provider_transients(){
-		$transients = array(
-			'wc_wallee_currencies',
-			'wc_wallee_label_description_groups',
-			'wc_wallee_label_descriptions',
-			'wc_wallee_languages',
-			'wc_wallee_payment_connectors',
-			'wc_wallee_payment_methods' 
-		);
-		foreach ($transients as $transient) {
-			delete_transient($transient);
-		}
-	}
-	
 	
 	public function output_links($value){
 	    foreach($value['links'] as $url => $text){
@@ -145,7 +129,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.11/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.12/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',

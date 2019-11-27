@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriberUpdate model
@@ -32,458 +32,593 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriberUpdate  {
+class SubscriberUpdate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'Subscriber.Update';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'Subscriber.Update';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'id' => 'int',
-		'version' => 'int',
-		'additionalAllowedPaymentMethodConfigurations' => 'int[]',
-		'billingAddress' => '\Wallee\Sdk\Model\AddressCreate',
-		'description' => 'string',
-		'disallowedPaymentMethodConfigurations' => 'int[]',
-		'emailAddress' => 'string',
-		'language' => 'string',
-		'metaData' => 'map[string,string]',
-		'reference' => 'string',
-		'shippingAddress' => '\Wallee\Sdk\Model\AddressCreate'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'id' => 'int',
+        'version' => 'int',
+        'additional_allowed_payment_method_configurations' => 'int[]',
+        'billing_address' => '\Wallee\Sdk\Model\AddressCreate',
+        'description' => 'string',
+        'disallowed_payment_method_configurations' => 'int[]',
+        'email_address' => 'string',
+        'language' => 'string',
+        'meta_data' => 'map[string,string]',
+        'reference' => 'string',
+        'shipping_address' => '\Wallee\Sdk\Model\AddressCreate'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'id' => 'int64',
+        'version' => 'int64',
+        'additional_allowed_payment_method_configurations' => 'int64',
+        'billing_address' => null,
+        'description' => null,
+        'disallowed_payment_method_configurations' => 'int64',
+        'email_address' => null,
+        'language' => null,
+        'meta_data' => null,
+        'reference' => null,
+        'shipping_address' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'id' => 'id',
+        'version' => 'version',
+        'additional_allowed_payment_method_configurations' => 'additionalAllowedPaymentMethodConfigurations',
+        'billing_address' => 'billingAddress',
+        'description' => 'description',
+        'disallowed_payment_method_configurations' => 'disallowedPaymentMethodConfigurations',
+        'email_address' => 'emailAddress',
+        'language' => 'language',
+        'meta_data' => 'metaData',
+        'reference' => 'reference',
+        'shipping_address' => 'shippingAddress'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'id' => 'setId',
+        'version' => 'setVersion',
+        'additional_allowed_payment_method_configurations' => 'setAdditionalAllowedPaymentMethodConfigurations',
+        'billing_address' => 'setBillingAddress',
+        'description' => 'setDescription',
+        'disallowed_payment_method_configurations' => 'setDisallowedPaymentMethodConfigurations',
+        'email_address' => 'setEmailAddress',
+        'language' => 'setLanguage',
+        'meta_data' => 'setMetaData',
+        'reference' => 'setReference',
+        'shipping_address' => 'setShippingAddress'
+    ];
 
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'id' => 'getId',
+        'version' => 'getVersion',
+        'additional_allowed_payment_method_configurations' => 'getAdditionalAllowedPaymentMethodConfigurations',
+        'billing_address' => 'getBillingAddress',
+        'description' => 'getDescription',
+        'disallowed_payment_method_configurations' => 'getDisallowedPaymentMethodConfigurations',
+        'email_address' => 'getEmailAddress',
+        'language' => 'getLanguage',
+        'meta_data' => 'getMetaData',
+        'reference' => 'getReference',
+        'shipping_address' => 'getShippingAddress'
+    ];
 
-	/**
-	 * Those payment methods which are allowed additionally will be available even when the product does not allow those methods.
-	 *
-	 * @var int[]
-	 */
-	private $additionalAllowedPaymentMethodConfigurations;
+    
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\AddressCreate
-	 */
-	private $billingAddress;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The subscriber description can be used to add a description to the subscriber. This is used in the back office to identify the subscriber.
-	 *
-	 * @var string
-	 */
-	private $description;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+        $this->container['additional_allowed_payment_method_configurations'] = isset($data['additional_allowed_payment_method_configurations']) ? $data['additional_allowed_payment_method_configurations'] : null;
+        
+        $this->container['billing_address'] = isset($data['billing_address']) ? $data['billing_address'] : null;
+        
+        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        
+        $this->container['disallowed_payment_method_configurations'] = isset($data['disallowed_payment_method_configurations']) ? $data['disallowed_payment_method_configurations'] : null;
+        
+        $this->container['email_address'] = isset($data['email_address']) ? $data['email_address'] : null;
+        
+        $this->container['language'] = isset($data['language']) ? $data['language'] : null;
+        
+        $this->container['meta_data'] = isset($data['meta_data']) ? $data['meta_data'] : null;
+        
+        $this->container['reference'] = isset($data['reference']) ? $data['reference'] : null;
+        
+        $this->container['shipping_address'] = isset($data['shipping_address']) ? $data['shipping_address'] : null;
+        
+    }
 
-	/**
-	 * Those payment methods which are disallowed will not be available to the subscriber even if the product allows those methods.
-	 *
-	 * @var int[]
-	 */
-	private $disallowedPaymentMethodConfigurations;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The email address is used to communicate with the subscriber. There can be only one subscriber per space with the same email address.
-	 *
-	 * @var string
-	 */
-	private $emailAddress;
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['version'] === null) {
+            $invalidProperties[] = "'version' can't be null";
+        }
+        return $invalidProperties;
+    }
 
-	/**
-	 * The subscriber language determines the language which is used to communicate with the subscriber in emails and documents (e.g. invoices).
-	 *
-	 * @var string
-	 */
-	private $language;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * Meta data allow to store additional data along the object.
-	 *
-	 * @var map[string,string]
-	 */
-	private $metaData;
-
-	/**
-	 * The subscriber reference identifies the subscriber in administrative interfaces (e.g. customer id).
-	 *
-	 * @var string
-	 */
-	private $reference;
-
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\AddressCreate
-	 */
-	private $shippingAddress;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-		if (isset($data['additionalAllowedPaymentMethodConfigurations'])) {
-			$this->setAdditionalAllowedPaymentMethodConfigurations($data['additionalAllowedPaymentMethodConfigurations']);
-		}
-		if (isset($data['billingAddress'])) {
-			$this->setBillingAddress($data['billingAddress']);
-		}
-		if (isset($data['description'])) {
-			$this->setDescription($data['description']);
-		}
-		if (isset($data['disallowedPaymentMethodConfigurations'])) {
-			$this->setDisallowedPaymentMethodConfigurations($data['disallowedPaymentMethodConfigurations']);
-		}
-		if (isset($data['emailAddress'])) {
-			$this->setEmailAddress($data['emailAddress']);
-		}
-		if (isset($data['language'])) {
-			$this->setLanguage($data['language']);
-		}
-		if (isset($data['metaData'])) {
-			$this->setMetaData($data['metaData']);
-		}
-		if (isset($data['reference'])) {
-			$this->setReference($data['reference']);
-		}
-		if (isset($data['shippingAddress'])) {
-			$this->setShippingAddress($data['shippingAddress']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return SubscriberUpdate
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return SubscriberUpdate
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns additionalAllowedPaymentMethodConfigurations.
-	 *
-	 * Those payment methods which are allowed additionally will be available even when the product does not allow those methods.
-	 *
-	 * @return int[]
-	 */
-	public function getAdditionalAllowedPaymentMethodConfigurations() {
-		return $this->additionalAllowedPaymentMethodConfigurations;
-	}
+    
 
-	/**
-	 * Sets additionalAllowedPaymentMethodConfigurations.
-	 *
-	 * @param int[] $additionalAllowedPaymentMethodConfigurations
-	 * @return SubscriberUpdate
-	 */
-	public function setAdditionalAllowedPaymentMethodConfigurations($additionalAllowedPaymentMethodConfigurations) {
-		$this->additionalAllowedPaymentMethodConfigurations = $additionalAllowedPaymentMethodConfigurations;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns billingAddress.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\AddressCreate
-	 */
-	public function getBillingAddress() {
-		return $this->billingAddress;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets billingAddress.
-	 *
-	 * @param \Wallee\Sdk\Model\AddressCreate $billingAddress
-	 * @return SubscriberUpdate
-	 */
-	public function setBillingAddress($billingAddress) {
-		$this->billingAddress = $billingAddress;
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
 
-	/**
-	 * Returns description.
-	 *
-	 * The subscriber description can be used to add a description to the subscriber. This is used in the back office to identify the subscriber.
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets description.
-	 *
-	 * @param string $description
-	 * @return SubscriberUpdate
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
+    /**
+     * Gets additional_allowed_payment_method_configurations
+     *
+     * @return int[]
+     */
+    public function getAdditionalAllowedPaymentMethodConfigurations()
+    {
+        return $this->container['additional_allowed_payment_method_configurations'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets additional_allowed_payment_method_configurations
+     *
+     * @param int[] $additional_allowed_payment_method_configurations Those payment methods which are allowed additionally will be available even when the product does not allow those methods.
+     *
+     * @return $this
+     */
+    public function setAdditionalAllowedPaymentMethodConfigurations($additional_allowed_payment_method_configurations)
+    {
+        $this->container['additional_allowed_payment_method_configurations'] = $additional_allowed_payment_method_configurations;
 
-	/**
-	 * Returns disallowedPaymentMethodConfigurations.
-	 *
-	 * Those payment methods which are disallowed will not be available to the subscriber even if the product allows those methods.
-	 *
-	 * @return int[]
-	 */
-	public function getDisallowedPaymentMethodConfigurations() {
-		return $this->disallowedPaymentMethodConfigurations;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets disallowedPaymentMethodConfigurations.
-	 *
-	 * @param int[] $disallowedPaymentMethodConfigurations
-	 * @return SubscriberUpdate
-	 */
-	public function setDisallowedPaymentMethodConfigurations($disallowedPaymentMethodConfigurations) {
-		$this->disallowedPaymentMethodConfigurations = $disallowedPaymentMethodConfigurations;
+    /**
+     * Gets billing_address
+     *
+     * @return \Wallee\Sdk\Model\AddressCreate
+     */
+    public function getBillingAddress()
+    {
+        return $this->container['billing_address'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets billing_address
+     *
+     * @param \Wallee\Sdk\Model\AddressCreate $billing_address 
+     *
+     * @return $this
+     */
+    public function setBillingAddress($billing_address)
+    {
+        $this->container['billing_address'] = $billing_address;
 
-	/**
-	 * Returns emailAddress.
-	 *
-	 * The email address is used to communicate with the subscriber. There can be only one subscriber per space with the same email address.
-	 *
-	 * @return string
-	 */
-	public function getEmailAddress() {
-		return $this->emailAddress;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets emailAddress.
-	 *
-	 * @param string $emailAddress
-	 * @return SubscriberUpdate
-	 */
-	public function setEmailAddress($emailAddress) {
-		$this->emailAddress = $emailAddress;
+    /**
+     * Gets description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets description
+     *
+     * @param string $description The subscriber description can be used to add a description to the subscriber. This is used in the back office to identify the subscriber.
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
 
-	/**
-	 * Returns language.
-	 *
-	 * The subscriber language determines the language which is used to communicate with the subscriber in emails and documents (e.g. invoices).
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets language.
-	 *
-	 * @param string $language
-	 * @return SubscriberUpdate
-	 */
-	public function setLanguage($language) {
-		$this->language = $language;
+    /**
+     * Gets disallowed_payment_method_configurations
+     *
+     * @return int[]
+     */
+    public function getDisallowedPaymentMethodConfigurations()
+    {
+        return $this->container['disallowed_payment_method_configurations'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets disallowed_payment_method_configurations
+     *
+     * @param int[] $disallowed_payment_method_configurations Those payment methods which are disallowed will not be available to the subscriber even if the product allows those methods.
+     *
+     * @return $this
+     */
+    public function setDisallowedPaymentMethodConfigurations($disallowed_payment_method_configurations)
+    {
+        $this->container['disallowed_payment_method_configurations'] = $disallowed_payment_method_configurations;
 
-	/**
-	 * Returns metaData.
-	 *
-	 * Meta data allow to store additional data along the object.
-	 *
-	 * @return map[string,string]
-	 */
-	public function getMetaData() {
-		return $this->metaData;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets metaData.
-	 *
-	 * @param map[string,string] $metaData
-	 * @return SubscriberUpdate
-	 */
-	public function setMetaData($metaData) {
-		$this->metaData = $metaData;
+    /**
+     * Gets email_address
+     *
+     * @return string
+     */
+    public function getEmailAddress()
+    {
+        return $this->container['email_address'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets email_address
+     *
+     * @param string $email_address The email address is used to communicate with the subscriber. There can be only one subscriber per space with the same email address.
+     *
+     * @return $this
+     */
+    public function setEmailAddress($email_address)
+    {
+        $this->container['email_address'] = $email_address;
 
-	/**
-	 * Returns reference.
-	 *
-	 * The subscriber reference identifies the subscriber in administrative interfaces (e.g. customer id).
-	 *
-	 * @return string
-	 */
-	public function getReference() {
-		return $this->reference;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets reference.
-	 *
-	 * @param string $reference
-	 * @return SubscriberUpdate
-	 */
-	public function setReference($reference) {
-		$this->reference = $reference;
+    /**
+     * Gets language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets language
+     *
+     * @param string $language The subscriber language determines the language which is used to communicate with the subscriber in emails and documents (e.g. invoices).
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
 
-	/**
-	 * Returns shippingAddress.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\AddressCreate
-	 */
-	public function getShippingAddress() {
-		return $this->shippingAddress;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets shippingAddress.
-	 *
-	 * @param \Wallee\Sdk\Model\AddressCreate $shippingAddress
-	 * @return SubscriberUpdate
-	 */
-	public function setShippingAddress($shippingAddress) {
-		$this->shippingAddress = $shippingAddress;
+    /**
+     * Gets meta_data
+     *
+     * @return map[string,string]
+     */
+    public function getMetaData()
+    {
+        return $this->container['meta_data'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets meta_data
+     *
+     * @param map[string,string] $meta_data Meta data allow to store additional data along the object.
+     *
+     * @return $this
+     */
+    public function setMetaData($meta_data)
+    {
+        $this->container['meta_data'] = $meta_data;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-		if ($this->getId() === null) {
-			throw new ValidationException("'id' can't be null", 'id', $this);
-		}
-		if ($this->getVersion() === null) {
-			throw new ValidationException("'version' can't be null", 'version', $this);
-		}
-	}
+    /**
+     * Gets reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->container['reference'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets reference
+     *
+     * @param string $reference The subscriber reference identifies the subscriber in administrative interfaces (e.g. customer id).
+     *
+     * @return $this
+     */
+    public function setReference($reference)
+    {
+        $this->container['reference'] = $reference;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets shipping_address
+     *
+     * @return \Wallee\Sdk\Model\AddressCreate
+     */
+    public function getShippingAddress()
+    {
+        return $this->container['shipping_address'];
+    }
 
+    /**
+     * Sets shipping_address
+     *
+     * @param \Wallee\Sdk\Model\AddressCreate $shipping_address 
+     *
+     * @return $this
+     */
+    public function setShippingAddress($shipping_address)
+    {
+        $this->container['shipping_address'] = $shipping_address;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

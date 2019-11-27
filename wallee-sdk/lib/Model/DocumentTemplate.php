@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * DocumentTemplate model
@@ -32,431 +32,587 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class DocumentTemplate  {
+class DocumentTemplate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'DocumentTemplate';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'DocumentTemplate';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'defaultTemplate' => 'bool',
-		'deliveryEnabled' => 'bool',
-		'id' => 'int',
-		'linkedSpaceId' => 'int',
-		'name' => 'string',
-		'plannedPurgeDate' => '\DateTime',
-		'spaceId' => 'int',
-		'state' => '\Wallee\Sdk\Model\CreationEntityState',
-		'templateResource' => '\Wallee\Sdk\Model\ModelResourcePath',
-		'type' => 'int',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'default_template' => 'bool',
+        'delivery_enabled' => 'bool',
+        'id' => 'int',
+        'linked_space_id' => 'int',
+        'name' => 'string',
+        'planned_purge_date' => '\DateTime',
+        'space_id' => 'int',
+        'state' => '\Wallee\Sdk\Model\CreationEntityState',
+        'template_resource' => '\Wallee\Sdk\Model\ModelResourcePath',
+        'type' => 'int',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'default_template' => null,
+        'delivery_enabled' => null,
+        'id' => 'int64',
+        'linked_space_id' => 'int64',
+        'name' => null,
+        'planned_purge_date' => 'date-time',
+        'space_id' => 'int64',
+        'state' => null,
+        'template_resource' => null,
+        'type' => 'int64',
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'default_template' => 'defaultTemplate',
+        'delivery_enabled' => 'deliveryEnabled',
+        'id' => 'id',
+        'linked_space_id' => 'linkedSpaceId',
+        'name' => 'name',
+        'planned_purge_date' => 'plannedPurgeDate',
+        'space_id' => 'spaceId',
+        'state' => 'state',
+        'template_resource' => 'templateResource',
+        'type' => 'type',
+        'version' => 'version'
+    ];
 
-	/**
-	 * The default document template is used whenever no specific template is specified for a particular template type.
-	 *
-	 * @var bool
-	 */
-	private $defaultTemplate;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'default_template' => 'setDefaultTemplate',
+        'delivery_enabled' => 'setDeliveryEnabled',
+        'id' => 'setId',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'name' => 'setName',
+        'planned_purge_date' => 'setPlannedPurgeDate',
+        'space_id' => 'setSpaceId',
+        'state' => 'setState',
+        'template_resource' => 'setTemplateResource',
+        'type' => 'setType',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var bool
-	 */
-	private $deliveryEnabled;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'default_template' => 'getDefaultTemplate',
+        'delivery_enabled' => 'getDeliveryEnabled',
+        'id' => 'getId',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'name' => 'getName',
+        'planned_purge_date' => 'getPlannedPurgeDate',
+        'space_id' => 'getSpaceId',
+        'state' => 'getState',
+        'template_resource' => 'getTemplateResource',
+        'type' => 'getType',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var string
-	 */
-	private $name;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['default_template'] = isset($data['default_template']) ? $data['default_template'] : null;
+        
+        $this->container['delivery_enabled'] = isset($data['delivery_enabled']) ? $data['delivery_enabled'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['planned_purge_date'] = isset($data['planned_purge_date']) ? $data['planned_purge_date'] : null;
+        
+        $this->container['space_id'] = isset($data['space_id']) ? $data['space_id'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+        $this->container['template_resource'] = isset($data['template_resource']) ? $data['template_resource'] : null;
+        
+        $this->container['type'] = isset($data['type']) ? $data['type'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @var \DateTime
-	 */
-	private $plannedPurgeDate;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $spaceId;
+        return $invalidProperties;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\CreationEntityState
-	 */
-	private $state;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\ModelResourcePath
-	 */
-	private $templateResource;
-
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $type;
-
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-		if (isset($data['templateResource'])) {
-			$this->setTemplateResource($data['templateResource']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns defaultTemplate.
-	 *
-	 * The default document template is used whenever no specific template is specified for a particular template type.
-	 *
-	 * @return bool
-	 */
-	public function getDefaultTemplate() {
-		return $this->defaultTemplate;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets defaultTemplate.
-	 *
-	 * @param bool $defaultTemplate
-	 * @return DocumentTemplate
-	 */
-	protected function setDefaultTemplate($defaultTemplate) {
-		$this->defaultTemplate = $defaultTemplate;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns deliveryEnabled.
-	 *
-	 * 
-	 *
-	 * @return bool
-	 */
-	public function getDeliveryEnabled() {
-		return $this->deliveryEnabled;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets deliveryEnabled.
-	 *
-	 * @param bool $deliveryEnabled
-	 * @return DocumentTemplate
-	 */
-	protected function setDeliveryEnabled($deliveryEnabled) {
-		$this->deliveryEnabled = $deliveryEnabled;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return DocumentTemplate
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Gets default_template
+     *
+     * @return bool
+     */
+    public function getDefaultTemplate()
+    {
+        return $this->container['default_template'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets default_template
+     *
+     * @param bool $default_template The default document template is used whenever no specific template is specified for a particular template type.
+     *
+     * @return $this
+     */
+    public function setDefaultTemplate($default_template)
+    {
+        $this->container['default_template'] = $default_template;
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return DocumentTemplate
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets delivery_enabled
+     *
+     * @return bool
+     */
+    public function getDeliveryEnabled()
+    {
+        return $this->container['delivery_enabled'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets delivery_enabled
+     *
+     * @param bool $delivery_enabled 
+     *
+     * @return $this
+     */
+    public function setDeliveryEnabled($delivery_enabled)
+    {
+        $this->container['delivery_enabled'] = $delivery_enabled;
 
-	/**
-	 * Returns name.
-	 *
-	 * 
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets name.
-	 *
-	 * @param string $name
-	 * @return DocumentTemplate
-	 */
-	protected function setName($name) {
-		$this->name = $name;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns plannedPurgeDate.
-	 *
-	 * The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
-	 *
-	 * @return \DateTime
-	 */
-	public function getPlannedPurgeDate() {
-		return $this->plannedPurgeDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets plannedPurgeDate.
-	 *
-	 * @param \DateTime $plannedPurgeDate
-	 * @return DocumentTemplate
-	 */
-	protected function setPlannedPurgeDate($plannedPurgeDate) {
-		$this->plannedPurgeDate = $plannedPurgeDate;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns spaceId.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getSpaceId() {
-		return $this->spaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets spaceId.
-	 *
-	 * @param int $spaceId
-	 * @return DocumentTemplate
-	 */
-	protected function setSpaceId($spaceId) {
-		$this->spaceId = $spaceId;
+    /**
+     * Gets name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets name
+     *
+     * @param string $name 
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\CreationEntityState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\CreationEntityState $state
-	 * @return DocumentTemplate
-	 */
-	public function setState($state) {
-		$this->state = $state;
+    /**
+     * Gets planned_purge_date
+     *
+     * @return \DateTime
+     */
+    public function getPlannedPurgeDate()
+    {
+        return $this->container['planned_purge_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets planned_purge_date
+     *
+     * @param \DateTime $planned_purge_date The planned purge date indicates when the entity is permanently removed. When the date is null the entity is not planned to be removed.
+     *
+     * @return $this
+     */
+    public function setPlannedPurgeDate($planned_purge_date)
+    {
+        $this->container['planned_purge_date'] = $planned_purge_date;
 
-	/**
-	 * Returns templateResource.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\ModelResourcePath
-	 */
-	public function getTemplateResource() {
-		return $this->templateResource;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets templateResource.
-	 *
-	 * @param \Wallee\Sdk\Model\ModelResourcePath $templateResource
-	 * @return DocumentTemplate
-	 */
-	public function setTemplateResource($templateResource) {
-		$this->templateResource = $templateResource;
+    /**
+     * Gets space_id
+     *
+     * @return int
+     */
+    public function getSpaceId()
+    {
+        return $this->container['space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets space_id
+     *
+     * @param int $space_id 
+     *
+     * @return $this
+     */
+    public function setSpaceId($space_id)
+    {
+        $this->container['space_id'] = $space_id;
 
-	/**
-	 * Returns type.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getType() {
-		return $this->type;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets type.
-	 *
-	 * @param int $type
-	 * @return DocumentTemplate
-	 */
-	protected function setType($type) {
-		$this->type = $type;
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\CreationEntityState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\CreationEntityState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return DocumentTemplate
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets template_resource
+     *
+     * @return \Wallee\Sdk\Model\ModelResourcePath
+     */
+    public function getTemplateResource()
+    {
+        return $this->container['template_resource'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets template_resource
+     *
+     * @param \Wallee\Sdk\Model\ModelResourcePath $template_resource 
+     *
+     * @return $this
+     */
+    public function setTemplateResource($template_resource)
+    {
+        $this->container['template_resource'] = $template_resource;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets type
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->container['type'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets type
+     *
+     * @param int $type 
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->container['type'] = $type;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
 
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

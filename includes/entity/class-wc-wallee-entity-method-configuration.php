@@ -72,7 +72,7 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 			return array();
 		}
 		$replace = "";
-		foreach ($states as $value) {
+		for($i=0; $i < count($states); $i++) {
 		    $replace .= "%s, ";
 		}
 		$replace = rtrim($replace, ", ");

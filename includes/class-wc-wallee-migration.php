@@ -23,6 +23,7 @@ class WC_Wallee_Migration {
 	    '1.0.2' => 'update_1_0_2_order_allow_null',
 	    '1.0.3' => 'update_1_0_3_image_domain',
 	    '1.0.4' => 'update_1_0_4_failure_msg_and_attribute',
+		'1.0.5' => 'update_1_0_5_clear_provider_transients',
 	);
 
 	/**
@@ -256,7 +257,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 	    if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 	        $row_meta = array(
-	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.11/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
+	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.12/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
 	        );
 	        
 	        return array_merge( $links, $row_meta );
@@ -493,6 +494,10 @@ class WC_Wallee_Migration {
 	    if ($result === false) {
 	        throw new Exception($wpdb->last_error);
 	    }
+	}
+	
+	public static function update_1_0_5_clear_provider_transients() {
+		WC_Wallee_Helper::instance()->delete_provider_transients();
 	}
 }
 

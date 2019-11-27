@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,9 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
-
-
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * SubscriptionLedgerEntryState model
@@ -32,13 +30,27 @@ namespace Wallee\Sdk\Model;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class SubscriptionLedgerEntryState implements IEnum {
-
-	const OPEN = 'OPEN';
-	const SCHEDULED = 'SCHEDULED';
-	const PAID = 'PAID';
-	
-
-	
-
+class SubscriptionLedgerEntryState
+{
+    /**
+     * Possible values of this enum
+     */
+    const OPEN = 'OPEN';
+    const SCHEDULED = 'SCHEDULED';
+    const PAID = 'PAID';
+    
+    /**
+     * Gets allowable values of the enum
+     * @return string[]
+     */
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::OPEN,
+            self::SCHEDULED,
+            self::PAID,
+        ];
+    }
 }
+
+

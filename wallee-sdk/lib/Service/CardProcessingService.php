@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +17,14 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Service;
 
 use Wallee\Sdk\ApiClient;
 use Wallee\Sdk\ApiException;
 use Wallee\Sdk\ApiResponse;
 use Wallee\Sdk\Http\HttpRequest;
+use Wallee\Sdk\ObjectSerializer;
 
 /**
  * CardProcessingService service
@@ -49,7 +49,7 @@ class CardProcessingService {
 	 * @param ApiClient $apiClient the api client
 	 */
 	public function __construct(ApiClient $apiClient) {
-		if ($apiClient == null) {
+		if (is_null($apiClient)) {
 			throw new \InvalidArgumentException('The api client is required.');
 		}
 
@@ -71,17 +71,17 @@ class CardProcessingService {
 	 *
 	 * Process
 	 *
-	 * @param int $spaceId  (required)
-	 * @param int $transactionId The ID of the transaction which should be processed. (required)
-	 * @param int $paymentMethodConfigurationId The payment method configuration ID which is applied to the transaction. (required)
-	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $cardData The card details as JSON in plain which should be used to authorize the payment. (required)
+	 * @param int $space_id  (required)
+	 * @param int $transaction_id The ID of the transaction which should be processed. (required)
+	 * @param int $payment_method_configuration_id The payment method configuration ID which is applied to the transaction. (required)
+	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $card_data The card details as JSON in plain which should be used to authorize the payment. (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
 	 * @throws \Wallee\Sdk\Http\ConnectionException
 	 * @return \Wallee\Sdk\Model\Transaction
 	 */
-	public function process($spaceId, $transactionId, $paymentMethodConfigurationId, $cardData) {
-		return $this->processWithHttpInfo($spaceId, $transactionId, $paymentMethodConfigurationId, $cardData)->getData();
+	public function process($space_id, $transaction_id, $payment_method_configuration_id, $card_data) {
+		return $this->processWithHttpInfo($space_id, $transaction_id, $payment_method_configuration_id, $card_data)->getData();
 	}
 
 	/**
@@ -89,63 +89,63 @@ class CardProcessingService {
 	 *
 	 * Process
 	 *
-	 * @param int $spaceId  (required)
-	 * @param int $transactionId The ID of the transaction which should be processed. (required)
-	 * @param int $paymentMethodConfigurationId The payment method configuration ID which is applied to the transaction. (required)
-	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $cardData The card details as JSON in plain which should be used to authorize the payment. (required)
+	 * @param int $space_id  (required)
+	 * @param int $transaction_id The ID of the transaction which should be processed. (required)
+	 * @param int $payment_method_configuration_id The payment method configuration ID which is applied to the transaction. (required)
+	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $card_data The card details as JSON in plain which should be used to authorize the payment. (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
 	 * @throws \Wallee\Sdk\Http\ConnectionException
 	 * @return ApiResponse
 	 */
-	public function processWithHttpInfo($spaceId, $transactionId, $paymentMethodConfigurationId, $cardData) {
-		// verify the required parameter 'spaceId' is set
-		if ($spaceId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $spaceId when calling process');
+	public function processWithHttpInfo($space_id, $transaction_id, $payment_method_configuration_id, $card_data) {
+		// verify the required parameter 'space_id' is set
+		if (is_null($space_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $space_id when calling process');
 		}
-		// verify the required parameter 'transactionId' is set
-		if ($transactionId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $transactionId when calling process');
+		// verify the required parameter 'transaction_id' is set
+		if (is_null($transaction_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $transaction_id when calling process');
 		}
-		// verify the required parameter 'paymentMethodConfigurationId' is set
-		if ($paymentMethodConfigurationId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $paymentMethodConfigurationId when calling process');
+		// verify the required parameter 'payment_method_configuration_id' is set
+		if (is_null($payment_method_configuration_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $payment_method_configuration_id when calling process');
 		}
-		// verify the required parameter 'cardData' is set
-		if ($cardData === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $cardData when calling process');
+		// verify the required parameter 'card_data' is set
+		if (is_null($card_data)) {
+			throw new \InvalidArgumentException('Missing the required parameter $card_data when calling process');
 		}
 		// header params
-		$headerParams = array();
-		$headerAccept = $this->apiClient->selectHeaderAccept(array('application/json;charset=utf-8'));
-		if ($headerAccept !== null) {
+		$headerParams = [];
+		$headerAccept = $this->apiClient->selectHeaderAccept(['application/json;charset=utf-8']);
+		if (!is_null($headerAccept)) {
 			$headerParams[HttpRequest::HEADER_KEY_ACCEPT] = $headerAccept;
 		}
-		$headerParams[HttpRequest::HEADER_KEY_CONTENT_TYPE] = $this->apiClient->selectHeaderContentType(array('application/json;charset=utf-8'));
+		$headerParams[HttpRequest::HEADER_KEY_CONTENT_TYPE] = $this->apiClient->selectHeaderContentType(['application/json;charset=utf-8']);
 
 		// query params
-		$queryParams = array();
-		if ($spaceId !== null) {
-			$queryParams['spaceId'] = $this->apiClient->getSerializer()->toQueryValue($spaceId);
+		$queryParams = [];
+		if (!is_null($space_id)) {
+			$queryParams['spaceId'] = $this->apiClient->getSerializer()->toQueryValue($space_id);
 		}
-		if ($transactionId !== null) {
-			$queryParams['transactionId'] = $this->apiClient->getSerializer()->toQueryValue($transactionId);
+		if (!is_null($transaction_id)) {
+			$queryParams['transactionId'] = $this->apiClient->getSerializer()->toQueryValue($transaction_id);
 		}
-		if ($paymentMethodConfigurationId !== null) {
-			$queryParams['paymentMethodConfigurationId'] = $this->apiClient->getSerializer()->toQueryValue($paymentMethodConfigurationId);
+		if (!is_null($payment_method_configuration_id)) {
+			$queryParams['paymentMethodConfigurationId'] = $this->apiClient->getSerializer()->toQueryValue($payment_method_configuration_id);
 		}
 
 		// path params
-		$resourcePath = "/card-processing/process";
+		$resourcePath = '/card-processing/process';
 		// default format to json
-		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$resourcePath = str_replace('{format}', 'json', $resourcePath);
 
 		// form params
-		$formParams = array();
+		$formParams = [];
 		// body params
 		$tempBody = null;
-		if (isset($cardData)) {
-			$tempBody = $cardData;
+		if (isset($card_data)) {
+			$tempBody = $card_data;
 		}
 
 		// for model (json/xml)
@@ -169,24 +169,39 @@ class CardProcessingService {
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\Transaction', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
-				case 200:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\Transaction', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 409:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ClientError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 442:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ClientError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 542:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ServerError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\Transaction',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ClientError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 442:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ClientError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 542:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ServerError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
 			}
-
 			throw $e;
 		}
 	}
@@ -196,17 +211,17 @@ class CardProcessingService {
 	 *
 	 * Process With 3-D Secure
 	 *
-	 * @param int $spaceId  (required)
-	 * @param int $transactionId The ID of the transaction which should be processed. (required)
-	 * @param int $paymentMethodConfigurationId The payment method configuration ID which is applied to the transaction. (required)
-	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $cardData The card details as JSON in plain which should be used to authorize the payment. (required)
+	 * @param int $space_id  (required)
+	 * @param int $transaction_id The ID of the transaction which should be processed. (required)
+	 * @param int $payment_method_configuration_id The payment method configuration ID which is applied to the transaction. (required)
+	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $card_data The card details as JSON in plain which should be used to authorize the payment. (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
 	 * @throws \Wallee\Sdk\Http\ConnectionException
 	 * @return string
 	 */
-	public function processWith3DSecure($spaceId, $transactionId, $paymentMethodConfigurationId, $cardData) {
-		return $this->processWith3DSecureWithHttpInfo($spaceId, $transactionId, $paymentMethodConfigurationId, $cardData)->getData();
+	public function processWith3DSecure($space_id, $transaction_id, $payment_method_configuration_id, $card_data) {
+		return $this->processWith3DSecureWithHttpInfo($space_id, $transaction_id, $payment_method_configuration_id, $card_data)->getData();
 	}
 
 	/**
@@ -214,63 +229,63 @@ class CardProcessingService {
 	 *
 	 * Process With 3-D Secure
 	 *
-	 * @param int $spaceId  (required)
-	 * @param int $transactionId The ID of the transaction which should be processed. (required)
-	 * @param int $paymentMethodConfigurationId The payment method configuration ID which is applied to the transaction. (required)
-	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $cardData The card details as JSON in plain which should be used to authorize the payment. (required)
+	 * @param int $space_id  (required)
+	 * @param int $transaction_id The ID of the transaction which should be processed. (required)
+	 * @param int $payment_method_configuration_id The payment method configuration ID which is applied to the transaction. (required)
+	 * @param \Wallee\Sdk\Model\UnencryptedCardDataCreate $card_data The card details as JSON in plain which should be used to authorize the payment. (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
 	 * @throws \Wallee\Sdk\Http\ConnectionException
 	 * @return ApiResponse
 	 */
-	public function processWith3DSecureWithHttpInfo($spaceId, $transactionId, $paymentMethodConfigurationId, $cardData) {
-		// verify the required parameter 'spaceId' is set
-		if ($spaceId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $spaceId when calling processWith3DSecure');
+	public function processWith3DSecureWithHttpInfo($space_id, $transaction_id, $payment_method_configuration_id, $card_data) {
+		// verify the required parameter 'space_id' is set
+		if (is_null($space_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $space_id when calling processWith3DSecure');
 		}
-		// verify the required parameter 'transactionId' is set
-		if ($transactionId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $transactionId when calling processWith3DSecure');
+		// verify the required parameter 'transaction_id' is set
+		if (is_null($transaction_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $transaction_id when calling processWith3DSecure');
 		}
-		// verify the required parameter 'paymentMethodConfigurationId' is set
-		if ($paymentMethodConfigurationId === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $paymentMethodConfigurationId when calling processWith3DSecure');
+		// verify the required parameter 'payment_method_configuration_id' is set
+		if (is_null($payment_method_configuration_id)) {
+			throw new \InvalidArgumentException('Missing the required parameter $payment_method_configuration_id when calling processWith3DSecure');
 		}
-		// verify the required parameter 'cardData' is set
-		if ($cardData === null) {
-			throw new \InvalidArgumentException('Missing the required parameter $cardData when calling processWith3DSecure');
+		// verify the required parameter 'card_data' is set
+		if (is_null($card_data)) {
+			throw new \InvalidArgumentException('Missing the required parameter $card_data when calling processWith3DSecure');
 		}
 		// header params
-		$headerParams = array();
-		$headerAccept = $this->apiClient->selectHeaderAccept(array());
-		if ($headerAccept !== null) {
+		$headerParams = [];
+		$headerAccept = $this->apiClient->selectHeaderAccept([]);
+		if (!is_null($headerAccept)) {
 			$headerParams[HttpRequest::HEADER_KEY_ACCEPT] = $headerAccept;
 		}
-		$headerParams[HttpRequest::HEADER_KEY_CONTENT_TYPE] = $this->apiClient->selectHeaderContentType(array('application/json;charset=utf-8'));
+		$headerParams[HttpRequest::HEADER_KEY_CONTENT_TYPE] = $this->apiClient->selectHeaderContentType(['application/json;charset=utf-8']);
 
 		// query params
-		$queryParams = array();
-		if ($spaceId !== null) {
-			$queryParams['spaceId'] = $this->apiClient->getSerializer()->toQueryValue($spaceId);
+		$queryParams = [];
+		if (!is_null($space_id)) {
+			$queryParams['spaceId'] = $this->apiClient->getSerializer()->toQueryValue($space_id);
 		}
-		if ($transactionId !== null) {
-			$queryParams['transactionId'] = $this->apiClient->getSerializer()->toQueryValue($transactionId);
+		if (!is_null($transaction_id)) {
+			$queryParams['transactionId'] = $this->apiClient->getSerializer()->toQueryValue($transaction_id);
 		}
-		if ($paymentMethodConfigurationId !== null) {
-			$queryParams['paymentMethodConfigurationId'] = $this->apiClient->getSerializer()->toQueryValue($paymentMethodConfigurationId);
+		if (!is_null($payment_method_configuration_id)) {
+			$queryParams['paymentMethodConfigurationId'] = $this->apiClient->getSerializer()->toQueryValue($payment_method_configuration_id);
 		}
 
 		// path params
-		$resourcePath = "/card-processing/processWith3DSecure";
+		$resourcePath = '/card-processing/processWith3DSecure';
 		// default format to json
-		$resourcePath = str_replace("{format}", "json", $resourcePath);
+		$resourcePath = str_replace('{format}', 'json', $resourcePath);
 
 		// form params
-		$formParams = array();
+		$formParams = [];
 		// body params
 		$tempBody = null;
-		if (isset($cardData)) {
-			$tempBody = $cardData;
+		if (isset($card_data)) {
+			$tempBody = $card_data;
 		}
 
 		// for model (json/xml)
@@ -294,24 +309,39 @@ class CardProcessingService {
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'string', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
-				case 200:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), 'string', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 409:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ClientError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 442:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ClientError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
-				case 542:
-					$responseObject = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Wallee\Sdk\Model\ServerError', $e->getResponseHeaders());
-					$e = new ApiException($e->getLogToken(), $responseObject->getMessage(), $e->getCode(), $e->getResponseHeaders(), $e->getResponseBody(), $responseObject);
-					break;
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        'string',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ClientError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 442:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ClientError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
+                case 542:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Wallee\Sdk\Model\ServerError',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                break;
 			}
-
 			throw $e;
 		}
 	}

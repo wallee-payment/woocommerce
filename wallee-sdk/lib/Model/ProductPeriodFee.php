@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * ProductPeriodFee model
@@ -32,378 +32,555 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class ProductPeriodFee  {
+class ProductPeriodFee implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'ProductPeriodFee';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'ProductPeriodFee';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'component' => '\Wallee\Sdk\Model\SubscriptionProductComponent',
-		'description' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
-		'id' => 'int',
-		'linkedSpaceId' => 'int',
-		'name' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
-		'numberOfFreeTrialPeriods' => 'int',
-		'periodFee' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
-		'type' => '\Wallee\Sdk\Model\ProductFeeType',
-		'version' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'component' => '\Wallee\Sdk\Model\SubscriptionProductComponent',
+        'description' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
+        'id' => 'int',
+        'ledger_entry_title' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
+        'linked_space_id' => 'int',
+        'name' => '\Wallee\Sdk\Model\DatabaseTranslatedString',
+        'number_of_free_trial_periods' => 'int',
+        'period_fee' => '\Wallee\Sdk\Model\PersistableCurrencyAmount[]',
+        'type' => '\Wallee\Sdk\Model\ProductFeeType',
+        'version' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'component' => null,
+        'description' => null,
+        'id' => 'int64',
+        'ledger_entry_title' => null,
+        'linked_space_id' => 'int64',
+        'name' => null,
+        'number_of_free_trial_periods' => 'int32',
+        'period_fee' => null,
+        'type' => null,
+        'version' => 'int32'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'component' => 'component',
+        'description' => 'description',
+        'id' => 'id',
+        'ledger_entry_title' => 'ledgerEntryTitle',
+        'linked_space_id' => 'linkedSpaceId',
+        'name' => 'name',
+        'number_of_free_trial_periods' => 'numberOfFreeTrialPeriods',
+        'period_fee' => 'periodFee',
+        'type' => 'type',
+        'version' => 'version'
+    ];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProductComponent
-	 */
-	private $component;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'component' => 'setComponent',
+        'description' => 'setDescription',
+        'id' => 'setId',
+        'ledger_entry_title' => 'setLedgerEntryTitle',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'name' => 'setName',
+        'number_of_free_trial_periods' => 'setNumberOfFreeTrialPeriods',
+        'period_fee' => 'setPeriodFee',
+        'type' => 'setType',
+        'version' => 'setVersion'
+    ];
 
-	/**
-	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	private $description;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'component' => 'getComponent',
+        'description' => 'getDescription',
+        'id' => 'getId',
+        'ledger_entry_title' => 'getLedgerEntryTitle',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'name' => 'getName',
+        'number_of_free_trial_periods' => 'getNumberOfFreeTrialPeriods',
+        'period_fee' => 'getPeriodFee',
+        'type' => 'getType',
+        'version' => 'getVersion'
+    ];
 
-	/**
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @var int
-	 */
-	private $id;
+    
 
-	/**
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @var int
-	 */
-	private $linkedSpaceId;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
-	 *
-	 * @var \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	private $name;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['component'] = isset($data['component']) ? $data['component'] : null;
+        
+        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['ledger_entry_title'] = isset($data['ledger_entry_title']) ? $data['ledger_entry_title'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['number_of_free_trial_periods'] = isset($data['number_of_free_trial_periods']) ? $data['number_of_free_trial_periods'] : null;
+        
+        $this->container['period_fee'] = isset($data['period_fee']) ? $data['period_fee'] : null;
+        
+        $this->container['type'] = isset($data['type']) ? $data['type'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
+        
+    }
 
-	/**
-	 * The number of free trial periods specify how many periods are free of charge at the begining of the subscription.
-	 *
-	 * @var int
-	 */
-	private $numberOfFreeTrialPeriods;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The period fee is charged for every period of the subscription except for those periods which are trial periods.
-	 *
-	 * @var \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	private $periodFee;
+        return $invalidProperties;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\ProductFeeType
-	 */
-	private $type;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @var int
-	 */
-	private $version;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['component'])) {
-			$this->setComponent($data['component']);
-		}
-		if (isset($data['description'])) {
-			$this->setDescription($data['description']);
-		}
-		if (isset($data['id'])) {
-			$this->setId($data['id']);
-		}
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['periodFee'])) {
-			$this->setPeriodFee($data['periodFee']);
-		}
-		if (isset($data['type'])) {
-			$this->setType($data['type']);
-		}
-		if (isset($data['version'])) {
-			$this->setVersion($data['version']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns component.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductComponent
-	 */
-	public function getComponent() {
-		return $this->component;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets component.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductComponent $component
-	 * @return ProductPeriodFee
-	 */
-	public function setComponent($component) {
-		$this->component = $component;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns description.
-	 *
-	 * The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets description.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedString $description
-	 * @return ProductPeriodFee
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns id.
-	 *
-	 * The ID is the primary key of the entity. The ID identifies the entity uniquely.
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    
 
-	/**
-	 * Sets id.
-	 *
-	 * @param int $id
-	 * @return ProductPeriodFee
-	 */
-	public function setId($id) {
-		$this->id = $id;
+    /**
+     * Gets component
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProductComponent
+     */
+    public function getComponent()
+    {
+        return $this->container['component'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets component
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProductComponent $component 
+     *
+     * @return $this
+     */
+    public function setComponent($component)
+    {
+        $this->container['component'] = $component;
 
-	/**
-	 * Returns linkedSpaceId.
-	 *
-	 * The linked space id holds the ID of the space to which the entity belongs to.
-	 *
-	 * @return int
-	 */
-	public function getLinkedSpaceId() {
-		return $this->linkedSpaceId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets linkedSpaceId.
-	 *
-	 * @param int $linkedSpaceId
-	 * @return ProductPeriodFee
-	 */
-	protected function setLinkedSpaceId($linkedSpaceId) {
-		$this->linkedSpaceId = $linkedSpaceId;
+    /**
+     * Gets description
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedString
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets description
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedString $description The description of a component fee describes the fee to the subscriber. The description may be shown in documents or on certain user interfaces.
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
 
-	/**
-	 * Returns name.
-	 *
-	 * The name of the fee should describe for the subscriber in few words for what the fee is for.
-	 *
-	 * @return \Wallee\Sdk\Model\DatabaseTranslatedString
-	 */
-	public function getName() {
-		return $this->name;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets name.
-	 *
-	 * @param \Wallee\Sdk\Model\DatabaseTranslatedString $name
-	 * @return ProductPeriodFee
-	 */
-	public function setName($name) {
-		$this->name = $name;
+    /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets id
+     *
+     * @param int $id The ID is the primary key of the entity. The ID identifies the entity uniquely.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
 
-	/**
-	 * Returns numberOfFreeTrialPeriods.
-	 *
-	 * The number of free trial periods specify how many periods are free of charge at the begining of the subscription.
-	 *
-	 * @return int
-	 */
-	public function getNumberOfFreeTrialPeriods() {
-		return $this->numberOfFreeTrialPeriods;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets numberOfFreeTrialPeriods.
-	 *
-	 * @param int $numberOfFreeTrialPeriods
-	 * @return ProductPeriodFee
-	 */
-	protected function setNumberOfFreeTrialPeriods($numberOfFreeTrialPeriods) {
-		$this->numberOfFreeTrialPeriods = $numberOfFreeTrialPeriods;
+    /**
+     * Gets ledger_entry_title
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedString
+     */
+    public function getLedgerEntryTitle()
+    {
+        return $this->container['ledger_entry_title'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets ledger_entry_title
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedString $ledger_entry_title The ledger entry title will be used for the title in the ledger entry and in the invoice.
+     *
+     * @return $this
+     */
+    public function setLedgerEntryTitle($ledger_entry_title)
+    {
+        $this->container['ledger_entry_title'] = $ledger_entry_title;
 
-	/**
-	 * Returns periodFee.
-	 *
-	 * The period fee is charged for every period of the subscription except for those periods which are trial periods.
-	 *
-	 * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
-	 */
-	public function getPeriodFee() {
-		return $this->periodFee;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets periodFee.
-	 *
-	 * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $periodFee
-	 * @return ProductPeriodFee
-	 */
-	public function setPeriodFee($periodFee) {
-		$this->periodFee = $periodFee;
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The linked space id holds the ID of the space to which the entity belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
 
-	/**
-	 * Returns type.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\ProductFeeType
-	 */
-	public function getType() {
-		return $this->type;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets type.
-	 *
-	 * @param \Wallee\Sdk\Model\ProductFeeType $type
-	 * @return ProductPeriodFee
-	 */
-	public function setType($type) {
-		$this->type = $type;
+    /**
+     * Gets name
+     *
+     * @return \Wallee\Sdk\Model\DatabaseTranslatedString
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets name
+     *
+     * @param \Wallee\Sdk\Model\DatabaseTranslatedString $name The name of the fee should describe for the subscriber in few words for what the fee is for.
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Returns version.
-	 *
-	 * The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
-	 *
-	 * @return int
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets version.
-	 *
-	 * @param int $version
-	 * @return ProductPeriodFee
-	 */
-	public function setVersion($version) {
-		$this->version = $version;
+    /**
+     * Gets number_of_free_trial_periods
+     *
+     * @return int
+     */
+    public function getNumberOfFreeTrialPeriods()
+    {
+        return $this->container['number_of_free_trial_periods'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets number_of_free_trial_periods
+     *
+     * @param int $number_of_free_trial_periods The number of free trial periods specify how many periods are free of charge at the begining of the subscription.
+     *
+     * @return $this
+     */
+    public function setNumberOfFreeTrialPeriods($number_of_free_trial_periods)
+    {
+        $this->container['number_of_free_trial_periods'] = $number_of_free_trial_periods;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets period_fee
+     *
+     * @return \Wallee\Sdk\Model\PersistableCurrencyAmount[]
+     */
+    public function getPeriodFee()
+    {
+        return $this->container['period_fee'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets period_fee
+     *
+     * @param \Wallee\Sdk\Model\PersistableCurrencyAmount[] $period_fee The period fee is charged for every period of the subscription except for those periods which are trial periods.
+     *
+     * @return $this
+     */
+    public function setPeriodFee($period_fee)
+    {
+        $this->container['period_fee'] = $period_fee;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets type
+     *
+     * @return \Wallee\Sdk\Model\ProductFeeType
+     */
+    public function getType()
+    {
+        return $this->container['type'];
+    }
 
+    /**
+     * Sets type
+     *
+     * @param \Wallee\Sdk\Model\ProductFeeType $type 
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->container['type'] = $type;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
+
+    /**
+     * Sets version
+     *
+     * @param int $version The version number indicates the version of the entity. The version is incremented whenever the entity is changed.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

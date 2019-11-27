@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * AbstractPaymentLinkUpdate model
@@ -31,452 +31,587 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class AbstractPaymentLinkUpdate  {
+class AbstractPaymentLinkUpdate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'Abstract.PaymentLink.Update';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'Abstract.PaymentLink.Update';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'allowedPaymentMethodConfigurations' => '\Wallee\Sdk\Model\PaymentMethodConfiguration[]',
-		'appliedSpaceView' => 'int',
-		'availableFrom' => '\DateTime',
-		'availableUntil' => '\DateTime',
-		'billingAddressRequired' => 'bool',
-		'currency' => 'string',
-		'language' => 'string',
-		'lineItems' => '\Wallee\Sdk\Model\LineItemCreate[]',
-		'maximalNumberOfTransactions' => 'int',
-		'name' => 'string',
-		'shippingAddressRequired' => 'bool'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'allowed_payment_method_configurations' => '\Wallee\Sdk\Model\PaymentMethodConfiguration[]',
+        'applied_space_view' => 'int',
+        'available_from' => '\DateTime',
+        'available_until' => '\DateTime',
+        'billing_address_required' => 'bool',
+        'currency' => 'string',
+        'language' => 'string',
+        'line_items' => '\Wallee\Sdk\Model\LineItemCreate[]',
+        'maximal_number_of_transactions' => 'int',
+        'name' => 'string',
+        'shipping_address_required' => 'bool'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'allowed_payment_method_configurations' => null,
+        'applied_space_view' => 'int64',
+        'available_from' => 'date-time',
+        'available_until' => 'date-time',
+        'billing_address_required' => null,
+        'currency' => null,
+        'language' => null,
+        'line_items' => null,
+        'maximal_number_of_transactions' => 'int32',
+        'name' => null,
+        'shipping_address_required' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'allowed_payment_method_configurations' => 'allowedPaymentMethodConfigurations',
+        'applied_space_view' => 'appliedSpaceView',
+        'available_from' => 'availableFrom',
+        'available_until' => 'availableUntil',
+        'billing_address_required' => 'billingAddressRequired',
+        'currency' => 'currency',
+        'language' => 'language',
+        'line_items' => 'lineItems',
+        'maximal_number_of_transactions' => 'maximalNumberOfTransactions',
+        'name' => 'name',
+        'shipping_address_required' => 'shippingAddressRequired'
+    ];
 
-	/**
-	 * The allowed payment method configurations restrict the payment methods which can be used with this payment link.
-	 *
-	 * @var \Wallee\Sdk\Model\PaymentMethodConfiguration[]
-	 */
-	private $allowedPaymentMethodConfigurations;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'allowed_payment_method_configurations' => 'setAllowedPaymentMethodConfigurations',
+        'applied_space_view' => 'setAppliedSpaceView',
+        'available_from' => 'setAvailableFrom',
+        'available_until' => 'setAvailableUntil',
+        'billing_address_required' => 'setBillingAddressRequired',
+        'currency' => 'setCurrency',
+        'language' => 'setLanguage',
+        'line_items' => 'setLineItems',
+        'maximal_number_of_transactions' => 'setMaximalNumberOfTransactions',
+        'name' => 'setName',
+        'shipping_address_required' => 'setShippingAddressRequired'
+    ];
 
-	/**
-	 * The payment link can be conducted in a specific space view. The space view may apply a specific design to the payment page.
-	 *
-	 * @var int
-	 */
-	private $appliedSpaceView;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'allowed_payment_method_configurations' => 'getAllowedPaymentMethodConfigurations',
+        'applied_space_view' => 'getAppliedSpaceView',
+        'available_from' => 'getAvailableFrom',
+        'available_until' => 'getAvailableUntil',
+        'billing_address_required' => 'getBillingAddressRequired',
+        'currency' => 'getCurrency',
+        'language' => 'getLanguage',
+        'line_items' => 'getLineItems',
+        'maximal_number_of_transactions' => 'getMaximalNumberOfTransactions',
+        'name' => 'getName',
+        'shipping_address_required' => 'getShippingAddressRequired'
+    ];
 
-	/**
-	 * The available from date defines the earliest date on which the payment link can be used. When no date is specified there will be no restriction.
-	 *
-	 * @var \DateTime
-	 */
-	private $availableFrom;
+    
 
-	/**
-	 * The available from date defines the latest date on which the payment link can be used to initialize a transaction. When no date is specified there will be no restriction.
-	 *
-	 * @var \DateTime
-	 */
-	private $availableUntil;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * By making the billing address required the transaction can only be created when a billing address is provided within the request.
-	 *
-	 * @var bool
-	 */
-	private $billingAddressRequired;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['allowed_payment_method_configurations'] = isset($data['allowed_payment_method_configurations']) ? $data['allowed_payment_method_configurations'] : null;
+        
+        $this->container['applied_space_view'] = isset($data['applied_space_view']) ? $data['applied_space_view'] : null;
+        
+        $this->container['available_from'] = isset($data['available_from']) ? $data['available_from'] : null;
+        
+        $this->container['available_until'] = isset($data['available_until']) ? $data['available_until'] : null;
+        
+        $this->container['billing_address_required'] = isset($data['billing_address_required']) ? $data['billing_address_required'] : null;
+        
+        $this->container['currency'] = isset($data['currency']) ? $data['currency'] : null;
+        
+        $this->container['language'] = isset($data['language']) ? $data['language'] : null;
+        
+        $this->container['line_items'] = isset($data['line_items']) ? $data['line_items'] : null;
+        
+        $this->container['maximal_number_of_transactions'] = isset($data['maximal_number_of_transactions']) ? $data['maximal_number_of_transactions'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['shipping_address_required'] = isset($data['shipping_address_required']) ? $data['shipping_address_required'] : null;
+        
+    }
 
-	/**
-	 * The currency defines in which currency the payment is executed in. If no currency is defined it has to be specified within the request parameter 'currency'.
-	 *
-	 * @var string
-	 */
-	private $currency;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The language defines the language of the payment page. If no language is provided it can be provided through the request parameter.
-	 *
-	 * @var string
-	 */
-	private $language;
+        return $invalidProperties;
+    }
 
-	/**
-	 * The line items allows to define the line items for this payment link. When the line items are defined they cannot be overridden through the request parameters.
-	 *
-	 * @var \Wallee\Sdk\Model\LineItemCreate[]
-	 */
-	private $lineItems;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-	/**
-	 * The maximal number of transactions limits the number of transactions which can be created with this payment link.
-	 *
-	 * @var int
-	 */
-	private $maximalNumberOfTransactions;
-
-	/**
-	 * The payment link name is used internally to identify the payment link. For example the name is used within search fields and hence it should be distinct and descriptive.
-	 *
-	 * @var string
-	 */
-	private $name;
-
-	/**
-	 * By making the shipping address required the transaction can only be created when a shipping address is provided within the request.
-	 *
-	 * @var bool
-	 */
-	private $shippingAddressRequired;
-
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['allowedPaymentMethodConfigurations'])) {
-			$this->setAllowedPaymentMethodConfigurations($data['allowedPaymentMethodConfigurations']);
-		}
-		if (isset($data['appliedSpaceView'])) {
-			$this->setAppliedSpaceView($data['appliedSpaceView']);
-		}
-		if (isset($data['availableFrom'])) {
-			$this->setAvailableFrom($data['availableFrom']);
-		}
-		if (isset($data['availableUntil'])) {
-			$this->setAvailableUntil($data['availableUntil']);
-		}
-		if (isset($data['billingAddressRequired'])) {
-			$this->setBillingAddressRequired($data['billingAddressRequired']);
-		}
-		if (isset($data['currency'])) {
-			$this->setCurrency($data['currency']);
-		}
-		if (isset($data['language'])) {
-			$this->setLanguage($data['language']);
-		}
-		if (isset($data['lineItems'])) {
-			$this->setLineItems($data['lineItems']);
-		}
-		if (isset($data['maximalNumberOfTransactions'])) {
-			$this->setMaximalNumberOfTransactions($data['maximalNumberOfTransactions']);
-		}
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['shippingAddressRequired'])) {
-			$this->setShippingAddressRequired($data['shippingAddressRequired']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns allowedPaymentMethodConfigurations.
-	 *
-	 * The allowed payment method configurations restrict the payment methods which can be used with this payment link.
-	 *
-	 * @return \Wallee\Sdk\Model\PaymentMethodConfiguration[]
-	 */
-	public function getAllowedPaymentMethodConfigurations() {
-		return $this->allowedPaymentMethodConfigurations;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets allowedPaymentMethodConfigurations.
-	 *
-	 * @param \Wallee\Sdk\Model\PaymentMethodConfiguration[] $allowedPaymentMethodConfigurations
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setAllowedPaymentMethodConfigurations($allowedPaymentMethodConfigurations) {
-		$this->allowedPaymentMethodConfigurations = $allowedPaymentMethodConfigurations;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns appliedSpaceView.
-	 *
-	 * The payment link can be conducted in a specific space view. The space view may apply a specific design to the payment page.
-	 *
-	 * @return int
-	 */
-	public function getAppliedSpaceView() {
-		return $this->appliedSpaceView;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets appliedSpaceView.
-	 *
-	 * @param int $appliedSpaceView
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setAppliedSpaceView($appliedSpaceView) {
-		$this->appliedSpaceView = $appliedSpaceView;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns availableFrom.
-	 *
-	 * The available from date defines the earliest date on which the payment link can be used. When no date is specified there will be no restriction.
-	 *
-	 * @return \DateTime
-	 */
-	public function getAvailableFrom() {
-		return $this->availableFrom;
-	}
+    
 
-	/**
-	 * Sets availableFrom.
-	 *
-	 * @param \DateTime $availableFrom
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setAvailableFrom($availableFrom) {
-		$this->availableFrom = $availableFrom;
+    /**
+     * Gets allowed_payment_method_configurations
+     *
+     * @return \Wallee\Sdk\Model\PaymentMethodConfiguration[]
+     */
+    public function getAllowedPaymentMethodConfigurations()
+    {
+        return $this->container['allowed_payment_method_configurations'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets allowed_payment_method_configurations
+     *
+     * @param \Wallee\Sdk\Model\PaymentMethodConfiguration[] $allowed_payment_method_configurations The allowed payment method configurations restrict the payment methods which can be used with this payment link.
+     *
+     * @return $this
+     */
+    public function setAllowedPaymentMethodConfigurations($allowed_payment_method_configurations)
+    {
+        $this->container['allowed_payment_method_configurations'] = $allowed_payment_method_configurations;
 
-	/**
-	 * Returns availableUntil.
-	 *
-	 * The available from date defines the latest date on which the payment link can be used to initialize a transaction. When no date is specified there will be no restriction.
-	 *
-	 * @return \DateTime
-	 */
-	public function getAvailableUntil() {
-		return $this->availableUntil;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets availableUntil.
-	 *
-	 * @param \DateTime $availableUntil
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setAvailableUntil($availableUntil) {
-		$this->availableUntil = $availableUntil;
+    /**
+     * Gets applied_space_view
+     *
+     * @return int
+     */
+    public function getAppliedSpaceView()
+    {
+        return $this->container['applied_space_view'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets applied_space_view
+     *
+     * @param int $applied_space_view The payment link can be conducted in a specific space view. The space view may apply a specific design to the payment page.
+     *
+     * @return $this
+     */
+    public function setAppliedSpaceView($applied_space_view)
+    {
+        $this->container['applied_space_view'] = $applied_space_view;
 
-	/**
-	 * Returns billingAddressRequired.
-	 *
-	 * By making the billing address required the transaction can only be created when a billing address is provided within the request.
-	 *
-	 * @return bool
-	 */
-	public function getBillingAddressRequired() {
-		return $this->billingAddressRequired;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets billingAddressRequired.
-	 *
-	 * @param bool $billingAddressRequired
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setBillingAddressRequired($billingAddressRequired) {
-		$this->billingAddressRequired = $billingAddressRequired;
+    /**
+     * Gets available_from
+     *
+     * @return \DateTime
+     */
+    public function getAvailableFrom()
+    {
+        return $this->container['available_from'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets available_from
+     *
+     * @param \DateTime $available_from The available from date defines the earliest date on which the payment link can be used. When no date is specified there will be no restriction.
+     *
+     * @return $this
+     */
+    public function setAvailableFrom($available_from)
+    {
+        $this->container['available_from'] = $available_from;
 
-	/**
-	 * Returns currency.
-	 *
-	 * The currency defines in which currency the payment is executed in. If no currency is defined it has to be specified within the request parameter 'currency'.
-	 *
-	 * @return string
-	 */
-	public function getCurrency() {
-		return $this->currency;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets currency.
-	 *
-	 * @param string $currency
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setCurrency($currency) {
-		$this->currency = $currency;
+    /**
+     * Gets available_until
+     *
+     * @return \DateTime
+     */
+    public function getAvailableUntil()
+    {
+        return $this->container['available_until'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets available_until
+     *
+     * @param \DateTime $available_until The available from date defines the latest date on which the payment link can be used to initialize a transaction. When no date is specified there will be no restriction.
+     *
+     * @return $this
+     */
+    public function setAvailableUntil($available_until)
+    {
+        $this->container['available_until'] = $available_until;
 
-	/**
-	 * Returns language.
-	 *
-	 * The language defines the language of the payment page. If no language is provided it can be provided through the request parameter.
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets language.
-	 *
-	 * @param string $language
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setLanguage($language) {
-		$this->language = $language;
+    /**
+     * Gets billing_address_required
+     *
+     * @return bool
+     */
+    public function getBillingAddressRequired()
+    {
+        return $this->container['billing_address_required'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets billing_address_required
+     *
+     * @param bool $billing_address_required By making the billing address required the transaction can only be created when a billing address is provided within the request.
+     *
+     * @return $this
+     */
+    public function setBillingAddressRequired($billing_address_required)
+    {
+        $this->container['billing_address_required'] = $billing_address_required;
 
-	/**
-	 * Returns lineItems.
-	 *
-	 * The line items allows to define the line items for this payment link. When the line items are defined they cannot be overridden through the request parameters.
-	 *
-	 * @return \Wallee\Sdk\Model\LineItemCreate[]
-	 */
-	public function getLineItems() {
-		return $this->lineItems;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets lineItems.
-	 *
-	 * @param \Wallee\Sdk\Model\LineItemCreate[] $lineItems
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setLineItems($lineItems) {
-		$this->lineItems = $lineItems;
+    /**
+     * Gets currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->container['currency'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets currency
+     *
+     * @param string $currency The currency defines in which currency the payment is executed in. If no currency is defined it has to be specified within the request parameter 'currency'.
+     *
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->container['currency'] = $currency;
 
-	/**
-	 * Returns maximalNumberOfTransactions.
-	 *
-	 * The maximal number of transactions limits the number of transactions which can be created with this payment link.
-	 *
-	 * @return int
-	 */
-	public function getMaximalNumberOfTransactions() {
-		return $this->maximalNumberOfTransactions;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets maximalNumberOfTransactions.
-	 *
-	 * @param int $maximalNumberOfTransactions
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setMaximalNumberOfTransactions($maximalNumberOfTransactions) {
-		$this->maximalNumberOfTransactions = $maximalNumberOfTransactions;
+    /**
+     * Gets language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets language
+     *
+     * @param string $language The language defines the language of the payment page. If no language is provided it can be provided through the request parameter.
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
 
-	/**
-	 * Returns name.
-	 *
-	 * The payment link name is used internally to identify the payment link. For example the name is used within search fields and hence it should be distinct and descriptive.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets name.
-	 *
-	 * @param string $name
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setName($name) {
-		$this->name = $name;
+    /**
+     * Gets line_items
+     *
+     * @return \Wallee\Sdk\Model\LineItemCreate[]
+     */
+    public function getLineItems()
+    {
+        return $this->container['line_items'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets line_items
+     *
+     * @param \Wallee\Sdk\Model\LineItemCreate[] $line_items The line items allows to define the line items for this payment link. When the line items are defined they cannot be overridden through the request parameters.
+     *
+     * @return $this
+     */
+    public function setLineItems($line_items)
+    {
+        $this->container['line_items'] = $line_items;
 
-	/**
-	 * Returns shippingAddressRequired.
-	 *
-	 * By making the shipping address required the transaction can only be created when a shipping address is provided within the request.
-	 *
-	 * @return bool
-	 */
-	public function getShippingAddressRequired() {
-		return $this->shippingAddressRequired;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets shippingAddressRequired.
-	 *
-	 * @param bool $shippingAddressRequired
-	 * @return AbstractPaymentLinkUpdate
-	 */
-	public function setShippingAddressRequired($shippingAddressRequired) {
-		$this->shippingAddressRequired = $shippingAddressRequired;
+    /**
+     * Gets maximal_number_of_transactions
+     *
+     * @return int
+     */
+    public function getMaximalNumberOfTransactions()
+    {
+        return $this->container['maximal_number_of_transactions'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets maximal_number_of_transactions
+     *
+     * @param int $maximal_number_of_transactions The maximal number of transactions limits the number of transactions which can be created with this payment link.
+     *
+     * @return $this
+     */
+    public function setMaximalNumberOfTransactions($maximal_number_of_transactions)
+    {
+        $this->container['maximal_number_of_transactions'] = $maximal_number_of_transactions;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets name
+     *
+     * @param string $name The payment link name is used internally to identify the payment link. For example the name is used within search fields and hence it should be distinct and descriptive.
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets shipping_address_required
+     *
+     * @return bool
+     */
+    public function getShippingAddressRequired()
+    {
+        return $this->container['shipping_address_required'];
+    }
 
+    /**
+     * Sets shipping_address_required
+     *
+     * @param bool $shipping_address_required By making the shipping address required the transaction can only be created when a shipping address is provided within the request.
+     *
+     * @return $this
+     */
+    public function setShippingAddressRequired($shipping_address_required)
+    {
+        $this->container['shipping_address_required'] = $shipping_address_required;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

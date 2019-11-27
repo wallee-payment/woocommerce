@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * AbstractDebtCollectionCaseUpdate model
@@ -31,350 +31,491 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class AbstractDebtCollectionCaseUpdate  {
+class AbstractDebtCollectionCaseUpdate implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'Abstract.DebtCollectionCase.Update';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'Abstract.DebtCollectionCase.Update';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'billingAddress' => '\Wallee\Sdk\Model\AddressCreate',
-		'contractDate' => '\DateTime',
-		'currency' => 'string',
-		'dueDate' => '\DateTime',
-		'environment' => '\Wallee\Sdk\Model\DebtCollectionEnvironment',
-		'language' => 'string',
-		'lineItems' => '\Wallee\Sdk\Model\LineItemCreate[]',
-		'spaceViewId' => 'int'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'billing_address' => '\Wallee\Sdk\Model\AddressCreate',
+        'contract_date' => '\DateTime',
+        'currency' => 'string',
+        'due_date' => '\DateTime',
+        'environment' => '\Wallee\Sdk\Model\DebtCollectionEnvironment',
+        'language' => 'string',
+        'line_items' => '\Wallee\Sdk\Model\LineItemCreate[]',
+        'space_view_id' => 'int'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'billing_address' => null,
+        'contract_date' => 'date-time',
+        'currency' => null,
+        'due_date' => 'date-time',
+        'environment' => null,
+        'language' => null,
+        'line_items' => null,
+        'space_view_id' => 'int64'
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'billing_address' => 'billingAddress',
+        'contract_date' => 'contractDate',
+        'currency' => 'currency',
+        'due_date' => 'dueDate',
+        'environment' => 'environment',
+        'language' => 'language',
+        'line_items' => 'lineItems',
+        'space_view_id' => 'spaceViewId'
+    ];
 
-	/**
-	 * The billing address of the case identifies the debtor.
-	 *
-	 * @var \Wallee\Sdk\Model\AddressCreate
-	 */
-	private $billingAddress;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'billing_address' => 'setBillingAddress',
+        'contract_date' => 'setContractDate',
+        'currency' => 'setCurrency',
+        'due_date' => 'setDueDate',
+        'environment' => 'setEnvironment',
+        'language' => 'setLanguage',
+        'line_items' => 'setLineItems',
+        'space_view_id' => 'setSpaceViewId'
+    ];
 
-	/**
-	 * The contract date is the date on which the contract with the debtor was signed on.
-	 *
-	 * @var \DateTime
-	 */
-	private $contractDate;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'billing_address' => 'getBillingAddress',
+        'contract_date' => 'getContractDate',
+        'currency' => 'getCurrency',
+        'due_date' => 'getDueDate',
+        'environment' => 'getEnvironment',
+        'language' => 'getLanguage',
+        'line_items' => 'getLineItems',
+        'space_view_id' => 'getSpaceViewId'
+    ];
 
-	/**
-	 * The currency defines the billing currency of the debt collection case.
-	 *
-	 * @var string
-	 */
-	private $currency;
+    
 
-	/**
-	 * The due date indicates the date on which the amount receivable was due. This date has to be always in the past.
-	 *
-	 * @var \DateTime
-	 */
-	private $dueDate;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * The environment in which this case will be processed. There must be a debt collector configuration present which supports the chosen environment.
-	 *
-	 * @var \Wallee\Sdk\Model\DebtCollectionEnvironment
-	 */
-	private $environment;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['billing_address'] = isset($data['billing_address']) ? $data['billing_address'] : null;
+        
+        $this->container['contract_date'] = isset($data['contract_date']) ? $data['contract_date'] : null;
+        
+        $this->container['currency'] = isset($data['currency']) ? $data['currency'] : null;
+        
+        $this->container['due_date'] = isset($data['due_date']) ? $data['due_date'] : null;
+        
+        $this->container['environment'] = isset($data['environment']) ? $data['environment'] : null;
+        
+        $this->container['language'] = isset($data['language']) ? $data['language'] : null;
+        
+        $this->container['line_items'] = isset($data['line_items']) ? $data['line_items'] : null;
+        
+        $this->container['space_view_id'] = isset($data['space_view_id']) ? $data['space_view_id'] : null;
+        
+    }
 
-	/**
-	 * The language indicates the language to be used in the communication with the debtor.
-	 *
-	 * @var string
-	 */
-	private $language;
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
 
-	/**
-	 * The line items of the debt collection case will be shown on documents sent to the debtor and the total of them makes up total amount to collect.
-	 *
-	 * @var \Wallee\Sdk\Model\LineItemCreate[]
-	 */
-	private $lineItems;
+        return $invalidProperties;
+    }
 
-	/**
-	 * 
-	 *
-	 * @var int
-	 */
-	private $spaceViewId;
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
 
-
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['billingAddress'])) {
-			$this->setBillingAddress($data['billingAddress']);
-		}
-		if (isset($data['contractDate'])) {
-			$this->setContractDate($data['contractDate']);
-		}
-		if (isset($data['currency'])) {
-			$this->setCurrency($data['currency']);
-		}
-		if (isset($data['dueDate'])) {
-			$this->setDueDate($data['dueDate']);
-		}
-		if (isset($data['environment'])) {
-			$this->setEnvironment($data['environment']);
-		}
-		if (isset($data['language'])) {
-			$this->setLanguage($data['language']);
-		}
-		if (isset($data['lineItems'])) {
-			$this->setLineItems($data['lineItems']);
-		}
-		if (isset($data['spaceViewId'])) {
-			$this->setSpaceViewId($data['spaceViewId']);
-		}
-	}
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Returns billingAddress.
-	 *
-	 * The billing address of the case identifies the debtor.
-	 *
-	 * @return \Wallee\Sdk\Model\AddressCreate
-	 */
-	public function getBillingAddress() {
-		return $this->billingAddress;
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
-	/**
-	 * Sets billingAddress.
-	 *
-	 * @param \Wallee\Sdk\Model\AddressCreate $billingAddress
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setBillingAddress($billingAddress) {
-		$this->billingAddress = $billingAddress;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-		return $this;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Returns contractDate.
-	 *
-	 * The contract date is the date on which the contract with the debtor was signed on.
-	 *
-	 * @return \DateTime
-	 */
-	public function getContractDate() {
-		return $this->contractDate;
-	}
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-	/**
-	 * Sets contractDate.
-	 *
-	 * @param \DateTime $contractDate
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setContractDate($contractDate) {
-		$this->contractDate = $contractDate;
+    
 
-		return $this;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Returns currency.
-	 *
-	 * The currency defines the billing currency of the debt collection case.
-	 *
-	 * @return string
-	 */
-	public function getCurrency() {
-		return $this->currency;
-	}
+    
 
-	/**
-	 * Sets currency.
-	 *
-	 * @param string $currency
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setCurrency($currency) {
-		$this->currency = $currency;
+    /**
+     * Gets billing_address
+     *
+     * @return \Wallee\Sdk\Model\AddressCreate
+     */
+    public function getBillingAddress()
+    {
+        return $this->container['billing_address'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets billing_address
+     *
+     * @param \Wallee\Sdk\Model\AddressCreate $billing_address The billing address of the case identifies the debtor.
+     *
+     * @return $this
+     */
+    public function setBillingAddress($billing_address)
+    {
+        $this->container['billing_address'] = $billing_address;
 
-	/**
-	 * Returns dueDate.
-	 *
-	 * The due date indicates the date on which the amount receivable was due. This date has to be always in the past.
-	 *
-	 * @return \DateTime
-	 */
-	public function getDueDate() {
-		return $this->dueDate;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets dueDate.
-	 *
-	 * @param \DateTime $dueDate
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setDueDate($dueDate) {
-		$this->dueDate = $dueDate;
+    /**
+     * Gets contract_date
+     *
+     * @return \DateTime
+     */
+    public function getContractDate()
+    {
+        return $this->container['contract_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets contract_date
+     *
+     * @param \DateTime $contract_date The contract date is the date on which the contract with the debtor was signed on.
+     *
+     * @return $this
+     */
+    public function setContractDate($contract_date)
+    {
+        $this->container['contract_date'] = $contract_date;
 
-	/**
-	 * Returns environment.
-	 *
-	 * The environment in which this case will be processed. There must be a debt collector configuration present which supports the chosen environment.
-	 *
-	 * @return \Wallee\Sdk\Model\DebtCollectionEnvironment
-	 */
-	public function getEnvironment() {
-		return $this->environment;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets environment.
-	 *
-	 * @param \Wallee\Sdk\Model\DebtCollectionEnvironment $environment
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setEnvironment($environment) {
-		$this->environment = $environment;
+    /**
+     * Gets currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->container['currency'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets currency
+     *
+     * @param string $currency The currency defines the billing currency of the debt collection case.
+     *
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->container['currency'] = $currency;
 
-	/**
-	 * Returns language.
-	 *
-	 * The language indicates the language to be used in the communication with the debtor.
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets language.
-	 *
-	 * @param string $language
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setLanguage($language) {
-		$this->language = $language;
+    /**
+     * Gets due_date
+     *
+     * @return \DateTime
+     */
+    public function getDueDate()
+    {
+        return $this->container['due_date'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets due_date
+     *
+     * @param \DateTime $due_date The due date indicates the date on which the amount receivable was due. This date has to be always in the past.
+     *
+     * @return $this
+     */
+    public function setDueDate($due_date)
+    {
+        $this->container['due_date'] = $due_date;
 
-	/**
-	 * Returns lineItems.
-	 *
-	 * The line items of the debt collection case will be shown on documents sent to the debtor and the total of them makes up total amount to collect.
-	 *
-	 * @return \Wallee\Sdk\Model\LineItemCreate[]
-	 */
-	public function getLineItems() {
-		return $this->lineItems;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets lineItems.
-	 *
-	 * @param \Wallee\Sdk\Model\LineItemCreate[] $lineItems
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setLineItems($lineItems) {
-		$this->lineItems = $lineItems;
+    /**
+     * Gets environment
+     *
+     * @return \Wallee\Sdk\Model\DebtCollectionEnvironment
+     */
+    public function getEnvironment()
+    {
+        return $this->container['environment'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets environment
+     *
+     * @param \Wallee\Sdk\Model\DebtCollectionEnvironment $environment The environment in which this case will be processed. There must be a debt collector configuration present which supports the chosen environment.
+     *
+     * @return $this
+     */
+    public function setEnvironment($environment)
+    {
+        $this->container['environment'] = $environment;
 
-	/**
-	 * Returns spaceViewId.
-	 *
-	 * 
-	 *
-	 * @return int
-	 */
-	public function getSpaceViewId() {
-		return $this->spaceViewId;
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Sets spaceViewId.
-	 *
-	 * @param int $spaceViewId
-	 * @return AbstractDebtCollectionCaseUpdate
-	 */
-	public function setSpaceViewId($spaceViewId) {
-		$this->spaceViewId = $spaceViewId;
+    /**
+     * Gets language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->container['language'];
+    }
 
-		return $this;
-	}
+    /**
+     * Sets language
+     *
+     * @param string $language The language indicates the language to be used in the communication with the debtor.
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->container['language'] = $language;
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+        return $this;
+    }
+    
 
-	}
+    /**
+     * Gets line_items
+     *
+     * @return \Wallee\Sdk\Model\LineItemCreate[]
+     */
+    public function getLineItems()
+    {
+        return $this->container['line_items'];
+    }
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Sets line_items
+     *
+     * @param \Wallee\Sdk\Model\LineItemCreate[] $line_items The line items of the debt collection case will be shown on documents sent to the debtor and the total of them makes up total amount to collect.
+     *
+     * @return $this
+     */
+    public function setLineItems($line_items)
+    {
+        $this->container['line_items'] = $line_items;
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+        return $this;
+    }
+    
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+    /**
+     * Gets space_view_id
+     *
+     * @return int
+     */
+    public function getSpaceViewId()
+    {
+        return $this->container['space_view_id'];
+    }
 
+    /**
+     * Sets space_view_id
+     *
+     * @param int $space_view_id 
+     *
+     * @return $this
+     */
+    public function setSpaceViewId($space_view_id)
+    {
+        $this->container['space_view_id'] = $space_view_id;
+
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 

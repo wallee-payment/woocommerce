@@ -21,8 +21,7 @@ class WC_Wallee_Helper
 
     private $api_client;
 
-    private function __construct()
-    {}
+    private function __construct(){}
 
     /**
      *
@@ -35,7 +34,21 @@ class WC_Wallee_Helper
         }
         return self::$instance;
     }
-
+    
+    public function delete_provider_transients(){
+    	$transients = array(
+    		'wc_wallee_currencies',
+    		'wc_wallee_label_description_groups',
+    		'wc_wallee_label_descriptions',
+    		'wc_wallee_languages',
+    		'wc_wallee_payment_connectors',
+    		'wc_wallee_payment_methods'
+    	);
+    	foreach ($transients as $transient) {
+    		delete_transient($transient);
+    	}
+    }
+    
     /**
      *
      * @throws Exception

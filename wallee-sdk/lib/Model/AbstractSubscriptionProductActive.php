@@ -1,10 +1,8 @@
 <?php
 /**
- * wallee SDK
+ *  SDK
  *
- * This library allows to interact with the wallee payment service.
- * wallee SDK: 1.0.0
- * 
+ * This library allows to interact with the  payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,11 @@
  * limitations under the License.
  */
 
+
 namespace Wallee\Sdk\Model;
 
-use Wallee\Sdk\ValidationException;
+use \ArrayAccess;
+use \Wallee\Sdk\ObjectSerializer;
 
 /**
  * AbstractSubscriptionProductActive model
@@ -31,248 +31,395 @@ use Wallee\Sdk\ValidationException;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class AbstractSubscriptionProductActive  {
+class AbstractSubscriptionProductActive implements ModelInterface, ArrayAccess
+{
+    const DISCRIMINATOR = null;
 
-	/**
-	 * The original name of the model.
-	 *
-	 * @var string
-	 */
-	private static $swaggerModelName = 'Abstract.SubscriptionProduct.Active';
+    /**
+      * The original name of the model.
+      *
+      * @var string
+      */
+    protected static $swaggerModelName = 'Abstract.SubscriptionProduct.Active';
 
-	/**
-	 * An array of property to type mappings. Used for (de)serialization.
-	 *
-	 * @var string[]
-	 */
-	private static $swaggerTypes = array(
-		'allowedPaymentMethodConfigurations' => 'int[]',
-		'failedPaymentSuspensionPeriod' => 'string',
-		'name' => 'string',
-		'sortOrder' => 'int',
-		'state' => '\Wallee\Sdk\Model\SubscriptionProductState'	);
+    /**
+      * Array of property to type mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerTypes = [
+        'allowed_payment_method_configurations' => 'int[]',
+        'failed_payment_suspension_period' => 'string',
+        'name' => 'string',
+        'sort_order' => 'int',
+        'state' => '\Wallee\Sdk\Model\SubscriptionProductState'
+    ];
 
-	/**
-	 * Returns an array of property to type mappings.
-	 *
-	 * @return string[]
-	 */
-	public static function swaggerTypes() {
-		return self::$swaggerTypes;
-	}
+    /**
+      * Array of property to format mappings. Used for (de)serialization
+      *
+      * @var string[]
+      */
+    protected static $swaggerFormats = [
+        'allowed_payment_method_configurations' => 'int64',
+        'failed_payment_suspension_period' => null,
+        'name' => null,
+        'sort_order' => 'int32',
+        'state' => null
+    ];
 
-	
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @var string[]
+     */
+    protected static $attributeMap = [
+        'allowed_payment_method_configurations' => 'allowedPaymentMethodConfigurations',
+        'failed_payment_suspension_period' => 'failedPaymentSuspensionPeriod',
+        'name' => 'name',
+        'sort_order' => 'sortOrder',
+        'state' => 'state'
+    ];
 
-	/**
-	 * The allowed payment method configurations control which payment methods can be used with this product. When none is selected all methods will be allowed.
-	 *
-	 * @var int[]
-	 */
-	private $allowedPaymentMethodConfigurations;
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @var string[]
+     */
+    protected static $setters = [
+        'allowed_payment_method_configurations' => 'setAllowedPaymentMethodConfigurations',
+        'failed_payment_suspension_period' => 'setFailedPaymentSuspensionPeriod',
+        'name' => 'setName',
+        'sort_order' => 'setSortOrder',
+        'state' => 'setState'
+    ];
 
-	/**
-	 * When a payment fails, the subscription to which the payment belongs to will be suspended. When the suspension is not removed within the specified period the subscription will be terminated. A payment is considered as failed when the subscriber issues a refund or when a subscription charge fails.
-	 *
-	 * @var string
-	 */
-	private $failedPaymentSuspensionPeriod;
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @var string[]
+     */
+    protected static $getters = [
+        'allowed_payment_method_configurations' => 'getAllowedPaymentMethodConfigurations',
+        'failed_payment_suspension_period' => 'getFailedPaymentSuspensionPeriod',
+        'name' => 'getName',
+        'sort_order' => 'getSortOrder',
+        'state' => 'getState'
+    ];
 
-	/**
-	 * The product name is used internally to identify the configuration in administrative interfaces. For example it is used within search fields and hence it should be distinct and descriptive.
-	 *
-	 * @var string
-	 */
-	private $name;
+    
 
-	/**
-	 * The sort order controls in which order the product is listed. The sort order is used to order the products in ascending order.
-	 *
-	 * @var int
-	 */
-	private $sortOrder;
+    /**
+     * Associative array for storing property values
+     *
+     * @var mixed[]
+     */
+    protected $container = [];
 
-	/**
-	 * 
-	 *
-	 * @var \Wallee\Sdk\Model\SubscriptionProductState
-	 */
-	private $state;
+    /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+        
+        $this->container['allowed_payment_method_configurations'] = isset($data['allowed_payment_method_configurations']) ? $data['allowed_payment_method_configurations'] : null;
+        
+        $this->container['failed_payment_suspension_period'] = isset($data['failed_payment_suspension_period']) ? $data['failed_payment_suspension_period'] : null;
+        
+        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
+        
+        $this->container['sort_order'] = isset($data['sort_order']) ? $data['sort_order'] : null;
+        
+        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
+        
+    }
+
+    /**
+     * Show all the invalid properties with reasons.
+     *
+     * @return array invalid properties with reasons
+     */
+    public function listInvalidProperties()
+    {
+        $invalidProperties = [];
+
+        return $invalidProperties;
+    }
+
+    /**
+     * Array of property to type mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerTypes()
+    {
+        return self::$swaggerTypes;
+    }
+
+    /**
+     * Array of property to format mappings. Used for (de)serialization
+     *
+     * @return array
+     */
+    public static function swaggerFormats()
+    {
+        return self::$swaggerFormats;
+    }
 
 
-	/**
-	 * Constructor.
-	 *
-	 * @param mixed[] $data an associated array of property values initializing the model
-	 */
-	public function __construct(array $data = null) {
-		if (isset($data['allowedPaymentMethodConfigurations'])) {
-			$this->setAllowedPaymentMethodConfigurations($data['allowedPaymentMethodConfigurations']);
-		}
-		if (isset($data['failedPaymentSuspensionPeriod'])) {
-			$this->setFailedPaymentSuspensionPeriod($data['failedPaymentSuspensionPeriod']);
-		}
-		if (isset($data['name'])) {
-			$this->setName($data['name']);
-		}
-		if (isset($data['sortOrder'])) {
-			$this->setSortOrder($data['sortOrder']);
-		}
-		if (isset($data['state'])) {
-			$this->setState($data['state']);
-		}
-	}
+    /**
+     * Array of attributes where the key is the local name,
+     * and the value is the original name
+     *
+     * @return array
+     */
+    public static function attributeMap()
+    {
+        return self::$attributeMap;
+    }
 
+    /**
+     * Array of attributes to setter functions (for deserialization of responses)
+     *
+     * @return array
+     */
+    public static function setters()
+    {
+        return self::$setters;
+    }
 
-	/**
-	 * Returns allowedPaymentMethodConfigurations.
-	 *
-	 * The allowed payment method configurations control which payment methods can be used with this product. When none is selected all methods will be allowed.
-	 *
-	 * @return int[]
-	 */
-	public function getAllowedPaymentMethodConfigurations() {
-		return $this->allowedPaymentMethodConfigurations;
-	}
+    /**
+     * Array of attributes to getter functions (for serialization of requests)
+     *
+     * @return array
+     */
+    public static function getters()
+    {
+        return self::$getters;
+    }
 
-	/**
-	 * Sets allowedPaymentMethodConfigurations.
-	 *
-	 * @param int[] $allowedPaymentMethodConfigurations
-	 * @return AbstractSubscriptionProductActive
-	 */
-	public function setAllowedPaymentMethodConfigurations($allowedPaymentMethodConfigurations) {
-		$this->allowedPaymentMethodConfigurations = $allowedPaymentMethodConfigurations;
+    /**
+     * The original name of the model.
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+        return self::$swaggerModelName;
+    }
 
-		return $this;
-	}
+    
 
-	/**
-	 * Returns failedPaymentSuspensionPeriod.
-	 *
-	 * When a payment fails, the subscription to which the payment belongs to will be suspended. When the suspension is not removed within the specified period the subscription will be terminated. A payment is considered as failed when the subscriber issues a refund or when a subscription charge fails.
-	 *
-	 * @return string
-	 */
-	public function getFailedPaymentSuspensionPeriod() {
-		return $this->failedPaymentSuspensionPeriod;
-	}
+    /**
+     * Validate all the properties in the model
+     * return true if all passed
+     *
+     * @return bool True if all properties are valid
+     */
+    public function valid()
+    {
+        return count($this->listInvalidProperties()) === 0;
+    }
 
-	/**
-	 * Sets failedPaymentSuspensionPeriod.
-	 *
-	 * @param string $failedPaymentSuspensionPeriod
-	 * @return AbstractSubscriptionProductActive
-	 */
-	public function setFailedPaymentSuspensionPeriod($failedPaymentSuspensionPeriod) {
-		$this->failedPaymentSuspensionPeriod = $failedPaymentSuspensionPeriod;
+    
 
-		return $this;
-	}
+    /**
+     * Gets allowed_payment_method_configurations
+     *
+     * @return int[]
+     */
+    public function getAllowedPaymentMethodConfigurations()
+    {
+        return $this->container['allowed_payment_method_configurations'];
+    }
 
-	/**
-	 * Returns name.
-	 *
-	 * The product name is used internally to identify the configuration in administrative interfaces. For example it is used within search fields and hence it should be distinct and descriptive.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Sets allowed_payment_method_configurations
+     *
+     * @param int[] $allowed_payment_method_configurations The allowed payment method configurations control which payment methods can be used with this product. When none is selected all methods will be allowed.
+     *
+     * @return $this
+     */
+    public function setAllowedPaymentMethodConfigurations($allowed_payment_method_configurations)
+    {
+        $this->container['allowed_payment_method_configurations'] = $allowed_payment_method_configurations;
 
-	/**
-	 * Sets name.
-	 *
-	 * @param string $name
-	 * @return AbstractSubscriptionProductActive
-	 */
-	public function setName($name) {
-		$this->name = $name;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets failed_payment_suspension_period
+     *
+     * @return string
+     */
+    public function getFailedPaymentSuspensionPeriod()
+    {
+        return $this->container['failed_payment_suspension_period'];
+    }
 
-	/**
-	 * Returns sortOrder.
-	 *
-	 * The sort order controls in which order the product is listed. The sort order is used to order the products in ascending order.
-	 *
-	 * @return int
-	 */
-	public function getSortOrder() {
-		return $this->sortOrder;
-	}
+    /**
+     * Sets failed_payment_suspension_period
+     *
+     * @param string $failed_payment_suspension_period When a payment fails, the subscription to which the payment belongs to will be suspended. When the suspension is not removed within the specified period the subscription will be terminated. A payment is considered as failed when the subscriber issues a refund or when a subscription charge fails.
+     *
+     * @return $this
+     */
+    public function setFailedPaymentSuspensionPeriod($failed_payment_suspension_period)
+    {
+        $this->container['failed_payment_suspension_period'] = $failed_payment_suspension_period;
 
-	/**
-	 * Sets sortOrder.
-	 *
-	 * @param int $sortOrder
-	 * @return AbstractSubscriptionProductActive
-	 */
-	public function setSortOrder($sortOrder) {
-		$this->sortOrder = $sortOrder;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->container['name'];
+    }
 
-	/**
-	 * Returns state.
-	 *
-	 * 
-	 *
-	 * @return \Wallee\Sdk\Model\SubscriptionProductState
-	 */
-	public function getState() {
-		return $this->state;
-	}
+    /**
+     * Sets name
+     *
+     * @param string $name The product name is used internally to identify the configuration in administrative interfaces. For example it is used within search fields and hence it should be distinct and descriptive.
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->container['name'] = $name;
 
-	/**
-	 * Sets state.
-	 *
-	 * @param \Wallee\Sdk\Model\SubscriptionProductState $state
-	 * @return AbstractSubscriptionProductActive
-	 */
-	public function setState($state) {
-		$this->state = $state;
+        return $this;
+    }
+    
 
-		return $this;
-	}
+    /**
+     * Gets sort_order
+     *
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->container['sort_order'];
+    }
 
-	/**
-	 * Validates the model's properties and throws a ValidationException if the validation fails.
-	 *
-	 * @throws ValidationException
-	 */
-	public function validate() {
+    /**
+     * Sets sort_order
+     *
+     * @param int $sort_order The sort order controls in which order the product is listed. The sort order is used to order the products in ascending order.
+     *
+     * @return $this
+     */
+    public function setSortOrder($sort_order)
+    {
+        $this->container['sort_order'] = $sort_order;
 
-	}
+        return $this;
+    }
+    
 
-	/**
-	 * Returns true if all the properties in the model are valid.
-	 *
-	 * @return boolean
-	 */
-	public function isValid() {
-		try {
-			$this->validate();
-			return true;
-		} catch (ValidationException $e) {
-			return false;
-		}
-	}
+    /**
+     * Gets state
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProductState
+     */
+    public function getState()
+    {
+        return $this->container['state'];
+    }
 
-	/**
-	 * Returns the string presentation of the object.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-			return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this), JSON_PRETTY_PRINT);
-		}
+    /**
+     * Sets state
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProductState $state 
+     *
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->container['state'] = $state;
 
-		return json_encode(\Wallee\Sdk\ObjectSerializer::sanitizeForSerialization($this));
-	}
+        return $this;
+    }
+    
+    /**
+     * Returns true if offset exists. False otherwise.
+     *
+     * @param integer $offset Offset
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
 
+    /**
+     * Gets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset]) ? $this->container[$offset] : null;
+    }
+
+    /**
+     * Sets value based on offset.
+     *
+     * @param integer $offset Offset
+     * @param mixed   $value  Value to be set
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->container[] = $value;
+        } else {
+            $this->container[$offset] = $value;
+        }
+    }
+
+    /**
+     * Unsets offset.
+     *
+     * @param integer $offset Offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
+    }
+
+    /**
+     * Gets the string presentation of the object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
+            return json_encode(
+                ObjectSerializer::sanitizeForSerialization($this),
+                JSON_PRETTY_PRINT
+            );
+        }
+
+        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+    }
 }
+
 
