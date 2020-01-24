@@ -129,7 +129,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.2.16/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.0/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -239,7 +239,31 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		    array(
 		        'type' => 'sectionend',
 		        'id' => 'space_view_options'
-		    ) 
+		    ),
+
+            array(
+                'title' => __('Integration Options', 'woo-wallee'),
+                'type' => 'title',
+                'id' => 'integration_options'
+            ),
+
+            array(
+                'type' => 'sectionend',
+                'id' => 'integration_options'
+            ),
+
+            array(
+                'title' => __('Integration', 'woo-wallee'),
+                'desc_tip' => __('The Integration allows to payment integration used on the checkout page', 'woo-wallee'),
+                'id' => WooCommerce_Wallee::CK_INTEGRATION,
+                'type' => 'select',
+                'css' => 'min-width:300px;',
+                'default' => WC_Wallee_Integration::IFRAME,
+                'options' => array(
+                    WC_Wallee_Integration::IFRAME => __(WC_Wallee_Integration::IFRAME, 'woo-wallee'),
+                    WC_Wallee_Integration::LIGHTBOX  => __(WC_Wallee_Integration::LIGHTBOX, 'woo-wallee'),
+                ),
+            ),
 		
 		);
 		
