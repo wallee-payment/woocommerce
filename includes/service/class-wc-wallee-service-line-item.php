@@ -210,6 +210,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 	 *
 	 * @param WC_Order $order
 	 * @return \Wallee\Sdk\Model\LineItemCreate[]
+     * @throws Exception
 	 */
 	protected function create_product_line_items_from_order(WC_Order $order){
 		$items = array();
@@ -371,9 +372,11 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 	/**
 	 * Creates the line items for the products
 	 *
-	 * @param WC_Order $order
-	 * @return \Wallee\Sdk\Model\LineItemCreate[]
-	 */
+     * @param array    $backend_items
+     * @param WC_Order $order
+     * @return \Wallee\Sdk\Model\LineItemCreate[]
+     * @throws Exception
+     */
 	protected function create_product_line_items_from_backend(array $backend_items, WC_Order $order){
 		$items = array();
 		$currency = $order->get_currency();

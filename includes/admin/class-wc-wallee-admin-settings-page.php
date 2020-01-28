@@ -129,7 +129,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.0/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.1/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -247,10 +247,6 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
                 'id' => 'integration_options'
             ),
 
-            array(
-                'type' => 'sectionend',
-                'id' => 'integration_options'
-            ),
 
             array(
                 'title' => __('Integration', 'woo-wallee'),
@@ -264,8 +260,34 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
                     WC_Wallee_Integration::LIGHTBOX  => __(WC_Wallee_Integration::LIGHTBOX, 'woo-wallee'),
                 ),
             ),
-		
-		);
+
+            array(
+                'type' => 'sectionend',
+                'id' => 'integration_options'
+            ),
+
+            array(
+                'title' => __('Line Items Options', 'woo-wallee'),
+                'type' => 'title',
+                'id' => 'line_items_options'
+            ),
+
+            array(
+                'title' => __('Enforce Consistency', 'woo-wallee'),
+                'desc' => __("Require that transaction line items total match order total.", 'woo-wallee'),
+                'id' => WooCommerce_Wallee::CK_ENFORCE_CONSISTENCY,
+                'type' => 'checkbox',
+                'default' => 'yes',
+                'css' => 'min-width:300px;'
+            ),
+
+            array(
+                'type' => 'sectionend',
+                'id' => 'line_items_options'
+            ),
+
+
+        );
 		
 		return apply_filters('wc_wallee_settings', $settings);
 	}

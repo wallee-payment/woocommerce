@@ -28,6 +28,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param int $space_id
 	 * @param string $external_id
 	 * @return \Wallee\Sdk\Model\Refund
+     * @throws Exception
 	 */
 	public function get_refund_by_external_id($space_id, $external_id){
 	    $query = new \Wallee\Sdk\Model\EntityQuery();
@@ -48,6 +49,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param WC_Order $order
 	 * @param WC_Order_Refund $refund
 	 * @return \Wallee\Sdk\Model\RefundCreate
+     * @throws Exception
 	 */
 	public function create(WC_Order $order, WC_Order_Refund $refund){
 	    
@@ -75,6 +77,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param \Wallee\Sdk\Model\Transaction $transaction
 	 * @param \Wallee\Sdk\Model\LineItemReductionCreate[] $reductions
 	 * @return \Wallee\Sdk\Model\LineItemReductionCreate[]
+     * @throws Exception
 	 */
 	protected function fix_reductions(WC_Order_Refund $refund, \Wallee\Sdk\Model\Transaction $transaction, array $reductions){
 		$base_line_items = $this->get_base_line_items($transaction);
@@ -110,8 +113,8 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param \Wallee\Sdk\Model\LineItemReductionCreate[] $reductions
 	 * @param int $index
 	 * @param number $remainder
-	 * @param \Wallee\Sdk\Model\LineItem[] $baseLineItems
-	 * @param string $currencyCode
+	 * @param \Wallee\Sdk\Model\LineItem[] $base_line_items
+	 * @param string $currency_code
 	 * @throws Exception
 	 * @return \Wallee\Sdk\Model\LineItemReductionCreate[]
 	 */
@@ -278,6 +281,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param int $spaceId
 	 * @param \Wallee\Sdk\Model\RefundCreate $refund
 	 * @return \Wallee\Sdk\Model\Refund
+     * @throws Exception
 	 */
 	public function refund($spaceId, \Wallee\Sdk\Model\RefundCreate $refund){
 		return $this->get_refund_service()->refund($spaceId, $refund);
@@ -291,6 +295,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param \Wallee\Sdk\Model\Transaction $transaction
 	 * @param \Wallee\Sdk\Model\Refund $refund
 	 * @return \Wallee\Sdk\Model\LineItem[]
+     * @throws Exception
 	 */
 	protected function get_base_line_items(\Wallee\Sdk\Model\Transaction $transaction, \Wallee\Sdk\Model\Refund $refund = null){
 		$last_successful_refund = $this->get_last_successful_refund($transaction, $refund);
@@ -304,8 +309,9 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	
 	/**
 	 *
-	 * @param \Wallee\Sdk\Model\LineItem[] $lineItems
+	 * @param \Wallee\Sdk\Model\LineItem[] $line_items
 	 * @param string $uniqueId
+     * @return \Wallee\Sdk\Model\LineItem
 	 */
 	private function get_line_item_by_unique_id(array $line_items, $unique_id)
 	{
@@ -355,6 +361,7 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	 * @param \Wallee\Sdk\Model\Transaction $transaction
 	 * @param \Wallee\Sdk\Model\Refund $refund
 	 * @return \Wallee\Sdk\Model\Refund
+     * @throws Exception
 	 */
 	protected function get_last_successful_refund(\Wallee\Sdk\Model\Transaction $transaction, \Wallee\Sdk\Model\Refund $refund = null){
 	    $query = new \Wallee\Sdk\Model\EntityQuery();
@@ -390,8 +397,9 @@ class WC_Wallee_Service_Refund extends WC_Wallee_Service_Abstract {
 	/**
 	 * Returns the refund API service.
 	 *
-	 * @return \Wallee\Sdk\Service\RefundService
-	 */
+     * @return \Wallee\Sdk\Service\RefundService
+     * @throws Exception
+     */
 	protected function get_refund_service(){
 		if ($this->refund_service == null) {
 		    $this->refund_service = new \Wallee\Sdk\Service\RefundService(WC_Wallee_Helper::instance()->get_api_client());

@@ -18,8 +18,9 @@ class WC_Wallee_Service_Method_Configuration extends WC_Wallee_Service_Abstract 
 	/**
 	 * Updates the data of the payment method configuration.
 	 *
-	 * @param \Wallee\Sdk\Model\PaymentMethodConfiguration $configuration
-	 */
+     * @param \Wallee\Sdk\Model\PaymentMethodConfiguration $configuration
+     * @throws Exception
+     */
     public function update_data(\Wallee\Sdk\Model\PaymentMethodConfiguration $configuration){
 		/* @var WC_Wallee_Entity_Method_Configuration $entity */
         $entity = WC_Wallee_Entity_Method_Configuration::load_by_configuration($configuration->getLinkedSpaceId(), $configuration->getId());
