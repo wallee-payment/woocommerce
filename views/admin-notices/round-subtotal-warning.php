@@ -12,5 +12,5 @@ if (!defined('ABSPATH')) {
  */
 ?>
 <div class="error notice notice-error">
-	<p><?php _e( 'The wallee payment method are not available, if the taxes are rounded at subtotal level. Please disable the \'Round tax at subtotal level, instead of rounding per line\' in the tax settings to enable the wallee payment methods.', 'woo-wallee' ); ?></p>
+	<p><?php _e( 'The wallee payment methods are not available, if the taxes are rounded at subtotal level. Please disable the \'Round tax at subtotal level, instead of rounding per line\' in the tax settings to enable the wallee payment methods.', 'woo-wallee' ); ?></p>
 </div>

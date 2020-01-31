@@ -129,7 +129,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.1/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.2/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -249,8 +249,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 
 
             array(
-                'title' => __('Integration', 'woo-wallee'),
-                'desc_tip' => __('The Integration allows to payment integration used on the checkout page', 'woo-wallee'),
+                'title' => __('Integration Type', 'woo-wallee'),
+                'desc_tip' => __('The integration type controls how the payment form is integrated into the WooCommerce checkout. The Lightbox integration type offers better performance but with a less compelling checkout experience.', 'woo-wallee'),
                 'id' => WooCommerce_Wallee::CK_INTEGRATION,
                 'type' => 'select',
                 'css' => 'min-width:300px;',
@@ -274,7 +274,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 
             array(
                 'title' => __('Enforce Consistency', 'woo-wallee'),
-                'desc' => __("Require that transaction line items total match order total.", 'woo-wallee'),
+                'desc' => __("Require that the transaction line items total is matching the order total.", 'woo-wallee'),
                 'id' => WooCommerce_Wallee::CK_ENFORCE_CONSISTENCY,
                 'type' => 'checkbox',
                 'default' => 'yes',
