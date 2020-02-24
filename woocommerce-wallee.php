@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 1.3.3
+ * Version: 1.3.4
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: customweb GmbH
@@ -45,7 +45,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.3.3';
+		private $version = '1.3.4';
 		
 		/**
 		 * The single instance of the class.
@@ -431,7 +431,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 						'billing_last_name' => isset($post_data['billing_last_name']) ? wp_unslash($post_data['billing_last_name']) : null,
 						'billing_company' => isset($post_data['billing_company']) ? wp_unslash($post_data['billing_company']) : null,
 						'billing_phone' => isset($post_data['billing_phone']) ? wp_unslash($post_data['billing_phone']) : null,
-						'billing_email' => isset($post_data['billing_email']) ? wp_unslash($post_data['billing_email']) : null
+                        'billing_email' => isset($post_data['billing_email']) && is_email(wp_unslash($post_data['billing_email'])) ? wp_unslash($post_data['billing_email']) : null
 					));
 			
 			if (wc_ship_to_billing_address_only() || !isset($post_data['ship_to_different_address']) || $post_data['ship_to_different_address'] == '0') {
