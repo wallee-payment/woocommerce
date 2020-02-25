@@ -474,10 +474,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 				return $this->get_transaction_service()->confirm($space_id, $pending_transaction);
 			}
 			catch (\Exception $e) {
-                WooCommerce_Wallee::instance()->log(__CLASS__ . " : ". __FUNCTION__ . " : " . __LINE__ . " : " . $e->getMessage() , WC_Log_Levels::ERROR);
 				$last = $e;
 			}
 		}
+        WooCommerce_Wallee::instance()->log(__CLASS__ . " : ". __FUNCTION__ . " : " . __LINE__ . " : " . $last->getMessage() , WC_Log_Levels::ERROR);
 		throw $last;
 	}
 
@@ -838,10 +838,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	            return $this->get_transaction_service()->update($space_id, $pending_transaction);
 	        }
 	        catch (\Exception $e) {
-                WooCommerce_Wallee::instance()->log(__CLASS__ . " : ". __FUNCTION__ . " : " . __LINE__ . " : " . $e->getMessage() , WC_Log_Levels::ERROR);
 	            $last = $e;
 	        }
 	    }
+        WooCommerce_Wallee::instance()->log(__CLASS__ . " : ". __FUNCTION__ . " : " . __LINE__ . " : " . $last->getMessage() , WC_Log_Levels::ERROR);
 	    throw $last;
 	}
 
@@ -872,10 +872,11 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 				return $this->get_transaction_service()->update($space_id, $pending_transaction);
 			}
 			catch (\Exception $e) {
-                WooCommerce_Wallee::instance()->log(__CLASS__ . " : ". __FUNCTION__ . " : " . __LINE__ . " : " . $e->getMessage() , WC_Log_Levels::ERROR);
 				$last = $e;
 			}
+
 		}
+        WooCommerce_Wallee::instance()->log(__CLASS__ . " : ". __FUNCTION__ . " : " . __LINE__ . " : " . $last->getMessage() , WC_Log_Levels::ERROR);
 		throw $last;
 	}
 
