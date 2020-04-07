@@ -41,7 +41,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		
 		//We set the title and description here, as some plugin access the variables directly.
 		$this->title = $method->get_configuration_name();
-		$this->description = "";
+		$this->description = '';
 		
 		$this->wle_translated_title = $method->get_title();
 		$this->wle_translated_description = $method->get_description();
@@ -115,7 +115,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function get_icon(){
-		$icon = "";
+		$icon = '';
 		if ($this->wle_show_icon == 'yes') {
 			$space_id = $this->get_payment_method_configuration()->get_space_id();
 			$space_view_id = get_option(WooCommerce_Wallee::CK_SPACE_VIEW_ID);
@@ -239,9 +239,13 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		
 		//It's not possible to support the rounding on subtotal level and still get valid tax rates and amounts.
 		//Therefore the payment methods are disabled, if this option is active
-		if ( wc_tax_enabled() && 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' )){
-		  return false;   
-		}
+        if ( wc_tax_enabled() && ('yes' === get_option( 'woocommerce_tax_round_at_subtotal' ))){
+            if('yes' === get_option( WooCommerce_Wallee::CK_ENFORCE_CONSISTENCY )) {
+                $errorMessage = __("'WooCommerce > Settings > Wallee > Enforce Consistency' and 'WooCommerce > Settings > Tax > Rounding' are both enabled. Please disable at least one of them.", 'woo-wallee');
+                WooCommerce_Wallee::instance()->log($errorMessage, WC_Log_Levels::ERROR);
+                return false;
+            }
+        }
 		
 		//It is possbile this function is called in the wordpress admin section. There is not a cart, so all active methods are available.
 		//If it is not a checkout page the method is availalbe. Some plugins check this, on non checkout pages, without a cart available
@@ -261,7 +265,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 		        $possible_methods = WC_Wallee_Service_Transaction::instance()->get_possible_payment_methods_for_order($order);
 		    }
 		    catch(WC_Wallee_Exception_Invalid_Transaction_Amount $e){
-		        WooCommerce_Wallee::instance()->log($e->getMessage()." Order Id: ".$order->get_id(), WC_Log_Levels::ERROR);
+		        WooCommerce_Wallee::instance()->log($e->getMessage().' Order Id: '.$order->get_id(), WC_Log_Levels::ERROR);
 		        return false;
 		    }
 		    catch(Exception $e){

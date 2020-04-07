@@ -624,6 +624,8 @@ msgstr ""
 msgid "wallee Transaction"
 msgstr ""
 
-
-
-
+#: includes/class-wc-wallee-gateway.php:143
+#: includes/admin/class-wc-wallee-admin-notices.php:104
+#: includes/admin/class-wc-wallee-admin-settings-page.php:104
+msgid "'WooCommerce > Settings > Wallee > Enforce Consistency' and 'WooCommerce > Settings > Tax > Rounding' are both enabled. Please disable at least one of them."
+msgstr ""

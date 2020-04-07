@@ -65,48 +65,57 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	    WC_Wallee_Helper::instance()->reset_api_client();
 	    $user_id = get_option(WooCommerce_Wallee::CK_APP_USER_ID);
 	    $user_key = get_option(WooCommerce_Wallee::CK_APP_USER_KEY);
-		if (!empty($user_id) && !empty($user_key)) {
-		    $error = '';
+		if (!(empty($user_id) || empty($user_key))) {
+            $errorMessage = '';
 		    try{
 		        WC_Wallee_Service_Method_Configuration::instance()->synchronize();
 		    }
-		    catch (Exception $e) {
+		    catch (\Exception $e) {
 		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
-		        $error .= ' '. 
-		            __('Could not update payment method configuration.', 'woo-wallee');
+                $errorMessage = __('Could not update payment method configuration.', 'woo-wallee');
+                WC_Admin_Settings::add_error($errorMessage);
 		    }
 		    try{
 		        WC_Wallee_Service_Webhook::instance()->install();
 		    }
-		    catch (Exception $e) {
+		    catch (\Exception $e) {
 		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
-		        $error .= ' '.
-		            __('Could not install webhooks, please check if the feature is active in your space.', 'woo-wallee');
+                $errorMessage = __('Could not install webhooks, please check if the feature is active in your space.', 'woo-wallee');
+                WC_Admin_Settings::add_error($errorMessage);
 		    }
 		    try{
 		        WC_Wallee_Service_Manual_Task::instance()->update();
 		    }
-		    catch (Exception $e) {
+		    catch (\Exception $e) {
 		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
-		        $error .= ' '.
-		            __('Could not update the manual task list.', 'woo-wallee');
+                $errorMessage = __('Could not update the manual task list.', 'woo-wallee');
+                WC_Admin_Settings::add_error($errorMessage);
 		    }
 		    try {
 		        do_action('wc_wallee_settings_changed');
 		    }
-		    catch (Exception $e) {
+		    catch (\Exception $e) {
 		        WooCommerce_Wallee::instance()->log($e->getMessage(), WC_Log_Levels::ERROR);
 		        WooCommerce_Wallee::instance()->log($e->getTraceAsString(), WC_Log_Levels::DEBUG);
-		        $error .= ' '. $e->getMessage();
+                $errorMessage = $e->getMessage();
+                WC_Admin_Settings::add_error($errorMessage);
 		    }
-		    if(!empty($error)){
-		        $error =
-		            __('Please check your credentials and grant the application user the necessary rights (Account Admin) for your space.', 'woo-wallee') .' '.$error;
-		        WC_Admin_Settings::add_error($error);
-		        
+
+            if ( wc_tax_enabled() && ('yes' === get_option( 'woocommerce_tax_round_at_subtotal' ))){
+                if('yes' === get_option( WooCommerce_Wallee::CK_ENFORCE_CONSISTENCY )) {
+                    $errorMessage = __("'WooCommerce > Settings > Wallee > Enforce Consistency' and 'WooCommerce > Settings > Tax > Rounding' are both enabled. Please disable at least one of them.", 'woo-wallee');
+                    WC_Admin_Settings::add_error($errorMessage);
+                    WooCommerce_Wallee::instance()->log($errorMessage, WC_Log_Levels::ERROR);
+                }
+            }
+		    
+		    
+		    if(!empty($errorMessage)){
+                $errorMessage = __('Please check your credentials and grant the application user the necessary rights (Account Admin) for your space.', 'woo-wallee');
+		        WC_Admin_Settings::add_error($errorMessage);
 		    }			
 		    WC_Wallee_Helper::instance()->delete_provider_transients();
 		}
@@ -129,7 +138,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.6/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.8/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
