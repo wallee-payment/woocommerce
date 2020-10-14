@@ -8,7 +8,7 @@ if (! defined('ABSPATH')) {
  *
  * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
  *
- * @author customweb GmbH (http://www.customweb.com/)
+ * @author wallee AG (http://www.customweb.com/)
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 /**

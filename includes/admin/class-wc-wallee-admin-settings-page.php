@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
  *
  * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
  *
- * @author customweb GmbH (http://www.customweb.com/)
+ * @author wallee AG (http://www.customweb.com/)
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 /**
@@ -138,7 +138,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.9/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.11/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -191,7 +191,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			
 			array(
 				'title' => __('Send Order Email', 'woo-wallee'),
-				'desc' => __("Send the Woocommerce's order email.", 'woo-wallee'),
+				'desc' => __("Send the order email of WooCommerce.", 'woo-wallee'),
 			    'id' => WooCommerce_Wallee::CK_SHOP_EMAIL,
 				'type' => 'checkbox',
 				'default' => 'yes',
@@ -211,7 +211,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			
 			array(
 				'title' => __('Invoice Download', 'woo-wallee'),
-				'desc' => __("Allow customer's to download the invoice.", 'woo-wallee'),
+				'desc' => __("Allow customers to download the invoice.", 'woo-wallee'),
 			    'id' => WooCommerce_Wallee::CK_CUSTOMER_INVOICE,
 				'type' => 'checkbox',
 				'default' => 'yes',
@@ -219,7 +219,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			),
 			array(
 				'title' => __('Packing Slip Download', 'woo-wallee'),
-				'desc' => __("Allow customer's to download the packing slip.", 'woo-wallee'),
+				'desc' => __("Allow customers to download the packing slip.", 'woo-wallee'),
 			    'id' => WooCommerce_Wallee::CK_CUSTOMER_PACKING,
 				'type' => 'checkbox',
 				'default' => 'yes',
