@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ use \Wallee\Sdk\ObjectSerializer;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class ShopifySubscriptionProductCreate extends AbstractShopifySubscriptionProductActive 
+class ShopifySubscriptionProductCreate extends AbstractShopifySubscriptionProductUpdate 
 {
     const DISCRIMINATOR = null;
 
@@ -128,11 +128,14 @@ class ShopifySubscriptionProductCreate extends AbstractShopifySubscriptionProduc
     {
         $invalidProperties = parent::listInvalidProperties();
 
-        if ($this->container['state'] === null) {
-            $invalidProperties[] = "'state' can't be null";
+        if ($this->container['product_id'] === null) {
+            $invalidProperties[] = "'product_id' can't be null";
         }
         if ($this->container['product_variant_id'] === null) {
             $invalidProperties[] = "'product_variant_id' can't be null";
+        }
+        if ($this->container['shop'] === null) {
+            $invalidProperties[] = "'shop' can't be null";
         }
         return $invalidProperties;
     }

@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,10 @@
 
 
 namespace Wallee\Sdk\Model;
-
-use \ArrayAccess;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * ShopifySubscriptionEditModelItem model
+ * PaymentTerminalContactAddress model
  *
  * @category    Class
  * @description 
@@ -32,7 +30,7 @@ use \Wallee\Sdk\ObjectSerializer;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
+class PaymentTerminalContactAddress extends PaymentTerminalAddress 
 {
     const DISCRIMINATOR = null;
 
@@ -41,7 +39,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $swaggerModelName = 'ShopifySubscriptionEditModel.Item';
+    protected static $swaggerModelName = 'PaymentTerminalContactAddress';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -49,11 +47,10 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'price_including_tax' => 'float',
-        'product_id' => 'int',
-        'quantity' => 'float',
-        'recalculate_price' => 'bool',
-        'tax_lines' => '\Wallee\Sdk\Model\ShopifySubscriptionEditModelTaxLine[]'
+        'family_name' => 'string',
+        'given_name' => 'string',
+        'organization_name' => 'string',
+        'phone_number' => 'string'
     ];
 
     /**
@@ -62,11 +59,10 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'price_including_tax' => null,
-        'product_id' => 'int64',
-        'quantity' => null,
-        'recalculate_price' => null,
-        'tax_lines' => null
+        'family_name' => null,
+        'given_name' => null,
+        'organization_name' => null,
+        'phone_number' => null
     ];
 
     /**
@@ -76,11 +72,10 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'price_including_tax' => 'priceIncludingTax',
-        'product_id' => 'productId',
-        'quantity' => 'quantity',
-        'recalculate_price' => 'recalculatePrice',
-        'tax_lines' => 'taxLines'
+        'family_name' => 'familyName',
+        'given_name' => 'givenName',
+        'organization_name' => 'organizationName',
+        'phone_number' => 'phoneNumber'
     ];
 
     /**
@@ -89,11 +84,10 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'price_including_tax' => 'setPriceIncludingTax',
-        'product_id' => 'setProductId',
-        'quantity' => 'setQuantity',
-        'recalculate_price' => 'setRecalculatePrice',
-        'tax_lines' => 'setTaxLines'
+        'family_name' => 'setFamilyName',
+        'given_name' => 'setGivenName',
+        'organization_name' => 'setOrganizationName',
+        'phone_number' => 'setPhoneNumber'
     ];
 
     /**
@@ -102,21 +96,14 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'price_including_tax' => 'getPriceIncludingTax',
-        'product_id' => 'getProductId',
-        'quantity' => 'getQuantity',
-        'recalculate_price' => 'getRecalculatePrice',
-        'tax_lines' => 'getTaxLines'
+        'family_name' => 'getFamilyName',
+        'given_name' => 'getGivenName',
+        'organization_name' => 'getOrganizationName',
+        'phone_number' => 'getPhoneNumber'
     ];
 
     
 
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
 
     /**
      * Constructor
@@ -126,16 +113,16 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public function __construct(array $data = null)
     {
+        parent::__construct($data);
+
         
-        $this->container['price_including_tax'] = isset($data['price_including_tax']) ? $data['price_including_tax'] : null;
+        $this->container['family_name'] = isset($data['family_name']) ? $data['family_name'] : null;
         
-        $this->container['product_id'] = isset($data['product_id']) ? $data['product_id'] : null;
+        $this->container['given_name'] = isset($data['given_name']) ? $data['given_name'] : null;
         
-        $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
+        $this->container['organization_name'] = isset($data['organization_name']) ? $data['organization_name'] : null;
         
-        $this->container['recalculate_price'] = isset($data['recalculate_price']) ? $data['recalculate_price'] : null;
-        
-        $this->container['tax_lines'] = isset($data['tax_lines']) ? $data['tax_lines'] : null;
+        $this->container['phone_number'] = isset($data['phone_number']) ? $data['phone_number'] : null;
         
     }
 
@@ -146,7 +133,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public function listInvalidProperties()
     {
-        $invalidProperties = [];
+        $invalidProperties = parent::listInvalidProperties();
 
         return $invalidProperties;
     }
@@ -158,7 +145,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public static function swaggerTypes()
     {
-        return self::$swaggerTypes;
+        return self::$swaggerTypes + parent::swaggerTypes();
     }
 
     /**
@@ -168,7 +155,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public static function swaggerFormats()
     {
-        return self::$swaggerFormats;
+        return self::$swaggerFormats + parent::swaggerFormats();
     }
 
 
@@ -180,7 +167,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public static function attributeMap()
     {
-        return self::$attributeMap;
+        return parent::attributeMap() + self::$attributeMap;
     }
 
     /**
@@ -190,7 +177,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public static function setters()
     {
-        return self::$setters;
+        return parent::setters() + self::$setters;
     }
 
     /**
@@ -200,7 +187,7 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
      */
     public static function getters()
     {
-        return self::$getters;
+        return parent::getters() + self::$getters;
     }
 
     /**
@@ -229,125 +216,100 @@ class ShopifySubscriptionEditModelItem implements ModelInterface, ArrayAccess
     
 
     /**
-     * Gets price_including_tax
+     * Gets family_name
      *
-     * @return float
+     * @return string
      */
-    public function getPriceIncludingTax()
+    public function getFamilyName()
     {
-        return $this->container['price_including_tax'];
+        return $this->container['family_name'];
     }
 
     /**
-     * Sets price_including_tax
+     * Sets family_name
      *
-     * @param float $price_including_tax 
+     * @param string $family_name 
      *
      * @return $this
      */
-    public function setPriceIncludingTax($price_including_tax)
+    public function setFamilyName($family_name)
     {
-        $this->container['price_including_tax'] = $price_including_tax;
+        $this->container['family_name'] = $family_name;
 
         return $this;
     }
     
 
     /**
-     * Gets product_id
+     * Gets given_name
      *
-     * @return int
+     * @return string
      */
-    public function getProductId()
+    public function getGivenName()
     {
-        return $this->container['product_id'];
+        return $this->container['given_name'];
     }
 
     /**
-     * Sets product_id
+     * Sets given_name
      *
-     * @param int $product_id 
+     * @param string $given_name 
      *
      * @return $this
      */
-    public function setProductId($product_id)
+    public function setGivenName($given_name)
     {
-        $this->container['product_id'] = $product_id;
+        $this->container['given_name'] = $given_name;
 
         return $this;
     }
     
 
     /**
-     * Gets quantity
+     * Gets organization_name
      *
-     * @return float
+     * @return string
      */
-    public function getQuantity()
+    public function getOrganizationName()
     {
-        return $this->container['quantity'];
+        return $this->container['organization_name'];
     }
 
     /**
-     * Sets quantity
+     * Sets organization_name
      *
-     * @param float $quantity 
+     * @param string $organization_name 
      *
      * @return $this
      */
-    public function setQuantity($quantity)
+    public function setOrganizationName($organization_name)
     {
-        $this->container['quantity'] = $quantity;
+        $this->container['organization_name'] = $organization_name;
 
         return $this;
     }
     
 
     /**
-     * Gets recalculate_price
+     * Gets phone_number
      *
-     * @return bool
+     * @return string
      */
-    public function getRecalculatePrice()
+    public function getPhoneNumber()
     {
-        return $this->container['recalculate_price'];
+        return $this->container['phone_number'];
     }
 
     /**
-     * Sets recalculate_price
+     * Sets phone_number
      *
-     * @param bool $recalculate_price 
+     * @param string $phone_number 
      *
      * @return $this
      */
-    public function setRecalculatePrice($recalculate_price)
+    public function setPhoneNumber($phone_number)
     {
-        $this->container['recalculate_price'] = $recalculate_price;
-
-        return $this;
-    }
-    
-
-    /**
-     * Gets tax_lines
-     *
-     * @return \Wallee\Sdk\Model\ShopifySubscriptionEditModelTaxLine[]
-     */
-    public function getTaxLines()
-    {
-        return $this->container['tax_lines'];
-    }
-
-    /**
-     * Sets tax_lines
-     *
-     * @param \Wallee\Sdk\Model\ShopifySubscriptionEditModelTaxLine[] $tax_lines 
-     *
-     * @return $this
-     */
-    public function setTaxLines($tax_lines)
-    {
-        $this->container['tax_lines'] = $tax_lines;
+        $this->container['phone_number'] = $phone_number;
 
         return $this;
     }

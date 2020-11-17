@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ class SubscriptionState
     const FAILED = 'FAILED';
     const ACTIVE = 'ACTIVE';
     const SUSPENDED = 'SUSPENDED';
+    const TERMINATION_SCHEDULED = 'TERMINATION_SCHEDULED';
     const TERMINATING = 'TERMINATING';
     const TERMINATED = 'TERMINATED';
     
@@ -55,6 +56,7 @@ class SubscriptionState
             self::FAILED,
             self::ACTIVE,
             self::SUSPENDED,
+            self::TERMINATION_SCHEDULED,
             self::TERMINATING,
             self::TERMINATED,
         ];

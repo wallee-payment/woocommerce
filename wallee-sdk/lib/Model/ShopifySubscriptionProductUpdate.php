@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace Wallee\Sdk\Model;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * ShopifySubscriptionProductActive model
+ * ShopifySubscriptionProductUpdate model
  *
  * @category    Class
  * @description 
@@ -30,7 +30,7 @@ use \Wallee\Sdk\ObjectSerializer;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class ShopifySubscriptionProductActive extends AbstractShopifySubscriptionProductActive 
+class ShopifySubscriptionProductUpdate extends AbstractShopifySubscriptionProductUpdate 
 {
     const DISCRIMINATOR = null;
 
@@ -39,7 +39,7 @@ class ShopifySubscriptionProductActive extends AbstractShopifySubscriptionProduc
       *
       * @var string
       */
-    protected static $swaggerModelName = 'ShopifySubscriptionProduct.Active';
+    protected static $swaggerModelName = 'ShopifySubscriptionProduct.Update';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

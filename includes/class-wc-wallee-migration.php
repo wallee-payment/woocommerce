@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
  *
  * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
  *
- * @author wallee AG (http://www.customweb.com/)
+ * @author wallee AG (http://www.wallee.com/)
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 /**
@@ -257,7 +257,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 	    if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 	        $row_meta = array(
-	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.3.11/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
+	            'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.4.0/docs/en/documentation.html" aria-label="' . esc_attr__('View Documentation', 'woo-wallee') . '">' . esc_html__('Documentation', 'woo-wallee') . '</a>',
 	        );
 	        
 	        return array_merge( $links, $row_meta );

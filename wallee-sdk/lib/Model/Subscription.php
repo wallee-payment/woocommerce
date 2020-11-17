@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'activated_on' => '\DateTime',
         'affiliate' => '\Wallee\Sdk\Model\SubscriptionAffiliate',
         'created_on' => '\DateTime',
+        'current_product_version' => '\Wallee\Sdk\Model\SubscriptionProductVersion',
         'description' => 'string',
         'id' => 'int',
         'initialized_on' => '\DateTime',
@@ -65,6 +66,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'terminated_by' => 'int',
         'terminated_on' => '\DateTime',
         'terminating_on' => '\DateTime',
+        'termination_scheduled_on' => '\DateTime',
         'token' => '\Wallee\Sdk\Model\Token',
         'version' => 'int'
     ];
@@ -78,6 +80,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'activated_on' => 'date-time',
         'affiliate' => null,
         'created_on' => 'date-time',
+        'current_product_version' => null,
         'description' => null,
         'id' => 'int64',
         'initialized_on' => 'date-time',
@@ -91,6 +94,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'terminated_by' => 'int64',
         'terminated_on' => 'date-time',
         'terminating_on' => 'date-time',
+        'termination_scheduled_on' => 'date-time',
         'token' => null,
         'version' => 'int32'
     ];
@@ -105,6 +109,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'activated_on' => 'activatedOn',
         'affiliate' => 'affiliate',
         'created_on' => 'createdOn',
+        'current_product_version' => 'currentProductVersion',
         'description' => 'description',
         'id' => 'id',
         'initialized_on' => 'initializedOn',
@@ -118,6 +123,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'terminated_by' => 'terminatedBy',
         'terminated_on' => 'terminatedOn',
         'terminating_on' => 'terminatingOn',
+        'termination_scheduled_on' => 'terminationScheduledOn',
         'token' => 'token',
         'version' => 'version'
     ];
@@ -131,6 +137,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'activated_on' => 'setActivatedOn',
         'affiliate' => 'setAffiliate',
         'created_on' => 'setCreatedOn',
+        'current_product_version' => 'setCurrentProductVersion',
         'description' => 'setDescription',
         'id' => 'setId',
         'initialized_on' => 'setInitializedOn',
@@ -144,6 +151,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'terminated_by' => 'setTerminatedBy',
         'terminated_on' => 'setTerminatedOn',
         'terminating_on' => 'setTerminatingOn',
+        'termination_scheduled_on' => 'setTerminationScheduledOn',
         'token' => 'setToken',
         'version' => 'setVersion'
     ];
@@ -157,6 +165,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'activated_on' => 'getActivatedOn',
         'affiliate' => 'getAffiliate',
         'created_on' => 'getCreatedOn',
+        'current_product_version' => 'getCurrentProductVersion',
         'description' => 'getDescription',
         'id' => 'getId',
         'initialized_on' => 'getInitializedOn',
@@ -170,6 +179,7 @@ class Subscription implements ModelInterface, ArrayAccess
         'terminated_by' => 'getTerminatedBy',
         'terminated_on' => 'getTerminatedOn',
         'terminating_on' => 'getTerminatingOn',
+        'termination_scheduled_on' => 'getTerminationScheduledOn',
         'token' => 'getToken',
         'version' => 'getVersion'
     ];
@@ -198,6 +208,8 @@ class Subscription implements ModelInterface, ArrayAccess
         
         $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
         
+        $this->container['current_product_version'] = isset($data['current_product_version']) ? $data['current_product_version'] : null;
+        
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
         
         $this->container['id'] = isset($data['id']) ? $data['id'] : null;
@@ -224,6 +236,8 @@ class Subscription implements ModelInterface, ArrayAccess
         
         $this->container['terminating_on'] = isset($data['terminating_on']) ? $data['terminating_on'] : null;
         
+        $this->container['termination_scheduled_on'] = isset($data['termination_scheduled_on']) ? $data['termination_scheduled_on'] : null;
+        
         $this->container['token'] = isset($data['token']) ? $data['token'] : null;
         
         $this->container['version'] = isset($data['version']) ? $data['version'] : null;
@@ -238,6 +252,14 @@ class Subscription implements ModelInterface, ArrayAccess
     public function listInvalidProperties()
     {
         $invalidProperties = [];
+
+        if (!is_null($this->container['description']) && (mb_strlen($this->container['description']) > 200)) {
+            $invalidProperties[] = "invalid value for 'description', the character length must be smaller than or equal to 200.";
+        }
+
+        if (!is_null($this->container['reference']) && (mb_strlen($this->container['reference']) > 100)) {
+            $invalidProperties[] = "invalid value for 'reference', the character length must be smaller than or equal to 100.";
+        }
 
         return $invalidProperties;
     }
@@ -395,6 +417,31 @@ class Subscription implements ModelInterface, ArrayAccess
     
 
     /**
+     * Gets current_product_version
+     *
+     * @return \Wallee\Sdk\Model\SubscriptionProductVersion
+     */
+    public function getCurrentProductVersion()
+    {
+        return $this->container['current_product_version'];
+    }
+
+    /**
+     * Sets current_product_version
+     *
+     * @param \Wallee\Sdk\Model\SubscriptionProductVersion $current_product_version 
+     *
+     * @return $this
+     */
+    public function setCurrentProductVersion($current_product_version)
+    {
+        $this->container['current_product_version'] = $current_product_version;
+
+        return $this;
+    }
+    
+
+    /**
      * Gets description
      *
      * @return string
@@ -413,6 +460,10 @@ class Subscription implements ModelInterface, ArrayAccess
      */
     public function setDescription($description)
     {
+        if (!is_null($description) && (mb_strlen($description) > 200)) {
+            throw new \InvalidArgumentException('invalid length for $description when calling Subscription., must be smaller than or equal to 200.');
+        }
+
         $this->container['description'] = $description;
 
         return $this;
@@ -588,6 +639,10 @@ class Subscription implements ModelInterface, ArrayAccess
      */
     public function setReference($reference)
     {
+        if (!is_null($reference) && (mb_strlen($reference) > 100)) {
+            throw new \InvalidArgumentException('invalid length for $reference when calling Subscription., must be smaller than or equal to 100.');
+        }
+
         $this->container['reference'] = $reference;
 
         return $this;
@@ -714,6 +769,31 @@ class Subscription implements ModelInterface, ArrayAccess
     public function setTerminatingOn($terminating_on)
     {
         $this->container['terminating_on'] = $terminating_on;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets termination_scheduled_on
+     *
+     * @return \DateTime
+     */
+    public function getTerminationScheduledOn()
+    {
+        return $this->container['termination_scheduled_on'];
+    }
+
+    /**
+     * Sets termination_scheduled_on
+     *
+     * @param \DateTime $termination_scheduled_on 
+     *
+     * @return $this
+     */
+    public function setTerminationScheduledOn($termination_scheduled_on)
+    {
+        $this->container['termination_scheduled_on'] = $termination_scheduled_on;
 
         return $this;
     }

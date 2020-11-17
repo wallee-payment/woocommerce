@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace Wallee\Sdk\Model;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * ShopifyIntegrationAppVersion model
+ * ShopifyIntegrationPaymentAppVersion model
  *
  * @category    Class
  * @description 
@@ -30,13 +30,11 @@ use \Wallee\Sdk\ObjectSerializer;
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class ShopifyIntegrationAppVersion
+class ShopifyIntegrationPaymentAppVersion
 {
     /**
      * Possible values of this enum
      */
-    const BASIC = 'BASIC';
-    const SUBSCRIPTION = 'SUBSCRIPTION';
     const API_2019_07 = 'API_2019_07';
     
     /**
@@ -46,8 +44,6 @@ class ShopifyIntegrationAppVersion
     public static function getAllowableEnumValues()
     {
         return [
-            self::BASIC,
-            self::SUBSCRIPTION,
             self::API_2019_07,
         ];
     }

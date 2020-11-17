@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,11 @@ class ShopifySubscriptionAddress extends Address
       * @var string[]
       */
     protected static $swaggerTypes = [
-        
+        'city' => 'string',
+        'country' => 'string',
+        'family_name' => 'string',
+        'postcode' => 'string',
+        'street' => 'string'
     ];
 
     /**
@@ -56,7 +60,11 @@ class ShopifySubscriptionAddress extends Address
       * @var string[]
       */
     protected static $swaggerFormats = [
-        
+        'city' => null,
+        'country' => null,
+        'family_name' => null,
+        'postcode' => null,
+        'street' => null
     ];
 
     /**
@@ -66,7 +74,11 @@ class ShopifySubscriptionAddress extends Address
      * @var string[]
      */
     protected static $attributeMap = [
-        
+        'city' => 'city',
+        'country' => 'country',
+        'family_name' => 'familyName',
+        'postcode' => 'postcode',
+        'street' => 'street'
     ];
 
     /**
@@ -75,7 +87,11 @@ class ShopifySubscriptionAddress extends Address
      * @var string[]
      */
     protected static $setters = [
-        
+        'city' => 'setCity',
+        'country' => 'setCountry',
+        'family_name' => 'setFamilyName',
+        'postcode' => 'setPostcode',
+        'street' => 'setStreet'
     ];
 
     /**
@@ -84,7 +100,11 @@ class ShopifySubscriptionAddress extends Address
      * @var string[]
      */
     protected static $getters = [
-        
+        'city' => 'getCity',
+        'country' => 'getCountry',
+        'family_name' => 'getFamilyName',
+        'postcode' => 'getPostcode',
+        'street' => 'getStreet'
     ];
 
     
@@ -100,6 +120,16 @@ class ShopifySubscriptionAddress extends Address
     {
         parent::__construct($data);
 
+        
+        $this->container['city'] = isset($data['city']) ? $data['city'] : null;
+        
+        $this->container['country'] = isset($data['country']) ? $data['country'] : null;
+        
+        $this->container['family_name'] = isset($data['family_name']) ? $data['family_name'] : null;
+        
+        $this->container['postcode'] = isset($data['postcode']) ? $data['postcode'] : null;
+        
+        $this->container['street'] = isset($data['street']) ? $data['street'] : null;
         
     }
 
@@ -190,6 +220,131 @@ class ShopifySubscriptionAddress extends Address
         return count($this->listInvalidProperties()) === 0;
     }
 
+    
+
+    /**
+     * Gets city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->container['city'];
+    }
+
+    /**
+     * Sets city
+     *
+     * @param string $city 
+     *
+     * @return $this
+     */
+    public function setCity($city)
+    {
+        $this->container['city'] = $city;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->container['country'];
+    }
+
+    /**
+     * Sets country
+     *
+     * @param string $country 
+     *
+     * @return $this
+     */
+    public function setCountry($country)
+    {
+        $this->container['country'] = $country;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets family_name
+     *
+     * @return string
+     */
+    public function getFamilyName()
+    {
+        return $this->container['family_name'];
+    }
+
+    /**
+     * Sets family_name
+     *
+     * @param string $family_name 
+     *
+     * @return $this
+     */
+    public function setFamilyName($family_name)
+    {
+        $this->container['family_name'] = $family_name;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets postcode
+     *
+     * @return string
+     */
+    public function getPostcode()
+    {
+        return $this->container['postcode'];
+    }
+
+    /**
+     * Sets postcode
+     *
+     * @param string $postcode 
+     *
+     * @return $this
+     */
+    public function setPostcode($postcode)
+    {
+        $this->container['postcode'] = $postcode;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets street
+     *
+     * @return string
+     */
+    public function getStreet()
+    {
+        return $this->container['street'];
+    }
+
+    /**
+     * Sets street
+     *
+     * @param string $street 
+     *
+     * @return $this
+     */
+    public function setStreet($street)
+    {
+        $this->container['street'] = $street;
+
+        return $this;
+    }
     
     /**
      * Returns true if offset exists. False otherwise.

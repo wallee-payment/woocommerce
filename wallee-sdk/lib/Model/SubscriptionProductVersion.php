@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,6 +68,7 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
         'retiring_finished_on' => '\DateTime',
         'retiring_started_on' => '\DateTime',
         'state' => '\Wallee\Sdk\Model\SubscriptionProductVersionState',
+        'tax_calculation' => '\Wallee\Sdk\Model\TaxCalculation',
         'version' => 'int'
     ];
 
@@ -96,6 +97,7 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
         'retiring_finished_on' => 'date-time',
         'retiring_started_on' => 'date-time',
         'state' => null,
+        'tax_calculation' => null,
         'version' => 'int32'
     ];
 
@@ -125,6 +127,7 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
         'retiring_finished_on' => 'retiringFinishedOn',
         'retiring_started_on' => 'retiringStartedOn',
         'state' => 'state',
+        'tax_calculation' => 'taxCalculation',
         'version' => 'version'
     ];
 
@@ -153,6 +156,7 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
         'retiring_finished_on' => 'setRetiringFinishedOn',
         'retiring_started_on' => 'setRetiringStartedOn',
         'state' => 'setState',
+        'tax_calculation' => 'setTaxCalculation',
         'version' => 'setVersion'
     ];
 
@@ -181,6 +185,7 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
         'retiring_finished_on' => 'getRetiringFinishedOn',
         'retiring_started_on' => 'getRetiringStartedOn',
         'state' => 'getState',
+        'tax_calculation' => 'getTaxCalculation',
         'version' => 'getVersion'
     ];
 
@@ -240,6 +245,8 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
         
         $this->container['state'] = isset($data['state']) ? $data['state'] : null;
         
+        $this->container['tax_calculation'] = isset($data['tax_calculation']) ? $data['tax_calculation'] : null;
+        
         $this->container['version'] = isset($data['version']) ? $data['version'] : null;
         
     }
@@ -252,6 +259,10 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
     public function listInvalidProperties()
     {
         $invalidProperties = [];
+
+        if (!is_null($this->container['reference']) && (mb_strlen($this->container['reference']) > 125)) {
+            $invalidProperties[] = "invalid value for 'reference', the character length must be smaller than or equal to 125.";
+        }
 
         return $invalidProperties;
     }
@@ -727,6 +738,10 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
      */
     public function setReference($reference)
     {
+        if (!is_null($reference) && (mb_strlen($reference) > 125)) {
+            throw new \InvalidArgumentException('invalid length for $reference when calling SubscriptionProductVersion., must be smaller than or equal to 125.');
+        }
+
         $this->container['reference'] = $reference;
 
         return $this;
@@ -803,6 +818,31 @@ class SubscriptionProductVersion implements ModelInterface, ArrayAccess
     public function setState($state)
     {
         $this->container['state'] = $state;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets tax_calculation
+     *
+     * @return \Wallee\Sdk\Model\TaxCalculation
+     */
+    public function getTaxCalculation()
+    {
+        return $this->container['tax_calculation'];
+    }
+
+    /**
+     * Sets tax_calculation
+     *
+     * @param \Wallee\Sdk\Model\TaxCalculation $tax_calculation Strategy that is used for tax calculation in fees.
+     *
+     * @return $this
+     */
+    public function setTaxCalculation($tax_calculation)
+    {
+        $this->container['tax_calculation'] = $tax_calculation;
 
         return $this;
     }

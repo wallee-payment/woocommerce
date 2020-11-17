@@ -1,8 +1,8 @@
 <?php
 /**
- *  SDK
+ * wallee SDK
  *
- * This library allows to interact with the  payment service.
+ * This library allows to interact with the wallee payment service.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,6 +117,10 @@ class SubscriptionProductCreate extends AbstractSubscriptionProductActive
         if ($this->container['reference'] === null) {
             $invalidProperties[] = "'reference' can't be null";
         }
+        if ((mb_strlen($this->container['reference']) > 100)) {
+            $invalidProperties[] = "invalid value for 'reference', the character length must be smaller than or equal to 100.";
+        }
+
         return $invalidProperties;
     }
 
@@ -216,6 +220,10 @@ class SubscriptionProductCreate extends AbstractSubscriptionProductActive
      */
     public function setReference($reference)
     {
+        if ((mb_strlen($reference) > 100)) {
+            throw new \InvalidArgumentException('invalid length for $reference when calling SubscriptionProductCreate., must be smaller than or equal to 100.');
+        }
+
         $this->container['reference'] = $reference;
 
         return $this;
