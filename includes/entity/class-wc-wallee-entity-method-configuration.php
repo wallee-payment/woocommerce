@@ -52,7 +52,7 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 	}
 
 	protected static function get_table_name(){
-		return 'woocommerce_wallee_method_configuration';
+		return 'wc_wallee_method_config';
 	}
 	
 	public static function load_by_configuration($space_id, $configuration_id){

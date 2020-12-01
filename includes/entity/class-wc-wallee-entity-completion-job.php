@@ -55,7 +55,7 @@ class WC_Wallee_Entity_Completion_Job extends WC_Wallee_Entity_Abstract {
 	}
 
 	protected static function get_table_name(){
-		return 'woocommerce_wallee_completion_job';
+		return 'wc_wallee_completion_job';
 	}
 
 	/**

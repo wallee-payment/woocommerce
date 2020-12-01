@@ -48,7 +48,7 @@ class WC_Wallee_Entity_Void_Job extends WC_Wallee_Entity_Abstract {
 	}
 
 	protected static function get_table_name(){
-		return 'woocommerce_wallee_void_job';
+		return 'wc_wallee_void_job';
 	}
 
 	/**

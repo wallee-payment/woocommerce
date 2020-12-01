@@ -13,7 +13,7 @@ This repository contains the wallee WooCommerce plugin that enables WooCommerce 
 
 ## Documentation
 
-* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.4.0/docs/en/documentation.html)
+* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.5.0/docs/en/documentation.html)
 
 ## Support
 
@@ -22,7 +22,7 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 ## License
 
-Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/1.4.0/LICENSE) for more information.
+Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/1.5.0/LICENSE) for more information.
 
 
 

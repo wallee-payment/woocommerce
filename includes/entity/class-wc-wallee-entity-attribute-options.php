@@ -37,7 +37,7 @@ class WC_Wallee_Entity_Attribute_Options extends WC_Wallee_Entity_Abstract {
 	}
 
 	protected static function get_table_name(){
-		return 'woocommerce_wallee_attribute_options';
+		return 'wc_wallee_attribute_options';
 	}
 
 	protected function prepare_base_fields_for_storage(&$data_array, &$type_array){
