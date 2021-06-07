@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/wallee-payment/woocommerce.svg?branch=master)](https://travis-ci.org/wallee-payment/woocommerce)
 
+
+
 # wallee Woocommerce
 This repository contains the wallee WooCommerce plugin that enables WooCommerce to process payments with [wallee](https://www.wallee.com).
 
@@ -13,7 +15,7 @@ This repository contains the wallee WooCommerce plugin that enables WooCommerce 
 
 ## Documentation
 
-* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.5.2/docs/en/documentation.html)
+* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.5.3/docs/en/documentation.html)
 
 ## Support
 
@@ -22,8 +24,4 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 ## License
 
-Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/1.5.2/LICENSE) for more information.
-
-
-
-
+Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/1.5.3/LICENSE) for more information.
