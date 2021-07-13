@@ -62,7 +62,14 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 				array(
 				    \Wallee\Sdk\Model\DeliveryIndicationState::MANUAL_CHECK_REQUIRED 
 				), 'WC_Wallee_Webhook_Delivery_Indication');
-		
+
+		$this->webhook_entities[1472041816898] = new WC_Wallee_Webhook_Entity(1472041816898, 'Transaction Invoice',
+			array(
+				\Wallee\Sdk\Model\TransactionInvoiceState::NOT_APPLICABLE,
+				\Wallee\Sdk\Model\TransactionInvoiceState::PAID,
+				\Wallee\Sdk\Model\TransactionInvoiceState::DERECOGNIZED,
+			), 'WC_Wallee_Webhook_Transaction_Invoice');
+
 	    $this->webhook_entities[1472041831364] = new WC_Wallee_Webhook_Entity(1472041831364, 'Transaction Completion', 
 				array(
 				    \Wallee\Sdk\Model\TransactionCompletionState::FAILED,
