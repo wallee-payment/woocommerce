@@ -53,6 +53,7 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
         'created_on' => '\DateTime',
         'external_id' => 'string',
         'id' => 'int',
+        'initial_execution_date' => '\DateTime',
         'initial_payment_transaction' => 'int',
         'initial_shopify_transaction' => 'int',
         'language' => 'string',
@@ -77,6 +78,7 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
         'created_on' => 'date-time',
         'external_id' => null,
         'id' => 'int64',
+        'initial_execution_date' => 'date-time',
         'initial_payment_transaction' => 'int64',
         'initial_shopify_transaction' => 'int64',
         'language' => null,
@@ -102,6 +104,7 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
         'created_on' => 'createdOn',
         'external_id' => 'externalId',
         'id' => 'id',
+        'initial_execution_date' => 'initialExecutionDate',
         'initial_payment_transaction' => 'initialPaymentTransaction',
         'initial_shopify_transaction' => 'initialShopifyTransaction',
         'language' => 'language',
@@ -126,6 +129,7 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
         'created_on' => 'setCreatedOn',
         'external_id' => 'setExternalId',
         'id' => 'setId',
+        'initial_execution_date' => 'setInitialExecutionDate',
         'initial_payment_transaction' => 'setInitialPaymentTransaction',
         'initial_shopify_transaction' => 'setInitialShopifyTransaction',
         'language' => 'setLanguage',
@@ -150,6 +154,7 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
         'created_on' => 'getCreatedOn',
         'external_id' => 'getExternalId',
         'id' => 'getId',
+        'initial_execution_date' => 'getInitialExecutionDate',
         'initial_payment_transaction' => 'getInitialPaymentTransaction',
         'initial_shopify_transaction' => 'getInitialShopifyTransaction',
         'language' => 'getLanguage',
@@ -189,6 +194,8 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
         $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
         
         $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['initial_execution_date'] = isset($data['initial_execution_date']) ? $data['initial_execution_date'] : null;
         
         $this->container['initial_payment_transaction'] = isset($data['initial_payment_transaction']) ? $data['initial_payment_transaction'] : null;
         
@@ -415,6 +422,31 @@ class ShopifySubscription implements ModelInterface, ArrayAccess
     public function setId($id)
     {
         $this->container['id'] = $id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets initial_execution_date
+     *
+     * @return \DateTime
+     */
+    public function getInitialExecutionDate()
+    {
+        return $this->container['initial_execution_date'];
+    }
+
+    /**
+     * Sets initial_execution_date
+     *
+     * @param \DateTime $initial_execution_date 
+     *
+     * @return $this
+     */
+    public function setInitialExecutionDate($initial_execution_date)
+    {
+        $this->container['initial_execution_date'] = $initial_execution_date;
 
         return $this;
     }

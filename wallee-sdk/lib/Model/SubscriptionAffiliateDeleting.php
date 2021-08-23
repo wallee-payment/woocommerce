@@ -112,6 +112,22 @@ class SubscriptionAffiliateDeleting extends SubscriptionAffiliateDeleted
     {
         $invalidProperties = parent::listInvalidProperties();
 
+        if (!is_null($this->container['name']) && (mb_strlen($this->container['name']) > 255)) {
+            $invalidProperties[] = "invalid value for 'name', the character length must be smaller than or equal to 255.";
+        }
+
+        if (!is_null($this->container['name']) && (mb_strlen($this->container['name']) < 3)) {
+            $invalidProperties[] = "invalid value for 'name', the character length must be bigger than or equal to 3.";
+        }
+
+        if (!is_null($this->container['reference']) && (mb_strlen($this->container['reference']) > 100)) {
+            $invalidProperties[] = "invalid value for 'reference', the character length must be smaller than or equal to 100.";
+        }
+
+        if (!is_null($this->container['reference']) && (mb_strlen($this->container['reference']) < 3)) {
+            $invalidProperties[] = "invalid value for 'reference', the character length must be bigger than or equal to 3.";
+        }
+
         return $invalidProperties;
     }
 

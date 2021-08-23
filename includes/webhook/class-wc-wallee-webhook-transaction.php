@@ -18,7 +18,11 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	/**
 	 *
 	 * @see WC_Wallee_Webhook_Order_Related_Abstract::load_entity()
+	 *
+	 * @param \WC_Wallee_Webhook_Request $request
+	 *
 	 * @return \Wallee\Sdk\Model\Transaction
+	 * @throws \Exception
 	 */
     protected function load_entity(WC_Wallee_Webhook_Request $request){
         $transaction_service = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
@@ -42,7 +46,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		if ($transaction->getState() != $transaction_info->get_state()) {
 			switch ($transaction->getState()) {
 			    case \Wallee\Sdk\Model\TransactionState::CONFIRMED:
-			    case \Wallee\Sdk\Model\TransactionState::PROCESSING:					
+			    case \Wallee\Sdk\Model\TransactionState::PROCESSING:
 					$this->confirm($transaction, $order);
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::AUTHORIZED:
@@ -53,6 +57,9 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::FAILED:
 					$this->failed($transaction, $order);
+					break;
+				case \Wallee\Sdk\Model\TransactionState::FULFILL:
+					$this->authorize($transaction, $order);
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::VOIDED:
 					$this->voided($transaction, $order);
@@ -66,7 +73,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 					break;
 			}
 		}
-		
+
 		WC_Wallee_Service_Transaction::instance()->update_transaction_info($transaction, $order);
 	}
 
@@ -80,11 +87,15 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	   }
 	}
 
+	/**
+	 * @param \Wallee\Sdk\Model\Transaction $transaction
+	 * @param \WC_Order                                    $order
+	 */
 	protected function authorize(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
-	    if (!$order->get_meta("_wallee_authorized", true)) {
+	    if (!$order->get_meta('_wallee_authorized', true)) {
     	    do_action('wc_wallee_authorized', $transaction , $order);
     		$status = apply_filters('wc_wallee_authorized_status', 'on-hold', $order);
-    		$order->add_meta_data("_wallee_authorized", "true", true);
+    		$order->add_meta_data('_wallee_authorized', 'true', true);
     		$order->update_status($status);
     		wc_maybe_reduce_stock_levels($order->get_id());
     		if (isset(WC()->cart)) {
@@ -97,7 +108,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		if (!$order->get_meta('_wallee_manual_check', true)) {
 		    do_action('wc_wallee_completed', $transaction , $order);
 			$status = apply_filters('wc_wallee_completed_status', 'wallee-waiting', $order);
-			$order->update_status($status);	
+			$order->update_status($status);
 		}
 	}
 

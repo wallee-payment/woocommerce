@@ -54,6 +54,7 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
         'amount_including_tax' => 'float',
         'created_by' => 'int',
         'created_on' => '\DateTime',
+        'discount_including_tax' => 'float',
         'external_id' => 'string',
         'id' => 'int',
         'linked_space_id' => 'int',
@@ -78,6 +79,7 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
         'amount_including_tax' => null,
         'created_by' => 'int64',
         'created_on' => 'date-time',
+        'discount_including_tax' => null,
         'external_id' => null,
         'id' => 'int64',
         'linked_space_id' => 'int64',
@@ -103,6 +105,7 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
         'amount_including_tax' => 'amountIncludingTax',
         'created_by' => 'createdBy',
         'created_on' => 'createdOn',
+        'discount_including_tax' => 'discountIncludingTax',
         'external_id' => 'externalId',
         'id' => 'id',
         'linked_space_id' => 'linkedSpaceId',
@@ -127,6 +130,7 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
         'amount_including_tax' => 'setAmountIncludingTax',
         'created_by' => 'setCreatedBy',
         'created_on' => 'setCreatedOn',
+        'discount_including_tax' => 'setDiscountIncludingTax',
         'external_id' => 'setExternalId',
         'id' => 'setId',
         'linked_space_id' => 'setLinkedSpaceId',
@@ -151,6 +155,7 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
         'amount_including_tax' => 'getAmountIncludingTax',
         'created_by' => 'getCreatedBy',
         'created_on' => 'getCreatedOn',
+        'discount_including_tax' => 'getDiscountIncludingTax',
         'external_id' => 'getExternalId',
         'id' => 'getId',
         'linked_space_id' => 'getLinkedSpaceId',
@@ -191,6 +196,8 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
         $this->container['created_by'] = isset($data['created_by']) ? $data['created_by'] : null;
         
         $this->container['created_on'] = isset($data['created_on']) ? $data['created_on'] : null;
+        
+        $this->container['discount_including_tax'] = isset($data['discount_including_tax']) ? $data['discount_including_tax'] : null;
         
         $this->container['external_id'] = isset($data['external_id']) ? $data['external_id'] : null;
         
@@ -439,6 +446,31 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
     
 
     /**
+     * Gets discount_including_tax
+     *
+     * @return float
+     */
+    public function getDiscountIncludingTax()
+    {
+        return $this->container['discount_including_tax'];
+    }
+
+    /**
+     * Sets discount_including_tax
+     *
+     * @param float $discount_including_tax 
+     *
+     * @return $this
+     */
+    public function setDiscountIncludingTax($discount_including_tax)
+    {
+        $this->container['discount_including_tax'] = $discount_including_tax;
+
+        return $this;
+    }
+    
+
+    /**
      * Gets external_id
      *
      * @return string
@@ -451,7 +483,7 @@ class SubscriptionLedgerEntry implements ModelInterface, ArrayAccess
     /**
      * Sets external_id
      *
-     * @param string $external_id The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
+     * @param string $external_id A client generated nonce which identifies the entity to be created. Subsequent creation requests with the same external ID will not create new entities but return the initially created entity instead.
      *
      * @return $this
      */

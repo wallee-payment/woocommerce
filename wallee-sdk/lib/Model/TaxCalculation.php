@@ -35,8 +35,8 @@ class TaxCalculation
     /**
      * Possible values of this enum
      */
-    const INCLUDED = 'TAX_INCLUDED';
-    const NOT_INCLUDED = 'TAX_NOT_INCLUDED';
+    const TAX_INCLUDED = 'TAX_INCLUDED';
+    const TAX_NOT_INCLUDED = 'TAX_NOT_INCLUDED';
     
     /**
      * Gets allowable values of the enum
@@ -45,8 +45,8 @@ class TaxCalculation
     public static function getAllowableEnumValues()
     {
         return [
-            self::INCLUDED,
-            self::NOT_INCLUDED,
+            self::TAX_INCLUDED,
+            self::TAX_NOT_INCLUDED,
         ];
     }
 }

@@ -48,8 +48,7 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
       */
     protected static $swaggerTypes = [
         'external_id' => 'string',
-        'reference' => 'string',
-        'state' => '\Wallee\Sdk\Model\CreationEntityState'
+        'reference' => 'string'
     ];
 
     /**
@@ -59,8 +58,7 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
       */
     protected static $swaggerFormats = [
         'external_id' => null,
-        'reference' => null,
-        'state' => null
+        'reference' => null
     ];
 
     /**
@@ -71,8 +69,7 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
      */
     protected static $attributeMap = [
         'external_id' => 'externalId',
-        'reference' => 'reference',
-        'state' => 'state'
+        'reference' => 'reference'
     ];
 
     /**
@@ -82,8 +79,7 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
      */
     protected static $setters = [
         'external_id' => 'setExternalId',
-        'reference' => 'setReference',
-        'state' => 'setState'
+        'reference' => 'setReference'
     ];
 
     /**
@@ -93,8 +89,7 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
      */
     protected static $getters = [
         'external_id' => 'getExternalId',
-        'reference' => 'getReference',
-        'state' => 'getState'
+        'reference' => 'getReference'
     ];
 
     
@@ -115,8 +110,6 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
         
         $this->container['reference'] = isset($data['reference']) ? $data['reference'] : null;
         
-        $this->container['state'] = isset($data['state']) ? $data['state'] : null;
-        
     }
 
     /**
@@ -128,17 +121,17 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
     {
         $invalidProperties = parent::listInvalidProperties();
 
+        if (!is_null($this->container['name']) && (mb_strlen($this->container['name']) > 255)) {
+            $invalidProperties[] = "invalid value for 'name', the character length must be smaller than or equal to 255.";
+        }
+
+        if (!is_null($this->container['name']) && (mb_strlen($this->container['name']) < 3)) {
+            $invalidProperties[] = "invalid value for 'name', the character length must be bigger than or equal to 3.";
+        }
+
         if ($this->container['external_id'] === null) {
             $invalidProperties[] = "'external_id' can't be null";
         }
-        if ((mb_strlen($this->container['external_id']) > 100)) {
-            $invalidProperties[] = "invalid value for 'external_id', the character length must be smaller than or equal to 100.";
-        }
-
-        if ((mb_strlen($this->container['external_id']) < 1)) {
-            $invalidProperties[] = "invalid value for 'external_id', the character length must be bigger than or equal to 1.";
-        }
-
         if ($this->container['reference'] === null) {
             $invalidProperties[] = "'reference' can't be null";
         }
@@ -243,19 +236,12 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
     /**
      * Sets external_id
      *
-     * @param string $external_id The external id helps to identify the entity and a subsequent creation of an entity with the same ID will not create a new entity.
+     * @param string $external_id A client generated nonce which identifies the entity to be created. Subsequent creation requests with the same external ID will not create new entities but return the initially created entity instead.
      *
      * @return $this
      */
     public function setExternalId($external_id)
     {
-        if ((mb_strlen($external_id) > 100)) {
-            throw new \InvalidArgumentException('invalid length for $external_id when calling SubscriptionAffiliateCreate., must be smaller than or equal to 100.');
-        }
-        if ((mb_strlen($external_id) < 1)) {
-            throw new \InvalidArgumentException('invalid length for $external_id when calling SubscriptionAffiliateCreate., must be bigger than or equal to 1.');
-        }
-
         $this->container['external_id'] = $external_id;
 
         return $this;
@@ -289,31 +275,6 @@ class SubscriptionAffiliateCreate extends AbstractSubscriptionAffiliateUpdate
         }
 
         $this->container['reference'] = $reference;
-
-        return $this;
-    }
-    
-
-    /**
-     * Gets state
-     *
-     * @return \Wallee\Sdk\Model\CreationEntityState
-     */
-    public function getState()
-    {
-        return $this->container['state'];
-    }
-
-    /**
-     * Sets state
-     *
-     * @param \Wallee\Sdk\Model\CreationEntityState $state 
-     *
-     * @return $this
-     */
-    public function setState($state)
-    {
-        $this->container['state'] = $state;
 
         return $this;
     }
