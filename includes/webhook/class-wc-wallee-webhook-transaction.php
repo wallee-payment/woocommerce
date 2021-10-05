@@ -60,6 +60,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 					break;
 				case \Wallee\Sdk\Model\TransactionState::FULFILL:
 					$this->authorize($transaction, $order);
+					$this->fulfill($transaction, $order);
 					break;
 			    case \Wallee\Sdk\Model\TransactionState::VOIDED:
 					$this->voided($transaction, $order);
@@ -126,6 +127,13 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
     		$order->update_status($status);
     		WC_Wallee_Helper::instance()->maybe_restock_items_for_order($order);
 	    }
+	}
+
+	protected function fulfill(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){
+		do_action('wc_wallee_fulfill', $transaction , $order);
+		//Sets the status to procesing or complete depending on items
+		$order->payment_complete($transaction->getId());
+
 	}
 
 	protected function voided(\Wallee\Sdk\Model\Transaction $transaction, WC_Order $order){

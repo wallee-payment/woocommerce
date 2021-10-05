@@ -53,6 +53,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 				    \Wallee\Sdk\Model\TransactionState::AUTHORIZED,
 				    \Wallee\Sdk\Model\TransactionState::DECLINE,
 				    \Wallee\Sdk\Model\TransactionState::FAILED,
+					\Wallee\Sdk\Model\TransactionState::FULFILL,
 				    \Wallee\Sdk\Model\TransactionState::VOIDED,
 				    \Wallee\Sdk\Model\TransactionState::COMPLETED,
 				    \Wallee\Sdk\Model\TransactionState::PROCESSING
