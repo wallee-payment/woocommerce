@@ -348,7 +348,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 			if(is_cart() || is_checkout()){
 				$unique_id = $_COOKIE['wc_wallee_device_id'];
 				$space_id = get_option(WooCommerce_Wallee::CK_SPACE_ID);
-				$script_url = WC_Wallee_Helper::instance()->get_base_gateway_url() . '/s/' . 
+				$script_url = WC_Wallee_Helper::instance()->get_base_gateway_url() . 's/' . 
 						$space_id. '/payment/device.js?sessionIdentifier=' .
 						$unique_id;
 				wp_enqueue_script('wallee-device-id-js', $script_url, array(), null, true);
