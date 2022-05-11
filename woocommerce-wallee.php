@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 1.7.12
+ * Version: 1.7.13
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: wallee AG
@@ -38,6 +38,7 @@ if (!class_exists('WooCommerce_Wallee')) {
         const CK_CUSTOMER_PACKING = 'wc_wallee_customer_packing';
         const CK_SHOP_EMAIL = 'wc_wallee_shop_email';
         const CK_INTEGRATION = 'wc_wallee_integration';
+		const CK_ORDER_REFERENCE = 'wc_wallee_order_reference';
         const CK_ENFORCE_CONSISTENCY = 'wc_wallee_enforce_consistency';
         
 		/**
@@ -45,7 +46,7 @@ if (!class_exists('WooCommerce_Wallee')) {
 		 *
 		 * @var string
 		 */
-		private $version = '1.7.12';
+		private $version = '1.7.13';
 		
 		/**
 		 * The single instance of the class.

@@ -138,7 +138,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 		    array(
 		        'links' => array(
-		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.7.12/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
+		            'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.7.13/docs/en/documentation.html' => __('Documentation', 'woo-wallee'),
 		            'https://app-wallee.com/user/signup' => __('Sign Up', 'woo-wallee')
 		        ),
 		        'type' => 'wallee_links',
@@ -265,8 +265,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
                 'css' => 'min-width:300px;',
                 'default' => WC_Wallee_Integration::IFRAME,
                 'options' => array(
-                    WC_Wallee_Integration::IFRAME => __(WC_Wallee_Integration::IFRAME, 'woo-wallee'),
-                    WC_Wallee_Integration::LIGHTBOX  => __(WC_Wallee_Integration::LIGHTBOX, 'woo-wallee'),
+                    WC_Wallee_Integration::IFRAME => $this->format_display_string(__(WC_Wallee_Integration::IFRAME, 'woo-wallee')),
+                    WC_Wallee_Integration::LIGHTBOX  => $this->format_display_string(__(WC_Wallee_Integration::LIGHTBOX, 'woo-wallee')),
                 ),
             ),
 
@@ -295,9 +295,38 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
                 'id' => 'line_items_options'
             ),
 
+            array(
+                'title' => __('Reference Options', 'woo-wallee'),
+                'type' => 'title',
+                'id' => 'reference_options'
+            ),
+
+
+            array(
+                'title' => __('Order Reference Type', 'woo-wallee'),
+                'desc_tip' => __('Choose which order reference is sent.', 'woo-wallee'),
+                'id' => WooCommerce_Wallee::CK_ORDER_REFERENCE,
+                'type' => 'select',
+                'css' => 'min-width:300px;',
+                'default' => WC_Wallee_Order_Reference::ORDER_ID,
+                'options' => array(
+                    WC_Wallee_Order_Reference::ORDER_ID => $this->format_display_string(__(WC_Wallee_Order_Reference::ORDER_ID, 'woo-wallee')),
+                    WC_Wallee_Order_Reference::ORDER_NUMBER  => $this->format_display_string(__(WC_Wallee_Order_Reference::ORDER_NUMBER, 'woo-wallee')),
+                ),
+            ),
+
+            array(
+                'type' => 'sectionend',
+                'id' => 'reference_options'
+            ),
+
 
         );
 		
 		return apply_filters('wc_wallee_settings', $settings);
+	}
+
+	private function format_display_string($display_string){
+		return ucwords(str_replace("_", " ", $display_string));
 	}
 }
