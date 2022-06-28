@@ -267,7 +267,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			$line_item->setQuantity($quantity);
 			
 			$product = $item->get_product();
-			$product_name = $product->get_name();
+			$product_name = $item->get_name();
 			$name = isset($translations[$product_name]) && !empty($translations[$product_name]) ? $translations[$product_name] : $product_name;
 			$sku = null;
 			if (is_bool($product)) {
