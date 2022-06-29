@@ -5,7 +5,7 @@
 # wallee Woocommerce
 This repository contains the wallee WooCommerce plugin that enables WooCommerce to process payments with [wallee](https://www.wallee.com).
 
-##### To use this extension, a [wallee](https://www.wallee.com) account is required.
+##### To use this extension, a [wallee](https://app-wallee.com/user/signup)  account is required.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ This repository contains the wallee WooCommerce plugin that enables WooCommerce 
 
 ## Documentation
 
-* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.7.17/docs/en/documentation.html)
+* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.7.18/docs/en/documentation.html)
 
 ## Support
 
@@ -24,4 +24,4 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 ## License
 
-Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/1.7.17/LICENSE) for more information.
+Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/1.7.18/LICENSE) for more information.
