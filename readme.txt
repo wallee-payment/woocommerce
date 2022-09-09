@@ -1,9 +1,9 @@
-=== WooCommerce wallee ===
+=== wallee ===
 Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
-Tested up to: 5.8
-Stable tag: 1.7.18
+Tested up to: 6.0.2
+Stable tag: 1.7.19
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -13,7 +13,7 @@ Accept payments in WooCommerce with wallee.
 
 Website: [https://www.wallee.com](https://www.wallee.com)
 
-The WooCommerce plugin offers an easy and convenient way to accept credit cards and all 
+The plugin offers an easy and convenient way to accept credit cards and all
 other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout 
 and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but 
 the look and feel can be changed according the merchants needs. 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.7.18/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/1.7.19/docs/en/documentation.html).
 
 == Support ==
 
@@ -39,8 +39,8 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 = Automatic installation =
 
-1. Install the plugin via Plugins -> New plugin. Search for 'Woocommerce wallee'.
-2. Activate the 'WooCommerce wallee' plugin through the 'Plugins' menu in WordPress
+1. Install the plugin via Plugins -> New plugin. Search for 'wallee'.
+2. Activate the 'wallee' plugin through the 'Plugins' menu in WordPress
 3. Set your wallee credentials at WooCommerce -> Settings -> wallee (or use the *Settings* link in the Plugins overview)
 4. You're done, the active payment methods should be visible in the checkout of your webshop.
 
@@ -48,12 +48,12 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 1. Unpack the downloaded package.
 2. Upload the directory to the `/wp-content/plugins/` directory
-3. Activate the 'WooCommerce wallee' plugin through the 'Plugins' menu in WordPress
-4. Set your wallee credentials at WooCommerce -> Settings -> wallee (or use the *Settings* link in the Plugins overview)
+3. Activate the 'wallee' plugin through the 'Plugins' menu in WordPress
+4. Set your credentials at WooCommerce -> Settings -> wallee (or use the *Settings* link in the Plugins overview)
 5. You're done, the active payment methods should be visible in the checkout of your webshop.
 
 
 == Changelog ==
 
  
-improve links on readme
+trademark requirements fix
