@@ -63,7 +63,7 @@ class WC_Wallee_Admin_Order_Void {
 		
 		$order_id = absint($_POST['order_id']);
 		
-		$restock_void_items = 'true' === $_POST['restock_voided_items'];
+		$restock_void_items = 'true' === sanitize_text_field($_POST['restock_voided_items']);
 		$current_void_id = null;
 		try {
 		    WC_Wallee_Helper::instance()->start_database_transaction();

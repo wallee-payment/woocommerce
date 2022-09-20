@@ -258,7 +258,7 @@ class WC_Wallee_Admin {
 							<label for="wallee_attribute_option_send">'.esc_html__( 'Send attribute to wallee.', 'woo-wallee' ).'</label>
 					</th>
 						<td>
-								<input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1" '.checked( $checked, true, false).'/>
+								<input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1" '.esc_attr(checked( $checked, true, false)).'/>
 								<p class="description">'.esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ).'</p>
 						</td>
 				</tr>';	    
