@@ -1,32 +1,40 @@
 <?php
-if (!defined('ABSPATH')) {
-	exit(); // Exit if accessed directly.
-}
 /**
- * wallee WooCommerce
  *
- * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ * WC_Wallee_Provider_Label_Description_Group Class
  *
- * @author wallee AG (http://www.wallee.com/)
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ * Wallee
+ * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
+ *
+ * @category Class
+ * @package  Wallee
+ * @author   wallee AG (http://www.wallee.com/)
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * Provider of label descriptor group information from the gateway.
  */
 class WC_Wallee_Provider_Label_Description_Group extends WC_Wallee_Provider_Abstract {
 
-	protected function __construct(){
-		parent::__construct('wc_wallee_label_description_groups');
+	/**
+	 * Construct.
+	 */
+	protected function __construct() {
+		parent::__construct( 'wc_wallee_label_description_groups' );
 	}
 
 	/**
 	 * Returns the label descriptor group by the given code.
 	 *
-	 * @param int $id
+	 * @param int $id Id.
 	 * @return \Wallee\Sdk\Model\LabelDescriptorGroup
 	 */
-	public function find($id){
-		return parent::find($id);
+	public function find( $id ) {
+		return parent::find( $id );
 	}
 
 	/**
@@ -34,16 +42,30 @@ class WC_Wallee_Provider_Label_Description_Group extends WC_Wallee_Provider_Abst
 	 *
 	 * @return \Wallee\Sdk\Model\LabelDescriptorGroup[]
 	 */
-	public function get_all(){
+	public function get_all() {
 		return parent::get_all();
 	}
 
-	protected function fetch_data(){
-	    $label_description_group_service = new \Wallee\Sdk\Service\LabelDescriptionGroupService(WC_Wallee_Helper::instance()->get_api_client());
+	/**
+	 * Fetch data.
+	 *
+	 * @return array|\Wallee\Sdk\Model\LabelDescriptorGroup[]
+	 * @throws \Wallee\Sdk\ApiException ApiException.
+	 * @throws \Wallee\Sdk\Http\ConnectionException ConnectionException.
+	 * @throws \Wallee\Sdk\VersioningException VersioningException.
+	 */
+	protected function fetch_data() {
+		$label_description_group_service = new \Wallee\Sdk\Service\LabelDescriptionGroupService( WC_Wallee_Helper::instance()->get_api_client() );
 		return $label_description_group_service->all();
 	}
 
-	protected function get_id($entry){
+	/**
+	 * Get id.
+	 *
+	 * @param mixed $entry entry.
+	 * @return int|string
+	 */
+	protected function get_id( $entry ) {
 		/* @var \Wallee\Sdk\Model\LabelDescriptorGroup $entry */
 		return $entry->getId();
 	}

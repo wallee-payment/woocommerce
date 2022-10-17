@@ -1,26 +1,69 @@
 <?php
-if (!defined('ABSPATH')) {
+/**
+ *
+ * WC_Wallee_Webhook_Entity Class
+ *
+ * Wallee
+ * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
+ *
+ * @category Class
+ * @package  Wallee
+ * @author   wallee AG (http://www.wallee.com/)
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
-/**
- * wallee WooCommerce
- *
- * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
- *
- * @author wallee AG (http://www.wallee.com/)
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
- */
 /**
  * WC_Wallee_Webhook_Entity
  */
 class WC_Wallee_Webhook_Entity {
+	/**
+	 * Id.
+	 *
+	 * @var mixed
+	 */
 	private $id;
+
+	/**
+	 * Name.
+	 *
+	 * @var mixed
+	 */
 	private $name;
+
+	/**
+	 * States.
+	 *
+	 * @var array
+	 */
 	private $states;
+
+	/**
+	 * Notify every change.
+	 *
+	 * @var false|mixed
+	 */
 	private $notify_every_change;
+
+	/**
+	 * Handler class name.
+	 *
+	 * @var mixed.
+	 */
 	private $handler_class_name;
 
-	public function __construct($id, $name, array $states, $handler_class_name, $notify_every_change = false){
+	/**
+	 * Construct.
+	 *
+	 * @param mixed $id id.
+	 * @param mixed $name name.
+	 * @param array $states states.
+	 * @param mixed $handler_class_name handler class name.
+	 * @param mixed $notify_every_change notify every change.
+	 */
+	public function __construct( $id, $name, array $states, $handler_class_name, $notify_every_change = false ) {
 		$this->id = $id;
 		$this->name = $name;
 		$this->states = $states;
@@ -28,23 +71,48 @@ class WC_Wallee_Webhook_Entity {
 		$this->handler_class_name = $handler_class_name;
 	}
 
-	public function get_id(){
+	/**
+	 * Get id.
+	 *
+	 * @return mixed
+	 */
+	public function get_id() {
 		return $this->id;
 	}
 
-	public function get_name(){
+	/**
+	 * Get name.
+	 *
+	 * @return mixed
+	 */
+	public function get_name() {
 		return $this->name;
 	}
 
-	public function get_states(){
+	/**
+	 * Get states.
+	 *
+	 * @return array
+	 */
+	public function get_states() {
 		return $this->states;
 	}
 
-	public function is_notify_every_change(){
+	/**
+	 * Is notify every change.
+	 *
+	 * @return false|mixed
+	 */
+	public function is_notify_every_change() {
 		return $this->notify_every_change;
 	}
 
-	public function get_handler_class_name(){
+	/**
+	 * Get Handler class name.
+	 *
+	 * @return mixed
+	 */
+	public function get_handler_class_name() {
 		return $this->handler_class_name;
 	}
 }

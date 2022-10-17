@@ -1,18 +1,23 @@
 <?php
-if (!defined('ABSPATH')) {
+/**
+ *
+ * WC_Wallee_Entity_Transaction_Info Class
+ *
+ * Wallee
+ * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
+ *
+ * @category Class
+ * @package  Wallee
+ * @author   wallee AG (http://www.wallee.com/)
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 /**
- * wallee WooCommerce
- *
- * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
- *
- * @author wallee AG (http://www.wallee.com/)
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
- */
-/**
  * This entity holds data about a transaction on the gateway.
- * 
+ *
  * @method int get_id()
  * @method int get_transaction_id()
  * @method void set_transaction_id(int $id)
@@ -45,79 +50,125 @@ if (!defined('ABSPATH')) {
  * @method void set_failure_reason(map[string,string] $reasons)
  * @method string get_user_failure_message()
  * @method void set_user_failure_message(string $message)
- *  
  */
 class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 
-	protected static function get_field_definition(){
+	/**
+	 * Get field definition.
+	 *
+	 * @return array
+	 */
+	protected static function get_field_definition() {
 		return array(
-		    'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'state' => WC_Wallee_Entity_Resource_Type::STRING,
-		    'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'space_view_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'language' => WC_Wallee_Entity_Resource_Type::STRING,
-		    'currency' => WC_Wallee_Entity_Resource_Type::STRING,
-		    'authorization_amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
-		    'image' => WC_Wallee_Entity_Resource_Type::STRING,
-		    'image_base' => WC_Wallee_Entity_Resource_Type::STRING,
-		    'labels' => WC_Wallee_Entity_Resource_Type::OBJECT,
-		    'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'order_mapping_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-		    'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT,
-		    'user_failure_message' =>  WC_Wallee_Entity_Resource_Type::STRING,
-		    'locked_at' => WC_Wallee_Entity_Resource_Type::DATETIME 
+			'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'state' => WC_Wallee_Entity_Resource_Type::STRING,
+			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'space_view_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'language' => WC_Wallee_Entity_Resource_Type::STRING,
+			'currency' => WC_Wallee_Entity_Resource_Type::STRING,
+			'authorization_amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
+			'image' => WC_Wallee_Entity_Resource_Type::STRING,
+			'image_base' => WC_Wallee_Entity_Resource_Type::STRING,
+			'labels' => WC_Wallee_Entity_Resource_Type::OBJECT,
+			'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'order_mapping_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT,
+			'user_failure_message' => WC_Wallee_Entity_Resource_Type::STRING,
+			'locked_at' => WC_Wallee_Entity_Resource_Type::DATETIME,
 		);
 	}
 
-	protected static function get_table_name(){
+	/**
+	 * Get table name.
+	 *
+	 * @return string
+	 */
+	protected static function get_table_name() {
 		return 'wc_wallee_transaction_info';
 	}
 
 	/**
 	 * Returns the translated failure reason.
 	 *
-	 * @param string $locale
+	 * @param mixed $language language.
 	 * @return string
 	 */
-	public function get_failure_reason($language = null){
-		$value = $this->get_value('failure_reason');
-		if (empty($value)) {
+	public function get_failure_reason( $language = null ) {
+		$value = $this->get_value( 'failure_reason' );
+		if ( empty( $value ) ) {
 			return null;
 		}
-		return WC_Wallee_Helper::instance()->translate($value, $language);
+		return WC_Wallee_Helper::instance()->translate( $value, $language );
 	}
 
-	public static function load_by_order_id($order_id){
-		global $wpdb;
-		$result = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE order_id = %d", $order_id), 
-				ARRAY_A);
-		if ($result !== null) {
-			return new self($result);
-		}
-		return new self();
-	}
-
-	public static function load_by_transaction($space_id, $transaction_id){
+	/**
+	 * Load by order id.
+	 *
+	 * @param mixed $order_id order id.
+	 * @return WC_Wallee_Entity_Transaction_Info
+	 */
+	public static function load_by_order_id( $order_id ) {
 		global $wpdb;
 		$result = $wpdb->get_row(
-				$wpdb->prepare("SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE space_id = %d AND transaction_id = %d", $space_id, 
-						$transaction_id), ARRAY_A);
-		if ($result !== null) {
-			return new self($result);
+			$wpdb->prepare(
+				'SELECT * FROM %1$s WHERE order_id = %2$d',
+				$wpdb->prefix . self::get_table_name(),
+				$order_id
+			),
+			ARRAY_A
+		);
+		if ( null !== $result ) {
+			return new self( $result );
 		}
 		return new self();
 	}
-	
-	
-	public static function load_newest_by_mapped_order_id($order_id){
-	    global $wpdb;
-	    $result = $wpdb->get_row(
-	        $wpdb->prepare("SELECT * FROM " . $wpdb->prefix . self::get_table_name() . " WHERE order_mapping_id = %d ORDER BY id DESC", $order_id), ARRAY_A);
-	    if ($result !== null) {
-	        return new self($result);
-	    }
-	    return new self();
+
+	/**
+	 * Load by transaction.
+	 *
+	 * @param mixed $space_id space id.
+	 * @param mixed $transaction_id transaction id.
+	 * @return WC_Wallee_Entity_Transaction_Info
+	 */
+	public static function load_by_transaction( $space_id, $transaction_id ) {
+		global $wpdb;
+		$result = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT * FROM %1$s WHERE space_id = %2$d AND transaction_id = %3$d',
+				$wpdb->prefix . self::get_table_name(),
+				$space_id,
+				$transaction_id
+			),
+			ARRAY_A
+		);
+		if ( null !== $result ) {
+			return new self( $result );
+		}
+		return new self();
+	}
+
+
+	/**
+	 * Load neweest by mapped order id.
+	 *
+	 * @param mixed $order_id order id.
+	 * @return WC_Wallee_Entity_Transaction_Info
+	 */
+	public static function load_newest_by_mapped_order_id( $order_id ) {
+		global $wpdb;
+		$result = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT * FROM %1$s WHERE order_mapping_id = %2$d ORDER BY id DESC',
+				$wpdb->prefix . self::get_table_name(),
+				$order_id
+			),
+			ARRAY_A
+		);
+		if ( null !== $result ) {
+			return new self( $result );
+		}
+		return new self();
 	}
 }

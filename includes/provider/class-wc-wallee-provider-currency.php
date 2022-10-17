@@ -1,32 +1,40 @@
 <?php
-if (!defined('ABSPATH')) {
-	exit(); // Exit if accessed directly.
-}
 /**
- * wallee WooCommerce
  *
- * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
+ * WC_Wallee_Provider_Currency Class
  *
- * @author wallee AG (http://www.wallee.com/)
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ * Wallee
+ * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
+ *
+ * @category Class
+ * @package  Wallee
+ * @author   wallee AG (http://www.wallee.com/)
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * Provider of currency information from the gateway.
  */
 class WC_Wallee_Provider_Currency extends WC_Wallee_Provider_Abstract {
 
-	protected function __construct(){
-		parent::__construct('wc_wallee_currencies');
+	/**
+	 * Construct.
+	 */
+	protected function __construct() {
+		parent::__construct( 'wc_wallee_currencies' );
 	}
 
 	/**
 	 * Returns the currency by the given code.
 	 *
-	 * @param string $code
+	 * @param string $code code.
 	 * @return \Wallee\Sdk\Model\RestCurrency
 	 */
-	public function find($code){
-		return parent::find($code);
+	public function find( $code ) {
+		return parent::find( $code );
 	}
 
 	/**
@@ -34,16 +42,31 @@ class WC_Wallee_Provider_Currency extends WC_Wallee_Provider_Abstract {
 	 *
 	 * @return \Wallee\Sdk\Model\RestCurrency[]
 	 */
-	public function get_all(){
+	public function get_all() {
 		return parent::get_all();
 	}
 
-	protected function fetch_data(){
-	    $currency_service = new \Wallee\Sdk\Service\CurrencyService(WC_Wallee_Helper::instance()->get_api_client());
+
+	/**
+	 * Fetch data.
+	 *
+	 * @return array|\Wallee\Sdk\Model\RestCurrency[]
+	 * @throws \Wallee\Sdk\ApiException ApiException.
+	 * @throws \Wallee\Sdk\Http\ConnectionException ConnectionException.
+	 * @throws \Wallee\Sdk\VersioningException VersioningException.
+	 */
+	protected function fetch_data() {
+		$currency_service = new \Wallee\Sdk\Service\CurrencyService( WC_Wallee_Helper::instance()->get_api_client() );
 		return $currency_service->all();
 	}
 
-	protected function get_id($entry){
+	/**
+	 * Get id.
+	 *
+	 * @param mixed $entry entry.
+	 * @return string
+	 */
+	protected function get_id( $entry ) {
 		/* @var \Wallee\Sdk\Model\RestCurrency $entry */
 		return $entry->getCurrencyCode();
 	}

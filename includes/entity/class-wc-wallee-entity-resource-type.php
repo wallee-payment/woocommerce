@@ -1,15 +1,20 @@
 <?php
-if (!defined('ABSPATH')) {
+/**
+ *
+ * WC_Wallee_Entity_Resource_Type Class
+ *
+ * Wallee
+ * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
+ *
+ * @category Class
+ * @package  Wallee
+ * @author   wallee AG (http://www.wallee.com/)
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
-/**
- * wallee WooCommerce
- *
- * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
- *
- * @author wallee AG (http://www.wallee.com/)
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
- */
 /**
  * Defines the different resource types
  */
