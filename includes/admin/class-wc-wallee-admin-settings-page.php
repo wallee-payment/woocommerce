@@ -187,7 +187,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 			array(
 				'links' => array(
-					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.0.5/docs/en/documentation.html' => __( 'Documentation', 'woo-wallee' ),
+					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.0.6/docs/en/documentation.html' => __( 'Documentation', 'woo-wallee' ),
 					'https://app-wallee.com/user/signup' => __( 'Sign Up', 'woo-wallee' ),
 				),
 				'type'  => 'wallee_links',
@@ -315,8 +315,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'css'      => 'min-width:300px;',
 				'default'  => WC_Wallee_Integration::IFRAME,
 				'options'  => array(
-					WC_Wallee_Integration::IFRAME => $this->format_display_string( __( 'iframe', 'woo-wallee' ) ),
-					WC_Wallee_Integration::LIGHTBOX  => $this->format_display_string( __( 'lightbox', 'woo-wallee' ) ),
+				    WC_Wallee_Integration::IFRAME => $this->format_display_string( __( 'iframe', 'woo-wallee' ) ),
+				    WC_Wallee_Integration::LIGHTBOX  => $this->format_display_string( __( 'lightbox', 'woo-wallee' ) ),
 				),
 			),
 
@@ -359,8 +359,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'css'      => 'min-width:300px;',
 				'default'  => WC_Wallee_Order_Reference::ORDER_ID,
 				'options'  => array(
-					WC_Wallee_Order_Reference::ORDER_ID => $this->format_display_string( __( 'order_id', 'woo-wallee' ) ),
-					WC_Wallee_Order_Reference::ORDER_NUMBER  => $this->format_display_string( __( 'order_number', 'woo-wallee' ) ),
+				    WC_Wallee_Order_Reference::ORDER_ID => $this->format_display_string( __( 'order_id', 'woo-wallee' ) ),
+				    WC_Wallee_Order_Reference::ORDER_NUMBER  => $this->format_display_string( __( 'order_number', 'woo-wallee' ) ),
 				),
 			),
 
