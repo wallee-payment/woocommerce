@@ -83,7 +83,7 @@ class WC_Wallee_Webhook_Handler {
 		} catch ( Exception $e ) {
 			WooCommerce_Wallee::instance()->log( $e->getMessage(), WC_Log_Levels::ERROR );
 		    	// phpcs:ignore
-			echo esc_html__($e->getMessage());
+			echo esc_textarea($e->getMessage());
 			exit();
 		}
 		exit();
