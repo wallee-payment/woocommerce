@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.1/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.2/docs/en/documentation.html).
 
 == Support ==
 
@@ -56,12 +56,12 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 == Changelog ==
 
  
-Features:
-- Support of Wordpress 6.1
-- Support of Woocommerce 7.0.1
-Bugfixes:
-- Fix that when 0 manual task are needed, the message ‘0 manuelle Tasks benötigen Ihre Aufmerksamkeit’ is shown.
-Tested against:
+## Features:
+- Added analytics headers.
+- Support of Wordpress 6.1.1
+- Support of Woocommerce 7.1.0
+
+## Tested against:
 - PHP 7.4.32
-- Wordpress: 6.1
-- Woocommerce: 6.7.0
+- Wordpress: 6.1.1
+- Woocommerce: 7.1.0
