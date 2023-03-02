@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce wallee\n"
+"Project-Id-Version: wallee\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-30 16:16+0100\n"
 "PO-Revision-Date: 2021-11-30 16:16+0100\n"
@@ -45,8 +45,8 @@ msgid "Woocommerce %s+ is required. (You're running version %s)"
 msgstr "Woocommerce %s+ wird benötigt. (Du verwendest Version %s)"
 
 #: includes/class-wc-wallee-migration.php:116
-msgid "Could not activate plugin WooCommerce wallee."
-msgstr "Das Plugin WooCommerce wallee konnte nicht aktiviert werden."
+msgid "Could not activate plugin wallee."
+msgstr "Das Plugin wallee konnte nicht aktiviert werden."
 
 #: includes/class-wc-wallee-migration.php:118
 msgid "Please check the following requirements before activating:"
@@ -536,21 +536,21 @@ msgstr ""
 
 #: views/admin-notices/migration-failed.php:15
 msgid ""
-"There was an issue executing the migration for WooCommerce wallee."
+"There was an issue executing the migration for wallee."
 msgstr ""
-"Es gab ein Problem bei der Ausführung der Migration für WooCommerce "
+"Es gab ein Problem bei der Ausführung der Migration für "
 "wallee."
 
 #: views/admin-notices/plugin-deactivated.php:14
 msgid ""
-"WooCommerce wallee deactivated because it depends on WooCommerce."
+"wallee deactivated because it depends on WooCommerce."
 msgstr ""
-"WooCommerce wallee wurde deaktiviert, weil es von WooCommerce "
+"wallee wurde deaktiviert, weil es von WooCommerce "
 "abhängig ist."
 
 #. Name of the plugin
-msgid "WooCommerce wallee"
-msgstr "WooCommerce wallee"
+msgid "wallee"
+msgstr "wallee"
 
 #. Description of the plugin
 msgid "Process WooCommerce payments with wallee."

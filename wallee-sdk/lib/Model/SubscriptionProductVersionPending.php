@@ -546,7 +546,7 @@ class SubscriptionProductVersionPending implements ModelInterface, ArrayAccess
     /**
      * Sets state
      *
-     * @param \Wallee\Sdk\Model\SubscriptionProductVersionState $state 
+     * @param \Wallee\Sdk\Model\SubscriptionProductVersionState $state The object's current state.
      *
      * @return $this
      */
@@ -589,6 +589,7 @@ class SubscriptionProductVersionPending implements ModelInterface, ArrayAccess
      *
      * @return boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->container[$offset]);
@@ -601,6 +602,7 @@ class SubscriptionProductVersionPending implements ModelInterface, ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
@@ -614,6 +616,7 @@ class SubscriptionProductVersionPending implements ModelInterface, ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
@@ -630,6 +633,7 @@ class SubscriptionProductVersionPending implements ModelInterface, ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->container[$offset]);

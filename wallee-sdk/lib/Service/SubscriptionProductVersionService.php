@@ -86,7 +86,8 @@ class SubscriptionProductVersionService {
 	 * Operation activateWithHttpInfo
 	 *
 	 * activate
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $product_version_id The product version id identifies the product version which should be activated. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -137,7 +138,6 @@ class SubscriptionProductVersionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -146,7 +146,7 @@ class SubscriptionProductVersionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersion',
 				'/subscription-product-version/activate'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -199,7 +199,8 @@ class SubscriptionProductVersionService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -248,7 +249,6 @@ class SubscriptionProductVersionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -257,7 +257,7 @@ class SubscriptionProductVersionService {
 				$headerParams,
 				'int',
 				'/subscription-product-version/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -310,7 +310,8 @@ class SubscriptionProductVersionService {
 	 * Operation createWithHttpInfo
 	 *
 	 * Create
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionProductVersionPending $entity The product version object with the properties which should be created. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -363,7 +364,6 @@ class SubscriptionProductVersionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -372,7 +372,7 @@ class SubscriptionProductVersionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersion',
 				'/subscription-product-version/create'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -425,7 +425,8 @@ class SubscriptionProductVersionService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the product version which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -476,7 +477,6 @@ class SubscriptionProductVersionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -485,7 +485,7 @@ class SubscriptionProductVersionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersion',
 				'/subscription-product-version/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -538,7 +538,8 @@ class SubscriptionProductVersionService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the product versions which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -591,7 +592,6 @@ class SubscriptionProductVersionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -600,7 +600,7 @@ class SubscriptionProductVersionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersion[]',
 				'/subscription-product-version/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersion[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -653,7 +653,8 @@ class SubscriptionProductVersionService {
 	 * Operation updateWithHttpInfo
 	 *
 	 * Update
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionProductVersionPending $entity The product version object with all the properties which should be updated. The id and the version are required properties. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -706,7 +707,6 @@ class SubscriptionProductVersionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -715,7 +715,7 @@ class SubscriptionProductVersionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersion',
 				'/subscription-product-version/update'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

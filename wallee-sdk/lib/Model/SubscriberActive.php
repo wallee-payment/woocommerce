@@ -225,7 +225,7 @@ class SubscriberActive extends SubscriberUpdate
     /**
      * Sets state
      *
-     * @param \Wallee\Sdk\Model\CreationEntityState $state 
+     * @param \Wallee\Sdk\Model\CreationEntityState $state The object's current state.
      *
      * @return $this
      */
@@ -243,6 +243,7 @@ class SubscriberActive extends SubscriberUpdate
      *
      * @return boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->container[$offset]);
@@ -255,6 +256,7 @@ class SubscriberActive extends SubscriberUpdate
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
@@ -268,6 +270,7 @@ class SubscriberActive extends SubscriberUpdate
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
@@ -284,6 +287,7 @@ class SubscriberActive extends SubscriberUpdate
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->container[$offset]);

@@ -86,7 +86,8 @@ class InstallmentPlanCalculationService {
 	 * Operation calculatePlansWithHttpInfo
 	 *
 	 * Calculate Plans
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $transaction_id The transaction for which the plans should be calculated for. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -137,7 +138,6 @@ class InstallmentPlanCalculationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -146,7 +146,7 @@ class InstallmentPlanCalculationService {
 				$headerParams,
 				'\Wallee\Sdk\Model\InstallmentCalculatedPlan[]',
 				'/installment-plan-calculation/calculatePlans'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\InstallmentCalculatedPlan[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

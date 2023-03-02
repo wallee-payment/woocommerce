@@ -15,5 +15,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="error notice notice-error">
-	<p><?php esc_html_e( 'There was an issue executing the migration for WooCommerce wallee.', 'woo-wallee' ); ?></p>
+	<p><?php esc_html_e( 'There was an issue executing the migration for wallee.', 'woo-wallee' ); ?></p>
 </div>

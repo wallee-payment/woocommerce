@@ -241,7 +241,7 @@ class AbstractSubscriptionAffiliateUpdate implements ModelInterface, ArrayAccess
     /**
      * Sets language
      *
-     * @param string $language 
+     * @param string $language The language that is linked to the object.
      *
      * @return $this
      */
@@ -323,7 +323,7 @@ class AbstractSubscriptionAffiliateUpdate implements ModelInterface, ArrayAccess
     /**
      * Sets state
      *
-     * @param \Wallee\Sdk\Model\CreationEntityState $state 
+     * @param \Wallee\Sdk\Model\CreationEntityState $state The object's current state.
      *
      * @return $this
      */
@@ -341,6 +341,7 @@ class AbstractSubscriptionAffiliateUpdate implements ModelInterface, ArrayAccess
      *
      * @return boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->container[$offset]);
@@ -353,6 +354,7 @@ class AbstractSubscriptionAffiliateUpdate implements ModelInterface, ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
@@ -366,6 +368,7 @@ class AbstractSubscriptionAffiliateUpdate implements ModelInterface, ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
@@ -382,6 +385,7 @@ class AbstractSubscriptionAffiliateUpdate implements ModelInterface, ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->container[$offset]);

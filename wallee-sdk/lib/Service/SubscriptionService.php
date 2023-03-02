@@ -86,7 +86,8 @@ class SubscriptionService {
 	 * Operation applyChangesWithHttpInfo
 	 *
 	 * apply changes
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionChangeRequest $request  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -139,7 +140,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -148,7 +148,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionVersion',
 				'/subscription/applyChanges'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -209,7 +209,8 @@ class SubscriptionService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -258,7 +259,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -267,7 +267,7 @@ class SubscriptionService {
 				$headerParams,
 				'int',
 				'/subscription/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -320,7 +320,8 @@ class SubscriptionService {
 	 * Operation createWithHttpInfo
 	 *
 	 * Create
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionCreateRequest $create_request  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -373,7 +374,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -382,7 +382,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionVersion',
 				'/subscription/create'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -435,7 +435,8 @@ class SubscriptionService {
 	 * Operation initializeWithHttpInfo
 	 *
 	 * initialize
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $subscription_id The provided subscription id will be used to lookup the subscription which should be initialized. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -486,7 +487,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -495,7 +495,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionCharge',
 				'/subscription/initialize'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionCharge', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -550,7 +550,8 @@ class SubscriptionService {
 	 * Operation initializeSubscriberPresentWithHttpInfo
 	 *
 	 * initializeSubscriberPresent
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $subscription_id  (required)
 	 * @param string $success_url The subscriber will be redirected to the success URL when the transaction is successful. (optional)
@@ -609,7 +610,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -618,7 +618,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionCharge',
 				'/subscription/initializeSubscriberPresent'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionCharge', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -679,7 +679,8 @@ class SubscriptionService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the subscription which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -730,7 +731,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -739,7 +739,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\Subscription',
 				'/subscription/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\Subscription', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -792,7 +792,8 @@ class SubscriptionService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the subscriptions which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -845,7 +846,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -854,7 +854,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\Subscription[]',
 				'/subscription/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\Subscription[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -908,7 +908,8 @@ class SubscriptionService {
 	 * Operation searchSubscriptionInvoicesWithHttpInfo
 	 *
 	 * Search Subscription Invoices
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $subscription_id The id of the subscription for which the invoices should be searched for. (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the invoices which are returned by the search. (required)
@@ -969,7 +970,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -978,7 +978,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\TransactionInvoice[]',
 				'/subscription/searchSubscriptionInvoices'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\TransactionInvoice[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1032,7 +1032,8 @@ class SubscriptionService {
 	 * Operation terminateWithHttpInfo
 	 *
 	 * terminate
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $subscription_id The subscription id identifies the subscription which should be terminated. (required)
 	 * @param bool $respect_termination_period The respect termination period controls whether the termination period configured on the product version should be respected or if the operation should take effect immediately. (required)
@@ -1091,7 +1092,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1100,7 +1100,7 @@ class SubscriptionService {
 				$headerParams,
 				null,
 				'/subscription/terminate'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders());
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1146,7 +1146,8 @@ class SubscriptionService {
 	 * Operation updateWithHttpInfo
 	 *
 	 * update
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $subscription_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionUpdateRequest $request  (required)
@@ -1207,7 +1208,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1216,7 +1216,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\Subscription',
 				'/subscription/update'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\Subscription', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1278,7 +1278,8 @@ class SubscriptionService {
 	 * Operation updateProductVersionWithHttpInfo
 	 *
 	 * update product version
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $subscription_id The subscription id identifies the subscription which should be updated to the latest version. (required)
 	 * @param bool $respect_termination_period The subscription version may be retired. The respect termination period controls whether the termination period configured on the product version should be respected or if the operation should take effect immediately. (required)
@@ -1337,7 +1338,6 @@ class SubscriptionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1346,7 +1346,7 @@ class SubscriptionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionVersion',
 				'/subscription/updateProductVersion'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionVersion', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

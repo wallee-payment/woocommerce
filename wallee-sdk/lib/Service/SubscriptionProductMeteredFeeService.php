@@ -86,7 +86,8 @@ class SubscriptionProductMeteredFeeService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -135,7 +136,6 @@ class SubscriptionProductMeteredFeeService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -144,7 +144,7 @@ class SubscriptionProductMeteredFeeService {
 				$headerParams,
 				'int',
 				'/subscription-product-metered-fee/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -197,7 +197,8 @@ class SubscriptionProductMeteredFeeService {
 	 * Operation createWithHttpInfo
 	 *
 	 * Create
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\ProductMeteredFeeUpdate $entity The metered fee object with the properties which should be created. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -250,7 +251,6 @@ class SubscriptionProductMeteredFeeService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -259,7 +259,7 @@ class SubscriptionProductMeteredFeeService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ProductMeteredFee',
 				'/subscription-product-metered-fee/create'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ProductMeteredFee', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -312,7 +312,8 @@ class SubscriptionProductMeteredFeeService {
 	 * Operation deleteWithHttpInfo
 	 *
 	 * Delete
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -365,7 +366,6 @@ class SubscriptionProductMeteredFeeService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -374,7 +374,7 @@ class SubscriptionProductMeteredFeeService {
 				$headerParams,
 				null,
 				'/subscription-product-metered-fee/delete'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders());
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -427,7 +427,8 @@ class SubscriptionProductMeteredFeeService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the metered fee which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -478,7 +479,6 @@ class SubscriptionProductMeteredFeeService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -487,7 +487,7 @@ class SubscriptionProductMeteredFeeService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ProductMeteredFee',
 				'/subscription-product-metered-fee/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ProductMeteredFee', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -540,7 +540,8 @@ class SubscriptionProductMeteredFeeService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the metered fees which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -593,7 +594,6 @@ class SubscriptionProductMeteredFeeService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -602,7 +602,7 @@ class SubscriptionProductMeteredFeeService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ProductMeteredFee[]',
 				'/subscription-product-metered-fee/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ProductMeteredFee[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -655,7 +655,8 @@ class SubscriptionProductMeteredFeeService {
 	 * Operation updateWithHttpInfo
 	 *
 	 * Update
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\ProductMeteredFeeUpdate $entity The metered fee object with all the properties which should be updated. The id and the version are required properties. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -708,7 +709,6 @@ class SubscriptionProductMeteredFeeService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -717,7 +717,7 @@ class SubscriptionProductMeteredFeeService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ProductMeteredFee',
 				'/subscription-product-metered-fee/update'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ProductMeteredFee', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

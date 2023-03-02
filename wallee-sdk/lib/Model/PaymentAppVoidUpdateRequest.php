@@ -24,15 +24,15 @@ use \ArrayAccess;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * TransactionLineItemUpdateRequest model
+ * PaymentAppVoidUpdateRequest model
  *
  * @category    Class
- * @description 
+ * @description The void update request allows to change the state of a void. The void must be linked with a processor that was created by the payment Web App that invokes the operation.
  * @package     Wallee\Sdk
  * @author      customweb GmbH
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
+class PaymentAppVoidUpdateRequest implements ModelInterface, ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -41,7 +41,7 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $swaggerModelName = 'TransactionLineItemUpdateRequest';
+    protected static $swaggerModelName = 'PaymentAppVoidUpdateRequest';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -49,8 +49,10 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'new_line_items' => '\Wallee\Sdk\Model\LineItemCreate[]',
-        'transaction_id' => 'int'
+        'failure_reason_id' => 'int',
+        'reference' => 'string',
+        'target_state' => '\Wallee\Sdk\Model\PaymentAppVoidTargetState',
+        'void_id' => 'int'
     ];
 
     /**
@@ -59,8 +61,10 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'new_line_items' => null,
-        'transaction_id' => 'int64'
+        'failure_reason_id' => 'int64',
+        'reference' => null,
+        'target_state' => null,
+        'void_id' => 'int64'
     ];
 
     /**
@@ -70,8 +74,10 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'new_line_items' => 'newLineItems',
-        'transaction_id' => 'transactionId'
+        'failure_reason_id' => 'failureReasonId',
+        'reference' => 'reference',
+        'target_state' => 'targetState',
+        'void_id' => 'voidId'
     ];
 
     /**
@@ -80,8 +86,10 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'new_line_items' => 'setNewLineItems',
-        'transaction_id' => 'setTransactionId'
+        'failure_reason_id' => 'setFailureReasonId',
+        'reference' => 'setReference',
+        'target_state' => 'setTargetState',
+        'void_id' => 'setVoidId'
     ];
 
     /**
@@ -90,8 +98,10 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'new_line_items' => 'getNewLineItems',
-        'transaction_id' => 'getTransactionId'
+        'failure_reason_id' => 'getFailureReasonId',
+        'reference' => 'getReference',
+        'target_state' => 'getTargetState',
+        'void_id' => 'getVoidId'
     ];
 
     
@@ -112,9 +122,13 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
     public function __construct(array $data = null)
     {
         
-        $this->container['new_line_items'] = isset($data['new_line_items']) ? $data['new_line_items'] : null;
+        $this->container['failure_reason_id'] = isset($data['failure_reason_id']) ? $data['failure_reason_id'] : null;
         
-        $this->container['transaction_id'] = isset($data['transaction_id']) ? $data['transaction_id'] : null;
+        $this->container['reference'] = isset($data['reference']) ? $data['reference'] : null;
+        
+        $this->container['target_state'] = isset($data['target_state']) ? $data['target_state'] : null;
+        
+        $this->container['void_id'] = isset($data['void_id']) ? $data['void_id'] : null;
         
     }
 
@@ -127,9 +141,10 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
     {
         $invalidProperties = [];
 
-        if ($this->container['transaction_id'] === null) {
-            $invalidProperties[] = "'transaction_id' can't be null";
+        if (!is_null($this->container['reference']) && (mb_strlen($this->container['reference']) > 100)) {
+            $invalidProperties[] = "invalid value for 'reference', the character length must be smaller than or equal to 100.";
         }
+
         return $invalidProperties;
     }
 
@@ -211,50 +226,104 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
     
 
     /**
-     * Gets new_line_items
+     * Gets failure_reason_id
      *
-     * @return \Wallee\Sdk\Model\LineItemCreate[]
+     * @return int
      */
-    public function getNewLineItems()
+    public function getFailureReasonId()
     {
-        return $this->container['new_line_items'];
+        return $this->container['failure_reason_id'];
     }
 
     /**
-     * Sets new_line_items
+     * Sets failure_reason_id
      *
-     * @param \Wallee\Sdk\Model\LineItemCreate[] $new_line_items 
+     * @param int $failure_reason_id The failure reason indicates why the void failed. It is required when the target state is FAILED.
      *
      * @return $this
      */
-    public function setNewLineItems($new_line_items)
+    public function setFailureReasonId($failure_reason_id)
     {
-        $this->container['new_line_items'] = $new_line_items;
+        $this->container['failure_reason_id'] = $failure_reason_id;
 
         return $this;
     }
     
 
     /**
-     * Gets transaction_id
+     * Gets reference
      *
-     * @return int
+     * @return string
      */
-    public function getTransactionId()
+    public function getReference()
     {
-        return $this->container['transaction_id'];
+        return $this->container['reference'];
     }
 
     /**
-     * Sets transaction_id
+     * Sets reference
      *
-     * @param int $transaction_id 
+     * @param string $reference The reference identifies the void within the systems of the external service provider. It is required when the target state is SUCCESSFUL.
      *
      * @return $this
      */
-    public function setTransactionId($transaction_id)
+    public function setReference($reference)
     {
-        $this->container['transaction_id'] = $transaction_id;
+        if (!is_null($reference) && (mb_strlen($reference) > 100)) {
+            throw new \InvalidArgumentException('invalid length for $reference when calling PaymentAppVoidUpdateRequest., must be smaller than or equal to 100.');
+        }
+
+        $this->container['reference'] = $reference;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets target_state
+     *
+     * @return \Wallee\Sdk\Model\PaymentAppVoidTargetState
+     */
+    public function getTargetState()
+    {
+        return $this->container['target_state'];
+    }
+
+    /**
+     * Sets target_state
+     *
+     * @param \Wallee\Sdk\Model\PaymentAppVoidTargetState $target_state The target state defines the state into which the void should be switched into. Once the void changed the state it will not be possible to change it again.
+     *
+     * @return $this
+     */
+    public function setTargetState($target_state)
+    {
+        $this->container['target_state'] = $target_state;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets void_id
+     *
+     * @return int
+     */
+    public function getVoidId()
+    {
+        return $this->container['void_id'];
+    }
+
+    /**
+     * Sets void_id
+     *
+     * @param int $void_id This is the ID of the void that should be updated.
+     *
+     * @return $this
+     */
+    public function setVoidId($void_id)
+    {
+        $this->container['void_id'] = $void_id;
 
         return $this;
     }
@@ -266,6 +335,7 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      *
      * @return boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->container[$offset]);
@@ -278,6 +348,7 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
@@ -291,6 +362,7 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
@@ -307,6 +379,7 @@ class TransactionLineItemUpdateRequest implements ModelInterface, ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->container[$offset]);

@@ -86,7 +86,8 @@ class SubscriptionSuspensionService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -135,7 +136,6 @@ class SubscriptionSuspensionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -144,7 +144,7 @@ class SubscriptionSuspensionService {
 				$headerParams,
 				'int',
 				'/subscription-suspension/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -197,7 +197,8 @@ class SubscriptionSuspensionService {
 	 * Operation createWithHttpInfo
 	 *
 	 * Create
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionSuspensionCreate $suspension  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -250,7 +251,6 @@ class SubscriptionSuspensionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -259,7 +259,7 @@ class SubscriptionSuspensionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionSuspension',
 				'/subscription-suspension/create'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionSuspension', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -312,7 +312,8 @@ class SubscriptionSuspensionService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the suspension which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -363,7 +364,6 @@ class SubscriptionSuspensionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -372,7 +372,7 @@ class SubscriptionSuspensionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionSuspension',
 				'/subscription-suspension/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionSuspension', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -425,7 +425,8 @@ class SubscriptionSuspensionService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the subscription suspensions which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -478,7 +479,6 @@ class SubscriptionSuspensionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -487,7 +487,7 @@ class SubscriptionSuspensionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionSuspension[]',
 				'/subscription-suspension/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionSuspension[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -540,7 +540,8 @@ class SubscriptionSuspensionService {
 	 * Operation terminateWithHttpInfo
 	 *
 	 * terminate
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $suspension_id  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -591,7 +592,6 @@ class SubscriptionSuspensionService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -600,7 +600,7 @@ class SubscriptionSuspensionService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionSuspension',
 				'/subscription-suspension/terminate'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionSuspension', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

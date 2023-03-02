@@ -85,7 +85,8 @@ class WebAppService {
 	 * Operation checkInstallationWithHttpInfo
 	 *
 	 * Check Installation
-	 *
+     
+     *
 	 * @param int $space_id This parameter identifies the space which should be checked if the web app is installed. (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
@@ -128,7 +129,6 @@ class WebAppService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -137,7 +137,7 @@ class WebAppService {
 				$headerParams,
 				'bool',
 				'/web-app/check-installation'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'bool', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -189,7 +189,8 @@ class WebAppService {
 	 * Operation confirmWithHttpInfo
 	 *
 	 * Confirm
-	 *
+     
+     *
 	 * @param \Wallee\Sdk\Model\WebAppConfirmationRequest $request  (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
@@ -234,7 +235,6 @@ class WebAppService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -243,7 +243,7 @@ class WebAppService {
 				$headerParams,
 				'\Wallee\Sdk\Model\WebAppConfirmationResponse',
 				'/web-app/confirm'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\WebAppConfirmationResponse', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -295,7 +295,8 @@ class WebAppService {
 	 * Operation uninstallWithHttpInfo
 	 *
 	 * Uninstall
-	 *
+     
+     *
 	 * @param int $space_id This parameter identifies the space within which the web app should be uninstalled. (required)
 	 * @throws \Wallee\Sdk\ApiException
 	 * @throws \Wallee\Sdk\VersioningException
@@ -338,7 +339,6 @@ class WebAppService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -347,7 +347,7 @@ class WebAppService {
 				$headerParams,
 				null,
 				'/web-app/uninstall'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders());
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

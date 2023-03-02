@@ -86,7 +86,8 @@ class SubscriptionProductVersionRetirementService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -135,7 +136,6 @@ class SubscriptionProductVersionRetirementService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -144,7 +144,7 @@ class SubscriptionProductVersionRetirementService {
 				$headerParams,
 				'int',
 				'/subscription-product-version-retirement/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -197,7 +197,8 @@ class SubscriptionProductVersionRetirementService {
 	 * Operation createWithHttpInfo
 	 *
 	 * Create
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\SubscriptionProductVersionRetirementCreate $retirement  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -250,7 +251,6 @@ class SubscriptionProductVersionRetirementService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -259,7 +259,7 @@ class SubscriptionProductVersionRetirementService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersionRetirement',
 				'/subscription-product-version-retirement/create'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersionRetirement', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -312,7 +312,8 @@ class SubscriptionProductVersionRetirementService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the retirement which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -363,7 +364,6 @@ class SubscriptionProductVersionRetirementService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -372,7 +372,7 @@ class SubscriptionProductVersionRetirementService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersionRetirement',
 				'/subscription-product-version-retirement/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersionRetirement', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -425,7 +425,8 @@ class SubscriptionProductVersionRetirementService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the product version retirements which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -478,7 +479,6 @@ class SubscriptionProductVersionRetirementService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -487,7 +487,7 @@ class SubscriptionProductVersionRetirementService {
 				$headerParams,
 				'\Wallee\Sdk\Model\SubscriptionProductVersionRetirement[]',
 				'/subscription-product-version-retirement/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\SubscriptionProductVersionRetirement[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

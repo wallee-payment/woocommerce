@@ -420,6 +420,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 					WooCommerce_Wallee::instance()->plugin_url() . '/assets/js/frontend/checkout.js',
 					array(
 						'jquery',
+						'jquery-blockui',
 						'wallee-remote-checkout-js',
 					),
 					1,

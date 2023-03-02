@@ -88,7 +88,8 @@ class CardProcessingService {
 	 * Operation processWithHttpInfo
 	 *
 	 * Process
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $transaction_id The ID of the transaction which should be processed. (required)
 	 * @param int $payment_method_configuration_id The payment method configuration ID which is applied to the transaction. (required)
@@ -157,7 +158,6 @@ class CardProcessingService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -166,7 +166,7 @@ class CardProcessingService {
 				$headerParams,
 				'\Wallee\Sdk\Model\Transaction',
 				'/card-processing/process'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\Transaction', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -229,7 +229,8 @@ class CardProcessingService {
 	 * Operation processWith3DSecureWithHttpInfo
 	 *
 	 * Process With 3-D Secure
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $transaction_id The ID of the transaction which should be processed. (required)
 	 * @param int $payment_method_configuration_id The payment method configuration ID which is applied to the transaction. (required)
@@ -298,7 +299,6 @@ class CardProcessingService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -307,7 +307,7 @@ class CardProcessingService {
 				$headerParams,
 				'string',
 				'/card-processing/processWith3DSecure'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'string', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

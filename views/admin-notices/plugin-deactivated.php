@@ -14,4 +14,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 ?>
-<div class="error notice notice-error"><p><?php esc_html_e( 'WooCommerce wallee deactivated because it depends on WooCommerce.', 'woo-wallee' ); ?></p></div>
+<div class="error notice notice-error"><p><?php esc_html_e( 'wallee deactivated because it depends on WooCommerce.', 'woo-wallee' ); ?></p></div>

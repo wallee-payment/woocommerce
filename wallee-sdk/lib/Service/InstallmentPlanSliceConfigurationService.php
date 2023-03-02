@@ -86,7 +86,8 @@ class InstallmentPlanSliceConfigurationService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the installment plan slice configurations which are used to calculate the count. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -139,7 +140,6 @@ class InstallmentPlanSliceConfigurationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -148,7 +148,7 @@ class InstallmentPlanSliceConfigurationService {
 				$headerParams,
 				'int',
 				'/installment-plan-slice-configuration/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -201,7 +201,8 @@ class InstallmentPlanSliceConfigurationService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the installment plan slice configuration which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -252,7 +253,6 @@ class InstallmentPlanSliceConfigurationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -261,7 +261,7 @@ class InstallmentPlanSliceConfigurationService {
 				$headerParams,
 				'\Wallee\Sdk\Model\InstallmentPlanSliceConfiguration',
 				'/installment-plan-slice-configuration/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\InstallmentPlanSliceConfiguration', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -314,7 +314,8 @@ class InstallmentPlanSliceConfigurationService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the installment plan slice configurations which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -367,7 +368,6 @@ class InstallmentPlanSliceConfigurationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -376,7 +376,7 @@ class InstallmentPlanSliceConfigurationService {
 				$headerParams,
 				'\Wallee\Sdk\Model\InstallmentPlanSliceConfiguration[]',
 				'/installment-plan-slice-configuration/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\InstallmentPlanSliceConfiguration[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

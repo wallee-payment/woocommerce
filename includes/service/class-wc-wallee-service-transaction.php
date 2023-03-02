@@ -70,6 +70,13 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	private $charge_attempt_service;
 
 	/**
+	 * The charge attempt API service.
+	 *
+	 * @var \Wallee\Sdk\Service\TransactionLineItemVersionService
+	 */
+	private $transaction_line_item_version_service;
+
+	/**
 	 * Returns the transaction API service.
 	 *
 	 * @return \Wallee\Sdk\Service\TransactionService
@@ -132,6 +139,19 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 			$this->charge_attempt_service = new \Wallee\Sdk\Service\ChargeAttemptService( WC_Wallee_Helper::instance()->get_api_client() );
 		}
 		return $this->charge_attempt_service;
+	}
+
+	/**
+	 * Returns the transaction line item version service.
+	 *
+	 * @return \Wallee\Sdk\Service\TransactionLineItemVersionService
+	 * @throws Exception Exception.
+	 */
+	protected function get_transaction_line_item_version_service() {
+		if ( is_null( $this->transaction_line_item_version_service ) ) {
+			$this->transaction_line_item_version_service = new \Wallee\Sdk\Service\TransactionLineItemVersionService( WC_Wallee_Helper::instance()->get_api_client() );
+		}
+		return $this->transaction_line_item_version_service;
 	}
 
 	/**
@@ -251,19 +271,20 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	}
 
 	/**
-	 * Updates the line items of the given transaction.
+	 * Updates the line items version of the given transaction.
 	 *
-	 * @param int                                         $space_id space id.
-	 * @param int                                         $transaction_id transaction id.
-	 * @param \Wallee\Sdk\Model\LineItem[] $line_items line items.
+	 * @param int                                         		$space_id space id.
+	 * @param int                                         		$transaction_id transaction id.
+	 * @param \Wallee\Sdk\Model\LineItemCreate[] $line_items line items.
 	 * @return \Wallee\Sdk\Model\TransactionLineItemVersion
 	 * @throws Exception Exception.
 	 */
 	public function update_line_items( $space_id, $transaction_id, $line_items ) {
-		$update_request = new \Wallee\Sdk\Model\TransactionLineItemUpdateRequest();
-		$update_request->setTransactionId( $transaction_id );
-		$update_request->setNewLineItems( $line_items );
-		return $this->get_transaction_service()->updateTransactionLineItems( $space_id, $update_request );
+		$line_item_version_create = new \Wallee\Sdk\Model\TransactionLineItemVersionCreate();
+		$line_item_version_create->setLineItems( $line_items );
+		$line_item_version_create->setTransaction( $transaction_id );
+		$line_item_version_create->setExternalId( uniqid( $transaction_id . '-' ) );
+		return $this->get_transaction_line_item_version_service()->create( $space_id, $line_item_version_create );
 	}
 
 	/**

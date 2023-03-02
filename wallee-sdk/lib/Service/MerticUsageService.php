@@ -87,7 +87,8 @@ class MerticUsageService {
 	 * Operation calculateWithHttpInfo
 	 *
 	 * Calculate
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \DateTime $start The start date from which on the consumed units should be returned from. (required)
 	 * @param \DateTime $end The end date to which the consumed units should be returned to. The end date is not included in the result. (required)
@@ -146,7 +147,6 @@ class MerticUsageService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -155,7 +155,7 @@ class MerticUsageService {
 				$headerParams,
 				'\Wallee\Sdk\Model\MetricUsage[]',
 				'/mertic-usage/calculate'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\MetricUsage[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

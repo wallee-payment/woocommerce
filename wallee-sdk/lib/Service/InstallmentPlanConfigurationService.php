@@ -86,7 +86,8 @@ class InstallmentPlanConfigurationService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the installment plan configurations which are used to calculate the count. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -139,7 +140,6 @@ class InstallmentPlanConfigurationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -148,7 +148,7 @@ class InstallmentPlanConfigurationService {
 				$headerParams,
 				'int',
 				'/installment-plan-configuration/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -201,7 +201,8 @@ class InstallmentPlanConfigurationService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the installment plan configuration which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -252,7 +253,6 @@ class InstallmentPlanConfigurationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -261,7 +261,7 @@ class InstallmentPlanConfigurationService {
 				$headerParams,
 				'\Wallee\Sdk\Model\InstallmentPlanConfiguration',
 				'/installment-plan-configuration/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\InstallmentPlanConfiguration', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -314,7 +314,8 @@ class InstallmentPlanConfigurationService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the installment plan configurations which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -367,7 +368,6 @@ class InstallmentPlanConfigurationService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -376,7 +376,7 @@ class InstallmentPlanConfigurationService {
 				$headerParams,
 				'\Wallee\Sdk\Model\InstallmentPlanConfiguration[]',
 				'/installment-plan-configuration/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\InstallmentPlanConfiguration[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

@@ -86,7 +86,8 @@ class ChargeFlowLevelService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -135,7 +136,6 @@ class ChargeFlowLevelService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -144,7 +144,7 @@ class ChargeFlowLevelService {
 				$headerParams,
 				'int',
 				'/charge-flow-level/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -197,7 +197,8 @@ class ChargeFlowLevelService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the payment flow level which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -248,7 +249,6 @@ class ChargeFlowLevelService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -257,7 +257,7 @@ class ChargeFlowLevelService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ChargeFlowLevel',
 				'/charge-flow-level/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ChargeFlowLevel', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -310,7 +310,8 @@ class ChargeFlowLevelService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the payment flow levels which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -363,7 +364,6 @@ class ChargeFlowLevelService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -372,7 +372,7 @@ class ChargeFlowLevelService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ChargeFlowLevel[]',
 				'/charge-flow-level/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ChargeFlowLevel[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -425,7 +425,8 @@ class ChargeFlowLevelService {
 	 * Operation sendMessageWithHttpInfo
 	 *
 	 * Send Payment Link
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the charge flow level whose payment link should be sent. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -476,7 +477,6 @@ class ChargeFlowLevelService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -485,7 +485,7 @@ class ChargeFlowLevelService {
 				$headerParams,
 				'\Wallee\Sdk\Model\ChargeFlowLevel',
 				'/charge-flow-level/sendMessage'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\ChargeFlowLevel', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {

@@ -140,7 +140,7 @@ class WC_Wallee_Migration {
 		}
 
 		if ( ! empty( $errors ) ) {
-			$title = __( 'Could not activate plugin WooCommerce wallee.', 'woo-wallee' );
+			$title = __( 'Could not activate plugin wallee.', 'woo-wallee' );
 			    // phpcs:ignore
 			    $message = '<h1><strong>' . esc_html_e( $title ) . '</strong></h1><br/>' .
 					'<h3>' . __( 'Please check the following requirements before activating:', 'woo-wallee' ) . '</h3>' .
@@ -248,7 +248,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 		if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
-				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.6/docs/en/documentation.html" aria-label="' . esc_attr__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
+				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.7/docs/en/documentation.html" aria-label="' . esc_attr__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
 			);
 
 			return array_merge( $links, $row_meta );

@@ -88,7 +88,8 @@ class DebtCollectionCaseService {
 	 * Operation addCollectedAmountWithHttpInfo
 	 *
 	 * Add Collected Amount
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case for which the amount should be added. (required)
 	 * @param float $collected_amount The amount that has been collected. (required)
@@ -155,7 +156,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -164,7 +164,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionReceipt',
 				'/debt-collection-case/addCollectedAmount'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionReceipt', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -227,7 +227,8 @@ class DebtCollectionCaseService {
 	 * Operation attachDocumentWithHttpInfo
 	 *
 	 * Attach Document
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case. (required)
 	 * @param string $file_name The file name of the document that is uploaded. (required)
@@ -294,7 +295,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -303,7 +303,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCaseDocument',
 				'/debt-collection-case/attachDocument'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCaseDocument', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -364,7 +364,8 @@ class DebtCollectionCaseService {
 	 * Operation closeWithHttpInfo
 	 *
 	 * Close
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case which should be closed. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -415,7 +416,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -424,7 +424,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase',
 				'/debt-collection-case/close'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -485,7 +485,8 @@ class DebtCollectionCaseService {
 	 * Operation countWithHttpInfo
 	 *
 	 * Count
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQueryFilter $filter The filter which restricts the entities which are used to calculate the count. (optional)
 	 * @throws \Wallee\Sdk\ApiException
@@ -534,7 +535,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -543,7 +543,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'int',
 				'/debt-collection-case/count'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), 'int', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -596,7 +596,8 @@ class DebtCollectionCaseService {
 	 * Operation createWithHttpInfo
 	 *
 	 * Create
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\DebtCollectionCaseCreate $entity The debt collection case object with the properties which should be created. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -649,7 +650,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -658,7 +658,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase',
 				'/debt-collection-case/create'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -711,7 +711,8 @@ class DebtCollectionCaseService {
 	 * Operation deleteWithHttpInfo
 	 *
 	 * Delete
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id  (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -764,7 +765,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -773,7 +773,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				null,
 				'/debt-collection-case/delete'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders());
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -826,7 +826,8 @@ class DebtCollectionCaseService {
 	 * Operation documentsWithHttpInfo
 	 *
 	 * Documents
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case for which the attached documents are returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -877,7 +878,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -886,7 +886,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCaseDocument[]',
 				'/debt-collection-case/documents'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCaseDocument[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -947,7 +947,8 @@ class DebtCollectionCaseService {
 	 * Operation markAsPreparedWithHttpInfo
 	 *
 	 * Mark Case As Prepared
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case which should be marked as prepared. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -998,7 +999,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1007,7 +1007,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase',
 				'/debt-collection-case/markAsPrepared'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1068,7 +1068,8 @@ class DebtCollectionCaseService {
 	 * Operation markAsReviewedWithHttpInfo
 	 *
 	 * Mark Case As Reviewed
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case which should be reviewed. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -1119,7 +1120,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1128,7 +1128,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase',
 				'/debt-collection-case/markAsReviewed'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1189,7 +1189,8 @@ class DebtCollectionCaseService {
 	 * Operation readWithHttpInfo
 	 *
 	 * Read
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param int $id The id of the debt collection case which should be returned. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -1240,7 +1241,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'GET',
@@ -1249,7 +1249,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase',
 				'/debt-collection-case/read'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1302,7 +1302,8 @@ class DebtCollectionCaseService {
 	 * Operation searchWithHttpInfo
 	 *
 	 * Search
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\EntityQuery $query The query restricts the cases which are returned by the search. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -1355,7 +1356,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1364,7 +1364,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase[]',
 				'/debt-collection-case/search'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase[]', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
@@ -1417,7 +1417,8 @@ class DebtCollectionCaseService {
 	 * Operation updateWithHttpInfo
 	 *
 	 * Update
-	 *
+     
+     *
 	 * @param int $space_id  (required)
 	 * @param \Wallee\Sdk\Model\DebtCollectionCaseUpdate $entity The object with all the properties which should be updated. The id and the version are required properties. (required)
 	 * @throws \Wallee\Sdk\ApiException
@@ -1470,7 +1471,6 @@ class DebtCollectionCaseService {
 		}
 		// make the API Call
 		try {
-			$this->apiClient->setConnectionTimeout(ApiClient::CONNECTION_TIMEOUT);
 			$response = $this->apiClient->callApi(
 				$resourcePath,
 				'POST',
@@ -1479,7 +1479,7 @@ class DebtCollectionCaseService {
 				$headerParams,
 				'\Wallee\Sdk\Model\DebtCollectionCase',
 				'/debt-collection-case/update'
-			);
+            );
 			return new ApiResponse($response->getStatusCode(), $response->getHeaders(), $this->apiClient->getSerializer()->deserialize($response->getData(), '\Wallee\Sdk\Model\DebtCollectionCase', $response->getHeaders()));
 		} catch (ApiException $e) {
 			switch ($e->getCode()) {
