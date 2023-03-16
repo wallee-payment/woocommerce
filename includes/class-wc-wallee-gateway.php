@@ -388,6 +388,7 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 
 		parent::payment_fields();
 		$transaction_service = WC_Wallee_Service_Transaction::instance();
+		$woocommerce_data = get_plugin_data( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php', false, false );
 		try {
 			if ( apply_filters( 'wc_wallee_is_order_pay_endpoint', is_checkout_pay_page() ) ) {
 				global $wp;
@@ -401,7 +402,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			}
 			if ( ! wp_script_is( 'wallee-remote-checkout-js', 'enqueued' ) ) {
 				$ajax_url = '';
-				if ( get_option( WooCommerce_Wallee::CK_INTEGRATION ) == WC_Wallee_Integration::LIGHTBOX ) {
+				if ( get_option( WooCommerce_Wallee::CK_INTEGRATION ) == WC_Wallee_Integration::LIGHTBOX
+                    || version_compare( $woocommerce_data['Version'], WooCommerce_Wallee::WC_MAXIMUM_VERSION, '>' ) ) {
 					$ajax_url = $transaction_service->get_lightbox_url_for_transaction( $transaction );
 				} else {
 					$ajax_url = $transaction_service->get_javascript_url_for_transaction( $transaction );
@@ -430,6 +432,9 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 					'i18n_not_complete' => __( 'Please fill out all required fields.', 'woo-wallee' ),
 					'integration' => get_option( WooCommerce_Wallee::CK_INTEGRATION ),
 				);
+				if ( version_compare( $woocommerce_data['Version'], WooCommerce_Wallee::WC_MAXIMUM_VERSION, '>' ) ) {
+					$localize['integration'] = get_option( WC_Wallee_Integration::LIGHTBOX );
+				}
 				wp_localize_script( 'wallee-checkout-js', 'wallee_js_params', $localize );
 				wp_add_inline_script( 'wallee-checkout-js', 'window.onload = function () {  wc_wallee_checkout.init(); };' );
 
@@ -538,6 +543,12 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 				'result' => 'success',
 				'wallee' => 'true',
 			);
+
+			$woocommerce_data = get_plugin_data( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php', false, false );
+			if ( version_compare( $woocommerce_data['Version'], WooCommerce_Wallee::WC_MAXIMUM_VERSION, '>' ) ) {
+				$result['redirect'] = $transaction_service->get_payment_page_url( $transaction->getLinkedSpaceId(), $transaction->getId() );
+			}
+
 			if ( $no_iframe ) {
 				$result = array(
 					'result' => 'success',

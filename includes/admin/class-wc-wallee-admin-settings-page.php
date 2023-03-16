@@ -187,7 +187,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 			array(
 				'links' => array(
-					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.7/docs/en/documentation.html' => __( 'Documentation', 'woo-wallee' ),
+					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.8/docs/en/documentation.html' => __( 'Documentation', 'woo-wallee' ),
 					'https://app-wallee.com/user/signup' => __( 'Sign Up', 'woo-wallee' ),
 				),
 				'type'  => 'wallee_links',
