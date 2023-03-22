@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 2.1.8
+ * Version: 2.1.9
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: wallee AG
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '2.1.8';
+		private $version = '2.1.9';
 
 		/**
 		 * The single instance of the class.
@@ -122,6 +122,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			require_once( WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-unique-id.php' );
 			require_once( WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-customer-document.php' );
 			require_once( WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-cron.php' );
+			require_once( WC_WALLEE_ABSPATH . 'includes/packages/coupon/class-wc-wallee-packages-coupon-discount.php' );
 
 			if ( is_admin() ) {
 				require_once( WC_WALLEE_ABSPATH . 'includes/admin/class-wc-wallee-admin.php' );
@@ -898,16 +899,18 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 * @param mixed $data data.
 		 * @return void
 		 * @throws Exception Exception.
+		 * 
+		 * @see woocommerce_rest_insert_product_attribute
+		 * 	 Edit through REST API is handled in woocommerce_rest_insert_product_attribute, as we can not get the rest request object otherwise.
 		 */
 		public function woocommerce_attribute_added( $attribute_id, $data ) {
 			if ( did_action( 'product_page_product_attributes' ) ) {
 				// edit through backend form, check POST data.
 				$option_set = isset( $_POST['wallee_attribute_option_send'] );
-				$attribute_option_send = wp_unslash( $unslashed ) ?? false;
+				$attribute_option_send = wp_unslash( $option_set ) ?? false;
 				$send = wp_verify_nonce( $attribute_option_send ) ? 1 : 0;
 				$this->update_attribute_options( $attribute_id, $send );
 			}
-			// edit thorugh rest api is handled with woocommerce_rest_insert_product_attribute filter, as we can not get the rest request object otherwise.
 		}
 
 		/**
