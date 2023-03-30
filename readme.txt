@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 2.1.9
+Stable tag: 2.1.10
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.9/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.10/docs/en/documentation.html).
 
 == Support ==
 
@@ -56,13 +56,13 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 == Changelog ==
 
  
-= 2.1.9 - March 22, 2023 =
+= 2.1.10 - March 30, 2023 =
 
-## Feature
-- Smart Coupons Compatibility
+## Bugfix
+- Prevent Customer from upgrading to unsupported version of WooCommerce (7.5.+)
 
 ## Tested Against
 - PHP 8.1
 - Wordpress 6.1.1
-- Woocommerce 7.5.0
+- Woocommerce 7.4.1
 - PHP SDK 3.2.0
