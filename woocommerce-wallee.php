@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 2.1.14
+ * Version: 2.1.15
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: wallee AG
@@ -11,7 +11,7 @@
  * Requires at least: 4.7
  * Tested up to: 6.2
  * WC requires at least: 3.0.0
- * WC tested up to: 7.6.1
+ * WC tested up to: 7.7.0
  *
  * Text Domain: wallee
  * Domain Path: /languages/
@@ -39,14 +39,14 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		const CK_INTEGRATION = 'wc_wallee_integration';
 		const CK_ORDER_REFERENCE = 'wc_wallee_order_reference';
 		const CK_ENFORCE_CONSISTENCY = 'wc_wallee_enforce_consistency';
-		const WC_MAXIMUM_VERSION = '7.6.1';
+		const WC_MAXIMUM_VERSION = '7.7.0';
 
 		/**
 		 * WooCommerce Wallee version.
 		 *
 		 * @var string
 		 */
-		private $version = '2.1.14';
+		private $version = '2.1.15';
 
 		/**
 		 * The single instance of the class.
@@ -159,6 +159,14 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			);
 
 			add_action(
+				'woocommerce_thankyou',
+				array(
+					$this,
+					'secure_redirect_order_confirmed',
+					)
+			);
+
+			add_action(
 				'plugins_loaded',
 				array(
 					$this,
@@ -203,6 +211,27 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 				20,
 				3
 			);
+		}
+
+
+		/**
+		 * Secirity check in the thank you page.
+		 *
+		 * Note: If for some reason order status is still pending, it will redirect you to the payment form.
+		 *
+		 */
+
+		 public function secure_redirect_order_confirmed($order_id) {
+			$order = wc_get_order( $order_id );
+			$wc_service_transaction = WC_Wallee_Service_Transaction::instance();
+			$sdk_service_transaction = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
+			$wc_transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
+			$state = $sdk_service_transaction->read(get_option(self::CK_SPACE_ID), $wc_transaction_info->get_transaction_id())->getState();
+
+			if ($state == \Wallee\Sdk\Model\TransactionState::CONFIRMED) {
+				wp_redirect($wc_service_transaction->get_payment_page_url(get_option(self::CK_SPACE_ID), $wc_transaction_info->get_transaction_id()));
+				exit;
+			}
 		}
 
 		/**
