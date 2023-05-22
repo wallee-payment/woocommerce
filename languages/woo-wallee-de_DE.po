@@ -62,6 +62,11 @@ msgstr "Dokumentation ansehen."
 msgid "Documentation"
 msgstr "Dokumentation"
 
+#: includes/class-wc-wallee-migration.php:587
+#, php-format
+msgid "A version of the Wallee plugin is yet to be released for this version of WooCommerce."
+msgstr "Eine Version des Wallee Plugin ist für diese Version von WooCommerce noch nicht freigegeben."
+
 #: includes/class-wc-wallee-customer-document.php:57
 msgid "Order Documents"
 msgstr "Bestelldokumente"

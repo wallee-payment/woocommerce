@@ -3,7 +3,7 @@ Contributors: customwebgmbh
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 2.1.11
+Stable tag: 2.1.15
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.11/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.15/docs/en/documentation.html).
 
 == Support ==
 
@@ -56,13 +56,12 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 == Changelog ==
 
  
-= 2.1.11 - April 05, 2023 =
+* [Features] Provide a fallback to handle payment when Woocommerce latest release break the iframe / lightbox 
+* [Features] Support of Woocommerce 7.7.0
+* [BugFix] Fix the line item inconsistency when using Taxes and a Coupon
+* [BugFix] Fix the parameter organisation name when using the payment method **Powerpay Invoice**
 
-## Bugfix
-- Fix the Smart Coupon impact on renewal of Subscriptions
-
-## Tested Against
-- PHP 8.1
-- Wordpress 6.2
-- Woocommerce 7.4.1
-- PHP SDK 3.2.0
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.2.0
+* [Tested Against] Woocommerce 7.7.0
+* [Tested Against] PHP SDK 3.2.0
