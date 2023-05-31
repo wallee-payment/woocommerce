@@ -375,7 +375,7 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			if ( $coupon_discount > 0 ) {
 				//there is some coupon discount applied
 				$amount = $amount_including_tax;
-				$discount = $amount_including_tax - $discount_including_tax - $coupon_discount;
+				$discount = abs($amount_including_tax - $discount_including_tax - $coupon_discount);
 			}
 
 			$line_item->setAmountIncludingTax( $this->round_amount( $amount, $currency ) );
