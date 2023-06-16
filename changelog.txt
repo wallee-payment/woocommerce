@@ -599,3 +599,43 @@ Tested against:
 * [Tested Against] Woocommerce 7.7.0
 * [Tested Against] PHP SDK 3.2.0
 
+* [BugFix] Fix the thankyou page redirection issue
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.2.0
+* [Tested Against] Woocommerce 7.7.0
+* [Tested Against] PHP SDK 3.2.0
+
+* [Features] Support of Wordpress 6.2.1
+* [Features] Support of Wordpress 6.2.2
+* [Features] Support of Woocommerce 7.7.1
+* [BugFix] Fix the fatal error raised when using non-whitelabel payment method
+* [BugFix] Fix the error raised when using the Coupon *Sign Up Fee % Discount*
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.2.0
+* [Tested Against] Woocommerce 7.7.0
+* [Tested Against] PHP SDK 3.2.0
+
+* [Features] Support of Wordpress 6.2.1
+* [Features] Support of Wordpress 6.2.2
+* [Features] Support of Woocommerce 7.7.1
+* [BugFix] Fix the fatal error raised when using non-whitelabel payment method
+* [BugFix] Fix the error raised when using the Coupon *Sign Up Fee % Discount*
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.2.0
+* [Tested Against] Woocommerce 7.7.0
+* [Tested Against] PHP SDK 3.2.0
+
+= 2.1.19 - June 13, 2023 =
+
+* [Features] Add compatibility with plugin **YITH**
+* [BugFix] Fix the duplication of transaction created in the portal when we make a payment
+* [BugFix] Correct release notes
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.2.0
+* [Tested Against] Woocommerce 7.7.1
+* [Tested Against] PHP SDK 3.2.0
+

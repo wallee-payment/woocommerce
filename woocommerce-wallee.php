@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 2.1.15
+ * Version: 2.1.19
  * License: Apache2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: wallee AG
@@ -11,7 +11,7 @@
  * Requires at least: 4.7
  * Tested up to: 6.2
  * WC requires at least: 3.0.0
- * WC tested up to: 7.7.0
+ * WC tested up to: 7.7.1
  *
  * Text Domain: wallee
  * Domain Path: /languages/
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '2.1.15';
+		private $version = '2.1.19';
 
 		/**
 		 * The single instance of the class.
@@ -158,13 +158,13 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 				)
 			);
 
-			add_action(
+			/*add_action(
 				'woocommerce_thankyou',
 				array(
 					$this,
 					'secure_redirect_order_confirmed',
 					)
-			);
+			);*/
 
 			add_action(
 				'plugins_loaded',
@@ -226,11 +226,13 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			$wc_service_transaction = WC_Wallee_Service_Transaction::instance();
 			$sdk_service_transaction = new \Wallee\Sdk\Service\TransactionService(WC_Wallee_Helper::instance()->get_api_client());
 			$wc_transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id($order_id);
-			$state = $sdk_service_transaction->read(get_option(self::CK_SPACE_ID), $wc_transaction_info->get_transaction_id())->getState();
 
-			if ($state == \Wallee\Sdk\Model\TransactionState::CONFIRMED) {
-				wp_redirect($wc_service_transaction->get_payment_page_url(get_option(self::CK_SPACE_ID), $wc_transaction_info->get_transaction_id()));
-				exit;
+			if (property_exists($wc_transaction_info,'get_transaction_id')) {
+			  $state = $sdk_service_transaction->read(get_option(self::CK_SPACE_ID), $wc_transaction_info->get_transaction_id())->getState();
+			  if ($state == \Wallee\Sdk\Model\TransactionState::CONFIRMED) {
+				  wp_redirect($wc_service_transaction->get_payment_page_url(get_option(self::CK_SPACE_ID), $wc_transaction_info->get_transaction_id()));
+				  exit;
+			  }
 			}
 		}
 
