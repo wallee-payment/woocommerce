@@ -46,13 +46,13 @@ jobs:
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
 
-    - name: Upload binaries to Github release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
-        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
-        tag: ${{ github.ref }}
+    # - name: Upload binaries to Github release
+    #   uses: svenstaro/upload-release-action@v2
+    #   with:
+    #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+    #     file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
+    #     asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
+    #     tag: ${{ github.ref }}
 
     - name: WordPress Plugin Deploy
       id: deploy
