@@ -33,6 +33,8 @@ jobs:
         mv build-woo/src/readme_mod.txt build-woo/src/readme.txt;
         mkdir build-woo/$WORDPRESS_ORG_SLUG;
         rsync -r build-woo/src/ build-woo/$WORDPRESS_ORG_SLUG/;
+        ls -ltrh $GITHUB_WORKSPACE/build-woo/src;
+        ls -ltrh build-woo/$WORDPRESS_ORG_SLUG/;
 
     - name: Zip & Sniff
       env:
@@ -45,7 +47,7 @@ jobs:
         rm -rf src/docs;
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
-        ls -lthr $WORDPRESS_ORG_SLUG/build-woo/src;
+        ls -ltrh $GITHUB_WORKSPACE/build-woo/src;
         ls -ltrh $WORDPRESS_ORG_SLUG/build-woo/;
 
     # - name: Upload binaries to Github release
