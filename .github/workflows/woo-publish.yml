@@ -45,8 +45,8 @@ jobs:
         rm -rf src/docs;
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
-        ls -lthr ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src;
-        ls -ltrh ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/;
+        ls -lthr $WORDPRESS_ORG_SLUG/build-woo/src;
+        ls -ltrh $WORDPRESS_ORG_SLUG/build-woo/;
 
     # - name: Upload binaries to Github release
     #   uses: svenstaro/upload-release-action@v2
