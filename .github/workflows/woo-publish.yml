@@ -34,8 +34,7 @@ jobs:
         mkdir build-woo/$WORDPRESS_ORG_SLUG;
         rsync -r build-woo/src/ build-woo/$WORDPRESS_ORG_SLUG/;
         ls -ltrh $GITHUB_WORKSPACE/build-woo/src;
-        ls -ltrh build-woo/$WORDPRESS_ORG_SLUG/;
-
+        
     - name: Zip & Sniff
       env:
         WORDPRESS_ORG_SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
@@ -47,8 +46,7 @@ jobs:
         rm -rf src/docs;
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
-        ls -ltrh $GITHUB_WORKSPACE/build-woo/src;
-        ls -ltrh $WORDPRESS_ORG_SLUG/build-woo/;
+        ls -ltrh $GITHUB_WORKSPACE/build-woo/;
 
     # - name: Upload binaries to Github release
     #   uses: svenstaro/upload-release-action@v2
@@ -66,5 +64,5 @@ jobs:
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
+        ASSETS_DIR: build-woo/${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
         SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
