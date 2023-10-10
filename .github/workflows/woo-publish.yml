@@ -62,6 +62,7 @@ jobs:
       with:
         generate-zip: true
       env:
+        VERSION : "2.1.25"
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
