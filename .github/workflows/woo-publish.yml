@@ -58,11 +58,11 @@ jobs:
 
     - name: WordPress Plugin Deploy
       id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@2.2.2
+      uses: 10up/action-wordpress-plugin-deploy@develop
       with:
         generate-zip: true
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        ASSETS_DIR: build-woo/src/
+        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
         SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
