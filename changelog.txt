@@ -698,3 +698,11 @@ Tested against:
 * [Tested Against] Woocommerce 8.1.1
 * [Tested Against] PHP SDK 3.2.0
 
+= 2.1.26 - December 6, 2023 =
+- [BugFix] Resolved line item inconsistencies that could occur when using coupons
+- [BugFix] Fixed the issue preventing invoice downloads
+- [Tested Against] PHP 8.0.28
+- [Tested Against] Wordpress 6.3.0
+- [Tested Against] Woocommerce 8.1.1
+- [Tested Against] PHP SDK 4.0.2
+

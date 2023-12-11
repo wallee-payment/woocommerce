@@ -8,7 +8,7 @@
  *
  * @category Class
  * @package  Wallee
- * @author   wallee AG (http://www.wallee.com/)
+ * @author   wallee AG (https://www.wallee.com)
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
@@ -73,6 +73,15 @@ class WC_Wallee_Packages_Coupon_Discount {
 			),
 			10,
 			1
+		);
+		add_filter(
+			'wc_wallee_packages_coupon_process_line_items_with_coupons',
+			array(
+				__CLASS__,
+				'process_line_items_with_coupons',
+			),
+			10,
+			3
 		);
 	}
 
@@ -164,6 +173,73 @@ class WC_Wallee_Packages_Coupon_Discount {
 			}
 		}
 		return $coupon_percentage_discount;
+	}
+
+	/**
+	 * Calculate total line items if there is a coupon
+	 *
+	 * @param array $line_items
+	 * @param float $expected_sum
+	 * @param string $currency
+	 * @return array<mixed>
+	 */
+	public static function process_line_items_with_coupons( array $line_items, float $expected_sum, string $currency ) {
+		$exclude_discounts = true;
+		$amount = WC_Wallee_Helper::instance()->get_total_amount_including_tax( $line_items, $exclude_discounts);
+		$effective_sum = WC_Wallee_Helper::instance()->round_amount( $amount , $currency );
+		//compare the difference with a small tolerance to handle floating point inaccuracies.
+		$result_amount = $expected_sum - $effective_sum;
+
+		//coupon line items rounding again
+		/** @var \Wallee\Sdk\Model\LineItemCreate $line_item */
+		foreach ( $line_items as $line_item ) {
+			if ( $line_item->getType() == \Wallee\Sdk\Model\LineItemType::DISCOUNT ) {
+				//if there is a difference, a penny, then the coupon is readjust
+				$item_amount = $line_item->getAmountIncludingTax() + $result_amount;
+				$line_item->setAmountIncludingTax( WC_Wallee_Helper::instance()->round_amount( $item_amount, $currency ) );
+			}
+		}
+
+		//if there is another difference, like a penny, create a new line item for adjustment
+		$amount_rounded = WC_Wallee_Helper::instance()->get_total_amount_including_tax( $line_items, $exclude_discounts);
+		if ( !self::compare_numbers( $expected_sum, $amount_rounded ) ) {
+			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
+			$amount_mismatch = $expected_sum - $amount_rounded;
+			$line_item->setAmountIncludingTax( WC_Wallee_Helper::instance()->round_amount( $amount_mismatch, $currency ) );
+			$line_item->setName( __( 'Coupon adjustment', 'woo-wallee' ) );
+			$line_item->setQuantity( 1 );
+			$line_item->setSku( 'coupon adjustment' );
+			$line_item->setUniqueId( 'coupon adjustment' );
+			$line_item->setShippingRequired( false );
+			$line_item->setType( \Wallee\Sdk\Model\LineItemType::DISCOUNT );
+			$line_items[] = $line_item;
+
+			//readjustment of the total amount of items
+			//($amount_mismatch * -1) this changes the sign of the floating number so that it can be subtracted.
+			$amount_rounded = $amount_rounded - ($amount_mismatch * -1); //
+		}
+
+		return [
+			//format number with two decimal places
+			'effective_sum' => sprintf("%.2f", $amount_rounded ),
+			'line_items_cleaned' => $line_items,
+		];
+	}
+
+
+	/**
+	 * Compare whether two floating numbers are equal
+	 * @param float $first_value
+	 * @param float $second_value
+	 * @param int $precision
+	 * @return bool
+	 */
+	private static function compare_numbers(float $first_value, float $second_value, int $precision = 6)
+	{
+		$multiplier = pow( 10, $precision );
+		$first_value_rounded = round($first_value * $multiplier);
+		$second_value_rounded = round($second_value * $multiplier);
+		return $first_value_rounded === $second_value_rounded;
 	}
 }
 

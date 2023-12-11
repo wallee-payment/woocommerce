@@ -29,7 +29,7 @@ use \Wallee\Sdk\ObjectSerializer;
  * @category    Class
  * @description 
  * @package     Wallee\Sdk
- * @author      customweb GmbH
+ * @author      wallee AG
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
 class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
@@ -50,7 +50,10 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
       */
     protected static $swaggerTypes = [
         'component' => 'int',
-        'quantity' => 'float'
+        'id' => 'int',
+        'linked_space_id' => 'int',
+        'quantity' => 'float',
+        'version' => 'int'
     ];
 
     /**
@@ -60,7 +63,10 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
       */
     protected static $swaggerFormats = [
         'component' => 'int64',
-        'quantity' => null
+        'id' => 'int64',
+        'linked_space_id' => 'int64',
+        'quantity' => null,
+        'version' => 'int32'
     ];
 
     /**
@@ -71,7 +77,10 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
      */
     protected static $attributeMap = [
         'component' => 'component',
-        'quantity' => 'quantity'
+        'id' => 'id',
+        'linked_space_id' => 'linkedSpaceId',
+        'quantity' => 'quantity',
+        'version' => 'version'
     ];
 
     /**
@@ -81,7 +90,10 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
      */
     protected static $setters = [
         'component' => 'setComponent',
-        'quantity' => 'setQuantity'
+        'id' => 'setId',
+        'linked_space_id' => 'setLinkedSpaceId',
+        'quantity' => 'setQuantity',
+        'version' => 'setVersion'
     ];
 
     /**
@@ -91,7 +103,10 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
      */
     protected static $getters = [
         'component' => 'getComponent',
-        'quantity' => 'getQuantity'
+        'id' => 'getId',
+        'linked_space_id' => 'getLinkedSpaceId',
+        'quantity' => 'getQuantity',
+        'version' => 'getVersion'
     ];
 
     
@@ -114,7 +129,13 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
         
         $this->container['component'] = isset($data['component']) ? $data['component'] : null;
         
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['linked_space_id'] = isset($data['linked_space_id']) ? $data['linked_space_id'] : null;
+        
         $this->container['quantity'] = isset($data['quantity']) ? $data['quantity'] : null;
+        
+        $this->container['version'] = isset($data['version']) ? $data['version'] : null;
         
     }
 
@@ -233,6 +254,56 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
     
 
     /**
+     * Gets id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id
+     *
+     * @param int $id A unique identifier for the object.
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets linked_space_id
+     *
+     * @return int
+     */
+    public function getLinkedSpaceId()
+    {
+        return $this->container['linked_space_id'];
+    }
+
+    /**
+     * Sets linked_space_id
+     *
+     * @param int $linked_space_id The ID of the space this object belongs to.
+     *
+     * @return $this
+     */
+    public function setLinkedSpaceId($linked_space_id)
+    {
+        $this->container['linked_space_id'] = $linked_space_id;
+
+        return $this;
+    }
+    
+
+    /**
      * Gets quantity
      *
      * @return float
@@ -252,6 +323,31 @@ class SubscriptionComponentConfiguration implements ModelInterface, ArrayAccess
     public function setQuantity($quantity)
     {
         $this->container['quantity'] = $quantity;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->container['version'];
+    }
+
+    /**
+     * Sets version
+     *
+     * @param int $version The version is used for optimistic locking and incremented whenever the object is updated.
+     *
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->container['version'] = $version;
 
         return $this;
     }

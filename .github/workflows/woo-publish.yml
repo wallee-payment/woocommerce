@@ -1,14 +1,16 @@
 name: Release Plugin
 on:  
-  - push
-  
+  push:
+    tags:
+      - '*'
+
 jobs:
   tag:
     name: New release
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
 
     - name: Setup
       env:
@@ -33,8 +35,7 @@ jobs:
         mv build-woo/src/readme_mod.txt build-woo/src/readme.txt;
         mkdir build-woo/$WORDPRESS_ORG_SLUG;
         rsync -r build-woo/src/ build-woo/$WORDPRESS_ORG_SLUG/;
-        ls -ltrh $GITHUB_WORKSPACE/build-woo/src;
-        
+
     - name: Zip & Sniff
       env:
         WORDPRESS_ORG_SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
@@ -46,23 +47,22 @@ jobs:
         rm -rf src/docs;
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
-        ls -ltrh $GITHUB_WORKSPACE/build-woo/;
 
-    # - name: Upload binaries to Github release
-    #   uses: svenstaro/upload-release-action@v2
-    #   with:
-    #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-    #     file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
-    #     asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
-    #     tag: ${{ github.ref }}
+    - name: Upload binaries to Github release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
+        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
+        tag: ${{ github.ref }}
 
     - name: WordPress Plugin Deploy
       id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@2.2.2
+      uses: 10up/action-wordpress-plugin-deploy@stable
       with:
         generate-zip: true
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        ASSETS_DIR: build-woo/${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
+        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
         SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}

@@ -8,7 +8,7 @@
  *
  * @category Class
  * @package  Wallee
- * @author   wallee AG (http://www.wallee.com/)
+ * @author   wallee AG (https://www.wallee.com)
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
@@ -239,6 +239,13 @@ class WC_Wallee_Helper {
 		$effective_sum = $this->round_amount( $this->get_total_amount_including_tax( $line_items, $has_coupons ), $currency );
 		$rounded_expected_sum = $this->round_amount( $expected_sum, $currency );
 
+		if ( $has_coupons ) {
+			$result = apply_filters( 'wc_wallee_packages_coupon_process_line_items_with_coupons', $line_items, $expected_sum, $currency );
+			$line_items = $result['line_items_cleaned'];
+			$effective_sum = $result['effective_sum'];
+			$rounded_expected_sum = $this->round_amount( $expected_sum, $currency );
+		}
+
 		$inconsistent_amount = $rounded_expected_sum - $effective_sum;
 		if ( 0 != $inconsistent_amount ) {
 			$enforce_consistency = get_option( WooCommerce_Wallee::CK_ENFORCE_CONSISTENCY );
@@ -258,8 +265,7 @@ class WC_Wallee_Helper {
 					throw new WC_Wallee_Exception_Invalid_Transaction_Amount( $effective_sum, $rounded_expected_sum );
 			}
 		}
-		$data = $this->ensure_unique_ids( $line_items );
-		return $data;
+		return $this->ensure_unique_ids( $line_items );
 	}
 
 

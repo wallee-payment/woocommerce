@@ -24,15 +24,15 @@ use \ArrayAccess;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * DatabaseTranslatedStringCreate model
+ * WebhookEncryptionPublicKey model
  *
  * @category    Class
- * @description 
+ * @description The webhook encryption public key is used to verify the webhook content signature.
  * @package     Wallee\Sdk
- * @author      customweb GmbH
+ * @author      wallee AG
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
+class WebhookEncryptionPublicKey implements ModelInterface, ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -41,7 +41,7 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $swaggerModelName = 'DatabaseTranslatedString.Create';
+    protected static $swaggerModelName = 'WebhookEncryptionPublicKey';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -49,7 +49,8 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'items' => '\Wallee\Sdk\Model\DatabaseTranslatedStringItemCreate[]'
+        'id' => 'string',
+        'public_key' => 'string'
     ];
 
     /**
@@ -58,7 +59,8 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'items' => null
+        'id' => null,
+        'public_key' => null
     ];
 
     /**
@@ -68,7 +70,8 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'items' => 'items'
+        'id' => 'id',
+        'public_key' => 'publicKey'
     ];
 
     /**
@@ -77,7 +80,8 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'items' => 'setItems'
+        'id' => 'setId',
+        'public_key' => 'setPublicKey'
     ];
 
     /**
@@ -86,7 +90,8 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'items' => 'getItems'
+        'id' => 'getId',
+        'public_key' => 'getPublicKey'
     ];
 
     
@@ -107,7 +112,9 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
     public function __construct(array $data = null)
     {
         
-        $this->container['items'] = isset($data['items']) ? $data['items'] : null;
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        
+        $this->container['public_key'] = isset($data['public_key']) ? $data['public_key'] : null;
         
     }
 
@@ -201,25 +208,50 @@ class DatabaseTranslatedStringCreate implements ModelInterface, ArrayAccess
     
 
     /**
-     * Gets items
+     * Gets id
      *
-     * @return \Wallee\Sdk\Model\DatabaseTranslatedStringItemCreate[]
+     * @return string
      */
-    public function getItems()
+    public function getId()
     {
-        return $this->container['items'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets items
+     * Sets id
      *
-     * @param \Wallee\Sdk\Model\DatabaseTranslatedStringItemCreate[] $items 
+     * @param string $id The ID of encryption key
      *
      * @return $this
      */
-    public function setItems($items)
+    public function setId($id)
     {
-        $this->container['items'] = $items;
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets public_key
+     *
+     * @return string
+     */
+    public function getPublicKey()
+    {
+        return $this->container['public_key'];
+    }
+
+    /**
+     * Sets public_key
+     *
+     * @param string $public_key The BASE64 encoded public key
+     *
+     * @return $this
+     */
+    public function setPublicKey($public_key)
+    {
+        $this->container['public_key'] = $public_key;
 
         return $this;
     }
