@@ -713,3 +713,10 @@ Tested against:
 - [Tested Against] Woocommerce 8.1.1
 - [Tested Against] PHP SDK 4.0.2
 
+= 2.1.28 - December 13, 2023 =
+- [HotFix] Fix incorrectly named css files and paths
+- [Tested Against] PHP 8.0.28
+- [Tested Against] Wordpress 6.3.0
+- [Tested Against] Woocommerce 8.4.0
+- [Tested Against] PHP SDK 4.0.2
+
