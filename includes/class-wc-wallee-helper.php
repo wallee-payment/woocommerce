@@ -551,14 +551,14 @@ class WC_Wallee_Helper {
 			do_action( 'wc_wallee_restocked_order', $order );
 		}
 	}
-	
+
 	/**
 	 * @return array
 	 */
 	protected static function getDefaultHeaderData()
 	{
 		$version = WC_VERSION;
-		
+
 		$shop_version = str_replace('v', '', $version);
 		list ($major_version, $minor_version) = explode('.', $shop_version, 3);
 		return [
