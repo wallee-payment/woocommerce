@@ -28,7 +28,7 @@ use \Wallee\Sdk\ObjectSerializer;
  *
  * @category    Class
  * @package     Wallee\Sdk
- * @author      customweb GmbH
+ * @author      wallee AG
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
 class AbstractTransactionCommentActive implements ModelInterface, ArrayAccess
@@ -216,7 +216,7 @@ class AbstractTransactionCommentActive implements ModelInterface, ArrayAccess
     /**
      * Sets content
      *
-     * @param string $content 
+     * @param string $content The comment's actual content.
      *
      * @return $this
      */

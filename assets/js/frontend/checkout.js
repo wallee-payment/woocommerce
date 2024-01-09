@@ -4,7 +4,7 @@
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
  *
  * @package  Wallee
- * @author   wallee AG (http://www.wallee.com/)
+ * @author   wallee AG (https://www.wallee.com)
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 

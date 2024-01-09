@@ -8,7 +8,7 @@
  *
  * @category Class
  * @package  Wallee
- * @author   wallee AG (http://www.wallee.com/)
+ * @author   wallee AG (https://www.wallee.com)
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
@@ -420,7 +420,8 @@ class WC_Wallee_Gateway extends WC_Payment_Gateway {
 			}
 			if ( ! wp_script_is( 'wallee-remote-checkout-js', 'enqueued' ) ) {
 				$ajax_url = $transaction_service->get_javascript_url_for_transaction( $transaction );
-				if ( get_option( WooCommerce_Wallee::CK_INTEGRATION ) == WC_Wallee_Integration::LIGHTBOX ) {
+				//!isset($wp->query_vars['order-pay'])->If you're not in the "re-pay" checkout.
+				if (( get_option( WooCommerce_Wallee::CK_INTEGRATION ) == WC_Wallee_Integration::LIGHTBOX ) && (is_checkout() && !isset($wp->query_vars['order-pay']))) {
 					$ajax_url = $transaction_service->get_lightbox_url_for_transaction( $transaction );
 				}
 				wp_enqueue_script(

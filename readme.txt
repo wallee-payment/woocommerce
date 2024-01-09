@@ -1,9 +1,9 @@
 === wallee ===
-Contributors: customwebgmbh
+Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 2.1.22
+Stable tag: 2.1.28
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.22/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/2.1.28/docs/en/documentation.html).
 
 == Support ==
 
@@ -34,8 +34,8 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 = Minimum Requirements =
 
 * PHP version 5.6 or greater
-* WordPress 4.7 or greater
-* WooCommerce 3.0.0 or greater
+* WordPress 4.7 up to 6.3.0
+* WooCommerce 3.0.0 up to 8.0.0
 
 = Automatic installation =
 
@@ -56,13 +56,9 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 == Changelog ==
 
  
-= 2.1.22 - July 11, 2023 =
-
-* [Features] Support of Woocommerce 7.8.1
-* [Features] Support of Woocommerce 7.8.2
-* [BugFix] Fix the impossibility of changing the payment method of a subscription
-
-* [Tested Against] PHP 8.0.28
-* [Tested Against] Wordpress 6.2.2
-* [Tested Against] Woocommerce 7.8.2
-* [Tested Against] PHP SDK 3.2.0
+= 2.1.28 - December 13, 2023 =
+- [HotFix] Fix incorrectly named css files and paths
+- [Tested Against] PHP 8.0.28
+- [Tested Against] Wordpress 6.3.0
+- [Tested Against] Woocommerce 8.4.0
+- [Tested Against] PHP SDK 4.0.2

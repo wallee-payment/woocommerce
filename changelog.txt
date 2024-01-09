@@ -449,7 +449,7 @@ Features:
 - Support of Wordpress 6.1
 - Support of Woocommerce 7.0.1
 Bugfixes:
-- Fix that when 0 manual task are needed, the message ?0 manuelle Tasks ben?tigen Ihre Aufmerksamkeit? is shown.
+- Fix that when 0 manual task are needed, the message ‘0 manuelle Tasks benötigen Ihre Aufmerksamkeit’ is shown.
 Tested against:
 - PHP 7.4.32
 - Wordpress: 6.1
@@ -667,4 +667,56 @@ Tested against:
 * [Tested Against] Wordpress 6.2.2
 * [Tested Against] Woocommerce 7.8.2
 * [Tested Against] PHP SDK 3.2.0
+
+= 2.1.23 - August 23, 2023 =
+
+* [Features] Support of Wordpress 6.3.0
+* [Features] Support for v8.0.0. Caveat - we dot not support checkout blocks at the current time. If wallee payment methods do not appear on the checkout, replace the blocks with the checkout shortcode.
+* [BugFix] Fix the error caused by an incorrect query statement when attempting to load an attribute ID.
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.3.0
+* [Tested Against] Woocommerce 8.0.0
+* [Tested Against] PHP SDK 3.2.0
+
+= 2.1.24 - September 26, 2023 =
+
+* [Features] Support of Wordpress 6.3.0
+* [BugFix] Fix an error when users try to re-pay a transaction
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.3.0
+* [Tested Against] Woocommerce 8.0.0
+* [Tested Against] PHP SDK 3.2.0
+
+= 2.1.25 - October 9, 2023 =
+
+* [Features] Increased woocommerce version support to 8.1.1.
+
+* [Tested Against] PHP 8.0.28
+* [Tested Against] Wordpress 6.3.0
+* [Tested Against] Woocommerce 8.1.1
+* [Tested Against] PHP SDK 3.2.0
+
+= 2.1.26 - December 6, 2023 =
+- [BugFix] Resolved line item inconsistencies that could occur when using coupons
+- [BugFix] Fixed the issue preventing invoice downloads
+- [Tested Against] PHP 8.0.28
+- [Tested Against] Wordpress 6.3.0
+- [Tested Against] Woocommerce 8.1.1
+- [Tested Against] PHP SDK 4.0.2
+
+= 2.1.27 - December 12, 2023 =
+- [HotFix] Fix static base url
+- [Tested Against] PHP 8.0.28
+- [Tested Against] Wordpress 6.3.0
+- [Tested Against] Woocommerce 8.1.1
+- [Tested Against] PHP SDK 4.0.2
+
+= 2.1.28 - December 13, 2023 =
+- [HotFix] Fix incorrectly named css files and paths
+- [Tested Against] PHP 8.0.28
+- [Tested Against] Wordpress 6.3.0
+- [Tested Against] Woocommerce 8.4.0
+- [Tested Against] PHP SDK 4.0.2
 

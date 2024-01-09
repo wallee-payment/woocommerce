@@ -8,7 +8,7 @@
  *
  * @category Class
  * @package  Wallee
- * @author   wallee AG (http://www.wallee.com/)
+ * @author   wallee AG (https://www.wallee.com)
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
@@ -259,6 +259,39 @@ class WC_Wallee_Email {
 				}
 			}
 		}
+
+		if(class_exists('PLLWC')){
+			add_filter( 'pllwc_order_email_actions', function ( $actions ){
+				$all = array(
+					'woocommerce_order_status_postfi-redirected_to_processing',
+					'woocommerce_order_status_postfi-redirected_to_completed',
+					'woocommerce_order_status_postfi-redirected_to_on-hold',
+					'woocommerce_order_status_postfi-redirected_to_postfinancecheckout-waiting',
+					'woocommerce_order_status_postfi-redirected_to_postfinancecheckout-manual',
+					'woocommerce_order_status_postfi-manual_to_cancelled',
+					'woocommerce_order_status_postfi-waiting_to_cancelled',
+					'woocommerce_order_status_postfi-manual_to_processing',
+					'woocommerce_order_status_postfi-waiting_to_processing',
+					'woocommerce_order_status_postfi-redirected_to_processing_notification',
+					'woocommerce_order_status_postfi-redirected_to_completed_notification',
+					'woocommerce_order_status_postfi-redirected_to_on-hold_notification',
+					'woocommerce_order_status_postfi-redirected_to_postfinancecheckout-waiting_notification',
+					'woocommerce_order_status_postfi-redirected_to_postfinancecheckout-manual_notification',
+				);
+
+				$customers = array(
+					'woocommerce_order_status_postfi-manual_to_processing_notification',
+					'woocommerce_order_status_postfi-waiting_to_processing_notification',
+					'woocommerce_order_status_on-hold_to_processing_notification',
+					'woocommerce_order_status_postfi-manual_to_cancelled_notification',
+					'woocommerce_order_status_postfi-waiting_to_cancelled_notifcation',
+				);
+
+				$actions = array_merge( $actions, $all, $customers);
+				return $actions;
+			});
+		}
+		
 		$actions = array_merge( $actions, $to_add );
 		return $actions;
 	}
