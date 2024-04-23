@@ -1,8 +1,8 @@
 === wallee ===
 Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
-Requires at least: 4.7
-Tested up to: 6.2
+Requires at least: 6.0
+Tested up to: 6.5
 Stable tag: 3.0.4
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
@@ -33,9 +33,9 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 = Minimum Requirements =
 
-* PHP version 5.6 or greater
-* WordPress 4.7 up to 6.3.0
-* WooCommerce 3.0.0 up to 8.0.0
+* PHP version 7,4 or greater
+* WordPress 6.0.0 up to 6.5.0
+* WooCommerce 8.0.0 up to 8.7.0
 
 = Automatic installation =
 
