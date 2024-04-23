@@ -3,7 +3,7 @@ Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 3.0.2
+Stable tag: 3.0.4
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.2/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.4/docs/en/documentation.html).
 
 == Support ==
 
@@ -56,9 +56,8 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 == Changelog ==
 
  
-= 3.0.2 - April 22 2024 =
-- [Hotfix] Fixed completion in the backend with coupon.
-- [Hotfix] Fixed tax amount not sent correctly to the portal.
+= 3.0.4 - April 23 2024 =
+- [Hotfix] Restore version and tested against comments in base file
 - [Tested Against] PHP 8.2
 - [Tested Against] Wordpress 6.5
 - [Tested Against] Woocommerce 8.7.0
