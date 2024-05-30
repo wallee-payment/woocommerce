@@ -1,9 +1,9 @@
 === wallee ===
 Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
-Requires at least: 6.0
-Tested up to: 6.5
-Stable tag: 3.0.4
+Requires at least: 4.7
+Tested up to: 6.2
+Stable tag: 3.0.5
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.4/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.5/docs/en/documentation.html).
 
 == Support ==
 
@@ -33,9 +33,9 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 = Minimum Requirements =
 
-* PHP version 7,4 or greater
-* WordPress 6.0.0 up to 6.5.0
-* WooCommerce 8.0.0 up to 8.7.0
+* PHP version 5.6 or greater
+* WordPress 4.7 up to 6.3.0
+* WooCommerce 3.0.0 up to 8.0.0
 
 = Automatic installation =
 
@@ -56,8 +56,8 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 == Changelog ==
 
  
-= 3.0.4 - April 23 2024 =
-- [Hotfix] Restore version and tested against comments in base file
+= 3.0.5 - April 25 2024 =
+- [Bugfix] Notification message in admin panel is now truly dissmisable.
 - [Tested Against] PHP 8.2
 - [Tested Against] Wordpress 6.5
 - [Tested Against] Woocommerce 8.7.0

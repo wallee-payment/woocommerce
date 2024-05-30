@@ -249,7 +249,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 		if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
-				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.4/docs/en/documentation.html" aria-label="' . esc_attr__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
+				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.5/docs/en/documentation.html" aria-label="' . esc_attr__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
 			);
 
 			return array_merge( $links, $row_meta );
@@ -354,7 +354,7 @@ class WC_Wallee_Migration {
 				`updated_at` datetime NOT NULL,
 				`restock` varchar(1) COLLATE utf8_unicode_ci,
 				`items` longtext COLLATE utf8_unicode_ci,
-				`failure_reason` longtext COLLATE utf8_unicode_ci,			
+				`failure_reason` longtext COLLATE utf8_unicode_ci,
 				PRIMARY KEY (`id`),
 				KEY `idx_transaction_id_space_id` (`transaction_id`,`space_id`),
 				KEY `idx_completion_id_space_id` (`completion_id`,`space_id`)
@@ -579,18 +579,26 @@ class WC_Wallee_Migration {
 	}
 
 	/**
-	 * Shows notification if there are unsupported features with woocommerce version.
-	 * 
+	 * Shows a notice in the admin section if the WooCommerce version installed is not officially yet supported by us.
+	 *
 	 * @return void
 	 */
-	public static function supported_payments_integration_notice() {
+	public static function supported_payments_integration_notice(): void {
 		$woocommerce_data = get_plugin_data( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php', false, false );
-    
+
 		if (version_compare( $woocommerce_data['Version'], WC_WALLEE_REQUIRED_WC_MAXIMUM_VERSION, '>' )) {
-		    $class = 'notice notice-info is-dismissible';
-		    $message = __( 'A version of the Wallee plugin is yet to be released for this version of WooCommerce.', 'sample-text-domain' );
-    
-		    printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+			$notice_id = "wallee-{$woocommerce_data['Version']}-not-yet-supported";
+			if (!WC_Admin_Notices::user_has_dismissed_notice($notice_id)) {
+				$message = sprintf(__( 'The plugin Wallee has been tested up to WooCommerce %1$s but you have installed the version %2$s. Please notice that this is not recommended.' , 'woo-wallee'), WC_WALLEE_REQUIRED_WC_MAXIMUM_VERSION, $woocommerce_data['Version']);
+				WC_Admin_Notices::add_custom_notice($notice_id, esc_html( $message ));
+
+				// Clean up previous dismissals stored in the user data, from previous versions.
+				$previous_version = get_user_meta(get_current_user_id(), "wallee-previous-wc-min-version");
+				if ($previous_version) {
+					delete_user_meta(get_current_user_id(), "dismissed_wallee-{$previous_version[0]}-not-yet-supported_notice");
+				}
+				update_user_meta(get_current_user_id(), "wallee-previous-wc-min-version", $woocommerce_data['Version']);
+			}
 		}
 	}
 }
