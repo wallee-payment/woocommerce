@@ -9,14 +9,15 @@ This repository contains the wallee plugin that enables WooCommerce to process p
 
 ## Requirements
 
-* [Wordpress](https://wordpress.org/) 6.0 or later
-* [Woocommerce](https://woocommerce.com/) 8.0 or later
+* [Wordpress](https://wordpress.org/) 6.x
+* [Woocommerce](https://woocommerce.com/) 8.x and 9.x
 * [PHP](http://php.net/) version supported by the Wordpress/Woocommerce version.
 * (For previous versions, see table below)
 
 ## Documentation
 
-* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.7/docs/en/documentation.html)
+* [Documentation](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.8
+/docs/en/documentation.html)
 
 ## Support
 
@@ -27,10 +28,11 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 ____________________________________________________________________________
 | WooCommerce version    | Plugin major version   | Supported until        |
 |------------------------|------------------------|------------------------|
-| 8.x                    | 3.x                    | Further notice         |
+| 8.x, 9.x               | 3.x                    | Further notice         |
 | 7.x                    | 2.x                    | Feb 2024               |
 ----------------------------------------------------------------------------
 
 ## License
 
-Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/3.0.7/LICENSE) for more information.
+Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/3.0.8
+/LICENSE) for more information.
