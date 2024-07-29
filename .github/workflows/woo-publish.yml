@@ -48,14 +48,16 @@ jobs:
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
 
-#    - name: Upload binaries to Github release
-#      uses: svenstaro/upload-release-action@v2
-#      with:
-#        repo_token: ${{ secrets.GITHUB_TOKEN }}
-#        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
-#        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
-#        tag: ${{ github.ref }}
-#        overwrite: true
+    - name: Create or Update GitHub Release
+      id: create_release
+      uses: softprops/action-gh-release@v1  # Updated to a more flexible action
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        files: ${{ github.workspace }}/${{ env.WORDPRESS_ORG_SLUG }}.zip
+        overwrite: true
 
 #    - name: WordPress Plugin Deploy
 #      id: deploy
