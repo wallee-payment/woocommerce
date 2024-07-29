@@ -48,22 +48,22 @@ jobs:
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
 
-    - name: Upload binaries to Github release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
-        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
-        tag: ${{ github.ref }}
-        overwrite: true
+#    - name: Upload binaries to Github release
+#      uses: svenstaro/upload-release-action@v2
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
+#        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
+#        tag: ${{ github.ref }}
+#        overwrite: true
 
-    - name: WordPress Plugin Deploy
-      id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@stable
-      with:
-        generate-zip: true
-      env:
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
-        SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
+#    - name: WordPress Plugin Deploy
+#      id: deploy
+#      uses: 10up/action-wordpress-plugin-deploy@stable
+#      with:
+#        generate-zip: true
+#      env:
+#        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+#        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+#        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
+#        SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
