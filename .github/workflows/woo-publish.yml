@@ -58,7 +58,10 @@ jobs:
         asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
         tag: ${{ github.ref }}
         draft: false
-        prerelease: false
+        promote: true
+        prerelease: true
+        overwrite: true
+
 
 #    - name: WordPress Plugin Deploy
 #      id: deploy
