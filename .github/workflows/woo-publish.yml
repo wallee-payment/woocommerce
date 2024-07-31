@@ -52,14 +52,14 @@ jobs:
       id: check_file
       run: echo "file_exists=$(test -e ${{ vars.WORDPRESS_ORG_SLUG }}.zip && echo true || echo false)" >> $GITHUB_ENV
 
-    - name: Upload binaries to Github release
-      if: env.file_exists == 'true'
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
-        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
-        tag: ver-${{ github.sha }}
+#    - name: Upload binaries to Github release
+#      if: env.file_exists == 'true'
+#      uses: svenstaro/upload-release-action@v2
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
+#        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
+#        tag: ver-${{ github.sha }}
 
 #    - name: WordPress Plugin Deploy
 #      id: deploy
