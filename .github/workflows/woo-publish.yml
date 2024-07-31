@@ -1,5 +1,4 @@
 name: Release Plugin
-
 on:
   push:
     tags:
@@ -10,77 +9,52 @@ jobs:
     name: New release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # Updated to latest version
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup
-        env:
-          WORDPRESS_ORG_SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
-          WHITELABEL: ${{ vars.WHITELABEL_NAME }}
-          FAQ_ENTRIES: ${{ vars.FAQ_ENTRIES }}
-          FEATURES: ${{ vars.FEATURES }}
-        run: |
-          echo $GITHUB_WORKSPACE
-          echo $WORDPRESS_ORG_SLUG
-          ls -ltrh
-          git clone https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
-          git clone -b main https://github.com/WordPress/WordPress-Coding-Standards.git wpcs
-          cd phpcs
-          ./bin/phpcs --config-set installed_paths ../wpcs
-          cd ../
-          ls -ltrh
-          pwd
-          mkdir -p $GITHUB_WORKSPACE/build-woo/src
-          rsync -r --exclude 'build-woo' --exclude 'wpcs' --exclude 'phpcs' --exclude '.git' --exclude '.github' --exclude '.travis.yml' --exclude 'README.md' . $GITHUB_WORKSPACE/build-woo/src
-          perl -plne 'print "$ENV{'FEATURES'}" if(/== Installation ==/); print "$ENV{'FAQ_ENTRIES'}" if(/== Changelog ==/);' $GITHUB_WORKSPACE/build-woo/src/readme.txt > $GITHUB_WORKSPACE/build-woo/src/readme_mod.txt
-          mv build-woo/src/readme_mod.txt build-woo/src/readme.txt
-          mkdir build-woo/$WORDPRESS_ORG_SLUG
-          rsync -r build-woo/src/ build-woo/$WORDPRESS_ORG_SLUG/
+    - name: Setup
+      env:
+        WORDPRESS_ORG_SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
+        WHITELABEL: ${{ vars.WHITELABEL_NAME }}
+        FAQ_ENTRIES: ${{ vars.FAQ_ENTRIES }}
+        FEATURES: ${{ vars.FEATURES }}
+      run: |
+        echo $GITHUB_WORKSPACE
+        echo $WORDPRESS_ORG_SLUG
+        ls -ltrh
+        git clone https://github.com/squizlabs/PHP_CodeSniffer.git phpcs;
+        git clone -b main https://github.com/WordPress/WordPress-Coding-Standards.git wpcs;
+        cd phpcs;
+        ./bin/phpcs --config-set installed_paths ../wpcs;
+        cd ../;
+        ls -ltrh
+        pwd
+        mkdir -p $GITHUB_WORKSPACE/build-woo/src;
+        rsync -r --exclude 'build-woo' --exclude 'wpcs' --exclude 'phpcs' --exclude '.git' --exclude '.github' --exclude '.travis.yml' --exclude 'README.md' . $GITHUB_WORKSPACE/build-woo/src;
+        perl -plne 'print "$ENV{'FEATURES'}" if(/== Installation ==/); print "$ENV{'FAQ_ENTRIES'}" if(/== Changelog ==/);' $GITHUB_WORKSPACE/build-woo/src/readme.txt > $GITHUB_WORKSPACE/build-woo/src/readme_mod.txt;
+        mv build-woo/src/readme_mod.txt build-woo/src/readme.txt;
+        mkdir build-woo/$WORDPRESS_ORG_SLUG;
+        rsync -r build-woo/src/ build-woo/$WORDPRESS_ORG_SLUG/;
 
-      - name: Zip & Sniff
-        env:
-          WORDPRESS_ORG_SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
-          WHITELABEL: ${{ vars.WHITELABEL_NAME }}
-        run: |
-          ls -ltrh
-          cd $GITHUB_WORKSPACE/build-woo/
-          zip -r $GITHUB_WORKSPACE/${{ env.WORDPRESS_ORG_SLUG }}.zip ${{ env.WORDPRESS_ORG_SLUG }}
-          rm -rf src/docs
-          ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true
-          ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true
+    - name: Zip & Sniff
+      env:
+        WORDPRESS_ORG_SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
+        WHITELABEL: ${{ vars.WHITELABEL_NAME }}
+      run: |
+        ls -ltrh;
+        cd $GITHUB_WORKSPACE/build-woo/
+        zip -r $GITHUB_WORKSPACE/$WORDPRESS_ORG_SLUG.zip $WORDPRESS_ORG_SLUG;
+        rm -rf src/docs;
+        ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
+        ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
 
-      - name: Check if Release Exists
-        id: check_release
-        run: |
-          response=$(curl -s -o response.json -w "%{http_code}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }})
-          if [ "$response" = "200" ]; then
-            echo "release_exists=true" >> $GITHUB_ENV
-          else
-            echo "release_exists=false" >> $GITHUB_ENV
-          fi
-
-      - name: Create or Update GitHub Release
-        id: create_or_update_release
-        if: env.release_exists == 'false'
-        uses: softprops/action-gh-release@v1  # Updated to a more flexible action
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          files: ${{ github.workspace }}/${{ env.WORDPRESS_ORG_SLUG }}.zip
-          overwrite: true
-
-      - name: Update GitHub Release Assets
-        if: env.release_exists == 'true'
-        run: |
-          release_id=$(jq '.id' response.json)
-          asset_id=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/${release_id}/assets | jq -r '.[] | select(.name == "'${{ env.WORDPRESS_ORG_SLUG }}.zip'") | .id')
-          if [ -n "$asset_id" ]; then
-            curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/assets/${asset_id}
-          fi
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/zip" --data-binary @$GITHUB_WORKSPACE/${{ env.WORDPRESS_ORG_SLUG }}.zip "https://uploads.github.com/repos/${{ github.repository }}/releases/${release_id}/assets?name=${{ env.WORDPRESS_ORG_SLUG }}.zip"
-
+    - name: Upload binaries to Github release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
+        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
+        tag: ${{ github.ref }}
 
 #    - name: WordPress Plugin Deploy
 #      id: deploy
