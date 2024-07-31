@@ -19,6 +19,7 @@ jobs:
         FAQ_ENTRIES: ${{ vars.FAQ_ENTRIES }}
         FEATURES: ${{ vars.FEATURES }}
       run: |
+        sleep 90
         echo $GITHUB_WORKSPACE
         echo $WORDPRESS_ORG_SLUG
         ls -ltrh
