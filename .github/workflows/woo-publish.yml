@@ -52,9 +52,9 @@ jobs:
     - name: Upload binaries to Github release
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_token: ${{ vars.DEBUG_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
-        asset_name: debug-${{ vars.WORDPRESS_ORG_SLUG }}
+        asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
         tag: ${{ github.ref }}
 
 #    - name: WordPress Plugin Deploy
