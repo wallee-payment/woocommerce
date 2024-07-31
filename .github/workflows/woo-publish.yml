@@ -57,7 +57,7 @@ jobs:
         file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
         asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
         tag: ${{ github.ref }}
-        draft: false
+        draft: true
         promote: true
         prerelease: true
         overwrite: true
