@@ -48,7 +48,12 @@ jobs:
         ../phpcs/bin/phpcbf -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
         ../phpcs/bin/phpcs -n --standard=WordPress src/ --ignore=/src/$WHITELABEL-sdk || true;
 
+    - name: Check if file exists
+      id: check_file
+      run: echo "file_exists=$(test -e ${{ vars.WORDPRESS_ORG_SLUG }}.zip && echo true || echo false)" >> $GITHUB_ENV
+
     - name: Upload binaries to Github release
+      if: env.file_exists == 'true'
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
