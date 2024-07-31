@@ -21,6 +21,7 @@ jobs:
       # sleep 90 is required, because gradle release command takes around 65s, we should start upload zip file after it finishes
       # zip file is attached when pipeline is finished
       run: |
+        sleep 90 
         echo $GITHUB_WORKSPACE
         echo $WORDPRESS_ORG_SLUG
         ls -ltrh
@@ -53,14 +54,10 @@ jobs:
     - name: Upload binaries to Github release
       uses: svenstaro/upload-release-action@v2
       with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ${{ vars.WORDPRESS_ORG_SLUG }}.zip
         asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
         tag: ${{ github.ref }}
-        draft: true
-        promote: true
-        prerelease: true
-        overwrite: true
-
 
 #    - name: WordPress Plugin Deploy
 #      id: deploy
