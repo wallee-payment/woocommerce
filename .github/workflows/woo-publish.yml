@@ -59,15 +59,15 @@ jobs:
         asset_name: ${{ vars.WORDPRESS_ORG_SLUG }}
         tag: ${{ github.ref }}
 
-#    - name: WordPress Plugin Deploy
-#      id: deploy
-#      # does not deploy if it's testing repo
-#      if: ${{ vars.WORDPRESS_ORG_SLUG != 'woo-WhiteLabelGithubOwnerName' }}
-#      uses: 10up/action-wordpress-plugin-deploy@stable
-#      with:
-#        generate-zip: true
-#      env:
-#        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-#        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-#        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
-#        SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
+    - name: WordPress Plugin Deploy
+      id: deploy
+      # does not deploy if it's testing repo
+      if: ${{ vars.WORDPRESS_ORG_SLUG != 'woo-WhiteLabelGithubOwnerName' }}
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      with:
+        generate-zip: true
+      env:
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        ASSETS_DIR: ${{ vars.WORDPRESS_ORG_SLUG }}/build-woo/src
+        SLUG: ${{ vars.WORDPRESS_ORG_SLUG }}
