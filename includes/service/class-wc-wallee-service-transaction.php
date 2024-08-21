@@ -455,7 +455,8 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	            throw $e;
 	        } catch ( \Wallee\Sdk\ApiException $e ) {
 	            self::$possible_payment_method_cache[ $id ] = array();
-	            throw $e;
+	            $last = new Exception( __FUNCTION__ );
+	            WooCommerce_Wallee::instance()->log( __CLASS__ . ' : ' . __FUNCTION__ . ' : ' . __LINE__ . ' : ' . $last->getMessage(), WC_Log_Levels::ERROR );
 	        }
 	    }
 	    return self::$possible_payment_method_cache[ $id ];
