@@ -249,7 +249,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 		if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
-				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.11/docs/en/documentation.html" aria-label="' . esc_attr__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
+				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.0.12/docs/en/documentation.html" aria-label="' . esc_attr__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
 			);
 
 			return array_merge( $links, $row_meta );
@@ -584,10 +584,20 @@ class WC_Wallee_Migration {
 	 * @return void
 	 */
 	public static function supported_payments_integration_notice(): void {
+		if (!class_exists( 'WooCommerce' )) {
+			add_action('admin_notices', function() {
+				?>
+				<div class="notice notice-error">
+					<p><?php _e('WooCommerce is not activated. Please activate WooCommerce to use the payment integration.', 'woo-wallee'); ?></p>
+				</div>
+				<?php
+				});
+        return;
+		}
 		$woocommerce_data = get_plugin_data( WP_PLUGIN_DIR . '/woocommerce/woocommerce.php', false, false );
 
 		if (version_compare( $woocommerce_data['Version'], WC_WALLEE_REQUIRED_WC_MAXIMUM_VERSION, '>' )) {
-			$notice_id = "wallee-{$woocommerce_data['Version']}-not-yet-supported";
+				$notice_id = "wallee-{$woocommerce_data['Version']}-not-yet-supported";
 			if (!WC_Admin_Notices::user_has_dismissed_notice($notice_id)) {
 				$message = sprintf(__( 'The plugin Wallee has been tested up to WooCommerce %1$s but you have installed the version %2$s. Please notice that this is not recommended.' , 'woo-wallee'), WC_WALLEE_REQUIRED_WC_MAXIMUM_VERSION, $woocommerce_data['Version']);
 				WC_Admin_Notices::add_custom_notice($notice_id, esc_html( $message ));

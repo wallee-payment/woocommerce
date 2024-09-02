@@ -67,6 +67,10 @@ msgstr "Dokumentation"
 msgid "A version of the Wallee plugin is yet to be released for this version of WooCommerce."
 msgstr "Eine Version des Wallee Plugin ist für diese Version von WooCommerce noch nicht freigegeben."
 
+#: includes/class-wc-wallee-migration.php:602
+msgid "WooCommerce is not activated. Please activate WooCommerce to use the payment integration."
+msgstr "WooCommerce ist nicht aktiviert. Bitte aktivieren Sie WooCommerce, um die Zahlungsintegration zu nutzen."
+
 #: includes/class-wc-wallee-customer-document.php:57
 msgid "Order Documents"
 msgstr "Bestelldokumente"

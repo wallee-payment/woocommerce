@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 /**
  * Webhook processor to handle manual task state transitions.
+ * @deprecated 3.0.12 No longer used by internal code and not recommended.
+ * @see WC_Wallee_Webhook_Manual_Task_Strategy
  */
 class WC_Wallee_Webhook_Manual_Task extends WC_Wallee_Webhook_Abstract {
 

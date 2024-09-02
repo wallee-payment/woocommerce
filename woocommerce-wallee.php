@@ -4,14 +4,14 @@
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
  * License: Apache2
- * Version: 3.0.11
+ * Version: 3.0.12
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * WC requires at least: 8.0.0
- * WC tested up to: 9.0.2
+ * WC tested up to: 9.2.3
  *
  * Text Domain: wallee
  * Domain Path: /languages/
@@ -39,14 +39,14 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		const CK_INTEGRATION = 'wc_wallee_integration';
 		const CK_ORDER_REFERENCE = 'wc_wallee_order_reference';
 		const CK_ENFORCE_CONSISTENCY = 'wc_wallee_enforce_consistency';
-		const WC_MAXIMUM_VERSION = '9.1.4';
+		const WC_MAXIMUM_VERSION = '9.2.3';
 
 		/**
 		 * WooCommerce Wallee version.
 		 *
 		 * @var string
 		 */
-		private $version = '3.0.11';
+		private $version = '3.0.12';
 
 		/**
 		 * The single instance of the class.
@@ -1054,8 +1054,10 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
          * @return mixed
          */
         public function add_cache_no_store( $headers ) {
-            if ( is_checkout() && isset( $headers['Cache-Control'] ) && stripos( $headers['Cache-Control'], 'no-store' ) === false ) {
-                $headers['Cache-Control'] .= ', no-store ';
+            if ( class_exists( 'WooCommerce' ) ) {
+                if ( is_checkout() && isset( $headers['Cache-Control'] ) && stripos( $headers['Cache-Control'], 'no-store' ) === false ) {
+                    $headers['Cache-Control'] .= ', no-store ';
+                }
             }
             return $headers;
         }
