@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -15,16 +18,19 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class WC_Wallee_Webhook_Token_Version_Strategy
- * 
+ *
  * Handles the strategy for processing webhook requests related to token versions.
  * This class extends the base webhook strategy class to specifically manage webhook
  * requests that involve updates or changes to token versions. Token versions are crucial
  * for maintaining the integrity and version control of tokens used within the system.
  */
 class WC_Wallee_Webhook_Token_Version_Strategy extends WC_Wallee_Webhook_Strategy_Base {
-		
+
 	/**
+	 * Match function.
+	 *
 	 * @inheritDoc
+	 * @param string $webhook_entity_id The webhook entity id.
 	 */
 	public function match( string $webhook_entity_id ) {
 		return WC_Wallee_Service_Webhook::WALLEE_TOKEN_VERSION == $webhook_entity_id;
@@ -38,7 +44,7 @@ class WC_Wallee_Webhook_Token_Version_Strategy extends WC_Wallee_Webhook_Strateg
 	 * information is accurate and reflects any changes dictated by the incoming webhook data.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request The webhook request.
-	 * @return void 
+	 * @return void
 	 * @throws Exception Throws an exception if there is a failure in updating the token version.
 	 */
 	public function process( WC_Wallee_Webhook_Request $request ) {

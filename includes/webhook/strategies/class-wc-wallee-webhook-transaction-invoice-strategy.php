@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -15,23 +18,29 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class WC_Wallee_Webhook_Refund_Strategy
- * 
+ *
  * Handles strategy for processing transaction invoice-related webhook requests.
  * This class extends the base webhook strategy to manage webhook requests specifically
  * dealing with transaction invoices. It focuses on updating order states based on the invoice details
  * retrieved from the webhook data.
  */
 class WC_Wallee_Webhook_Transaction_Invoice_Strategy extends WC_Wallee_Webhook_Strategy_Base {
-	
+
 	/**
+	 * Match function.
+	 *
 	 * @inheritDoc
+	 * @param string $webhook_entity_id The webhook entity id.
 	 */
 	public function match( string $webhook_entity_id ) {
 		return WC_Wallee_Service_Webhook::WALLEE_TRANSACTION_INVOICE == $webhook_entity_id;
 	}
 
 	/**
+	 * Load the entity.
+	 *
 	 * @inheritDoc
+	 * @param WC_Wallee_Webhook_Request $request webhook request.
 	 */
 	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
 		$transaction_invoice_service = new \Wallee\Sdk\Service\TransactionInvoiceService( WC_Wallee_Helper::instance()->get_api_client() );
@@ -39,7 +48,10 @@ class WC_Wallee_Webhook_Transaction_Invoice_Strategy extends WC_Wallee_Webhook_S
 	}
 
 	/**
+	 * Get the order ID from the object.
+	 *
 	 * @inheritDoc
+	 * @param object $object transaction entity object.
 	 */
 	protected function get_order_id( $object ) {
 		/* @var \Wallee\Sdk\Model\TransactionInvoice $object */

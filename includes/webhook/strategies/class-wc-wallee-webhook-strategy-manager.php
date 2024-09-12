@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -24,20 +27,22 @@ defined( 'ABSPATH' ) || exit;
 class WC_Wallee_Webhook_Strategy_Manager {
 
 	/**
+	 * Holds instances of webhook strategies.
+	 *
 	 * @var array Holds instances of webhook strategies.
 	 */
-	protected $strategies = [];
+	protected $strategies = array();
 
 	/**
 	 * The service that provides access to webhook-related functionalities.
-	 * 
+	 *
 	 * @var WC_Wallee_Service_Webhook
 	 */
 	private $webhook_service;
 
 	/**
 	 * The helper object for utility functions
-	 * 
+	 *
 	 * @var WC_Wallee_Helper
 	 */
 	private $helper;
@@ -107,26 +112,25 @@ class WC_Wallee_Webhook_Strategy_Manager {
 	 * @throws Exception If no strategy can be resolved.
 	 */
 	private function resolve_strategy( WC_Wallee_Webhook_Request $request ) {
-		/** @var WC_Wallee_Webhook_Entity $webhook_model */
 		$webhook_model = $this->webhook_service->get_webhook_entity_for_id( $request->get_listener_entity_id() );
 
 		// Check if the webhook model exists for this listener entity ID.
 		if ( is_null( $webhook_model ) ) {
-			throw new Exception( sprintf( 'Could not retrieve webhook model for listener entity id: %s', $request->get_listener_entity_id() ) );
+			$entity_id = esc_attr( $request->get_listener_entity_id() );
+			throw new Exception( esc_attr( sprintf( 'Could not retrieve webhook model for listener entity id: %s', $entity_id ) ) );
 		}
 
 		$webhook_transaction_id = $webhook_model->get_id();
 
 		// Check if the strategy exists for the retrieved transaction ID.
-		foreach ($this->strategies as $strategy) {
-			/** @var WC_Wallee_Webhook_Strategy_Interface $strategy */
+		foreach ( $this->strategies as $strategy ) {
 			if ( $strategy->match( $webhook_transaction_id ) ) {
 				return $strategy;
 			}
 		}
-		
-		// No strategy found for the transaction ID
-		throw new Exception( sprintf( 'No strategy available for the transaction ID: %s',  $webhook_transaction_id ) );
+
+		// No strategy found for the transaction ID.
+		throw new Exception( esc_attr( sprintf( 'No strategy available for the transaction ID: %s', $webhook_transaction_id ) ) );
 	}
 
 	/**
@@ -145,7 +149,7 @@ class WC_Wallee_Webhook_Strategy_Manager {
 
 		try {
 			$this->helper->lock_by_transaction_id( $request->get_space_id(), $request->get_entity_id() );
-			
+
 			$strategy = $this->resolve_strategy( $request );
 			$strategy->process( $request );
 

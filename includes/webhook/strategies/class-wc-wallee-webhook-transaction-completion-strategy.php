@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -15,23 +18,29 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class WC_Wallee_Webhook_Transaction_Completion_Strategy
- * 
+ *
  * Handles strategy for processing transaction completion-related webhook requests.
  * This class extends the base webhook strategy to manage webhook requests specifically
  * dealing with transaction completions. It focuses on updating order states based on the transaction completion details
  * retrieved from the webhook data.
  */
 class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhook_Strategy_Base {
-	
+
 	/**
+	 * Match function.
+	 *
 	 * @inheritDoc
+	 * @param string $webhook_entity_id The webhook entity id.
 	 */
 	public function match( string $webhook_entity_id ) {
 		return WC_Wallee_Service_Webhook::WALLEE_TRANSACTION_COMPLETION == $webhook_entity_id;
 	}
 
 	/**
+	 * Load the entity
+	 *
 	 * @inheritDoc
+	 * @param WC_Wallee_Webhook_Request $request The webhook request.
 	 */
 	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
 		$transaction_invoice_service = new \Wallee\Sdk\Service\TransactionCompletionService( WC_Wallee_Helper::instance()->get_api_client() );
@@ -39,7 +48,10 @@ class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhoo
 	}
 
 	/**
+	 * Get the order ID.
+	 *
 	 * @inheritDoc
+	 * @param object $object The webhook request.
 	 */
 	protected function get_order_id( $object ) {
 		/* @var \Wallee\Sdk\Model\TransactionCompletion $object */
@@ -66,7 +78,7 @@ class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhoo
 			$this->process_order_related_inner( $order, $completion, $request );
 		}
 	}
-	
+
 	/**
 	 * Additional processing on the order based on the state of the transaction completion.
 	 *
@@ -111,7 +123,7 @@ class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhoo
 			}
 			$completion_job->set_completion_id( $completion->getId() );
 		}
-		$completion_job->set_state( WC_Wallee_Entity_Completion_Job::STATE_DONE );
+		$completion_job->set_state( WC_Wallee_Entity_Completion_Job::WALLEE_STATE_DONE );
 
 		if ( $completion_job->get_restock() ) {
 			$this->restock_non_completed_items( (array) $completion_job->get_items(), $order );
@@ -123,7 +135,7 @@ class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhoo
 	/**
 	 * Restock non completed items.
 	 *
-	 * @param array    $completed_items completed items.
+	 * @param array $completed_items completed items.
 	 * @param WC_Order $order order.
 	 * @return void
 	 */
@@ -156,7 +168,7 @@ class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhoo
 	/**
 	 * Adapt order items.
 	 *
-	 * @param array    $completed_items completed items.
+	 * @param array $completed_items completed items.
 	 * @param WC_Order $order order.
 	 * @return void
 	 */
@@ -266,7 +278,7 @@ class WC_Wallee_Webhook_Transaction_Completion_Strategy extends WC_Wallee_Webhoo
 		if ( $completion->getFailureReason() != null ) {
 			$completion_job->set_failure_reason( $completion->getFailureReason()->getDescription() );
 		}
-		$completion_job->set_state( WC_Wallee_Entity_Completion_Job::STATE_DONE );
+		$completion_job->set_state( WC_Wallee_Entity_Completion_Job::WALLEE_STATE_DONE );
 		$completion_job->save();
 	}
 }

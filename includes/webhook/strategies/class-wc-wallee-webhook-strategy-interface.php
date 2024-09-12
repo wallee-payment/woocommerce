@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -31,7 +34,7 @@ interface WC_Wallee_Webhook_Strategy_Interface {
 	 * @return bool Returns true if the ID matches the system's criteria, false otherwise.
 	 */
 	public function match( string $webhook_entity_id );
-	
+
 	/**
 	 * Process the webhook request.
 	 *

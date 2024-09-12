@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -15,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class WC_Wallee_Webhook_Transaction_Void_Strategy
- * 
+ *
  * Handles strategy for processing transaction void webhook requests.
  * This class extends the base webhook strategy to specifically manage webhook requests
  * that deal with transaction voids. Transaction voids are crucial for reverting transactions
@@ -24,14 +27,22 @@ defined( 'ABSPATH' ) || exit;
 class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Strategy_Base {
 
 	/**
+	 * Match function
+	 *
 	 * @inheritDoc
+	 *
+	 * @param string $webhook_entity_id The webhook entity.
 	 */
 	public function match( string $webhook_entity_id ) {
 		return WC_Wallee_Service_Webhook::WALLEE_TRANSACTION_VOID == $webhook_entity_id;
 	}
 
 	/**
+	 * Loads the entity
+	 *
 	 * @inheritDoc
+	 *
+	 * @param WC_Wallee_Webhook_Request $request The webhook request.
 	 */
 	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
 		$void_service = new \Wallee\Sdk\Service\TransactionVoidService( WC_Wallee_Helper::instance()->get_api_client() );
@@ -39,7 +50,11 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 	}
 
 	/**
+	 * Get order id
+	 *
 	 * @inheritDoc
+	 *
+	 * @param object $object The order object.
 	 */
 	protected function get_order_id( $object ) {
 		/* @var \Wallee\Sdk\Model\TransactionVoid $object */
@@ -66,7 +81,7 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 			$this->process_order_related_inner( $order, $void, $request );
 		}
 	}
-	
+
 	/**
 	 * Processes additional order-related operations based on the transaction void's state.
 	 *
@@ -76,7 +91,7 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 	 * @return void
 	 */
 	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionVoid $void, WC_Wallee_Webhook_Request $request ) {
-		
+
 		switch ( $request->get_state() ) {
 			case \Wallee\Sdk\Model\TransactionVoidState::FAILED:
 				$this->failed( $order, $void );
@@ -93,8 +108,8 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 	/**
 	 * Successfully processes a transaction void.
 	 *
-	 * @param WC_Order 											$order The order to process.
-	 * @param \Wallee\Sdk\Model\TransactionVoid	$void The transaction void.
+	 * @param WC_Order $order The order to process.
+	 * @param \Wallee\Sdk\Model\TransactionVoid $void The transaction void.
 	 * @return void
 	 */
 	protected function success( WC_Order $order, \Wallee\Sdk\Model\TransactionVoid $void ) {
@@ -120,8 +135,8 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 	/**
 	 * Handles a failed transaction void.
 	 *
-	 * @param WC_Order 											$order The order linked to the failed void.
-	 * @param \Wallee\Sdk\Model\TransactionVoid	$void The transaction void.
+	 * @param WC_Order $order The order linked to the failed void.
+	 * @param \Wallee\Sdk\Model\TransactionVoid $void The transaction void.
 	 * @return void
 	 */
 	protected function failed( WC_Order $order, \Wallee\Sdk\Model\TransactionVoid $void ) {

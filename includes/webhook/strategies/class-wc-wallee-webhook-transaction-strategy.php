@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -22,9 +25,12 @@ defined( 'ABSPATH' ) || exit;
  * statuses, recording transaction logs, or triggering further business logic.
  */
 class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_Base {
-	
+
 	/**
+	 * Match function.
+	 *
 	 * @inheritDoc
+	 * @param string $webhook_entity_id The webhook entity id.
 	 */
 	public function match( string $webhook_entity_id ) {
 		return WC_Wallee_Service_Webhook::WALLEE_TRANSACTION == $webhook_entity_id;
@@ -46,8 +52,8 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	/**
 	 * Process order related inner.
 	 *
-	 * @param WC_Order                                   $order order.
-	 * @param WC_Wallee_Webhook_Request   $request request.
+	 * @param WC_Order $order order.
+	 * @param WC_Wallee_Webhook_Request $request request.
 	 * @return void
 	 * @throws Exception Exception.
 	 */
@@ -92,7 +98,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Confirm.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param WC_Order                                 $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function confirm( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
@@ -109,7 +115,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Authorize.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param \WC_Order                                $order order.
+	 * @param \WC_Order $order order.
 	 */
 	protected function authorize( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
 		if ( ! $order->get_meta( '_wallee_authorized', true ) ) {
@@ -128,13 +134,13 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Waiting.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param WC_Order                                 $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function waiting( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
 		if ( ! $order->get_meta( '_wallee_manual_check', true ) ) {
 			do_action( 'wc_wallee_completed', $this->load_entity( $request ), $order );
-			$status = apply_filters( 'wc_wallee_completed_status', 'wallee-waiting', $order );
+			$status = apply_filters( 'wc_wallee_completed_status', 'processing', $order );
 			$order->update_status( $status );
 		}
 	}
@@ -143,7 +149,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Decline.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param WC_Order                                 $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function decline( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
@@ -157,7 +163,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Failed.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param WC_Order                                 $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function failed( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
@@ -173,7 +179,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Fulfill.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param WC_Order                                 $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function fulfill( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
@@ -186,7 +192,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Voided.
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
-	 * @param WC_Order                                 $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function voided( WC_Wallee_Webhook_Request $request, WC_Order $order ) {

@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Provider_Label_Description_Group Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -12,9 +14,8 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Provider of label descriptor group information from the gateway.
  */
@@ -33,7 +34,7 @@ class WC_Wallee_Provider_Label_Description_Group extends WC_Wallee_Provider_Abst
 	 * @param int $id Id.
 	 * @return \Wallee\Sdk\Model\LabelDescriptorGroup
 	 */
-	public function find( $id ) {
+	public function find( $id ) { //phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		return parent::find( $id );
 	}
 
@@ -42,7 +43,7 @@ class WC_Wallee_Provider_Label_Description_Group extends WC_Wallee_Provider_Abst
 	 *
 	 * @return \Wallee\Sdk\Model\LabelDescriptorGroup[]
 	 */
-	public function get_all() {
+	public function get_all() { //phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		return parent::get_all();
 	}
 
@@ -66,7 +67,7 @@ class WC_Wallee_Provider_Label_Description_Group extends WC_Wallee_Provider_Abst
 	 * @return int|string
 	 */
 	protected function get_id( $entry ) {
-		/* @var \Wallee\Sdk\Model\LabelDescriptorGroup $entry */
+		/* @var \Wallee\Sdk\Model\LabelDescriptorGroup $entry */ //phpcs:ignore
 		return $entry->getId();
 	}
 }

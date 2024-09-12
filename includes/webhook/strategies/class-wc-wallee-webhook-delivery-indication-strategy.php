@@ -1,6 +1,9 @@
 <?php
 /**
- * wallee WooCommerce
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -15,23 +18,29 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class WC_Wallee_Webhook_Delivery_Indication_Strategy
- * 
+ *
  * Handles strategy for processing delivery indication-related webhook requests.
  * This class extends the base webhook strategy to manage webhook requests specifically
  * dealing with delivery indications. It focuses on updating order states based on the delivery indication details
  * retrieved from the webhook data.
  */
 class WC_Wallee_Webhook_Delivery_Indication_Strategy extends WC_Wallee_Webhook_Strategy_Base {
-   
+
 	/**
+	 * Match function.
+	 *
 	 * @inheritDoc
+	 * @param string $webhook_entity_id The webhook entity id.
 	 */
 	public function match( string $webhook_entity_id ) {
 		return WC_Wallee_Service_Webhook::WALLEE_DELIVERY_INDICATION == $webhook_entity_id;
 	}
-	
+
 	/**
+	 * Load the entity
+	 *
 	 * @inheritDoc
+	 * @param WC_Wallee_Webhook_Request $request The webhook request.
 	 */
 	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
 		$transaction_invoice_service = new \Wallee\Sdk\Service\DeliveryIndicationService( WC_Wallee_Helper::instance()->get_api_client() );
@@ -39,7 +48,10 @@ class WC_Wallee_Webhook_Delivery_Indication_Strategy extends WC_Wallee_Webhook_S
 	}
 
 	/**
+	 * Get the order ID.
+	 *
 	 * @inheritDoc
+	 * @param object $object The webhook request.
 	 */
 	protected function get_order_id( $object ) {
 		/* @var \Wallee\Sdk\Model\DeliveryIndication $object */
