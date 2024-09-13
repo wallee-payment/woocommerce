@@ -190,7 +190,7 @@ final class WC_Wallee_Blocks_Support extends AbstractPaymentMethodType {
 				true
 			);
 		} catch ( Exception $e ) {
-			Wallee_WooCommerce::instance()->log( $e->getMessage(), WC_Log_Levels::DEBUG );
+			WooCommerce_Wallee::instance()->log( $e->getMessage(), WC_Log_Levels::DEBUG );
 		}
 	}
 
