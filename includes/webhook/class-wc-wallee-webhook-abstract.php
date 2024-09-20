@@ -1,9 +1,7 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ *
+ * WC_Wallee_Webhook_Abstract Class
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,13 +12,11 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * Abstract webhook processor.
- *
- * @deprecated 3.0.12 No longer used by internal code and not recommended.
- * @see WC_Wallee_Webhook_Strategy_Interface
  */
 abstract class WC_Wallee_Webhook_Abstract {
 
@@ -50,5 +46,5 @@ abstract class WC_Wallee_Webhook_Abstract {
 	 *
 	 * @param WC_Wallee_Webhook_Request $request request.
 	 */
-	abstract public function process( WC_Wallee_Webhook_Request $request );
+	abstract public function process( WC_Wallee_Webhook_Request $request);
 }

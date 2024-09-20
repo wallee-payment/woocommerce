@@ -1,9 +1,7 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ *
+ * WC_Wallee_Provider_Payment_Method Class
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,8 +12,9 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * Provider of payment method information from the gateway.
  */
@@ -34,7 +33,7 @@ class WC_Wallee_Provider_Payment_Method extends WC_Wallee_Provider_Abstract {
 	 * @param int $id id.
 	 * @return \Wallee\Sdk\Model\PaymentMethod
 	 */
-	public function find( $id ) { //phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+	public function find( $id ) {
 		return parent::find( $id );
 	}
 
@@ -43,7 +42,7 @@ class WC_Wallee_Provider_Payment_Method extends WC_Wallee_Provider_Abstract {
 	 *
 	 * @return \Wallee\Sdk\Model\PaymentMethod[]
 	 */
-	public function get_all() { //phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+	public function get_all() {
 		return parent::get_all();
 	}
 
@@ -67,7 +66,7 @@ class WC_Wallee_Provider_Payment_Method extends WC_Wallee_Provider_Abstract {
 	 * @return int|string
 	 */
 	protected function get_id( $entry ) {
-		/* @var \Wallee\Sdk\Model\PaymentMethod $entry */ //phpcs:ignore
+		/* @var \Wallee\Sdk\Model\PaymentMethod $entry */
 		return $entry->getId();
 	}
 }

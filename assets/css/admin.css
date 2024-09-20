@@ -1,28 +1,22 @@
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ * wallee WooCommerce
  *
- * Wallee
- * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
+ * This WooCommerce plugin enables to process payments with wallee (https://www.wallee.com).
  *
- * @category Class
- * @package  Wallee
- * @author   wallee AG (https://www.wallee.com)
- * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
+ * @author wallee AG (https://www.wallee.com)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 /* Icons for status */
 @font-face {
-	font-family: 'woocommerce-wallee';
-	src: url('../font/woocommerce-wallee.eot?8310684');
-	src: url('../font/woocommerce-wallee.eot?8310684#iefix') format('embedded-opentype'),
-		url('../font/woocommerce-wallee.woff2?8310684') format('woff2'),
-		url('../font/woocommerce-wallee.woff?8310684') format('woff'),
-		url('../font/woocommerce-wallee.ttf?8310684') format('truetype'),
-		url('../font/woocommerce-wallee.svg?8310684#woocommerce-wallee') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'woocommerce-wallee';
+  src: url('../font/woocommerce-wallee.eot?8310684');
+  src: url('../font/woocommerce-wallee.eot?8310684#iefix') format('embedded-opentype'),
+	   url('../font/woocommerce-wallee.woff2?8310684') format('woff2'),
+	   url('../font/woocommerce-wallee.woff?8310684') format('woff'),
+	   url('../font/woocommerce-wallee.ttf?8310684') format('truetype'),
+	   url('../font/woocommerce-wallee.svg?8310684#woocommerce-wallee') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 /* Status Icons */

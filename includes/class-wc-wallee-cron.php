@@ -1,9 +1,7 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ *
+ * WC_Wallee_Cron Class
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,13 +12,16 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * Class WC_Wallee_Cron.
- * This class handles the cron jobs
  *
  * @class WC_Wallee_Cron
+ */
+/**
+ * This class handles the cron jobs
  */
 class WC_Wallee_Cron {
 
@@ -47,7 +48,7 @@ class WC_Wallee_Cron {
 	public static function add_custom_cron_schedule( $schedules ) {
 		$schedules['five_minutes'] = array(
 			'interval' => 300,
-			'display'  => esc_html__( 'Every Five Minutes' ),
+			'display'  => __( 'Every Five Minutes' ),
 		);
 		return $schedules;
 	}

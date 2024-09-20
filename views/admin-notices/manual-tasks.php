@@ -1,9 +1,5 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,14 +10,15 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 ?>
 
 <div class="error notice notice-error">
 	<p>
 	<?php
-	if ( 1 === $number_of_manual_tasks ) {
+	if ( 1 == $number_of_manual_tasks ) {
 		esc_html_e( 'There is a manual task that needs your attention.', 'woo-wallee' );
 	} else {
 		/* translators: %s are replaced with int */

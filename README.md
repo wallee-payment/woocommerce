@@ -34,11 +34,3 @@ ____________________________________________________________________________
 ## License
 
 Please see the [license file](https://github.com/wallee-payment/woocommerce/blob/3.1.3/LICENSE) for more information.
-
-## Privacy Policy
-
-Please see the [wallee privacy policies site](https://en.wallee.com/legal/privacy-policy) for more information.
-
-## Terms of Use
-
-Please see the [wallee terms of use site](https://en.wallee.com/legal/agb) for more information.

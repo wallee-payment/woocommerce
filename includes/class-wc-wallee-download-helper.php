@@ -1,9 +1,7 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ *
+ * WC_Wallee_Download_Helper Class
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,13 +12,16 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * Class WC_Wallee_Download_Helper.
- * This class provides function to download documents from wallee
  *
  * @class WC_Wallee_Download_Helper
+ */
+/**
+ * This class provides function to download documents from wallee
  */
 class WC_Wallee_Download_Helper {
 
@@ -37,8 +38,7 @@ class WC_Wallee_Download_Helper {
 				\Wallee\Sdk\Model\TransactionState::COMPLETED,
 				\Wallee\Sdk\Model\TransactionState::FULFILL,
 				\Wallee\Sdk\Model\TransactionState::DECLINE,
-			),
-			true
+			)
 		) ) {
 
 			$service = new \Wallee\Sdk\Service\TransactionService( WC_Wallee_Helper::instance()->get_api_client() );
@@ -71,11 +71,10 @@ class WC_Wallee_Download_Helper {
 		header( 'Pragma: public' );
 		header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
 		header( 'Content-type: application/pdf' );
-		header( 'Content-Disposition: attachment; filename="' . esc_html( $document->getTitle() ) . '.pdf"' );
-		header( 'Content-Description: ' . esc_html( $document->getTitle() ) );
-
-		$data_safe = base64_decode( $document->getData() );
-		echo $data_safe; // phpcs:ignore
+		header( 'Content-Disposition: attachment; filename="' . $document->getTitle() . '.pdf"' );
+		header( 'Content-Description: ' . $document->getTitle() );
+		// phpcs:ignore
+	    	echo base64_decode( $document->getData() );
 		exit();
 	}
 }

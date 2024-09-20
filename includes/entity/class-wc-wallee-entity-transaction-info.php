@@ -1,9 +1,7 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ *
+ * WC_Wallee_Entity_Transaction_Info Class
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,8 +12,9 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * This entity holds data about a transaction on the gateway.
  *
@@ -61,23 +60,23 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 	 */
 	protected static function get_field_definition() {
 		return array(
-			'transaction_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'state' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'space_view_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'language' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'currency' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'authorization_amount' => WC_Wallee_Entity_Resource_Type::WALLEE_DECIMAL,
-			'image' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'image_base' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'labels' => WC_Wallee_Entity_Resource_Type::WALLEE_OBJECT,
-			'payment_method_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'connector_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'order_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'order_mapping_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'failure_reason' => WC_Wallee_Entity_Resource_Type::WALLEE_OBJECT,
-			'user_failure_message' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'locked_at' => WC_Wallee_Entity_Resource_Type::WALLEE_DATETIME,
+			'transaction_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'state' => WC_Wallee_Entity_Resource_Type::STRING,
+			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'space_view_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'language' => WC_Wallee_Entity_Resource_Type::STRING,
+			'currency' => WC_Wallee_Entity_Resource_Type::STRING,
+			'authorization_amount' => WC_Wallee_Entity_Resource_Type::DECIMAL,
+			'image' => WC_Wallee_Entity_Resource_Type::STRING,
+			'image_base' => WC_Wallee_Entity_Resource_Type::STRING,
+			'labels' => WC_Wallee_Entity_Resource_Type::OBJECT,
+			'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'order_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'order_mapping_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'failure_reason' => WC_Wallee_Entity_Resource_Type::OBJECT,
+			'user_failure_message' => WC_Wallee_Entity_Resource_Type::STRING,
+			'locked_at' => WC_Wallee_Entity_Resource_Type::DATETIME,
 		);
 	}
 
@@ -87,7 +86,7 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 	 * @return string
 	 */
 	protected static function get_table_name() {
-		return 'wallee_transaction_info';
+		return 'wc_wallee_transaction_info';
 	}
 
 	/**
@@ -112,16 +111,14 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 	 */
 	public static function load_by_order_id( $order_id ) {
 		global $wpdb;
-		$table = $wpdb->prefix . self::get_table_name();
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Values are escaped in $wpdb->prepare.
-		$result = $wpdb->get_row(//phpcs:ignore
+		$result = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM $table WHERE order_id = %d",
+				'SELECT * FROM %1$s WHERE order_id = %2$d',
+				$wpdb->prefix . self::get_table_name(),
 				$order_id
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
 		if ( null !== $result ) {
 			return new self( $result );
 		}
@@ -137,17 +134,15 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 	 */
 	public static function load_by_transaction( $space_id, $transaction_id ) {
 		global $wpdb;
-		$table = $wpdb->prefix . self::get_table_name();
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Values are escaped in $wpdb->prepare.
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM $table WHERE space_id = %d AND transaction_id = %d",
+				'SELECT * FROM %1$s WHERE space_id = %2$d AND transaction_id = %3$d',
+				$wpdb->prefix . self::get_table_name(),
 				$space_id,
 				$transaction_id
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
 		if ( null !== $result ) {
 			return new self( $result );
 		}
@@ -163,16 +158,14 @@ class WC_Wallee_Entity_Transaction_Info extends WC_Wallee_Entity_Abstract {
 	 */
 	public static function load_newest_by_mapped_order_id( $order_id ) {
 		global $wpdb;
-		$table = $wpdb->prefix . self::get_table_name();
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Values are escaped in $wpdb->prepare.
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM $table WHERE order_mapping_id = %d ORDER BY id DESC",
+				'SELECT * FROM %1$s WHERE order_mapping_id = %2$d ORDER BY id DESC',
+				$wpdb->prefix . self::get_table_name(),
 				$order_id
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
 		if ( null !== $result ) {
 			return new self( $result );
 		}

@@ -1,9 +1,7 @@
 <?php
 /**
- * Plugin Name: Wallee
- * Author: wallee AG
- * Text Domain: wallee
- * Domain Path: /languages/
+ *
+ * WC_Wallee_Entity_Token_Info Class
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,8 +12,9 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-defined( 'ABSPATH' ) || exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit();
+}
 /**
  * This entity holds data about a token on the gateway.
  *
@@ -44,13 +43,13 @@ class WC_Wallee_Entity_Token_Info extends WC_Wallee_Entity_Abstract {
 	 */
 	protected static function get_field_definition() {
 		return array(
-			'token_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'state' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'name' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
-			'customer_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'payment_method_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
-			'connector_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
+			'token_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'state' => WC_Wallee_Entity_Resource_Type::STRING,
+			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'name' => WC_Wallee_Entity_Resource_Type::STRING,
+			'customer_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'payment_method_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
+			'connector_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
 		);
 	}
 
@@ -60,7 +59,7 @@ class WC_Wallee_Entity_Token_Info extends WC_Wallee_Entity_Abstract {
 	 * @return string
 	 */
 	protected static function get_table_name() {
-		return 'wallee_token_info';
+		return 'wc_wallee_token_info';
 	}
 
 	/**
@@ -72,17 +71,15 @@ class WC_Wallee_Entity_Token_Info extends WC_Wallee_Entity_Abstract {
 	 */
 	public static function load_by_token( $space_id, $token_id ) {
 		global $wpdb;
-		$table = $wpdb->prefix . self::get_table_name();
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Values are escaped in $wpdb->prepare.
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM $table WHERE space_id = %d AND token_id = %d",
+				'SELECT * FROM %1$s WHERE space_id = %2$d AND token_id = %3$d',
+				$wpdb->prefix . self::get_table_name(),
 				$space_id,
 				$token_id
 			),
 			ARRAY_A
 		);
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Values are escaped in $wpdb->prepare.
 		if ( null !== $result ) {
 			return new self( $result );
 		}
