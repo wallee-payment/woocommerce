@@ -54,6 +54,7 @@ class WC_Wallee_Webhook_Refund_Strategy extends WC_Wallee_Webhook_Strategy_Base 
 	 * @param \Wallee\Sdk\Model\Refund $object The refund object.
 	 */
 	protected function get_order_id( $object ) {
+		/* @var \Wallee\Sdk\Model\Refund $object */
 		return WC_Wallee_Entity_Transaction_Info::load_by_transaction(
 			$object->getTransaction()->getLinkedSpaceId(),
 			$object->getTransaction()->getId()

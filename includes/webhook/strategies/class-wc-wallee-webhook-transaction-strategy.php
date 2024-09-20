@@ -140,7 +140,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	protected function waiting( WC_Wallee_Webhook_Request $request, WC_Order $order ) {
 		if ( ! $order->get_meta( '_wallee_manual_check', true ) ) {
 			do_action( 'wc_wallee_completed', $this->load_entity( $request ), $order );
-			$status = apply_filters( 'wc_wallee_completed_status', 'processing', $order );
+			$status = apply_filters( 'wc_wallee_completed_status', 'on-hold', $order );
 			$order->update_status( $status );
 		}
 	}
