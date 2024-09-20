@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Webhook_Transaction Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -12,14 +14,15 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Webhook processor to handle transaction state transitions.
+ *
+ * @deprecated 3.0.12 No longer used by internal code and not recommended.
+ * @see WC_Wallee_Webhook_Transaction_Strategy
  */
 class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abstract {
-
 
 	/**
 	 * Load entity.
@@ -42,7 +45,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * @return int|string
 	 */
 	protected function get_order_id( $transaction ) {
-		/* @var \Wallee\Sdk\Model\Transaction $transaction */
+		/* @var \Wallee\Sdk\Model\Transaction $transaction */ //phpcs:ignore
 		return WC_Wallee_Entity_Transaction_Info::load_by_transaction( $transaction->getLinkedSpaceId(), $transaction->getId() )->get_order_id();
 	}
 
@@ -53,7 +56,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * @return int
 	 */
 	protected function get_transaction_id( $transaction ) {
-		/* @var \Wallee\Sdk\Model\Transaction $transaction */
+		/* @var \Wallee\Sdk\Model\Transaction $transaction */ //phpcs:ignore
 		return $transaction->getId();
 	}
 
@@ -61,13 +64,13 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Process order related inner.
 	 *
 	 * @param WC_Order $order order.
-	 * @param mixed    $transaction transaction.
+	 * @param mixed $transaction transaction.
 	 * @return void
 	 * @throws Exception Exception.
 	 */
 	protected function process_order_related_inner( WC_Order $order, $transaction ) {
 
-		/* @var \Wallee\Sdk\Model\Transaction $transaction */
+		/* @var \Wallee\Sdk\Model\Transaction $transaction */ //phpcs:ignore
 		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id( $order->get_id() );
 		if ( $transaction->getState() != $transaction_info->get_state() ) {
 			switch ( $transaction->getState() ) {
@@ -108,7 +111,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Confirm.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order                                     $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function confirm( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -125,7 +128,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Authorize.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param \WC_Order                                    $order order.
+	 * @param \WC_Order $order order.
 	 */
 	protected function authorize( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
 		if ( ! $order->get_meta( '_wallee_authorized', true ) ) {
@@ -144,7 +147,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Waiting.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order                                     $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function waiting( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -159,7 +162,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Decline.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order                                     $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function decline( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -173,7 +176,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Failed.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order                                     $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function failed( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -189,21 +192,20 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 	 * Fulfill.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order                                     $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function fulfill( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
 		do_action( 'wc_wallee_fulfill', $transaction, $order );
 		// Sets the status to procesing or complete depending on items.
 		$order->payment_complete( $transaction->getId() );
-
 	}
 
 	/**
 	 * Voided.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order                                     $order order.
+	 * @param WC_Order $order order.
 	 * @return void
 	 */
 	protected function voided( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {

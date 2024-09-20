@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Email Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -12,9 +14,8 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * This entity holds data about a wallee payment method.
  *
@@ -37,9 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @method void set_image_base(string $image_base)
  */
 class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
-	const STATE_ACTIVE = 'active';
-	const STATE_INACTIVE = 'inactive';
-	const STATE_HIDDEN = 'hidden';
+	const WALLEE_STATE_ACTIVE = 'active';
+	const WALLEE_STATE_INACTIVE = 'inactive';
+	const WALLEE_STATE_HIDDEN = 'hidden';
 
 	/**
 	 * Get field definition.
@@ -48,14 +49,14 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 	 */
 	protected static function get_field_definition() {
 		return array(
-			'state' => WC_Wallee_Entity_Resource_Type::STRING,
-			'space_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'configuration_id' => WC_Wallee_Entity_Resource_Type::INTEGER,
-			'configuration_name' => WC_Wallee_Entity_Resource_Type::STRING,
-			'title' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'description' => WC_Wallee_Entity_Resource_Type::OBJECT,
-			'image' => WC_Wallee_Entity_Resource_Type::STRING,
-			'image_base' => WC_Wallee_Entity_Resource_Type::STRING,
+			'state' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
+			'space_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
+			'configuration_id' => WC_Wallee_Entity_Resource_Type::WALLEE_INTEGER,
+			'configuration_name' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
+			'title' => WC_Wallee_Entity_Resource_Type::WALLEE_OBJECT,
+			'description' => WC_Wallee_Entity_Resource_Type::WALLEE_OBJECT,
+			'image' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
+			'image_base' => WC_Wallee_Entity_Resource_Type::WALLEE_STRING,
 
 		);
 	}
@@ -66,7 +67,7 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 	 * @return string
 	 */
 	protected static function get_table_name() {
-		return 'wc_wallee_method_config';
+		return 'wallee_method_config';
 	}
 
 	/**
@@ -79,15 +80,17 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 	public static function load_by_configuration( $space_id, $configuration_id ) {
 		global $wpdb;
 
+		$table = $wpdb->prefix . self::get_table_name();
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Values are escaped in $wpdb->prepare.
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT * FROM %1$s WHERE space_id = %2$d AND configuration_id = %3$d',
-				$wpdb->prefix . self::get_table_name(),
+				"SELECT * FROM $table WHERE space_id = %d AND configuration_id = %d",
 				$space_id,
 				$configuration_id
 			),
 			ARRAY_A
 		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
 
 		if ( null !== $result ) {
 			return new self( $result );
@@ -121,12 +124,16 @@ class WC_Wallee_Entity_Method_Configuration extends WC_Wallee_Entity_Abstract {
 		$query = 'SELECT * FROM ' . $wpdb->prefix . self::get_table_name() . ' WHERE space_id = %d AND state IN (' . $replace . ')';
 		$result = array();
 
-	    	// phpcs:ignore
-		$db_results = $wpdb->get_results( $wpdb->prepare( $query, $values ), ARRAY_A );
-		if ( is_array( $db_results ) ) {
-			foreach ( $db_results as $object_values ) {
-				$result[] = new static( $object_values );
+		try {
+			// phpcs:ignore
+			$db_results = $wpdb->get_results( $wpdb->prepare( $query, $values ), ARRAY_A );
+			if ( is_array( $db_results ) ) {
+				foreach ( $db_results as $object_values ) {
+					$result[] = new static( $object_values );
+				}
 			}
+		} catch ( Exception $e ) {
+			return $result;
 		}
 		return $result;
 	}

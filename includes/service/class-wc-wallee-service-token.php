@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Service_Token Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -14,9 +16,8 @@
 
 use Wallee\Sdk\Model\TokenVersion;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit(); // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * This service provides functions to deal with wallee tokens.
  *

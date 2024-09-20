@@ -2,7 +2,7 @@
 Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
-Tested up to: 6.5
+Tested up to: 6.6
 Stable tag: 3.1.3
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
@@ -14,9 +14,9 @@ Accept payments in WooCommerce with wallee.
 Website: [https://www.wallee.com](https://www.wallee.com)
 
 The plugin offers an easy and convenient way to accept credit cards and all
-other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout 
-and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but 
-the look and feel can be changed according the merchants needs. 
+other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout
+and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but
+the look and feel can be changed according the merchants needs.
 
 This plugin will add support for all wallee payments methods and connect the wallee servers to your WooCommerce webshop.
 To use this extension, a wallee account is required. Sign up on [wallee](https://app-wallee.com/user/signup).
@@ -29,14 +29,20 @@ Additional documentation for this plugin is available [here](https://plugin-docu
 
 Support queries can be issued on the [wallee support site](https://app-wallee.com/space/select?target=/support).
 
+== Privacy Policy ==
+
+Enquiries about our privacy policy can be made on the [wallee privacy policies site](https://en.wallee.com/legal/privacy-policy).
+
+== Terms of use ==
+
+Enquiries about our terms of use can be made on the [wallee terms of use site](https://en.wallee.com/legal/agb).
+
 == Installation ==
 
 = Minimum Requirements =
 
 * PHP version 5.6 or greater
-* WordPress 4.7 up to 6.5.3
-* WooCommerce 3.0.0 up to 8.9.1
-* WordPress 4.7 up to 6.5.3
+* WordPress 4.7 up to 6.6
 * WooCommerce 3.0.0 up to 8.9.1
 
 = Automatic installation =
@@ -57,6 +63,10 @@ Support queries can be issued on the [wallee support site](https://app-wallee.co
 
 == Changelog ==
 
- 
-= 3.1.3 - Sep 20 2024 =
-- [Hotfix] Rolledback to version 3.0.11
+
+= 3.1.3 - Sept 20 2024 =
+- [Bugfix] Enchanced plugin performance on Checkout page.
+- [Tested Against] PHP 8.2
+- [Tested Against] Wordpress 6.6
+- [Tested Against] Woocommerce 9.3.1
+- [Tested Against] PHP SDK 4.5.0

@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Admin Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -12,16 +14,13 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Class WC_Wallee_Admin.
+ * WC Wallee Admin class
  *
  * @class WC_Wallee_Admin
- */
-/**
- * WC Wallee Admin class
  */
 class WC_Wallee_Admin {
 
@@ -30,7 +29,7 @@ class WC_Wallee_Admin {
 	 *
 	 * @var WC_Wallee_Admin
 	 */
-	protected static $_instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Main WooCommerce Wallee Admin Instance.
@@ -40,10 +39,10 @@ class WC_Wallee_Admin {
 	 * @return WC_Wallee_Admin - Main instance.
 	 */
 	public static function instance() {
-		if ( null === self::$_instance ) {
-			self::$_instance = new self();
+		if ( null === self::$instance ) {
+			self::$instance = new self();
 		}
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
@@ -158,7 +157,6 @@ class WC_Wallee_Admin {
 			10,
 			0
 		);
-
 	}
 
 	/**
@@ -168,7 +166,6 @@ class WC_Wallee_Admin {
 		// WooCommerce plugin not activated.
 		if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			// Deactivate myself.
-			deactivate_plugins( WC_WALLEE_PLUGIN_BASENAME );
 			add_action(
 				'admin_notices',
 				array(
@@ -188,7 +185,7 @@ class WC_Wallee_Admin {
 		$gateway = wc_get_payment_gateway_by_order( $order );
 		if ( $gateway instanceof WC_Wallee_Gateway ) {
 			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id( $order->get_id() );
-			if ( $transaction_info->get_state() == \Wallee\Sdk\Model\TransactionState::AUTHORIZED ) {
+			if ( $transaction_info->get_state() === \Wallee\Sdk\Model\TransactionState::AUTHORIZED ) {
 				if ( WC_Wallee_Entity_Completion_Job::count_running_completion_for_transaction(
 					$transaction_info->get_space_id(),
 					$transaction_info->get_transaction_id()
@@ -200,8 +197,7 @@ class WC_Wallee_Admin {
 					echo '<button type="button" class="button wallee-update-order">' . esc_html__( 'Update', 'woo-wallee' ) . '</button>';
 				} else {
 					echo '<button type="button" class="button wallee-void-show">' . esc_html__( 'Void', 'woo-wallee' ) . '</button>';
-					echo '<button type="button" class="button button-primary wallee-completion-show">' . esc_html__( 'Completion', 'woo-wallee' ) .
-							 '</button>';
+					echo '<button type="button" class="button button-primary wallee-completion-show">' . esc_html__( 'Completion', 'woo-wallee' ) . '</button>';
 				}
 			}
 		}
@@ -210,7 +206,7 @@ class WC_Wallee_Admin {
 	/**
 	 * Remove unwanted order actions
 	 *
-	 * @param array    $actions actions.
+	 * @param array $actions actions.
 	 * @param WC_Order $order order.
 	 * @return array
 	 */
@@ -242,14 +238,14 @@ class WC_Wallee_Admin {
 	 * Enqueue the script and css files
 	 */
 	public function enque_script_and_css() {
-		$screen    = get_current_screen();
+		$screen = get_current_screen();
 		$post_type = $screen ? $screen->post_type : '';
 		if ( 'shop_order' == $post_type ) {
 			wp_enqueue_style(
 				'woo-wallee-admin-styles',
 				WooCommerce_Wallee::instance()->plugin_url() . '/assets/css/admin.css',
 				array(),
-				1
+				true
 			);
 			wp_enqueue_script(
 				'wallee-admin-js',
@@ -258,12 +254,13 @@ class WC_Wallee_Admin {
 					'jquery',
 					'wc-admin-meta-boxes',
 				),
-				1
+				true,
+				true
 			);
 
 			$localize = array(
-				'i18n_do_void'       => __( 'Are you sure you wish to process this void? This action cannot be undone.', 'woo-wallee' ),
-				'i18n_do_completion' => __( 'Are you sure you wish to process this completion? This action cannot be undone.', 'woo-wallee' ),
+				'i18n_do_void'  => esc_html__( 'Are you sure you wish to process this void? This action cannot be undone.', 'woo-wallee' ),
+				'i18n_do_completion' => esc_html__( 'Are you sure you wish to process this completion? This action cannot be undone.', 'woo-wallee' ),
 			);
 			wp_localize_script( 'wallee-admin-js', 'wallee_admin_js_params', $localize );
 		}
@@ -291,17 +288,15 @@ class WC_Wallee_Admin {
 
 		check_ajax_referer( 'order-item', 'security' );
 
-		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {// phpcs:ignore
 			wp_die( -1 );
 		}
 
 		if ( ! isset( $_POST['order_id'] ) ) {
 			return;
-		} else {
-			$order_id = sanitize_key( wp_unslash( $_POST['order_id'] ) );
 		}
-		$order_id = absint( $order_id );
-		$order    = WC_Order_Factory::get_order( $order_id );
+		$order_id = absint( sanitize_key( wp_unslash( $_POST['order_id'] ) ) );
+		$order = WC_Order_Factory::get_order( $order_id );
 		try {
 			do_action( 'wallee_update_running_jobs', $order );
 		} catch ( Exception $e ) {
@@ -334,7 +329,7 @@ class WC_Wallee_Admin {
 	public function plugin_action_links( $links ) {
 		$action_links = array(
 			'settings' => '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=wallee' ) . '" aria-label="' .
-					esc_attr__( 'View Settings', 'woo-wallee' ) . '">' . esc_html__( 'Settings', 'woo-wallee' ) . '</a>',
+					esc_html__( 'View Settings', 'woo-wallee' ) . '">' . esc_html__( 'Settings', 'woo-wallee' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );
@@ -346,7 +341,7 @@ class WC_Wallee_Admin {
 	 * @param mixed $product product.
 	 * @param mixed $data_storage data storage.
 	 */
-	public function store_attribute_options( $product, $data_storage ) {
+	public function store_attribute_options( $product, $data_storage ) { //phpcs:ignore
 		global $wallee_attributes_options;
 		if ( ! empty( $wallee_attributes_options ) ) {
 			$product->add_meta_data( '_wallee_attribute_options', $wallee_attributes_options, true );
@@ -357,39 +352,52 @@ class WC_Wallee_Admin {
 	 * Display attribute options edit screen
 	 */
 	public function display_attribute_options_edit() {
-		if ( ! isset( $_GET['edit'] ) ) {
+		if ( ! isset( $_GET['edit'] ) ) {// phpcs:ignore
 			return;
 		} else {
-			$edit = esc_url_raw( wp_unslash( $_GET['edit'] ) );
+			$edit = esc_url_raw( wp_unslash( $_GET['edit'] ) );// phpcs:ignore
 		}
-		$edit              = absint( $edit );
-		$checked           = false;
+		$edit = absint( $edit );
+		$checked = false;
 		$attribute_options = WC_Wallee_Entity_Attribute_Options::load_by_attribute_id( $edit );
 		if ( $attribute_options->get_id() > 0 && $attribute_options->get_send() ) {
 			$checked = true;
 		}
-		echo '<tr class="form-field form-required">
+		echo esc_html(
+			'<tr class="form-field form-required">
 					<th scope="row" valign="top">
-							<label for="wallee_attribute_option_send">' . esc_html__( 'Send attribute to wallee.', 'woo-wallee' ) . '</label>
+							<label for="wallee_attribute_option_send">'
+			) . esc_html__( 'Send attribute to wallee.', 'woo-wallee' ) . esc_html(
+						'</label>
 					</th>
 						<td>
-								<input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1" ' . esc_attr( checked( $checked, true, false ) ) . '/>
-								<p class="description">' . esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ) . '</p>
+								<input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1" '
+			) . esc_attr( checked( $checked, true, false ) ) . esc_html(
+							'/>
+							<p class="description">'
+			) . esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ) . esc_html(
+							'</p>
 						</td>
-				</tr>';
+				</tr>'
+			);
 	}
 
 	/**
 	 * Display attribute options add screen
 	 */
 	public function display_attribute_options_add() {
-		echo '<div class="form-field">
-    				<label for="wallee_attribute_option_send"><input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1">' . esc_html__( 'Send attribute to wallee.', 'woo-wallee' ) . '</label>
-       				<p class="description">' . esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ) . '</p>
-    			</div>';
+		echo esc_html(
+			'<div class="form-field">
+				<label for="wallee_attribute_option_send"><input name="wallee_attribute_option_send" id="wallee_attribute_option_send" type="checkbox" value="1">'
+		) . esc_html__( 'Send attribute to wallee.', 'woo-wallee' ) . esc_html(
+				'</label>
+				<p class="description">'
+		) . esc_html__( 'Should this product attribute be sent to wallee as line item attribute?', 'woo-wallee' ) .
+		esc_html(
+				'</p>
+			</div>'
+		);
 	}
-
-
 }
 
 WC_Wallee_Admin::instance();

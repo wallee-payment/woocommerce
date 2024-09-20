@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Autoloader Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -12,16 +14,13 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Class WC_Wallee_Autoloader.
+ * This is the autoloader for wallee classes.
  *
  * @class WC_Wallee_Autoloader
- */
-/**
- * This is the autoloader for wallee classes.
  */
 class WC_Wallee_Autoloader {
 
@@ -48,11 +47,12 @@ class WC_Wallee_Autoloader {
 	/**
 	 * Take a class name and turn it into a file name.
 	 *
-	 * @param  string $class class.
+	 * @param  string $class_file class.
 	 * @return string
 	 */
-	private function get_file_name_from_class( $class ) {
-		return 'class-' . str_replace( '_', '-', $class ) . '.php';
+	private function get_file_name_from_class( $class_file ) {
+		$class = preg_replace( '/(?<!^)[A-Z]/', '-$0', $class_file );
+		return 'class-' . str_replace( '_', '-', strtolower( $class ) ) . '.php';
 	}
 
 	/**
@@ -72,10 +72,10 @@ class WC_Wallee_Autoloader {
 	/**
 	 * Auto-load WC Wallee classes on demand to reduce memory consumption.
 	 *
-	 * @param string $class class.
+	 * @param string $class_file class.
 	 */
-	public function autoload( $class ) {
-		$class = strtolower( $class );
+	public function autoload( $class_file ) {
+		$class = strtolower( $class_file );
 
 		if ( 0 !== strpos( $class, 'wc_wallee' ) ) {
 			return;
@@ -91,7 +91,11 @@ class WC_Wallee_Autoloader {
 		} elseif ( strpos( $class, 'wc_wallee_provider' ) === 0 ) {
 			$path = $this->include_path . 'provider/';
 		} elseif ( strpos( $class, 'wc_wallee_webhook' ) === 0 ) {
-			$path = $this->include_path . 'webhook/';
+			if ( strpos( $class, 'strategy' ) !== false ) {
+				$path = $this->include_path . 'webhook/strategies/';
+			} else {
+				$path = $this->include_path . 'webhook/';
+			}
 		} elseif ( strpos( $class, 'wc_wallee_exception' ) === 0 ) {
 			$path = $this->include_path . 'exception/';
 		} elseif ( strpos( $class, 'wc_wallee_admin' ) === 0 ) {
@@ -101,8 +105,6 @@ class WC_Wallee_Autoloader {
 		if ( empty( $path ) || ! $this->load_file( $path . $file ) ) {
 			$this->load_file( $this->include_path . $file );
 		}
-
-		$this->load_file( $this->include_path . $file );
 	}
 }
 

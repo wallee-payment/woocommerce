@@ -1,7 +1,9 @@
 <?php
 /**
- *
- * WC_Wallee_Webhook_Entity Class
+ * Plugin Name: Wallee
+ * Author: wallee AG
+ * Text Domain: wallee
+ * Domain Path: /languages/
  *
  * Wallee
  * This plugin will add support for all Wallee payments methods and connect the Wallee servers to your WooCommerce webshop (https://www.wallee.com).
@@ -12,9 +14,8 @@
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache Software License (ASL 2.0)
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit();
-}
+defined( 'ABSPATH' ) || exit;
+
 /**
  * WC_Wallee_Webhook_Entity
  */
@@ -111,6 +112,7 @@ class WC_Wallee_Webhook_Entity {
 	 * Get Handler class name.
 	 *
 	 * @return mixed
+	 * @deprecated This method will be deprecated in a future version as it is no longer necessary for webhook strategies.
 	 */
 	public function get_handler_class_name() {
 		return $this->handler_class_name;
