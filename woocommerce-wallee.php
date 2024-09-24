@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.2.0
+ * Version: 3.2.1
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.2.0';
+		private $version = '3.2.1';
 
 		/**
 		 * The single instance of the class.
@@ -425,7 +425,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 				$old_option_prefix . self::WALLEE_CK_INTEGRATION,
 				$old_option_prefix . self::WALLEE_CK_ORDER_REFERENCE,
 				$old_option_prefix . self::WALLEE_CK_ENFORCE_CONSISTENCY,
-				$old_option_prefix . self::WALLEE_WC_MAXIMUM_VERSION,
+				$old_option_prefix . self::WC_MAXIMUM_VERSION,
 			];
 
 			// If the old plugin options exist, perform the migration
