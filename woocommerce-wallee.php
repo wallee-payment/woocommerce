@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.1.3
+ * Version: 3.2.0
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -11,7 +11,7 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * WC requires at least: 8.0.0
- * WC tested up to: 9.2.3
+ * WC tested up to 9.3.1
  * License: Apache 2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -38,15 +38,15 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		const WALLEE_CK_INTEGRATION = 'wc_wallee_integration';
 		const WALLEE_CK_ORDER_REFERENCE = 'wc_wallee_order_reference';
 		const WALLEE_CK_ENFORCE_CONSISTENCY = 'wc_wallee_enforce_consistency';
-		const WALLEE_UPGRADE_VERSION = '3.1.2';
-		const WC_MAXIMUM_VERSION = '9.2.3';
+		const WALLEE_UPGRADE_VERSION = '3.1.1';
+		const WC_MAXIMUM_VERSION = '9.3.1';
 
 		/**
 		 * WooCommerce Wallee version.
 		 *
 		 * @var string
 		 */
-		private $version = '3.1.3';
+		private $version = '3.2.0';
 
 		/**
 		 * The single instance of the class.
@@ -425,7 +425,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 				$old_option_prefix . self::WALLEE_CK_INTEGRATION,
 				$old_option_prefix . self::WALLEE_CK_ORDER_REFERENCE,
 				$old_option_prefix . self::WALLEE_CK_ENFORCE_CONSISTENCY,
-				$old_option_prefix . self::WC_MAXIMUM_VERSION,
+				$old_option_prefix . self::WALLEE_WC_MAXIMUM_VERSION,
 			];
 
 			// If the old plugin options exist, perform the migration

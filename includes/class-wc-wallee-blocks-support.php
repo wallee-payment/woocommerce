@@ -57,7 +57,7 @@ final class WC_Wallee_Blocks_Support extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_script_handles() {
 		$dependencies = array();
-		$version = '4';
+		$version = '1';
 
 		wp_register_script(
 			'WooCommerce_Wallee_blocks_support',
@@ -99,11 +99,7 @@ final class WC_Wallee_Blocks_Support extends AbstractPaymentMethodType {
 	 * @return void
 	 */
 	public static function get_payment_methods() {
-  
-		$paymentMethods = WC()->session->get( 'wallee_payments_list' );
-		if ($paymentMethods) {
-			return wp_send_json( array_values( $paymentMethods ) );
-		}
+
 		if ( ! isset( $_POST['wallee_nonce'] ) || ! wp_verify_nonce( $_POST['wallee_nonce'], 'wallee_nonce_block' ) ) {  //phpcs:ignore
 			wp_send_json_error( 'Invalid request', 403 );
 		}
@@ -128,7 +124,6 @@ final class WC_Wallee_Blocks_Support extends AbstractPaymentMethodType {
 			},
 			$payment_plugin
 		);
-		WC()->session->set( 'wallee_payments_list', $payments_list );
 
 		// Send the list back to the requester in a JSON.
 		wp_send_json( array_values( $payments_list ) );
@@ -154,16 +149,8 @@ final class WC_Wallee_Blocks_Support extends AbstractPaymentMethodType {
 		}
 
 		$configuration_id = isset( $_POST['configuration_id'] ) ? absint( sanitize_key( wp_unslash( $_POST['configuration_id'] ) ) ) : null; //phpcs:ignore
-  
-		$cacheHash = $_POST['formHash'] ?? null;
-		$available_payment_methods = WC()->session->get( $cacheHash );
-  
-		if (!$available_payment_methods) {
-			$available_payment_methods = WC_Wallee_Service_Transaction::instance()->get_possible_payment_methods_for_cart();
-			WC()->session->set( $cacheHash, $available_payment_methods );
-		}
-  
-		wp_send_json( in_array( $configuration_id, $available_payment_methods ) );
+		$available_payment_methods = WC_Wallee_Service_Transaction::instance()->get_possible_payment_methods_for_cart();
+		wp_send_json( in_array( $configuration_id, $available_payment_methods, true ) );
 	}
 
 	/**
