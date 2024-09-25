@@ -3,7 +3,7 @@ Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.6
-Stable tag: 3.2.1
+Stable tag: 3.3.0
 License: Apache 2
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.2.1/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.0/docs/en/documentation.html).
 
 == Support ==
 
@@ -64,9 +64,11 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 == Changelog ==
 
 
-= 3.2.1 - Sept 24 2024 =
-- [Bugfix] Fix constant name
+= 3.3.0 - Sept 25 2024 =
+- [Bugfix] Fix for infinite load when Germanized plugin active
 - [Tested Against] PHP 8.2
 - [Tested Against] Wordpress 6.6
-- [Tested Against] Woocommerce 9.3.1
-- [Tested Against] PHP SDK 4.5.0
+- [Tested Against] Woocommerce 9.3.2
+- [Tested Against] PHP SDK 4.6.0
+
+Please ensure that in woocommerce->settings->tax, the "Round tax at subtotal level, instead of rounding per line" is disabled
