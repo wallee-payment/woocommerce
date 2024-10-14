@@ -304,7 +304,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 				return null;
 			}
 		} catch ( \Exception $e ) {
-			Wallee_WooCommerce::instance()->log( $e->getMessage(), WC_Log_Levels::ERROR );
+			WooCommerce_Wallee::instance()->log( $e->getMessage(), WC_Log_Levels::ERROR );
 		}
 	}
 

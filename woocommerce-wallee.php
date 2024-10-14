@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.3.0
+ * Version: 3.3.1
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.3.0';
+		private $version = '3.3.1';
 
 		/**
 		 * The single instance of the class.
@@ -263,14 +263,14 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 				'wp_ajax_get_payment_methods',
 				array(
 					'WC_Wallee_Blocks_Support',
-					'get_payment_methods',
+					'get_payment_methods_json',
 				)
 			);
 			add_action(
 				'wp_ajax_nopriv_get_payment_methods',
 				array(
 					'WC_Wallee_Blocks_Support',
-					'get_payment_methods',
+					'get_payment_methods_json',
 				)
 			);
 			add_action(
@@ -351,14 +351,14 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			if (!function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-		
+
 			$all_plugins = get_plugins();
 			foreach ( $all_plugins as $plugin_path => $plugin_info ) {
 				if ( strpos( $plugin_path, $plugin_slug ) !== false ) {
 					return $plugin_info[ 'Version' ];
 				}
 			}
-		
+
 			return null;
 		}
 
@@ -686,6 +686,18 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 					}
 				}
 			);
+
+			add_filter('the_content', function($content) {
+				if (is_checkout()) {
+					// When in checkout, we inject the list of payment methods in the HTML.
+					// The goal here is to speed up the process of registering the payment methods.
+					$payment_methods = WC_Wallee_Blocks_Support::get_payment_methods();
+					$json_data = json_encode( $payment_methods );
+					$content .= '<div id="whitelabel-payment-methods" data-json="' . esc_attr($json_data) . '"></div>';
+				}
+
+				return $content;
+			});
 		}
 
 		/**
