@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.3.1
+ * Version: 3.3.2-beta
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -11,7 +11,7 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * WC requires at least: 8.0.0
- * WC tested up to 9.3.1
+ * WC tested up to 9.4.2
  * License: Apache 2
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.3.1';
+		private $version = '3.3.2-beta';
 
 		/**
 		 * The single instance of the class.
@@ -693,7 +693,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 					// The goal here is to speed up the process of registering the payment methods.
 					$payment_methods = WC_Wallee_Blocks_Support::get_payment_methods();
 					$json_data = json_encode( $payment_methods );
-					$content .= '<div id="whitelabel-payment-methods" data-json="' . esc_attr($json_data) . '"></div>';
+					$content .= '<div id="wallee-payment-methods" data-json="' . esc_attr( $json_data ) . '"></div>';
 				}
 
 				return $content;
