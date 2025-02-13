@@ -184,7 +184,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 			array(
 				'links' => array(
-					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.3/docs/en/documentation.html' => esc_html__( 'Documentation', 'woo-wallee' ),
+					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.4/docs/en/documentation.html' => esc_html__( 'Documentation', 'woo-wallee' ),
 					'https://app-wallee.com/user/signup' => esc_html__( 'Sign Up', 'woo-wallee' ),
 				),
 				'type'  => 'wallee_links',
@@ -310,10 +310,11 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'id'  => WooCommerce_Wallee::WALLEE_CK_INTEGRATION,
 				'type' => 'select',
 				'css' => 'min-width:300px;',
-				'default' => WC_Wallee_Integration::WALLEE_IFRAME,
+				'default' => WC_Wallee_Integration::WALLEE_PAYMENTPAGE,
 				'options' => array(
 					WC_Wallee_Integration::WALLEE_IFRAME => $this->format_display_string( esc_html__( 'iframe', 'woo-wallee' ) ),
 					WC_Wallee_Integration::WALLEE_LIGHTBOX  => $this->format_display_string( esc_html__( 'lightbox', 'woo-wallee' ) ),
+			  		WC_Wallee_Integration::WALLEE_PAYMENTPAGE => $this->format_display_string( esc_html__( 'payment page', 'woo-wallee' ) ),
 				),
 			),
 

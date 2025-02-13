@@ -78,6 +78,23 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	private $transaction_line_item_version_service;
 
 	/**
+	 * Holds the API client instance for interacting with the API.
+	 *
+	 * @var \Wallee\Sdk\ApiClient
+	 */
+	public $api_client;
+
+	/**
+	 * Constructor to initialize the API client instance.
+	 *
+	 * @throws Exception If the API client cannot be initialized.
+	 */
+	public function __construct()
+	{
+		$this->api_client = WC_Wallee_Helper::instance()->get_api_client();
+	}
+
+	/**
 	 * Returns the transaction API service.
 	 *
 	 * @return \Wallee\Sdk\Service\TransactionService
@@ -85,7 +102,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_service() {
 		if ( is_null( $this->transaction_service ) ) {
-			$this->transaction_service = new \Wallee\Sdk\Service\TransactionService( WC_Wallee_Helper::instance()->get_api_client() );
+			$this->transaction_service = new \Wallee\Sdk\Service\TransactionService( $this->api_client );
 		}
 		return $this->transaction_service;
 	}
@@ -98,7 +115,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_iframe_service() {
 		if ( is_null( $this->transaction_iframe_service ) ) {
-			$this->transaction_iframe_service = new \Wallee\Sdk\Service\TransactionIframeService( WC_Wallee_Helper::instance()->get_api_client() );
+			$this->transaction_iframe_service = new \Wallee\Sdk\Service\TransactionIframeService( $this->api_client );
 		}
 		return $this->transaction_iframe_service;
 	}
@@ -111,7 +128,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_lightbox_service() {
 		if ( is_null( $this->transaction_lightbox_service ) ) {
-			$this->transaction_lightbox_service = new \Wallee\Sdk\Service\TransactionLightboxService( WC_Wallee_Helper::instance()->get_api_client() );
+			$this->transaction_lightbox_service = new \Wallee\Sdk\Service\TransactionLightboxService( $this->api_client );
 		}
 		return $this->transaction_lightbox_service;
 	}
@@ -124,7 +141,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_payment_page_service() {
 		if ( is_null( $this->transaction_payment_page_service ) ) {
-			$this->transaction_payment_page_service = new \Wallee\Sdk\Service\TransactionPaymentPageService( WC_Wallee_Helper::instance()->get_api_client() );
+			$this->transaction_payment_page_service = new \Wallee\Sdk\Service\TransactionPaymentPageService( $this->api_client );
 		}
 		return $this->transaction_payment_page_service;
 	}
@@ -137,7 +154,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_charge_attempt_service() {
 		if ( is_null( $this->charge_attempt_service ) ) {
-			$this->charge_attempt_service = new \Wallee\Sdk\Service\ChargeAttemptService( WC_Wallee_Helper::instance()->get_api_client() );
+			$this->charge_attempt_service = new \Wallee\Sdk\Service\ChargeAttemptService( $this->api_client );
 		}
 		return $this->charge_attempt_service;
 	}
@@ -150,7 +167,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 */
 	protected function get_transaction_line_item_version_service() {
 		if ( is_null( $this->transaction_line_item_version_service ) ) {
-			$this->transaction_line_item_version_service = new \Wallee\Sdk\Service\TransactionLineItemVersionService( WC_Wallee_Helper::instance()->get_api_client() );
+			$this->transaction_line_item_version_service = new \Wallee\Sdk\Service\TransactionLineItemVersionService( $this->api_client );
 		}
 		return $this->transaction_line_item_version_service;
 	}
@@ -903,7 +920,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return \Wallee\Sdk\Model\TransactionCreate
 	 * @throws Exception Exception.
 	 */
-	protected function load_and_update_transaction_from_session() {
+	public function load_and_update_transaction_from_session() {
 		$last = new \Exception( __FUNCTION__ );
 		for ( $i = 0; $i < 5; $i++ ) {
 			try {

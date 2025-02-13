@@ -24,6 +24,9 @@ class WC_Wallee_Helper {
 	const WALLEE_SHOP_SYSTEM = 'x-meta-shop-system';
 	const WALLEE_SHOP_SYSTEM_VERSION = 'x-meta-shop-system-version';
 	const WALLEE_SHOP_SYSTEM_AND_VERSION = 'x-meta-shop-system-and-version';
+	const WALLEE_CHECKOUT_VERSION = 'x-checkout-type';
+	const WALLEE_CHECKOUT_TYPE_BLOCKS = 'blocks';
+	const WALLEE_CHECKOUT_TYPE_LEGACY = 'legacy';
 
 	/**
 	 * Instance.

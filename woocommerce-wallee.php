@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.3.3
+ * Version: 3.3.4
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -11,7 +11,7 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * WC requires at least: 8.0.0
- * WC tested up to 9.4.2
+ * WC tested up to 9.6.0
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.3.3';
+		private $version = '3.3.4';
 
 		/**
 		 * The single instance of the class.
@@ -431,10 +431,10 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			// If the old plugin options exist, perform the migration
 			foreach ( $options_to_migrate as $option_name ) {
 				$option_value = get_option( $option_name );
-				if ( $option_value !== false ) {
+				if ( false !== $option_value ) {
 					// Rename the options to the new prefix 'wallee_'.
 					$new_option_name = str_replace( $old_option_prefix . 'wallee_', 'wallee_', $option_name );
-					if ( get_option( $new_option_name ) !== false ) {
+					if ( false !== get_option( $new_option_name ) ) {
 						// Update the option if it already exists.
 						update_option( $new_option_name, $option_value );
 					} else {
@@ -456,7 +456,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 */
 		public static function migrate_plugin_data_after_update( $upgrader_object, $options ) {
 			// Check if the plugin was just updated.
-			if ( $options['action'] == 'update' && $options['type'] == 'plugin' ) {
+			if ( 'update' == $options['action'] && 'plugin' == $options['type'] ) {
 				$plugin_basename = plugin_basename( __FILE__ );
 				foreach ( $options['plugins'] as $plugin ) {
 					if ( $plugin == $plugin_basename ) {

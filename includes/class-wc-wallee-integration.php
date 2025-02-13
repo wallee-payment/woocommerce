@@ -25,4 +25,5 @@ defined( 'ABSPATH' ) || exit;
 class WC_Wallee_Integration {
 	const WALLEE_LIGHTBOX = 'lightbox';
 	const WALLEE_IFRAME = 'iframe';
+	const WALLEE_PAYMENTPAGE = 'payment_page';
 }
