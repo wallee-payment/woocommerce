@@ -90,11 +90,11 @@ class WC_Wallee_Webhook_Transaction_Invoice_Strategy extends WC_Wallee_Webhook_S
 	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice, WC_Wallee_Webhook_Request $request ) {
 		switch ( $request->get_state() ) {
 			case \Wallee\Sdk\Model\TransactionInvoiceState::DERECOGNIZED:
-				$order->add_order_note( __( 'Invoice Not Settled' ) );
+				$order->add_order_note( __( 'Invoice Not Settled', 'woo-wallee' ) );
 				break;
 			case \Wallee\Sdk\Model\TransactionInvoiceState::NOT_APPLICABLE:
 			case \Wallee\Sdk\Model\TransactionInvoiceState::PAID:
-				$order->add_order_note( __( 'Invoice Settled' ) );
+				$order->add_order_note( __( 'Invoice Settled', 'woo-wallee' ) );
 				break;
 			default:
 				// Nothing to do.

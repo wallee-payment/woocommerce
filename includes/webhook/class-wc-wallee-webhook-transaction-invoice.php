@@ -87,11 +87,11 @@ class WC_Wallee_Webhook_Transaction_Invoice extends WC_Wallee_Webhook_Order_Rela
 		/* @var \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice */ //phpcs:ignore
 		switch ( $transaction_invoice->getState() ) {
 			case \Wallee\Sdk\Model\TransactionInvoiceState::DERECOGNIZED:
-				$order->add_order_note( esc_html__( 'Invoice Not Settled' ) );
+				$order->add_order_note( esc_html__( 'Invoice Not Settled', 'woo-wallee' ) );
 				break;
 			case \Wallee\Sdk\Model\TransactionInvoiceState::NOT_APPLICABLE:
 			case \Wallee\Sdk\Model\TransactionInvoiceState::PAID:
-				$order->add_order_note( esc_html__( 'Invoice Settled' ) );
+				$order->add_order_note( esc_html__( 'Invoice Settled', 'woo-wallee' ) );
 				break;
 			default:
 				// Nothing to do.

@@ -76,14 +76,14 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @var \Wallee\Sdk\Service\TransactionLineItemVersionService
 	 */
 	private $transaction_line_item_version_service;
-
+	
 	/**
 	 * Holds the API client instance for interacting with the API.
 	 *
 	 * @var \Wallee\Sdk\ApiClient
 	 */
 	public $api_client;
-
+	
 	/**
 	 * Constructor to initialize the API client instance.
 	 *

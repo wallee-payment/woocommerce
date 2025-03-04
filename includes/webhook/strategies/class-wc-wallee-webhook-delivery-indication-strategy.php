@@ -105,8 +105,9 @@ class WC_Wallee_Webhook_Delivery_Indication_Strategy extends WC_Wallee_Webhook_S
 	 * @return void
 	 */
 	protected function review( WC_Order $order ) {
-		$status = apply_filters( 'wc_wallee_manual_task_status', 'wallee-manual', $order );
 		$order->add_meta_data( '_wallee_manual_check', true );
+		$status = apply_filters( 'wc_wallee_manual_task_status', 'wallee-manual', $order );
+		$status = apply_filters( 'wallee_order_update_status', $order, $status, __( 'A manual decision about whether to accept the payment is required.', 'woo-wallee' ) );
 		$order->update_status( $status, __( 'A manual decision about whether to accept the payment is required.', 'woo-wallee' ) );
 	}
 }
