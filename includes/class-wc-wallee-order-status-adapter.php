@@ -202,9 +202,7 @@ class WC_Wallee_Order_Status_Adapter
 		$default_mappings = $this->get_default_status_mappings();
 
 		foreach ( $default_mappings as $key => $value ) {
-			if ( get_option( self::WALLEE_ORDER_STATUS_MAPPING_PREFIX . $key, false ) === false ) {
-				update_option( self::WALLEE_ORDER_STATUS_MAPPING_PREFIX . $key, $value );
-			}
+			$result = update_option( self::WALLEE_ORDER_STATUS_MAPPING_PREFIX . $key, $value );
 		}
 	}
 
@@ -226,10 +224,10 @@ class WC_Wallee_Order_Status_Adapter
 	 * - wallee_order_status_mapping_confirmed -> wc-on-hold -> OrderInternalStatus::ON_HOLD
 	 * - wallee_order_status_mapping_processing -> wc-on-hold -> OrderInternalStatus::ON_HOLD
 	 * - wallee_order_status_mapping_authorized -> wc-on-hold -> OrderInternalStatus::ON_HOLD
-	 * - wallee_order_status_mapping_completed -> wc-processing -> OrderInternalStatus::PROCESSING
+	 * - wallee_order_status_mapping_completed -> wc-on-hold -> OrderInternalStatus::ON_HOLD
 	 * - wallee_order_status_mapping_failed -> wc-failed -> OrderInternalStatus::FAILED
 	 * - wallee_order_status_mapping_voided -> wc-cancelled or 'wc-refunded' -> OrderInternalStatus::CANCELLED
-	 * - wallee_order_status_mapping_fulfill -> wc-completed -> OrderInternalStatus::COMPLETED
+	 * - wallee_order_status_mapping_fulfill -> wc-processing -> OrderInternalStatus::PROCESSING
 	 *
 	 * These defaults are used if no custom mappings are provided by the user.
 	 *
@@ -242,10 +240,10 @@ class WC_Wallee_Order_Status_Adapter
 			self::WALLEE_STATUS_CONFIRMED => 'wc-on-hold',
 			self::WALLEE_STATUS_PROCESSING => 'wc-on-hold',
 			self::WALLEE_STATUS_AUTHORIZED => 'wc-on-hold',
-			self::WALLEE_STATUS_COMPLETED => 'wc-processing',
+			self::WALLEE_STATUS_COMPLETED => 'wc-wallee-waiting',
 			self::WALLEE_STATUS_FAILED => 'wc-failed',
 			self::WALLEE_STATUS_VOIDED => 'wc-cancelled',
-			self::WALLEE_STATUS_FULFILL => 'wc-completed',
+			self::WALLEE_STATUS_FULFILL => 'wc-processing',
 			self::WALLEE_STATUS_DECLINE => 'wc-cancelled',
 		);
 	}
