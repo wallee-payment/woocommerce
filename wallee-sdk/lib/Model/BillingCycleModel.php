@@ -24,15 +24,15 @@ use \ArrayAccess;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * AnalyticsQueryResultBatch model
+ * BillingCycleModel model
  *
  * @category    Class
- * @description A batch of the result of a query executed in Analytics.
+ * @description 
  * @package     Wallee\Sdk
  * @author      wallee AG
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
+class BillingCycleModel implements ModelInterface, ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -41,7 +41,7 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $swaggerModelName = 'AnalyticsQueryResultBatch';
+    protected static $swaggerModelName = 'BillingCycleModel';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -49,10 +49,12 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'columns' => '\Wallee\Sdk\Model\AnalyticsSchemaColumn[]',
-        'next_token' => 'string',
-        'query_execution' => '\Wallee\Sdk\Model\AnalyticsQueryExecution',
-        'rows' => 'string[][]'
+        'billing_cycle_type' => '\Wallee\Sdk\Model\BillingCycleType',
+        'customization' => '\Wallee\Sdk\Model\BillingDayCustomization',
+        'day_of_month' => 'int',
+        'month' => '\Wallee\Sdk\Model\DisplayableMonth',
+        'number_of_periods' => 'int',
+        'weekly_day' => '\Wallee\Sdk\Model\DisplayableDayOfWeek'
     ];
 
     /**
@@ -61,10 +63,12 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'columns' => null,
-        'next_token' => null,
-        'query_execution' => null,
-        'rows' => null
+        'billing_cycle_type' => null,
+        'customization' => null,
+        'day_of_month' => 'int32',
+        'month' => null,
+        'number_of_periods' => 'int32',
+        'weekly_day' => null
     ];
 
     /**
@@ -74,10 +78,12 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'columns' => 'columns',
-        'next_token' => 'nextToken',
-        'query_execution' => 'queryExecution',
-        'rows' => 'rows'
+        'billing_cycle_type' => 'billingCycleType',
+        'customization' => 'customization',
+        'day_of_month' => 'dayOfMonth',
+        'month' => 'month',
+        'number_of_periods' => 'numberOfPeriods',
+        'weekly_day' => 'weeklyDay'
     ];
 
     /**
@@ -86,10 +92,12 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'columns' => 'setColumns',
-        'next_token' => 'setNextToken',
-        'query_execution' => 'setQueryExecution',
-        'rows' => 'setRows'
+        'billing_cycle_type' => 'setBillingCycleType',
+        'customization' => 'setCustomization',
+        'day_of_month' => 'setDayOfMonth',
+        'month' => 'setMonth',
+        'number_of_periods' => 'setNumberOfPeriods',
+        'weekly_day' => 'setWeeklyDay'
     ];
 
     /**
@@ -98,10 +106,12 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'columns' => 'getColumns',
-        'next_token' => 'getNextToken',
-        'query_execution' => 'getQueryExecution',
-        'rows' => 'getRows'
+        'billing_cycle_type' => 'getBillingCycleType',
+        'customization' => 'getCustomization',
+        'day_of_month' => 'getDayOfMonth',
+        'month' => 'getMonth',
+        'number_of_periods' => 'getNumberOfPeriods',
+        'weekly_day' => 'getWeeklyDay'
     ];
 
     
@@ -122,13 +132,17 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
     public function __construct(array $data = null)
     {
         
-        $this->container['columns'] = isset($data['columns']) ? $data['columns'] : null;
+        $this->container['billing_cycle_type'] = isset($data['billing_cycle_type']) ? $data['billing_cycle_type'] : null;
         
-        $this->container['next_token'] = isset($data['next_token']) ? $data['next_token'] : null;
+        $this->container['customization'] = isset($data['customization']) ? $data['customization'] : null;
         
-        $this->container['query_execution'] = isset($data['query_execution']) ? $data['query_execution'] : null;
+        $this->container['day_of_month'] = isset($data['day_of_month']) ? $data['day_of_month'] : null;
         
-        $this->container['rows'] = isset($data['rows']) ? $data['rows'] : null;
+        $this->container['month'] = isset($data['month']) ? $data['month'] : null;
+        
+        $this->container['number_of_periods'] = isset($data['number_of_periods']) ? $data['number_of_periods'] : null;
+        
+        $this->container['weekly_day'] = isset($data['weekly_day']) ? $data['weekly_day'] : null;
         
     }
 
@@ -141,6 +155,12 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
     {
         $invalidProperties = [];
 
+        if ($this->container['billing_cycle_type'] === null) {
+            $invalidProperties[] = "'billing_cycle_type' can't be null";
+        }
+        if ($this->container['number_of_periods'] === null) {
+            $invalidProperties[] = "'number_of_periods' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -222,100 +242,150 @@ class AnalyticsQueryResultBatch implements ModelInterface, ArrayAccess
     
 
     /**
-     * Gets columns
+     * Gets billing_cycle_type
      *
-     * @return \Wallee\Sdk\Model\AnalyticsSchemaColumn[]
+     * @return \Wallee\Sdk\Model\BillingCycleType
      */
-    public function getColumns()
+    public function getBillingCycleType()
     {
-        return $this->container['columns'];
+        return $this->container['billing_cycle_type'];
     }
 
     /**
-     * Sets columns
+     * Sets billing_cycle_type
      *
-     * @param \Wallee\Sdk\Model\AnalyticsSchemaColumn[] $columns The schemas of the columns returned by the query (in order).
+     * @param \Wallee\Sdk\Model\BillingCycleType $billing_cycle_type 
      *
      * @return $this
      */
-    public function setColumns($columns)
+    public function setBillingCycleType($billing_cycle_type)
     {
-        $this->container['columns'] = $columns;
+        $this->container['billing_cycle_type'] = $billing_cycle_type;
 
         return $this;
     }
     
 
     /**
-     * Gets next_token
+     * Gets customization
      *
-     * @return string
+     * @return \Wallee\Sdk\Model\BillingDayCustomization
      */
-    public function getNextToken()
+    public function getCustomization()
     {
-        return $this->container['next_token'];
+        return $this->container['customization'];
     }
 
     /**
-     * Sets next_token
+     * Sets customization
      *
-     * @param string $next_token The token to fetch the next batch of results. Null if no more results are available.
+     * @param \Wallee\Sdk\Model\BillingDayCustomization $customization 
      *
      * @return $this
      */
-    public function setNextToken($next_token)
+    public function setCustomization($customization)
     {
-        $this->container['next_token'] = $next_token;
+        $this->container['customization'] = $customization;
 
         return $this;
     }
     
 
     /**
-     * Gets query_execution
+     * Gets day_of_month
      *
-     * @return \Wallee\Sdk\Model\AnalyticsQueryExecution
+     * @return int
      */
-    public function getQueryExecution()
+    public function getDayOfMonth()
     {
-        return $this->container['query_execution'];
+        return $this->container['day_of_month'];
     }
 
     /**
-     * Sets query_execution
+     * Sets day_of_month
      *
-     * @param \Wallee\Sdk\Model\AnalyticsQueryExecution $query_execution The query execution that produced the result.
+     * @param int $day_of_month 
      *
      * @return $this
      */
-    public function setQueryExecution($query_execution)
+    public function setDayOfMonth($day_of_month)
     {
-        $this->container['query_execution'] = $query_execution;
+        $this->container['day_of_month'] = $day_of_month;
 
         return $this;
     }
     
 
     /**
-     * Gets rows
+     * Gets month
      *
-     * @return string[][]
+     * @return \Wallee\Sdk\Model\DisplayableMonth
      */
-    public function getRows()
+    public function getMonth()
     {
-        return $this->container['rows'];
+        return $this->container['month'];
     }
 
     /**
-     * Sets rows
+     * Sets month
      *
-     * @param string[][] $rows The resulting rows contained in this batch where each row is a list of column values.
+     * @param \Wallee\Sdk\Model\DisplayableMonth $month 
      *
      * @return $this
      */
-    public function setRows($rows)
+    public function setMonth($month)
     {
-        $this->container['rows'] = $rows;
+        $this->container['month'] = $month;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets number_of_periods
+     *
+     * @return int
+     */
+    public function getNumberOfPeriods()
+    {
+        return $this->container['number_of_periods'];
+    }
+
+    /**
+     * Sets number_of_periods
+     *
+     * @param int $number_of_periods Billing Cycle type multiplied by Number of Periods defines billing cycle duration, e.g. 3 months. Monthly types require 1-12; weekly and yearly types require 1-9 periods; and daily types require 1-30.
+     *
+     * @return $this
+     */
+    public function setNumberOfPeriods($number_of_periods)
+    {
+        $this->container['number_of_periods'] = $number_of_periods;
+
+        return $this;
+    }
+    
+
+    /**
+     * Gets weekly_day
+     *
+     * @return \Wallee\Sdk\Model\DisplayableDayOfWeek
+     */
+    public function getWeeklyDay()
+    {
+        return $this->container['weekly_day'];
+    }
+
+    /**
+     * Sets weekly_day
+     *
+     * @param \Wallee\Sdk\Model\DisplayableDayOfWeek $weekly_day 
+     *
+     * @return $this
+     */
+    public function setWeeklyDay($weekly_day)
+    {
+        $this->container['weekly_day'] = $weekly_day;
 
         return $this;
     }

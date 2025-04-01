@@ -22,20 +22,31 @@ namespace Wallee\Sdk\Model;
 use \Wallee\Sdk\ObjectSerializer;
 
 /**
- * CardCryptogramType model
+ * DisplayableMonth model
  *
  * @category    Class
- * @description This model defines the card cryptogram types.
+ * @description 
  * @package     Wallee\Sdk
  * @author      wallee AG
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache License v2
  */
-class CardCryptogramType
+class DisplayableMonth
 {
     /**
      * Possible values of this enum
      */
-    const SCHEME_TOKEN = 'SCHEME_TOKEN';
+    const JANUARY = 'JANUARY';
+    const FEBRUARY = 'FEBRUARY';
+    const MARCH = 'MARCH';
+    const APRIL = 'APRIL';
+    const MAY = 'MAY';
+    const JUNE = 'JUNE';
+    const JULY = 'JULY';
+    const AUGUST = 'AUGUST';
+    const SEPTEMBER = 'SEPTEMBER';
+    const OCTOBER = 'OCTOBER';
+    const NOVEMBER = 'NOVEMBER';
+    const DECEMBER = 'DECEMBER';
     
     /**
      * Gets allowable values of the enum
@@ -44,7 +55,18 @@ class CardCryptogramType
     public static function getAllowableEnumValues()
     {
         return [
-            self::SCHEME_TOKEN,
+            self::JANUARY,
+            self::FEBRUARY,
+            self::MARCH,
+            self::APRIL,
+            self::MAY,
+            self::JUNE,
+            self::JULY,
+            self::AUGUST,
+            self::SEPTEMBER,
+            self::OCTOBER,
+            self::NOVEMBER,
+            self::DECEMBER,
         ];
     }
 }
