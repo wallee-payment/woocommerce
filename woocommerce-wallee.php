@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.3.9
+ * Version: 3.3.10
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -11,7 +11,7 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * WC requires at least: 8.0.0
- * WC tested up to 9.8.2
+ * WC tested up to 9.8.5
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -46,7 +46,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.3.9';
+		private $version = '3.3.10';
 
 		/**
 		 * The single instance of the class.
@@ -511,14 +511,19 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 
 			// Set up localisation.
 			$this->load_plugin_textdomain();
+			add_action('plugins_loaded', function () {
+				if (class_exists('WC_Payment_Gateway')) {
+					require_once WC_WALLEE_ABSPATH . 'includes/class-wc-wallee-zero-gateway.php';
 
-			add_filter(
-				'woocommerce_payment_gateways',
-				array(
-					$this,
-					'add_gateways',
-				)
-			);
+					add_filter(
+					  'woocommerce_payment_gateways',
+					  array(
+						WooCommerce_Wallee::instance(),
+						'add_gateways',
+					  )
+					);
+				}
+			}, 20);
 			add_filter(
 				'wc_order_statuses',
 				array(
@@ -869,7 +874,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 
 			if ( isset( $data['key'] ) ) {
 				$label = str_replace( ['-', '_'], ' ', sanitize_text_field( $data['key'] ) );
-				
+
 				// Normalize the key by replacing spaces and dashes with underscores.
 				$sanitized_key_underscore = str_replace( [' ', '-'], '_', WC_Wallee_Order_Status_Adapter::WALLEE_CUSTOM_ORDER_STATUS_PREFIX . $first_key );
 				$sanitized_key_hyphen = str_replace( [' ', '_'], '-', $first_key );
@@ -1068,6 +1073,10 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 */
 		public function add_gateways( $methods ) {
 			$space_id = get_option( self::WALLEE_CK_SPACE_ID );
+
+			require_once __DIR__ . '/includes/class-wc-wallee-zero-gateway.php';
+			$methods[] = 'WC_Wallee_Zero_Gateway';
+
 			$method_configurations = WC_Wallee_Entity_Method_Configuration::load_by_states_and_space_id(
 				$space_id,
 				array(
@@ -1078,7 +1087,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			try {
 				foreach ( $method_configurations as $configuration ) {
 					$gateway = new WC_Wallee_Gateway( $configuration );
-					$methods[] = apply_filters( 'wc_wallee_enhance_gateway', $gateway );
+					$methods[] = apply_filters('wc_wallee_enhance_gateway', $gateway);
 				}
 			} catch ( \Wallee\Sdk\ApiException $e ) {
 				if ( $e->getCode() === 401 ) {

@@ -76,14 +76,14 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @var \Wallee\Sdk\Service\TransactionLineItemVersionService
 	 */
 	private $transaction_line_item_version_service;
-	
+
 	/**
 	 * Holds the API client instance for interacting with the API.
 	 *
 	 * @var \Wallee\Sdk\ApiClient
 	 */
 	public $api_client;
-	
+
 	/**
 	 * Constructor to initialize the API client instance.
 	 *
@@ -178,7 +178,7 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @return void
 	 */
 	public function clear_transaction_cache() {
-		$this->transaction_cache = array();
+		self::$transaction_cache = array();
 		WC()->session->set( 'wallee_transaction_id', null );
 	}
 
@@ -498,7 +498,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @throws \Wallee\Sdk\ApiException If there is an API exception during the process.
 	 */
 	public function get_possible_payment_methods_for_cart() {
-		return $this->get_possible_payment_methods( null );
+		$paymentConfigurations = $this->get_possible_payment_methods( null );
+		$paymentConfigurations[] = WC_Wallee_Zero_Gateway::ZERO_PAYMENT_CONF_ID;
+
+		return $paymentConfigurations;
 	}
 
 	/**
@@ -513,7 +516,10 @@ class WC_Wallee_Service_Transaction extends WC_Wallee_Service_Abstract {
 	 * @throws \Wallee\Sdk\ApiException If there is an API exception during the process.
 	 */
 	public function get_possible_payment_methods_for_order( WC_Order $order ) {
-		return $this->get_possible_payment_methods( $order );
+		$paymentConfigurations = $this->get_possible_payment_methods( $order );
+		$paymentConfigurations[] = WC_Wallee_Zero_Gateway::ZERO_PAYMENT_CONF_ID;
+
+		return $paymentConfigurations;
 	}
 
 

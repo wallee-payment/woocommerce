@@ -89,6 +89,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 					break;
 				case \Wallee\Sdk\Model\TransactionState::FULFILL:
 					$this->authorize( $transaction, $order );
+					do_action( 'wallee_transaction_authorized_send_email', $order->get_id() );
 					$this->fulfill( $transaction, $order );
 					break;
 				case \Wallee\Sdk\Model\TransactionState::VOIDED:
@@ -105,6 +106,12 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 		}
 
 		WC_Wallee_Service_Transaction::instance()->update_transaction_info( $transaction, $order );
+
+		// This is edge case for deferred payment methods
+		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id( $order->get_id() );
+		if ($transaction_info->get_state() === \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
+			do_action( 'wallee_transaction_authorized_send_email', $order->get_id() );
+		}
 	}
 
 	/**

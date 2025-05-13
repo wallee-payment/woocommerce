@@ -3,7 +3,7 @@ Contributors: wallee AG
 Tags: woocommerce wallee, woocommerce, wallee, payment, e-commerce, webshop, psp, invoice, packing slips, pdf, customer invoice, processing
 Requires at least: 4.7
 Tested up to: 6.7
-Stable tag: 3.3.9
+Stable tag: 3.3.10
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,7 +23,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.9/docs/en/documentation.html).
+Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.10/docs/en/documentation.html).
 
 == External Services ==
 
@@ -60,7 +60,7 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 
 * PHP version 5.6 or greater
 * WordPress 4.7 up to 6.6
-* WooCommerce 3.0.0 up to 9.8.2
+* WooCommerce 3.0.0 up to 9.8.5
 
 = Automatic installation =
 
@@ -81,10 +81,11 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 == Changelog ==
 
 
-= 3.3.9 - Apr 29th 2025 =
-- [Feature] Improved text and translations in documentation
-- [Feature] Compatibility tested against Woocommerce 9.8.x
+= 3.3.10 - May 13th 2025 =
+- [Bugfix] Fix to allow bulk order updates
+- [Bugfix] Process 0 amount transactions correctly
+- [Bugfix] Fix email sending at the correct time (when payment authorized and paid)
 - [Tested Against] PHP 8.2
 - [Tested Against] Wordpress 6.7
-- [Tested Against] Woocommerce 9.8.2
+- [Tested Against] Woocommerce 9.8.5
 - [Tested Against] PHP SDK 4.8.0
