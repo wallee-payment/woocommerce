@@ -82,7 +82,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 				case \Wallee\Sdk\Model\TransactionState::FULFILL:
 					$this->authorize( $transaction, $order );
 					$this->fulfill( $transaction, $order );
-					WC_Wallee_Helper::set_virtual_zero_total_orders_to_complete( $order );
+					WC_Wallee_Helper::set_virtual_orders_to_complete( $order );
 					WC_Wallee_Helper::update_order_status_for_preorder_if_needed( $order );
 					break;
 				case \Wallee\Sdk\Model\TransactionState::VOIDED:

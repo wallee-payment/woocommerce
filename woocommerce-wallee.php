@@ -3,16 +3,15 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.3.14
+ * Version: 3.3.15
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
  * Domain Path: /languages/
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Requires Plugins: woocommerce
  * WC requires at least: 8.0.0
- * WC tested up to 10.0.0
+ * WC tested up to 9.9.5
  * License: Apache-2.0
  * License URI: http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -39,16 +38,15 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		const WALLEE_CK_INTEGRATION = 'wc_wallee_integration';
 		const WALLEE_CK_ORDER_REFERENCE = 'wc_wallee_order_reference';
 		const WALLEE_CK_ENFORCE_CONSISTENCY = 'wc_wallee_enforce_consistency';
-		const WALLEE_CK_CHANGE_ORDER_STATUS = 'wc_wallee_change_order_status';
 		const WALLEE_UPGRADE_VERSION = '3.1.1';
-		const WC_MAXIMUM_VERSION = '10.0.0';
+		const WC_MAXIMUM_VERSION = '9.9.5';
 
 		/**
 		 * WooCommerce Wallee version.
 		 *
 		 * @var string
 		 */
-		private $version = '3.3.14';
+		private $version = '3.3.15';
 
 		/**
 		 * The single instance of the class.
@@ -83,13 +81,6 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 */
 		protected function __construct() {
 			$this->define_constants();
-		}
-
-		public function boot() {
-			$this->init();
-		}
-
-		private function init() {
 			$this->includes();
 			$this->init_hooks();
 		}
@@ -109,9 +100,9 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 			$this->define( 'WC_WALLEE_ABSPATH', __DIR__ . '/' );
 			$this->define( 'WC_WALLEE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'WC_WALLEE_VERSION', $this->version );
-			$this->define( 'WC_WALLEE_REQUIRED_PHP_VERSION', '7.4' );
-			$this->define( 'WC_WALLEE_REQUIRED_WP_VERSION', '6.0' );
-			$this->define( 'WC_WALLEE_REQUIRED_WC_VERSION', '8.0' );
+			$this->define( 'WC_WALLEE_REQUIRED_PHP_VERSION', '5.6' );
+			$this->define( 'WC_WALLEE_REQUIRED_WP_VERSION', '4.7' );
+			$this->define( 'WC_WALLEE_REQUIRED_WC_VERSION', '3.0' );
 			$this->define( 'WC_WALLEE_REQUIRED_WC_MAXIMUM_VERSION', self::WC_MAXIMUM_VERSION );
 		}
 
@@ -454,7 +445,6 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 				$old_option_prefix . self::WALLEE_CK_INTEGRATION,
 				$old_option_prefix . self::WALLEE_CK_ORDER_REFERENCE,
 				$old_option_prefix . self::WALLEE_CK_ENFORCE_CONSISTENCY,
-				$old_option_prefix . self::WALLEE_CK_CHANGE_ORDER_STATUS,
 				$old_option_prefix . self::WC_MAXIMUM_VERSION,
 			];
 
@@ -1502,10 +1492,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		}
 	}
 
-	add_action( 'woocommerce_loaded', function () {
-		WooCommerce_Wallee::instance()->boot();
-		add_action( 'woocommerce_blocks_loaded', 'WC_Wallee_Blocks_Support' );
-	});
+	add_action( 'woocommerce_blocks_loaded', 'WC_Wallee_Blocks_Support' );
 
 	function WC_Wallee_Blocks_Support() { //phpcs:ignore
 		if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {

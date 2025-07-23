@@ -27,7 +27,6 @@ class WC_Wallee_Helper {
 	const WALLEE_CHECKOUT_VERSION = 'x-checkout-type';
 	const WALLEE_CHECKOUT_TYPE_BLOCKS = 'blocks';
 	const WALLEE_CHECKOUT_TYPE_LEGACY = 'legacy';
-	const WALLEE_PLUGIN_VERSION = 'x-meta-plugin-version';
 
 	/**
 	 * Instance.
@@ -237,14 +236,9 @@ class WC_Wallee_Helper {
 	 * @return \Wallee\Sdk\Model\LineItemCreate[]
 	 * @throws WC_Wallee_Exception_Invalid_Transaction_Amount WC_Wallee_Exception_Invalid_Transaction_Amount.
 	 */
-	public function cleanup_line_items( array $line_items, $expected_sum, $currency, bool $is_recurrent = false ) {
-		// Check if coupon is applied to order depending whether new order is created from session, or existing order.
-		if ( $is_recurrent ) {
-			$has_coupons = apply_filters( 'wc_wallee_packages_coupon_line_items_have_coupon_discounts', $line_items, $currency );
-		} else {
-			$has_coupons = apply_filters( 'wc_wallee_packages_coupon_cart_has_coupon_discounts_applied', $currency ); //phpcs:ignore
-		}
+	public function cleanup_line_items( array $line_items, $expected_sum, $currency ) {
 		// ensure that the effective sum coincides with the total discounted by the coupons.
+		$has_coupons = apply_filters( 'wc_wallee_packages_coupon_has_coupon_discounts_applied', $currency ); //phpcs:ignore
 		$effective_sum = $this->round_amount( $this->get_total_amount_including_tax( $line_items, $has_coupons ), $currency );
 		$rounded_expected_sum = $this->round_amount( $expected_sum, $currency );
 
@@ -577,13 +571,11 @@ class WC_Wallee_Helper {
 		$version = WC_VERSION;
 
 		$shop_version = str_replace( 'v', '', $version );
-		$plugin_version = '3.3.14';
 		list ($major_version, $minor_version) = explode( '.', $shop_version, 3 );
 		return array(
 			self::WALLEE_SHOP_SYSTEM => 'woocommerce',
 			self::WALLEE_SHOP_SYSTEM_VERSION => $shop_version,
 			self::WALLEE_SHOP_SYSTEM_AND_VERSION => 'woocommerce-' . $major_version . '.' . $minor_version,
-			self::WALLEE_PLUGIN_VERSION => $plugin_version,
 		);
 	}
 
@@ -632,33 +624,20 @@ class WC_Wallee_Helper {
 	 * @param $order
 	 * @return void
 	 */
-	public static function set_virtual_zero_total_orders_to_complete( $order ) {
-		if ( 'yes' === get_option( WooCommerce_Wallee::WALLEE_CK_CHANGE_ORDER_STATUS ) 
-		&& $order->get_total() <= 0 && self::is_order_virtual( $order ) ) {
-			$order->update_status( 'completed' );
-		}
-	}
+	public static function set_virtual_orders_to_complete( $order ) {
 
-	/**
-	 * @param $order
-	 * @return bool
-	 */
-	public static function is_order_virtual( $order ) {
-		if ( ! $order instanceof WC_Order ) {
-			$order = wc_get_order( $order );
-		}
-
-		if ( ! $order ) {
-			return false;
-		}
-
+		$only_virtual = true;
 		foreach ( $order->get_items() as $item ) {
 			$product = $item->get_product();
 			if ( ! $product || ! $product->is_virtual() ) {
-				return false;
+				$only_virtual = false;
+				break;
 			}
 		}
-		return true;
+
+		if ( $only_virtual ) {
+			$order->update_status( 'completed' );
+		}
 	}
 
 	/**
