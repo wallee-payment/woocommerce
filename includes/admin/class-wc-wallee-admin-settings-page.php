@@ -205,7 +205,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 			array(
 				'links' => array(
-					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.15/docs/en/documentation.html' => esc_html__( 'Documentation', 'woo-wallee' ),
+					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.16/docs/en/documentation.html' => esc_html__( 'Documentation', 'woo-wallee' ),
 					'https://app-wallee.com/user/signup' => esc_html__( 'Sign Up', 'woo-wallee' ),
 				),
 				'type'  => 'wallee_links',
@@ -408,6 +408,25 @@ TEXT
 				'id' => 'reference_options',
 			),
 
+			array(
+				'title' => esc_html__( 'Virtual Order Status Options', 'woo-wallee' ),
+				'type' => 'title',
+				'id' => 'order_status_options',
+			),
+
+			array(
+				'title' => esc_html__( 'Change Virtual Order Status On Completion', 'woo-wallee' ),
+				'desc' => esc_html__( 'Enable this setting to automatically set order\'s status to "Completed" when they consist entirely out of virtual products and order\'s total is 0.', 'woo-wallee' ),
+				'id' => WooCommerce_Wallee::WALLEE_CK_CHANGE_ORDER_STATUS,
+				'type' => 'checkbox',
+				'default' => 'yes',
+				'css' => 'min-width:300px;',
+			),
+
+			array(
+				'type' => 'sectionend',
+				'id' => 'order_status_options',
+			),
 		);
 
 		return apply_filters( 'wallee_settings', $settings );

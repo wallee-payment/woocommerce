@@ -374,6 +374,12 @@ class WC_Wallee_Order_Status_Adapter
 	 */
 	public function get_order_status_on_payment_complete( string $status, int $order_id, WC_Order $order ): string
 	{
+		// If order consists entirely out of virtual products and their total is 0, change their status to completed
+		if ( 'yes' === get_option( WooCommerce_Wallee::WALLEE_CK_CHANGE_ORDER_STATUS ) 
+		&& $order->get_total() <= 0 && WC_Wallee_Helper::is_order_virtual( $order ) ) {
+			return self::WALLEE_STATUS_COMPLETED;
+		}
+		
 		// Check if the transaction status is mapped in WooCommerce
 		$mapped_status = $this->map_wallee_status_to_woocommerce( \Wallee\Sdk\Model\TransactionState::FULFILL );
 
