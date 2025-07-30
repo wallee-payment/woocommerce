@@ -91,7 +91,7 @@ class WC_Wallee_Webhook_Transaction extends WC_Wallee_Webhook_Order_Related_Abst
 					$this->authorize( $transaction, $order );
 					do_action( 'wallee_transaction_authorized_send_email', $order->get_id() );
 					$this->fulfill( $transaction, $order );
-					WC_Wallee_Helper::set_virtual_orders_to_complete( $order );
+					WC_Wallee_Helper::set_virtual_zero_total_orders_to_complete( $order );
 					WC_Wallee_Helper::update_order_status_for_preorder_if_needed( $order );
 					break;
 				case \Wallee\Sdk\Model\TransactionState::VOIDED:
