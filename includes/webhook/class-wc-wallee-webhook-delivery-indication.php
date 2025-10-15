@@ -24,6 +24,20 @@ defined( 'ABSPATH' ) || exit;
  */
 class WC_Wallee_Webhook_Delivery_Indication extends WC_Wallee_Webhook_Order_Related_Abstract {
 
+	/**
+	 * Canonical processor.
+	 *
+	 * @var WC_Wallee_Webhook_Delivery_Indication_Strategy
+	 */
+	private $strategy;
+
+	/**
+	 * Construct to initialize canonical processor.
+	 *
+	 */
+	public function __construct() {
+		$this->strategy = new WC_Wallee_Webhook_Delivery_Indication_Strategy();
+	}
 
 	/**
 	 * Load entity.
@@ -35,8 +49,12 @@ class WC_Wallee_Webhook_Delivery_Indication extends WC_Wallee_Webhook_Order_Rela
 	 * @throws \Wallee\Sdk\VersioningException VersioningException.
 	 */
 	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
-		$delivery_indication_service = new \Wallee\Sdk\Service\DeliveryIndicationService( WC_Wallee_Helper::instance()->get_api_client() );
-		return $delivery_indication_service->read( $request->get_space_id(), $request->get_entity_id() );
+		wc_deprecated_function(
+            __METHOD__,
+            '3.0.12',
+            'WC_Wallee_Webhook_Delivery_Indication_Strategy::load_entity'
+        );
+		return $this->strategy->load_entity( $request );
 	}
 
 	/**
@@ -46,8 +64,12 @@ class WC_Wallee_Webhook_Delivery_Indication extends WC_Wallee_Webhook_Order_Rela
 	 * @return int|string
 	 */
 	protected function get_order_id( $delivery_indication ) {
-		/* @var \Wallee\Sdk\Model\DeliveryIndication $delivery_indication */ //phpcs:ignore
-		return WC_Wallee_Entity_Transaction_Info::load_by_transaction( $delivery_indication->getTransaction()->getLinkedSpaceId(), $delivery_indication->getTransaction()->getId() )->get_order_id();
+		wc_deprecated_function(
+            __METHOD__,
+            '3.0.12',
+            'WC_Wallee_Webhook_Delivery_Indication_Strategy::get_order_id'
+        );
+		return $this->strategy->get_order_id( $delivery_indication );
 	}
 
 	/**
@@ -66,30 +88,15 @@ class WC_Wallee_Webhook_Delivery_Indication extends WC_Wallee_Webhook_Order_Rela
 	 *
 	 * @param WC_Order $order order.
 	 * @param mixed $delivery_indication delivery indication.
+	 * @param WC_Wallee_Webhook_Request $request request.
 	 * @return void
 	 */
-	protected function process_order_related_inner( WC_Order $order, $delivery_indication ) {
-		/* @var \Wallee\Sdk\Model\DeliveryIndication $delivery_indication */ //phpcs:ignore
-		switch ( $delivery_indication->getState() ) {
-			case \Wallee\Sdk\Model\DeliveryIndicationState::MANUAL_CHECK_REQUIRED:
-				$this->review( $order );
-				break;
-			default:
-				// Nothing to do.
-				break;
-		}
-	}
-
-	/**
-	 * Review.
-	 *
-	 * @param WC_Order $order order.
-	 * @return void
-	 */
-	protected function review( WC_Order $order ) {
-		$order->add_meta_data( '_wallee_manual_check', true );
-		$status = apply_filters( 'wc_wallee_manual_task_status', 'wallee-manual', $order );
-		$status = apply_filters( 'wallee_order_update_status', $order, $status, esc_html__( 'A manual decision about whether to accept the payment is required.', 'woo-wallee' ) );
-		$order->update_status( $status, esc_html__( 'A manual decision about whether to accept the payment is required.', 'woo-wallee' ) );
+	protected function process_order_related_inner( WC_Order $order, $delivery_indication, $request ) {
+		wc_deprecated_function(
+            __METHOD__,
+            '3.0.12',
+            'WC_Wallee_Webhook_Delivery_Indication_Strategy::process_order_related_inner'
+        );
+        $this->strategy->bridge_process_order_related_inner( $order, $delivery_indication, $request );
 	}
 }

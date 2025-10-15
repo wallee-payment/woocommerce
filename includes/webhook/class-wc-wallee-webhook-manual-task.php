@@ -30,7 +30,12 @@ class WC_Wallee_Webhook_Manual_Task extends WC_Wallee_Webhook_Abstract {
 	 * @param WC_Wallee_Webhook_Request $request request.
 	 */
 	public function process( WC_Wallee_Webhook_Request $request ) {
-		$manual_task_service = WC_Wallee_Service_Manual_Task::instance();
-		$manual_task_service->update();
+		wc_deprecated_function(
+            __METHOD__,
+            '3.0.12',
+            'WC_Wallee_Webhook_Manual_Task_Strategy::process'
+        );
+		$strategy = new WC_Wallee_Webhook_Manual_Task_Strategy();
+		$strategy->process( $request );
 	}
 }

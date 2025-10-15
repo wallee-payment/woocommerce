@@ -42,7 +42,7 @@ class WC_Wallee_Webhook_Refund_Strategy extends WC_Wallee_Webhook_Strategy_Base 
 	 * @inheritDoc
 	 * @param WC_Wallee_Webhook_Request $request The webhook request.
 	 */
-	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
+	public function load_entity( WC_Wallee_Webhook_Request $request ) {
 		$refund_service = new \Wallee\Sdk\Service\RefundService( WC_Wallee_Helper::instance()->get_api_client() );
 		return $refund_service->read( $request->get_space_id(), $request->get_entity_id() );
 	}
@@ -53,12 +53,24 @@ class WC_Wallee_Webhook_Refund_Strategy extends WC_Wallee_Webhook_Strategy_Base 
 	 * @inheritDoc
 	 * @param \Wallee\Sdk\Model\Refund $object The refund object.
 	 */
-	protected function get_order_id( $object ) {
+	public function get_order_id( $object ) {
 		return WC_Wallee_Entity_Transaction_Info::load_by_transaction(
 			$object->getTransaction()->getLinkedSpaceId(),
 			$object->getTransaction()->getId()
 		)->get_order_id();
 	}
+
+	/**
+	 * Meant to bridge code from deprecated processor.
+	 *
+	 * @param WC_Order $order The WooCommerce order associated with the refund.
+	 * @param \Wallee\Sdk\Model\Refund $refund The transaction refund object.
+	 * @param WC_Wallee_Webhook_Request $request The webhook request object.
+	 * @return void
+	 */
+	public function bridge_process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\Refund $refund, WC_Wallee_Webhook_Request $request ) {
+        $this->process_order_related_inner( $order, $refund, $request, true );
+    }
 
 	/**
 	 * Processes the incoming webhook request related to refunds.
@@ -83,12 +95,14 @@ class WC_Wallee_Webhook_Refund_Strategy extends WC_Wallee_Webhook_Strategy_Base 
 	 *
 	 * @param WC_Order $order The WooCommerce order associated with the refund.
 	 * @param \Wallee\Sdk\Model\Refund $refund The transaction refund object.
-		 * @param WC_Wallee_Webhook_Request $request The webhook request object.
+	 * @param WC_Wallee_Webhook_Request $request The webhook request object.
+	 * @param bool $legacy_mode legacy code used.
 	 * @return void
 	 */
-	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\Refund $refund, WC_Wallee_Webhook_Request $request ) {
+	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\Refund $refund, WC_Wallee_Webhook_Request $request, $legacy_mode = false ) {
 		/* @var \Wallee\Sdk\Model\Refund $refund */
-		switch ( $request->get_state() ) {
+		$entity_state = $legacy_mode ? $refund->getState() : $request->get_state();
+		switch ( $entity_state ) {
 			case \Wallee\Sdk\Model\RefundState::FAILED:
 				// fallback.
 				$this->failed( $refund, $order );

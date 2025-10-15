@@ -42,7 +42,7 @@ class WC_Wallee_Webhook_Transaction_Invoice_Strategy extends WC_Wallee_Webhook_S
 	 * @inheritDoc
 	 * @param WC_Wallee_Webhook_Request $request webhook request.
 	 */
-	protected function load_entity( WC_Wallee_Webhook_Request $request ) {
+	public function load_entity( WC_Wallee_Webhook_Request $request ) {
 		$transaction_invoice_service = new \Wallee\Sdk\Service\TransactionInvoiceService( WC_Wallee_Helper::instance()->get_api_client() );
 		return $transaction_invoice_service->read( $request->get_space_id(), $request->get_entity_id() );
 	}
@@ -53,13 +53,25 @@ class WC_Wallee_Webhook_Transaction_Invoice_Strategy extends WC_Wallee_Webhook_S
 	 * @inheritDoc
 	 * @param object $object transaction entity object.
 	 */
-	protected function get_order_id( $object ) {
+	public function get_order_id( $object ) {
 		/* @var \Wallee\Sdk\Model\TransactionInvoice $object */
 		return WC_Wallee_Entity_Transaction_Info::load_by_transaction(
 			$object->getLinkedSpaceId(),
 			$object->getCompletion()->getLineItemVersion()->getTransaction()->getId()
 		)->get_order_id();
 	}
+
+	/**
+	 * Meant to bridge code from deprecated processor.
+	 *
+	 * @param WC_Order $order The WooCommerce order linked to the invoice.
+	 * @param \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice The transaction invoice object.
+	 * @param WC_Wallee_Webhook_Request $request The webhook request object.
+	 * @return void
+	 */
+	public function bridge_process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice, WC_Wallee_Webhook_Request $request ) {
+        $this->process_order_related_inner( $order, $transaction_invoice, $request, true );
+    }
 
 	/**
 	 * Processes the incoming webhook request pertaining to transaction invoices.
@@ -85,16 +97,18 @@ class WC_Wallee_Webhook_Transaction_Invoice_Strategy extends WC_Wallee_Webhook_S
 	 * @param WC_Order $order The WooCommerce order linked to the invoice.
 	 * @param \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice The transaction invoice object.
 	 * @param WC_Wallee_Webhook_Request $request The webhook request object.
+	 * @param bool $legacy_mode legacy code used.
 	 * @return void
 	 */
-	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice, WC_Wallee_Webhook_Request $request ) {
-		switch ( $request->get_state() ) {
+	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionInvoice $transaction_invoice, WC_Wallee_Webhook_Request $request, $legacy_mode = false ) {
+		$entity_state = $legacy_mode ? $transaction_invoice->getState() : $request->get_state();
+		switch ( $entity_state ) {
 			case \Wallee\Sdk\Model\TransactionInvoiceState::DERECOGNIZED:
-				$order->add_order_note( __( 'Invoice Not Settled', 'woo-wallee' ) );
+				$order->add_order_note( esc_html__( 'Invoice Not Settled', 'woo-wallee' ) );
 				break;
 			case \Wallee\Sdk\Model\TransactionInvoiceState::NOT_APPLICABLE:
 			case \Wallee\Sdk\Model\TransactionInvoiceState::PAID:
-				$order->add_order_note( __( 'Invoice Settled', 'woo-wallee' ) );
+				$order->add_order_note( esc_html__( 'Invoice Settled', 'woo-wallee' ) );
 				break;
 			default:
 				// Nothing to do.

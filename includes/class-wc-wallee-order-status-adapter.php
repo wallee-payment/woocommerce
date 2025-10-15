@@ -39,7 +39,6 @@ class WC_Wallee_Order_Status_Adapter
 
 	const WALLEE_ORDER_STATUS_MAPPING_PREFIX = 'wallee_order_status_mapping_';
 	const WALLEE_CUSTOM_ORDER_STATUS_PREFIX = 'wallee_custom_order_status_';
-
 	/**
 	 * Stores the status mappings loaded from the database.
 	 *
@@ -174,14 +173,54 @@ class WC_Wallee_Order_Status_Adapter
 	 */
 	private function initialize_status_mappings(): void
 	{
+		$is_custom_mapping_enabled = WC_Wallee_Helper::is_custom_status_mapping_enabled();
 		$default_mappings = apply_filters( 'wallee_default_order_status_mappings', array() );
 
-		$this->settings = array_map( function ( $transaction_status, $default_order_status ) {
-			return array(
+		if ( ! is_array( $default_mappings ) ) {
+			$default_mappings = array();
+		}
+
+		$this->settings = array();
+
+		foreach ( $default_mappings as $transaction_status => $default_order_status ) {
+			$option_key = self::WALLEE_ORDER_STATUS_MAPPING_PREFIX . $transaction_status;
+			$stored_order_status = $this->ensure_status_has_prefix( get_option( $option_key, $default_order_status ) );
+
+			if ( ! $is_custom_mapping_enabled ) {
+				$stored_order_status = $this->ensure_status_has_prefix( $default_order_status );
+			}
+
+			$this->settings[] = array(
 				'transaction_status' => $transaction_status,
-				'order_status' => get_option( self::WALLEE_ORDER_STATUS_MAPPING_PREFIX . $transaction_status, $default_order_status )
+				'order_status' => $stored_order_status,
 			);
-		}, array_keys( $default_mappings ), $default_mappings );
+		}
+	}
+
+	/**
+	 * Determines whether the provided order status belongs to the custom mapping set.
+	 *
+	 * @param string $order_status Order status, potentially prefixed with `wc-`.
+	 * @return bool
+	 */
+	private function is_custom_order_status( string $order_status ): bool
+	{
+		return strpos( $order_status, 'wc-wallee-' ) === 0 || strpos( $order_status, 'wallee-' ) === 0;
+	}
+
+	/**
+	 * Ensures a status slug contains the `wc-` prefix when required.
+	 *
+	 * @param string $status Status slug.
+	 * @return string
+	 */
+	private function ensure_status_has_prefix( string $status ): string
+	{
+		if ( '' === $status ) {
+			return $status;
+		}
+
+		return strpos( $status, 'wc-' ) === 0 ? $status : 'wc-' . $status;
 	}
 
 	/**
@@ -219,15 +258,19 @@ class WC_Wallee_Order_Status_Adapter
  	 * To maintain compatibility with earlier versions, string values are used as a fallback.
 	 * This is the interface to use in next versions Automattic\WooCommerce\Enums\OrderInternalStatus
 	 *
-	 * Example of saved options in `wp_options`:
+	 * Example of saved options in `wp_options` (custom mapping enabled):
 	 * - wallee_order_status_mapping_pending -> wc-pending -> OrderInternalStatus::PENDING
 	 * - wallee_order_status_mapping_confirmed -> wc-on-hold -> OrderInternalStatus::ON_HOLD
 	 * - wallee_order_status_mapping_processing -> wc-on-hold -> OrderInternalStatus::ON_HOLD
 	 * - wallee_order_status_mapping_authorized -> wc-on-hold -> OrderInternalStatus::ON_HOLD
-	 * - wallee_order_status_mapping_completed -> wc-on-hold -> OrderInternalStatus::ON_HOLD
+	 * - wallee_order_status_mapping_completed -> wc-wallee-waiting -> OrderInternalStatus::ON_HOLD
 	 * - wallee_order_status_mapping_failed -> wc-failed -> OrderInternalStatus::FAILED
 	 * - wallee_order_status_mapping_voided -> wc-cancelled or 'wc-refunded' -> OrderInternalStatus::CANCELLED
 	 * - wallee_order_status_mapping_fulfill -> wc-processing -> OrderInternalStatus::PROCESSING
+	 *
+	 * Example when relying on WooCommerce core statuses:
+	 * - wallee_order_status_mapping_processing -> wc-processing -> OrderInternalStatus::PROCESSING
+	 * - wallee_order_status_mapping_completed -> wc-processing -> OrderInternalStatus::PROCESSING
 	 *
 	 * These defaults are used if no custom mappings are provided by the user.
 	 *
@@ -235,17 +278,23 @@ class WC_Wallee_Order_Status_Adapter
 	 */
 	public function get_default_status_mappings() : array
 	{
-		return array(
+		$default_mappings = array(
 			self::WALLEE_STATUS_PENDING => 'wc-pending',
 			self::WALLEE_STATUS_CONFIRMED => 'wc-on-hold',
 			self::WALLEE_STATUS_PROCESSING => 'wc-on-hold',
 			self::WALLEE_STATUS_AUTHORIZED => 'wc-on-hold',
-			self::WALLEE_STATUS_COMPLETED => 'wc-wallee-waiting',
+			self::WALLEE_STATUS_COMPLETED => 'wc-on-hold',
 			self::WALLEE_STATUS_FAILED => 'wc-failed',
 			self::WALLEE_STATUS_VOIDED => 'wc-cancelled',
 			self::WALLEE_STATUS_FULFILL => 'wc-processing',
 			self::WALLEE_STATUS_DECLINE => 'wc-cancelled',
 		);
+
+		if ( WC_Wallee_Helper::is_custom_status_mapping_enabled() ) {
+			$default_mappings[ self::WALLEE_STATUS_COMPLETED ] = 'wc-wallee-waiting';
+		}
+
+		return $default_mappings;
 	}
 
 	/**
@@ -302,11 +351,15 @@ class WC_Wallee_Order_Status_Adapter
 	/**
 	 * Gets the WooCommerce status corresponding to a Wallee status.
 	 *
-	 * @param string $status The Wallee transaction status.
+	 * @param string|null $status The Wallee transaction status.
 	 * @return string|null The corresponding WooCommerce order status or null if not found.
 	 */
-	private function map_wallee_status_to_woocommerce( string $status ): ?string
+	private function map_wallee_status_to_woocommerce( ?string $status ): ?string
 	{
+		if ( null === $status || '' === $status ) {
+			return $status;
+		}
+
 		if ( empty( $this->settings ) ) {
 			return $status; //Return the current status if there are no mappings available.
 		}
@@ -330,7 +383,7 @@ class WC_Wallee_Order_Status_Adapter
 			}
 		}
 		
-		return $status; //Return legacy status or original if not found.
+		return str_replace( 'wc-', '', $status ); //Return legacy status or original (ensuring WC prefix is stripped).
 	}
 
 	/**
@@ -346,7 +399,7 @@ class WC_Wallee_Order_Status_Adapter
 	{
 		// If status is empty.
 		if ( $status === null && $order !== null ) {
-			$transaction_info = Wallee_Entity_Transaction_Info::load_by_order_id( $order->get_id() );
+			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id( $order->get_id() );
 			if ( $transaction_info ) {
 				$status = $transaction_info->get_state();
 			}
@@ -354,7 +407,17 @@ class WC_Wallee_Order_Status_Adapter
 
 		// Apply a pre-update filter to allow modifications before processing the status.
 		$status = apply_filters( 'wallee_pre_order_update_status', $status, $order, $note, $manual );
-		$new_status = $this->map_wallee_status_to_woocommerce( $status );
+		$change_setting_enabled = 'yes' === get_option( WooCommerce_Wallee::WALLEE_CK_CHANGE_ORDER_STATUS );
+		$is_virtual_order = WC_Wallee_Helper::is_order_virtual( $order );
+		$should_force_completed = (
+			$change_setting_enabled
+			&& $is_virtual_order
+			&& null !== $status
+			&& strtolower( (string) $status ) === strtolower( \Wallee\Sdk\Model\TransactionState::FULFILL )
+		);
+
+		// Preserve WooCommerce's completed status only once the transaction reaches FULFILL.
+		$new_status = $should_force_completed ? 'completed' : $this->map_wallee_status_to_woocommerce( $status );
 
 		if ( !empty( $new_status ) && !empty( $order ) ) {
 			$order->update_status( $new_status, $note, $manual );
@@ -374,9 +437,14 @@ class WC_Wallee_Order_Status_Adapter
 	 */
 	public function get_order_status_on_payment_complete( string $status, int $order_id, WC_Order $order ): string
 	{
-		// If order consists entirely out of virtual products and their total is 0, change their status to completed
-		if ( 'yes' === get_option( WooCommerce_Wallee::WALLEE_CK_CHANGE_ORDER_STATUS ) 
-		&& $order->get_total() <= 0 && WC_Wallee_Helper::is_order_virtual( $order ) ) {
+		$change_setting_enabled = 'yes' === get_option( WooCommerce_Wallee::WALLEE_CK_CHANGE_ORDER_STATUS );
+		$is_virtual_order = WC_Wallee_Helper::is_order_virtual( $order );
+		$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id( $order_id );
+		$is_fulfilled = $transaction_info
+			&& strtolower( $transaction_info->get_state() ) === strtolower( \Wallee\Sdk\Model\TransactionState::FULFILL );
+
+		// Preserve WooCommerce's completed status only when the transaction is fulfilled.
+		if ( $change_setting_enabled && $is_virtual_order && $is_fulfilled ) {
 			return self::WALLEE_STATUS_COMPLETED;
 		}
 		
@@ -401,12 +469,21 @@ class WC_Wallee_Order_Status_Adapter
 	 * Expected values for `$wallee_status`: Pending, Confirmed, Processing, Failed, Authorized, Voided, Completed, Fulfill, Decline.
 	 *
 	 * @since 1.0.0
-	 * @param string $wallee_status The transaction status from Wallee.
+	 * @param string|null $wallee_status The transaction status from Wallee.
 	 * @return string|null The mapped WooCommerce order status, or null if no mapping is found.
 	 */
-	public function get_wc_status_for_transaction( string $wallee_status ): ?string
+	public function get_wc_status_for_transaction( ?string $wallee_status ): ?string
 	{
+		if ( null === $wallee_status || '' === $wallee_status ) {
+			return null;
+		}
+
 		$status = get_option( self::WALLEE_ORDER_STATUS_MAPPING_PREFIX . strtolower( $wallee_status ), null );
+		if ( ! WC_Wallee_Helper::is_custom_status_mapping_enabled() && $status && $this->is_custom_order_status( $status ) ) {
+			$default_mappings = $this->get_default_status_mappings();
+			$status_key = strtolower( $wallee_status );
+			$status = $default_mappings[ $status_key ] ?? $status;
+		}
 		return is_null( $status ) ? null : str_replace( 'wc-', '', $status );
 	}
 }

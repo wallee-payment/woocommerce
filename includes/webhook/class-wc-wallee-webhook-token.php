@@ -34,7 +34,12 @@ class WC_Wallee_Webhook_Token extends WC_Wallee_Webhook_Abstract {
 	 * @throws \Wallee\Sdk\VersioningException VersioningException.
 	 */
 	public function process( WC_Wallee_Webhook_Request $request ) {
-		$token_service = WC_Wallee_Service_Token::instance();
-		$token_service->update_token( $request->get_space_id(), $request->get_entity_id() );
+		wc_deprecated_function(
+            __METHOD__,
+            '3.0.12',
+            'WC_Wallee_Webhook_Token_Strategy::process'
+        );
+		$strategy = new WC_Wallee_Webhook_Token_Strategy();
+		$strategy->process( $request );
 	}
 }
