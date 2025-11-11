@@ -3,7 +3,7 @@
  * Plugin Name: wallee
  * Plugin URI: https://wordpress.org/plugins/woo-wallee
  * Description: Process WooCommerce payments with wallee.
- * Version: 3.3.22
+ * Version: 3.3.23
  * Author: wallee AG
  * Author URI: https://www.wallee.com
  * Text Domain: wallee
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WooCommerce_Wallee' ) ) {
 		 *
 		 * @var string
 		 */
-		private $version = '3.3.22';
+		private $version = '3.3.23';
 
 		/**
 		 * The single instance of the class.

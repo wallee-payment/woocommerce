@@ -3,7 +3,7 @@ Contributors: wallee AG
 Tags: payment, wallee, e-commerce, invoice, psp
 Requires at least: 4.7
 Tested up to: 6.7
-Stable tag: 3.3.22
+Stable tag: 3.3.23
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -23,11 +23,12 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 
 == Documentation ==
 
-Additional documentation for this plugin is available [here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.22/docs/en/documentation.html).
+Additional documentation for this plugin is available:
+[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.23/docs/en/documentation.html).
 
 == External Services ==
 
-This plugin includes an internal script to manage device verification within the WooCommerce store environment. 
+This plugin includes an internal script to manage device verification within the WooCommerce store environment.
 
 The script helps ensure session consistency and transaction security.
 
@@ -81,9 +82,8 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 == Changelog ==
 
 
-= 3.3.21 - October 30th 2025 =
-- [Feature] Bump SDK version to include new ca bundle
-- [Feature] 10.3.0 compatibility
+= 3.3.23 - November 5th 2025 =
+- [Feature] Updated plugin metada and description
 - [Tested Against] PHP 8.2
 - [Tested Against] Wordpress 6.7
 - [Tested Against] Woocommerce 10.3.0
