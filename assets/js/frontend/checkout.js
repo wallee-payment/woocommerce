@@ -47,12 +47,6 @@ jQuery(
 			},
 
 			init : function () {
-				const selected = this.get_selected_payment_method();
-
-				if (selected === 'wallee_zero') {
-					return;
-				}
-
 				// Payment methods.
 				this.$checkout_form.off( 'click.woo-wallee' ).on(
 					'click.woo-wallee',
@@ -308,6 +302,9 @@ jQuery(
 			},
 
 			is_supported_method : function (method_id) {
+				if (!method_id || method_id === 'wallee_zero') {
+					return false;
+				}
 				return method_id && (method_id.indexOf( 'wallee_' ) === 0);
 			},
 

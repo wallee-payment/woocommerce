@@ -187,7 +187,7 @@ class WC_Wallee_Migration {
 	 * @return void
 	 */
 	public static function wp_initialize_site( WP_Site $site, array $args ) { //phpcs:ignore
-		if ( is_plugin_active_for_network( 'woo-wallee/woocommerce-wallee.php' ) ) {
+		if ( is_plugin_active_for_network( 'woo-wallee/wallee.php' ) ) {
 			$blog_id = $site->blog_id;
 			// Defensive check: blog_id should always be set, otherwise will be shown as wallee error
 			if ( ! $blog_id ) {
@@ -278,7 +278,7 @@ class WC_Wallee_Migration {
 	public static function plugin_row_meta( $links, $file ) {
 		if ( WC_WALLEE_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
-				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.23/docs/en/documentation.html" aria-label="' . esc_html__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
+				'docs' => '<a href="https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.0/docs/en/documentation.html" aria-label="' . esc_html__( 'View Documentation', 'woo-wallee' ) . '">' . esc_html__( 'Documentation', 'woo-wallee' ) . '</a>',
 			);
 
 			return array_merge( $links, $row_meta );

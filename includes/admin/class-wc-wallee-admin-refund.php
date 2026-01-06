@@ -103,8 +103,8 @@ class WC_Wallee_Admin_Refund {
 					$transaction_info->get_transaction_id()
 				);
 				if ( $existing_refund_job->get_id() > 0 ) {
-					printf( '<span class="wallee-action-in-progress">%s</span>', esc_html( esc_html__( 'There is a refund in progress.', 'woo-wallee' ) ) );
-					printf( '<button type="button" class="button wallee-update-order">%s</button>', esc_html( esc_html__( 'Update', 'woo-wallee' ) ) );
+					printf( '<span class="wallee-action-in-progress">%s</span>', esc_html__( 'There is a refund in progress.', 'woo-wallee' ) );
+					printf( '<button type="button" class="button wallee-update-order">%s</button>', esc_html__( 'Update', 'woo-wallee' ) );
 					printf( '<span id="wallee-remove-refund" style="display:none;"></span>' );
 				}
 				printf( '<span id="wallee-refund-restrictions" style="display:none;"></span>' );

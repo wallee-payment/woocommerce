@@ -2,8 +2,8 @@
 Contributors: wallee AG
 Tags: payment, wallee, e-commerce, invoice, psp
 Requires at least: 4.7
-Tested up to: 6.7
-Stable tag: 3.3.23
+Tested up to: 6.9
+Stable tag: 3.4.0
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -24,24 +24,30 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 == Documentation ==
 
 Additional documentation for this plugin is available:
-[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.3.23/docs/en/documentation.html).
+[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.0/docs/en/documentation.html).
+
+== Source code and build process ==
+
+This plugin ships a compiled WooCommerce Blocks bundle at `assets/js/frontend/blocks/build/index.js`. The human-readable source code is included in `assets/js/frontend/blocks/src/` alongside `webpack.config.js`.
+
+To rebuild the bundle from source:
+
+1. `cd assets/js/frontend/blocks`
+2. `npm ci`
+3. `npm run build`
+
+This regenerates `build/index.js` and `build/index.asset.php` from the sources included with the plugin.
 
 == External Services ==
 
-This plugin includes an internal script to manage device verification within the WooCommerce store environment.
+This plugin loads a device-identification script from the wallee gateway to secure checkout and payment flows.
 
-The script helps ensure session consistency and transaction security.
-
-- **Service Name:** wallee Device Verification Script
-- **Purpose:** To track device sessions and enhance security during checkout and payment processing.
-- **Data Sent:**
-  - **Cookie Name:** `wc_whitelabelname_device_id`
-  - **Data Stored in Cookie:** A unique device identifier (hashed value).
-  - **When the Cookie is Set:** The cookie is set when the checkout page is accessed and updated during payment processing.
-  - **Where the Data is Processed:** All operations occur locally within the WooCommerce store and are not transmitted to external services.
-- **Conditions for Use:** The cookie is only set if the customer initiates a checkout session.
-
-No personal data is sent to third-party services; all information remains within the WooCommerce store for internal verification purposes.
+- **Service:** wallee device identification
+- **Endpoint/domain:** Base gateway URL (default `https://app-wallee.com/`), script path `/s/{spaceId}/payment/device.js`
+- **Data sent:** `sessionIdentifier` (value from cookie `wc_wallee_device_id`, a unique device/session ID) and the configured space ID in the request path; no payment or PII fields are sent by this script
+- **When:** Enqueued on cart/checkout page load; the identifier is stored in the browser for up to one year to keep sessions consistent and prevent fraud
+- **Purpose:** Device fingerprinting/session continuity to secure transactions
+- **Policies:** See the service provider’s terms of use and privacy policy linked below in the “Privacy Policy” and “Terms of use” sections
 
 == Support ==
 
@@ -81,10 +87,13 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 
 == Changelog ==
 
-
-= 3.3.23 - November 5th 2025 =
-- [Feature] Updated plugin metada and description
+= 3.4.0 - January 5th 2026 =
+- [Feature] Integrate subscriptions plugin
+- [Feature] Compatibility with official Woocommerce Gift Cards plugin
+- [Feature] Compatibility with Wordpress 6.9
+- [Feature] Compatibility with Woocommerce 10.4.x
+- [Bugfix] Fixed issue with 100% coupon still trying to capture payment
 - [Tested Against] PHP 8.2
-- [Tested Against] Wordpress 6.7
-- [Tested Against] Woocommerce 10.3.0
+- [Tested Against] Wordpress 6.9
+- [Tested Against] Woocommerce 10.4.3
 - [Tested Against] PHP SDK 4.8.1
