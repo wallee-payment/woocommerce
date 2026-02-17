@@ -60,7 +60,7 @@ class WC_Wallee_Admin_Transaction {
 			: 'shop_order';
 		add_meta_box(
 			'woocommerce-order-wallee-transaction',
-			__( 'wallee Transaction', 'woocommerce-wallee' ),
+			__( 'wallee Transaction', 'woo-wallee' ),
 			array(
 				__CLASS__,
 				'output',
