@@ -205,7 +205,7 @@ msgstr "Einstellungen"
 
 #: includes/admin/class-wc-wallee-admin.php:256
 #: includes/admin/class-wc-wallee-admin.php:267
-msgid "Send attribute to wallee."
+msgid "Send attribute to wallee"
 msgstr "Übermittle das Attribute an wallee."
 
 #: includes/admin/class-wc-wallee-admin-refund.php:60

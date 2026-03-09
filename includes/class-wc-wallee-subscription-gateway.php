@@ -160,12 +160,12 @@ class WC_Wallee_Subscription_Gateway {
 	public function validate_subscription_payment_meta( $payment_method_id, $payment_meta ) {
 		if ( $this->gateway->id === $payment_method_id ) {
 			if ( ! isset( $payment_meta['post_meta']['_wallee_subscription_space_id']['value'] ) || empty( $payment_meta['post_meta']['_wallee_subscription_space_id']['value'] ) ) {
-				throw new Exception( __( 'The wallee Space Id value is required.', 'woo-wallee' ) );
+				throw new Exception( esc_html__( 'The wallee Space Id value is required.', 'woo-wallee' ) );
 			} elseif ( get_option( WooCommerce_Wallee::WALLEE_CK_SPACE_ID ) != $payment_meta['post_meta']['_wallee_subscription_space_id']['value'] ) {
-				throw new Exception( __( 'The wallee Space Id needs to be in the same space as configured in the main configuration.', 'woo-wallee' ) );
+				throw new Exception( esc_html__( 'The wallee Space Id needs to be in the same space as configured in the main configuration.', 'woo-wallee' ) );
 			}
 			if ( ! isset( $payment_meta['post_meta']['_wallee_subscription_token_id']['value'] ) || empty( $payment_meta['post_meta']['_wallee_subscription_token_id']['value'] ) ) {
-				throw new Exception( __( 'The wallee Token Id value is required.', 'woo-wallee' ) );
+				throw new Exception( esc_html__( 'The wallee Token Id value is required.', 'woo-wallee' ) );
 			}
 		}
 	}
@@ -240,17 +240,17 @@ class WC_Wallee_Subscription_Gateway {
 		}
 
 		if( ! isset($token_data['_wallee_subscription_space_id']) ) {
-			$order->update_status( 'failed', __( 'No Space Id is found.', 'woo-wallee' ) );
+			$order->update_status( 'failed', esc_html__( 'No Space Id is found.', 'woo-wallee' ) );
 			throw new Exception('Missing space id details');
 		}
 
 		if( ! isset($token_data['_wallee_subscription_token_id']) ) {
-			$order->update_status( 'failed', __( 'No Token Id is found.', 'woo-wallee' ) );
+			$order->update_status( 'failed', esc_html__( 'No Token Id is found.', 'woo-wallee' ) );
 			throw new Exception('Missing token id');
 		}
 
 		if ( get_option( WooCommerce_Wallee::WALLEE_CK_SPACE_ID ) != $token_data['_wallee_subscription_space_id'] ) {
-			$order->update_status( 'failed', __( 'The token space and the configured space are not equal.', 'woo-wallee' ) );
+			$order->update_status( 'failed', esc_html__( 'The token space and the configured space are not equal.', 'woo-wallee' ) );
 			throw new Exception('Token space does not match configured space');
 		}
 

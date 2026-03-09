@@ -1,9 +1,9 @@
 === wallee ===
 Contributors: wallee AG
 Tags: payment, wallee, e-commerce, invoice, psp
-Requires at least: 4.7
-Tested up to: 6.9
-Stable tag: 3.4.0
+Requires at least: 6.0
+Tested up to: 7.0
+Stable tag: 3.4.2
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -13,10 +13,7 @@ Accept payments in WooCommerce with wallee.
 
 Website: [https://www.wallee.com](https://www.wallee.com)
 
-The plugin offers an easy and convenient way to accept credit cards and all
-other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout
-and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but
-the look and feel can be changed according the merchants needs.
+The plugin offers an easy and convenient way to accept credit cards and all other payment methods listed below fast and securely. The payment forms will be fully integrated in your checkout and for credit cards there is no redirection to a payment page needed anymore. The pages are by default mobile optimized but the look and feel can be changed according the merchants needs.
 
 This plugin will add support for all wallee payments methods and connect the wallee servers to your WooCommerce webshop.
 To use this extension, a wallee account is required. Sign up on [wallee](https://app-wallee.com/user/signup).
@@ -24,7 +21,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 == Documentation ==
 
 Additional documentation for this plugin is available:
-[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.0/docs/en/documentation.html).
+[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.2/docs/en/documentation.html).
 
 == Source code and build process ==
 
@@ -87,13 +84,11 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 
 == Changelog ==
 
-= 3.4.0 - January 5th 2026 =
-- [Feature] Integrate subscriptions plugin
-- [Feature] Compatibility with official Woocommerce Gift Cards plugin
-- [Feature] Compatibility with Wordpress 6.9
-- [Feature] Compatibility with Woocommerce 10.4.x
-- [Bugfix] Fixed issue with 100% coupon still trying to capture payment
+= 3.4.2 - March 9th 2026 =
+- [Feature] Tested against Wordpress 7
+- [Bugfix] Fixed issue with rounding leading to totals discrepency
+- [Bugfix] Fixed fatal error with missing attribute when using the Polylang plugin
 - [Tested Against] PHP 8.2
-- [Tested Against] Wordpress 6.9
-- [Tested Against] Woocommerce 10.4.3
+- [Tested Against] Wordpress 7.x-beta 
+- [Tested Against] Woocommerce 10.5.1
 - [Tested Against] PHP SDK 4.8.1

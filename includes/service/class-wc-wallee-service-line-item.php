@@ -934,9 +934,11 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 
 		foreach ( $products_to_check as $id ) {
 			$product = wc_get_product( $id );
-            if ( ! $product instanceof WC_Product ) {
-                continue;
-            }
+
+			if ( ! $product instanceof WC_Product ) {
+				continue;
+			}
+
 			$product_attributes = $product->get_attributes( 'edit' );
             if ( empty( $product_attributes ) ) {
                 $product_attributes = array();
@@ -1057,7 +1059,8 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			// Create Line Items for gift cards
 			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			$line_item->setAmountIncludingTax( -1 * abs( $used_amount ) );
-			$line_item->setName( sprintf( __( 'Gift Card (%s)', 'woocommerce' ), $code ) );
+			/* translators: %s: gift card code */
+			$line_item->setName( sprintf( __( 'Gift Card (%s)', 'woo-wallee' ), $code ) );
 			$line_item->setQuantity( 1 );
 			$line_item->setShippingRequired( false );
 			$line_item->setSku( 'gift-card-' . $code );
@@ -1128,7 +1131,8 @@ class WC_Wallee_Service_Line_Item extends WC_Wallee_Service_Abstract {
 			$line_item = new \Wallee\Sdk\Model\LineItemCreate();
 			// Wallee expects discounts as negative values
 			$line_item->setAmountIncludingTax( -1 * abs( $used_amount ) );
-			$line_item->setName( sprintf( __( 'Gift Card (%s)', 'woocommerce' ), $code ) );
+			/* translators: %s: gift card code */
+			$line_item->setName( sprintf( __( 'Gift Card (%s)', 'woo-wallee' ), $code ) );
 			$line_item->setQuantity( 1 );
 			$line_item->setShippingRequired( false );
 			$line_item->setSku( 'gift-card-' . $code );
