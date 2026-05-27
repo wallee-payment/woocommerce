@@ -57,7 +57,7 @@ final class WC_Wallee_Blocks_Support extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_script_handles() {
 		$dependencies = array();
-		$version = '3.4.2';
+		$version = '3.4.4';
 
 		wp_register_script(
 			'WooCommerce_Wallee_blocks_support',

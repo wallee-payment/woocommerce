@@ -3,7 +3,7 @@ Contributors: wallee AG
 Tags: payment, wallee, e-commerce, invoice, psp
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 3.4.2
+Stable tag: 3.4.4
 License: Apache-2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0
 
@@ -21,7 +21,7 @@ To use this extension, a wallee account is required. Sign up on [wallee](https:/
 == Documentation ==
 
 Additional documentation for this plugin is available:
-[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.2/docs/en/documentation.html).
+[here](https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.4/docs/en/documentation.html).
 
 == Source code and build process ==
 
@@ -84,11 +84,10 @@ Enquiries about our terms of use can be made on the [wallee terms of use site](h
 
 == Changelog ==
 
-= 3.4.2 - March 9th 2026 =
+= 3.4.3 - March 9th 2026 =
 - [Feature] Tested against Wordpress 7
-- [Bugfix] Fixed issue with rounding leading to totals discrepency
-- [Bugfix] Fixed fatal error with missing attribute when using the Polylang plugin
+- [BugFix] Solved issue with session type detection
 - [Tested Against] PHP 8.2
-- [Tested Against] Wordpress 7.x-beta 
+- [Tested Against] Wordpress 7.x-beta
 - [Tested Against] Woocommerce 10.5.1
 - [Tested Against] PHP SDK 4.8.1
