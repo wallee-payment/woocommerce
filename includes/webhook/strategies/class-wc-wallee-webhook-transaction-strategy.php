@@ -56,6 +56,15 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	public function process( WC_Wallee_Webhook_Request $request ) {
 		$order = $this->get_order( $request );
 		$entity = $this->load_entity( $request );
+
+		// retry orphaned transaction, fall back to merchant reference
+		if ( ( false === $order || ! $order->get_id() ) && $entity ) {
+			$merchant_ref = $entity->getMerchantReference();
+			if ( ! empty( $merchant_ref ) ) {
+				$order = WC_Order_Factory::get_order( (int) $merchant_ref );
+			}
+		}
+
 		if ( false != $order && $order->get_id() ) {
 			$this->process_order_related_inner( $order, $entity );
 			if ($request->get_state() === \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
@@ -194,6 +203,9 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * @return void
 	 */
 	protected function decline( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
+		if ( $order->has_status( array( 'processing', 'completed' ) ) ) {
+			return;
+		}
 		do_action( 'wc_wallee_declined', $transaction, $order );
 		$default_status = apply_filters( 'wc_wallee_decline_status', 'cancelled', $order );
 		apply_filters( 'wallee_order_update_status', $order, \Wallee\Sdk\Model\TransactionState::DECLINE, $default_status );
@@ -265,6 +277,9 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * @return void
 	 */
 	protected function voided( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
+		if ( $order->has_status( array( 'processing', 'completed' ) ) ) {
+			return;
+		}
 		$default_status = apply_filters( 'wc_wallee_voided_status', 'cancelled', $order );
 		apply_filters( 'wallee_order_update_status', $order, \Wallee\Sdk\Model\TransactionState::VOIDED, $default_status );
 		do_action( 'wc_wallee_voided', $transaction, $order );
