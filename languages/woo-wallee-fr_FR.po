@@ -961,3 +961,11 @@ msgstr "Choisissez quel statut de commande WooCommerce doit être utilisé pour 
 #: views/admin-notices/subscription-plugin-deactivate.php:11
 msgid "wallee Subscription plugin has been deactivated because subscriptions are now handled directly by the wallee plugin. You can safely remove the old plugin"
 msgstr "L’extension wallee Subscription a été désactivée, car les abonnements sont désormais gérés directement par l’extension wallee. Vous pouvez supprimer sans risque l’ancien plugin."
+
+#: includes/class-wc-wallee-blocks-support.php:67
+msgid "Loading payment method..."
+msgstr "Chargement du moyen de paiement..."
+
+#: includes/class-wc-wallee-blocks-support.php:68
+msgid "Unable to load this payment method. Please refresh the page and try again."
+msgstr "Impossible de charger ce moyen de paiement. Veuillez actualiser la page et réessayer."
