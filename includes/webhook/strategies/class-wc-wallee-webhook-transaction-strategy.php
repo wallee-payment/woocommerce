@@ -37,27 +37,16 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	}
 
 	/**
-	 * Meant to bridge code from deprecated processor.
-	 *
-	 * @param WC_Order $order order.
-	 * @param mixed $transaction transaction.
-	 * @return mixed The result of the processing.
-	 */
-	public function bridge_process_order_related_inner( WC_Order $order, $transaction ) {
-        $this->process_order_related_inner( $order, $transaction, true );
-    }
-
-	/**
 	 * Process the webhook request.
 	 *
-	 * @param \Wallee\Sdk\Model\Transaction $transaction The webhook request object.
+	 * @param WC_Wallee_Webhook_Request $request The webhook request.
 	 * @return mixed The result of the processing.
 	 */
 	public function process( WC_Wallee_Webhook_Request $request ) {
 		$order = $this->get_order( $request );
 		$entity = $this->load_entity( $request );
 
-		// retry orphaned transaction, fall back to merchant reference
+		// Retry orphaned transaction, fall back to merchant reference.
 		if ( ( false === $order || ! $order->get_id() ) && $entity ) {
 			$merchant_ref = $entity->getMerchantReference();
 			if ( ! empty( $merchant_ref ) ) {
@@ -67,7 +56,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 
 		if ( false != $order && $order->get_id() ) {
 			$this->process_order_related_inner( $order, $entity );
-			if ($request->get_state() === \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
+			if ( $request->get_state() === \Wallee\Sdk\Model\TransactionState::AUTHORIZED ) {
 				do_action( 'wallee_transaction_authorized_send_email', $order->get_id() );
 			}
 		}
@@ -78,11 +67,10 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 *
 	 * @param WC_Order $order order.
 	 * @param mixed $transaction transaction.
-	 * @param bool $legacy_mode legacy code used.
 	 * @return void
 	 * @throws Exception Exception.
 	 */
-	protected function process_order_related_inner( WC_Order $order, $transaction, $legacy_mode = false ) {
+	protected function process_order_related_inner( WC_Order $order, $transaction ) {
 		if ( strpos( $order->get_payment_method(), 'wallee' ) === false ) {
 			return;
 		}
@@ -107,9 +95,6 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 				case \Wallee\Sdk\Model\TransactionState::FULFILL:
 					$this->authorize( $transaction, $order );
 					$this->fulfill( $transaction, $order );
-					if ( $legacy_mode ) {
-						do_action( 'wallee_transaction_authorized_send_email', $order->get_id() );
-					}
 					WC_Wallee_Helper::set_virtual_zero_total_orders_to_complete( $order );
 					WC_Wallee_Helper::update_order_status_for_preorder_if_needed( $order );
 					break;
@@ -126,21 +111,13 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 			}
 			WC_Wallee_Service_Transaction::instance()->update_transaction_info( $transaction, $order );
 		}
-
-		if ( $legacy_mode ) {
-			// This is edge case for deferred payment methods
-			$transaction_info = WC_Wallee_Entity_Transaction_Info::load_by_order_id( $order->get_id() );
-			if ($transaction_info->get_state() === \Wallee\Sdk\Model\TransactionState::AUTHORIZED) {
-				do_action( 'wallee_transaction_authorized_send_email', $order->get_id() );
-			}
-		}
 	}
 
 	/**
 	 * Confirm.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order $order order.
+	 * @param WC_Order                                     $order order.
 	 * @return void
 	 */
 	protected function confirm( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -161,7 +138,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Authorize.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param \WC_Order $order order.
+	 * @param \WC_Order                                    $order order.
 	 */
 	protected function authorize( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
 		if ( ! $order->get_meta( '_wallee_authorized', true ) ) {
@@ -180,7 +157,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Waiting.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order $order order.
+	 * @param WC_Order                                     $order order.
 	 * @return void
 	 */
 	protected function waiting( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -199,7 +176,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Decline.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order $order order.
+	 * @param WC_Order                                     $order order.
 	 * @return void
 	 */
 	protected function decline( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -216,7 +193,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Failed.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order $order order.
+	 * @param WC_Order                                     $order order.
 	 * @return void
 	 */
 	protected function failed( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -230,7 +207,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 			'pending',
 			// Custom order statuses mapped.
 			apply_filters( 'wallee_wc_status_for_transaction', 'confirmed' ),
-			apply_filters( 'wallee_wc_status_for_transaction', 'failed' )
+			apply_filters( 'wallee_wc_status_for_transaction', 'failed' ),
 		);
 		if ( in_array( $order->get_status( 'edit' ), $valid_order_statuses ) ) {
 			$default_status = apply_filters( 'wc_wallee_failed_status', 'failed', $order );
@@ -243,7 +220,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Fulfill.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order $order order.
+	 * @param WC_Order                                     $order order.
 	 * @return void
 	 */
 	protected function fulfill( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {
@@ -273,7 +250,7 @@ class WC_Wallee_Webhook_Transaction_Strategy extends WC_Wallee_Webhook_Strategy_
 	 * Voided.
 	 *
 	 * @param \Wallee\Sdk\Model\Transaction $transaction transaction.
-	 * @param WC_Order $order order.
+	 * @param WC_Order                                     $order order.
 	 * @return void
 	 */
 	protected function voided( \Wallee\Sdk\Model\Transaction $transaction, WC_Order $order ) {

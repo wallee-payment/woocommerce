@@ -65,18 +65,6 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 	}
 
 	/**
-	 * Meant to bridge code from deprecated processor.
-	 *
-	 * @param WC_Order $order The WooCommerce order associated with the void request.
-	 * @param \Wallee\Sdk\Model\TransactionVoid $void The transaction void object.
-	 * @param WC_Wallee_Webhook_Request $request The webhook request object.
-	 * @return void
-	 */
-	public function bridge_process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionVoid $void, WC_Wallee_Webhook_Request $request ) {
-        $this->process_order_related_inner( $order, $void, $request, true );
-    }
-
-	/**
 	 * Processes the incoming webhook request related to transaction voids.
 	 *
 	 * This method checks if the corresponding order exists and if so, it further processes the order
@@ -100,11 +88,10 @@ class WC_Wallee_Webhook_Transaction_Void_Strategy extends WC_Wallee_Webhook_Stra
 	 * @param WC_Order $order The WooCommerce order associated with the void request.
 	 * @param \Wallee\Sdk\Model\TransactionVoid $void The transaction void object.
 	 * @param WC_Wallee_Webhook_Request $request The webhook request object.
-	 * @param bool $legacy_mode legacy code used.
 	 * @return void
 	 */
-	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionVoid $void, WC_Wallee_Webhook_Request $request, $legacy_mode = false ) {
-		$entity_state = $legacy_mode ? $void->getState() : $request->get_state();
+	protected function process_order_related_inner( WC_Order $order, \Wallee\Sdk\Model\TransactionVoid $void, WC_Wallee_Webhook_Request $request ) {
+		$entity_state = $request->get_state();
 		switch ( $entity_state ) {
 			case \Wallee\Sdk\Model\TransactionVoidState::FAILED:
 				$this->failed( $order, $void );

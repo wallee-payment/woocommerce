@@ -199,6 +199,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 				}
 			}
 		}
+		$this->enforce_signed_listeners();
 	}
 
 	/**
@@ -218,8 +219,8 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	/**
 	 * Create a webhook listener.
 	 *
-	 * @param WC_Wallee_Webhook_Entity $entity entity.
-	 * @param int $space_id space id.
+	 * @param WC_Wallee_Webhook_Entity     $entity entity.
+	 * @param int                                         $space_id space id.
 	 * @param \Wallee\Sdk\Model\WebhookUrl $webhook_url webhook url.
 	 *
 	 * @return \Wallee\Sdk\Model\WebhookListenerCreate
@@ -240,7 +241,7 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 	/**
 	 * Returns the existing webhook listeners.
 	 *
-	 * @param int $space_id space id.
+	 * @param int                                         $space_id space id.
 	 * @param \Wallee\Sdk\Model\WebhookUrl $webhook_url webhook url.
 	 *
 	 * @return \Wallee\Sdk\Model\WebhookListener[]
@@ -341,5 +342,47 @@ class WC_Wallee_Service_Webhook extends WC_Wallee_Service_Abstract {
 			$this->webhook_url_service = new \Wallee\Sdk\Service\WebhookUrlService( WC_Wallee_Helper::instance()->get_api_client() );
 		}
 		return $this->webhook_url_service;
+	}
+
+	/**
+	 * Enforces payload signatures on webhook listeners.
+	 *
+	 * @throws \Exception Exception.
+	 */
+	public function enforce_signed_listeners() {
+		$space_id = get_option( WooCommerce_Wallee::WALLEE_CK_SPACE_ID );
+		if ( empty( $space_id ) ) {
+			return;
+		}
+		$webhook_url = $this->get_webhook_url( $space_id );
+		if ( null === $webhook_url ) {
+			return;
+		}
+		try {
+			$webhook_listeners = $this->get_webhook_listeners( $space_id, $webhook_url );
+		} catch ( Exception $e ) {
+			WooCommerce_Wallee::instance()->log(
+				'Could not load webhook listeners to enforce signing: ' . $e->getMessage(),
+				WC_Log_Levels::ERROR
+			);
+		}
+		$webhook_service = $this->get_webhook_listener_service();
+		foreach ( $webhook_listeners as $listener ) {
+			if ( $listener->getEnablePayloadSignatureAndState() ) {
+				continue;
+			}
+			try {
+				$update = new \Wallee\Sdk\Model\WebhookListenerUpdate();
+				$update->setId( $listener->getId() );
+				$update->setVersion( $listener->getVersion() );
+				$update->setEnablePayloadSignatureAndState( true );
+				$webhook_service->update( $space_id, $update );
+			} catch ( \Exception $e ) {
+				WooCommerce_Wallee::instance()->log(
+					'Could not update webhook listeners to enforce signing: ' . $e->getMessage(),
+					WC_Log_Levels::ERROR
+				);
+			}
+		}
 	}
 }

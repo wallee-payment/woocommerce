@@ -24,8 +24,8 @@ defined( 'ABSPATH' ) || exit;
 <table class="wallee-order-statuses wc-shipping-classes widefat">
 	<thead>
 		<tr>
-			<?php foreach ( $order_statuses_columns as $status_key => $heading ) : ?>
-				<th class="<?php echo esc_attr( $status_key ); ?>"><?php echo esc_html( $heading ); ?></th>
+			<?php foreach ( $order_statuses_columns as $wallee_status_key => $wallee_heading ) : ?>
+				<th class="<?php echo esc_attr( $wallee_status_key ); ?>"><?php echo esc_html( $wallee_heading ); ?></th>
 			<?php endforeach; ?>
 			<th />
 		</tr>
@@ -54,15 +54,15 @@ defined( 'ABSPATH' ) || exit;
 				</header>
 				<article>
 				<form action="" method="post">
-                    <input type="hidden" name="key" value="{{{ data.key }}}" />
+					<input type="hidden" name="key" value="{{{ data.key }}}" />
 					<?php
-					foreach ( $order_statuses_columns as $status_key => $heading ) {
-						echo '<div class="wallee-order-statuses-modal-input wc-shipping-class-modal-input ' . esc_attr( $status_key ) . '">';
-						switch ( $status_key ) {
+					foreach ( $order_statuses_columns as $wallee_status_key => $wallee_heading ) {
+						echo '<div class="wallee-order-statuses-modal-input wc-shipping-class-modal-input ' . esc_attr( $wallee_status_key ) . '">';
+						switch ( $wallee_status_key ) {
 							case 'wallee-order-status-key':
 								?>
 								<div class="view">
-									<?php echo esc_html( $heading ); ?> *
+									<?php echo esc_html( $wallee_heading ); ?> *
 								</div>
 								<div class="edit">
 									<label style="display: flex; align-items: center;">
@@ -73,7 +73,7 @@ defined( 'ABSPATH' ) || exit;
 											style="flex: 1; padding: 12px; border-radius: 0 4px 4px 0;"
 											placeholder="<?php esc_attr_e( 'e.g. awaiting', 'woo-wallee' ); ?>" />
 									</label>
-                                    <small id="charCount" style="color: gray;"></small>
+									<small id="charCount" style="color: gray;"></small>
 								</div>
 								<div class="wallee-order-statuses-modal-help-text wc-shipping-class-modal-help-text"><?php esc_html_e( 'Give your custom status a name for easy identification', 'woo-wallee' ); ?></div>
 								<?php
@@ -101,9 +101,9 @@ defined( 'ABSPATH' ) || exit;
 <script type="text/html" id="tmpl-wallee-order-statuses-row">
 	<tr data-id="{{ data.key }}">
 		<?php
-		foreach ( $order_statuses_columns as $status_key => $heading ) {
-			echo '<td class="' . esc_attr( $status_key ) . '">';
-			switch ( $status_key ) {
+		foreach ( $order_statuses_columns as $wallee_status_key => $wallee_heading ) {
+			echo '<td class="' . esc_attr( $wallee_status_key ) . '">';
+			switch ( $wallee_status_key ) {
 				case 'wallee-order-status-key':
 					?>
 					<div class="view">{{ data.key }}</div>

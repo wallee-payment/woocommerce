@@ -108,8 +108,10 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	 * @return array
 	 */
 	protected function get_settings_for_wallee_order_statuses_section() {
+		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- $hide_save_button is a woocommerce core global used to control settings page ui, therefore we don't rename it
 		global $current_section, $hide_save_button;
 		$hide_save_button = true;
+		// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		return $this->get_order_statuses();
 	}
 
@@ -205,7 +207,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 		$settings = array(
 			array(
 				'links' => array(
-					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.8/docs/en/documentation.html' => esc_html__( 'Documentation', 'woo-wallee' ),
+					'https://plugin-documentation.wallee.com/wallee-payment/woocommerce/3.4.9/docs/en/documentation.html' => esc_html__( 'Documentation', 'woo-wallee' ),
 					'https://app-wallee.com/user/signup' => esc_html__( 'Sign Up', 'woo-wallee' ),
 				),
 				'type'  => 'wallee_links',
@@ -267,14 +269,14 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'css' => 'min-width:300px;',
 			),
 
-            array(
-                'title'   => esc_html__( 'Disable Pending Email', 'woo-wallee' ),
-                'desc'    => esc_html__( 'Enable this setting to prevent WooCommerce from sending "pending payment" emails for Wallee payment methods.', 'woo-wallee' ),
-                'id'      => WooCommerce_Wallee::WALLEE_CK_DISABLE_PENDING_EMAIL,
-                'type'    => 'checkbox',
-                'default' => 'no',
-                'css'     => 'min-width:300px;',
-            ),
+			array(
+				'title' => esc_html__( 'Disable Pending Email', 'woo-wallee' ),
+				'desc' => esc_html__( 'Enable this setting to prevent WooCommerce from sending "pending payment" emails for Wallee payment methods.', 'woo-wallee' ),
+				'id'  => WooCommerce_Wallee::WALLEE_CK_DISABLE_PENDING_EMAIL,
+				'type' => 'checkbox',
+				'default' => 'no',
+				'css' => 'min-width:300px;',
+			),
 
 			array(
 				'type' => 'sectionend',
@@ -338,8 +340,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'title' => esc_html__( 'Integration Type', 'woo-wallee' ),
 				'desc_tip' => wp_kses_post(
 					__(
-					  'The Integration Options setting determines how the payment form is displayed during the WooCommerce checkout process.<br><br><strong>IFrame</strong>: Embeds the payment form directly within the WooCommerce checkout page for a seamless experience.<br><br><strong>Lightbox</strong>: Opens a secure popup window for customers to complete their payment without leaving the checkout page.<br><br><strong>Payment Page</strong>: Redirects customers to a dedicated payment page hosted by the payment provider.',
-					  'woo-wallee'
+						'The Integration Options setting determines how the payment form is displayed during the WooCommerce checkout process.<br><br><strong>IFrame</strong>: Embeds the payment form directly within the WooCommerce checkout page for a seamless experience.<br><br><strong>Lightbox</strong>: Opens a secure popup window for customers to complete their payment without leaving the checkout page.<br><br><strong>Payment Page</strong>: Redirects customers to a dedicated payment page hosted by the payment provider.',
+						'woo-wallee'
 					)
 				),
 				'id'  => WooCommerce_Wallee::WALLEE_CK_INTEGRATION,
@@ -364,18 +366,18 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'id' => 'line_items_options',
 			),
 
-		  array(
-			'title' => esc_html__( 'Enforce Consistency', 'woo-wallee' ),
-			'desc' => esc_html__( 'Enable this setting to require that the sum of all line items matches the order total value.', 'woo-wallee' ),
-			'desc_tip' => esc_html__(
-				"WooCommerce calculates taxes at the line-item level, which may result in minor discrepancies (typically a few cents) between the order's total tax and the displayed price. This occurs due to rounding differences during individual line-item calculations.\n\nIf the \"Enforce consistency\" setting is enabled, the portal will automatically reject orders with such discrepancies. To avoid payment processing issues, we recommend disabling this setting unless strict tax total validation is required.",
-				'woo-wallee'
+			array(
+				'title' => esc_html__( 'Enforce Consistency', 'woo-wallee' ),
+				'desc' => esc_html__( 'Enable this setting to require that the sum of all line items matches the order total value.', 'woo-wallee' ),
+				'desc_tip' => esc_html__(
+					"WooCommerce calculates taxes at the line-item level, which may result in minor discrepancies (typically a few cents) between the order's total tax and the displayed price. This occurs due to rounding differences during individual line-item calculations.\n\nIf the \"Enforce consistency\" setting is enabled, the portal will automatically reject orders with such discrepancies. To avoid payment processing issues, we recommend disabling this setting unless strict tax total validation is required.",
+					'woo-wallee'
+				),
+				'id' => WooCommerce_Wallee::WALLEE_CK_ENFORCE_CONSISTENCY,
+				'type' => 'checkbox',
+				'default' => 'yes',
+				'css' => 'min-width:300px;',
 			),
-			'id' => WooCommerce_Wallee::WALLEE_CK_ENFORCE_CONSISTENCY,
-			'type' => 'checkbox',
-			'default' => 'yes',
-			'css' => 'min-width:300px;',
-		  ),
 
 			array(
 				'type' => 'sectionend',
@@ -391,8 +393,8 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			array(
 				'title' => esc_html__( 'Order Reference Type', 'woo-wallee' ),
 				'desc_tip' => esc_html__(
-				  'Choose how orders are uniquely identified when sent to the portal. This reference ensures orders can be tracked and reconciled between systems. We recommend to use Order ID unless your workflow requires custom identifiers.',
-				  'woo-wallee'
+					'Choose how orders are uniquely identified when sent to the portal. This reference ensures orders can be tracked and reconciled between systems. We recommend to use Order ID unless your workflow requires custom identifiers.',
+					'woo-wallee'
 				),
 				'id' => WooCommerce_Wallee::WALLEE_CK_ORDER_REFERENCE,
 				'type' => 'select',
@@ -439,7 +441,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 	 * @return array
 	 */
 	public function get_order_status_settings() {
-		$settings = [];
+		$settings = array();
 		$is_custom_status_mapping_enabled = WC_Wallee_Helper::is_custom_status_mapping_enabled();
 
 		$settings[] = array(
@@ -453,9 +455,9 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			'title' => esc_html__( 'Enable Custom Status Mapping', 'woo-wallee' ),
 			'desc' => esc_html__( 'If enabled, custom statuses (such as Manual Decision) will be used instead of the default WooCommerce statuses.', 'woo-wallee' ),
 			'id' => WooCommerce_Wallee::WALLEE_CK_ENABLE_CUSTOM_STATUS_MAPPING,
-			'type'    => 'checkbox',
+			'type' => 'checkbox',
 			'default' => 'no',
-			'css'     => 'min-width:300px;',
+			'css' => 'min-width:300px;',
 		);
 
 		if ( $is_custom_status_mapping_enabled ) {
@@ -474,8 +476,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 					'<div class="wallee-status-mapping-header">
 						<span class="wallee-status-mapping-col-left">%s</span>
 						<span class="wallee-status-mapping-col-right">%s</span>
-					</div>'
-					,
+					</div>',
 					esc_html__( 'Wallee payment status', 'woo-wallee' ),
 					esc_html__( 'WooCommerce Order Status', 'woo-wallee' )
 				),
@@ -517,7 +518,6 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 			'type' => 'sectionend',
 			'id' => 'order_status_mapping_options',
 		);
-
 
 		return apply_filters( 'wallee_custom_order_statuses_settings', $settings );
 	}
@@ -591,7 +591,7 @@ class WC_Wallee_Admin_Settings_Page extends WC_Settings_Page {
 				'wp-util',
 				'underscore',
 				'backbone',
-				'wc-backbone-modal'
+				'wc-backbone-modal',
 			),
 			$version,
 			array( 'in_footer' => false )

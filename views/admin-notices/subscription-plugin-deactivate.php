@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 <div class="error notice notice-error">
-    <p>
-        <?php esc_html_e( 'wallee Subscription plugin has been deactivated because subscriptions are now handled directly by the wallee plugin. You can safely remove the old plugin', 'woo-wallee' ); ?>
-    </p>
+	<p>
+		<?php esc_html_e( 'wallee Subscription plugin has been deactivated because subscriptions are now handled directly by the wallee plugin. You can safely remove the old plugin', 'woo-wallee' ); ?>
+	</p>
 </div>
